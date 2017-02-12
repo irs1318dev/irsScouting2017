@@ -27,10 +27,10 @@ class LabelMaker {
         List<String> layout = request.get("Game/layout");
         for(String s : layout) tasks.add(gson.fromJson(s, Task.class));
 
-        for(Task task : tasks) if(usePage(task.getActor(), pageManager.position)) {
+        for(Task task : tasks) if(usePage(task.Actor, pageManager.position)) {
             //Create each page
-            if(current == -1 || !pageList.get(current).name.equals(task.getPage())) {
-                pageList.add(pageManager.makePage(task.getPage()));
+            if(current == -1 || !pageList.get(current).name.equals(task.Page)) {
+                pageList.add(pageManager.makePage(task.Page));
                 current++;
             }
             //Add task to page
@@ -48,7 +48,7 @@ class LabelMaker {
     }
 
     private Label makeLabel(Task task, Context context) {
-        switch(task.getFormat().charAt(0)) {
+        switch(task.Format.charAt(0)) {
             case 'S':
                 return new Switcher(context, task);
             case 'C':

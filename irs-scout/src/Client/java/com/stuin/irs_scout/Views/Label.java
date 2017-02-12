@@ -9,11 +9,14 @@ import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.R;
 
-public class Label extends TextView {
-    private Task task;
-    LinearLayout linearLayout;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Measure measure;
+public class Label extends TextView {
+    Task task;
+    LinearLayout linearLayout;
+    List<TextView> views = new ArrayList<>();
+    Measure measure = new Measure();
 
     public Label(Context context, Task task) {
         super(context);
@@ -21,9 +24,9 @@ public class Label extends TextView {
     }
 
     void create(LinearLayout column) {
-        if(task.getCompacting() < 1) {
+        if(task.Compacting < 1) {
             setTextSize(20);
-            setText(task.getName());
+            setText(task.Task);
             setTextColor(getResources().getColor(R.color.colorText));
             setGravity(Gravity.CENTER);
             column.addView(this);
@@ -33,18 +36,16 @@ public class Label extends TextView {
         linearLayout.setGravity(Gravity.CENTER);
         column.addView(linearLayout);
 
-        part(task.getSuccess());
-        if(task.getMiss() != null) part(task.getMiss());
+        views.add(part(task.Success));
+        if(!task.Miss.isEmpty()) views.add(part(task.Miss));
+        update(measure);
     }
 
-    protected View part(String name) {
-        return new View(getContext());
+    protected TextView part(String name) {
+        return new TextView(getContext());
     }
 
-    View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-        }
-    };
+    protected void update(Measure measure) {
+        this.measure = measure;
+    }
 }

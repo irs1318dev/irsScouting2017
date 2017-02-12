@@ -15,25 +15,14 @@ public class Task {
     final public int id;
 
     public Task() {
-        this.Task = "";
-        this.Actor = "";
-        this.Page = "";
-        this.Format = "";
-        this.Success = "";
-        this.Miss = "";
-        this.Additions = "";
-        this.Compacting = 0;
-        this.id = 0;
+        Task = "";
+        Actor = "";
+        Page = "";
+        Format = "";
+        Success = "";
+        Miss = "";
+        Additions = "";
+        Compacting = 0;
+        id = 0;
     }
-
-    public String getName() { return Task; }
-    public String getActor() { return Actor; }
-    public String getPage() { return Page; }
-    public String getFormat() { return Format; }
-    public String getSuccess() { return Success; }
-    public String getMiss() { return Miss; }
-    public int getCompacting() {return Compacting;}
-
-
-
 }
