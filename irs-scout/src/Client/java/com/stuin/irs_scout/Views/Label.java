@@ -10,7 +10,7 @@ import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.R;
 
 public class Label extends TextView {
-    Task task;
+    private Task task;
     LinearLayout linearLayout;
 
     public Measure measure;

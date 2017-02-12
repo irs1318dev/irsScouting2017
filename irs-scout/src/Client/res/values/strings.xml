@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">IRS-Scout</string>
     <string name="form_status">Status</string>
+    <string name="form_next">Next</string>
+    <string name="form_last">Previous</string>
     <string name="form_ip">192.168.43.</string>
 
     <string name="scout_1">Red 1</string>

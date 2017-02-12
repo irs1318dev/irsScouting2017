@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
         //Start
         form = new PageManager(this, request, position);
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.Frame);
+        frameLayout.setVisibility(View.VISIBLE);
         frameLayout.addView(form);
     }
 

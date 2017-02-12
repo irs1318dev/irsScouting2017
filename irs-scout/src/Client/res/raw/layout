@@ -1,2 +1,6 @@
 {"Task":"Baseline","Actor":"Robot","Page":"Auto","Format":"Switch","Success":"Crossed","Miss":"No Show","Compacting":0,"Additions":null}
 {"Task":"High Boiler","Actor":"Robot","Page":"Auto","Format":"Count","Success":"Scored","Miss":"Missed","Compacting":0,"Additions":null}
+{"Task":"Low Boiler","Actor":"Robot","Page":"Auto","Format":"Count","Success":"Scored","Miss":"Missed","Compacting":0,"Additions":null}
+{"Task":"High Boiler","Actor":"Robot","Page":"Teleop","Format":"Count","Success":"Scored","Miss":"Missed","Compacting":0,"Additions":null}
+{"Task":"Low Boiler","Actor":"Robot","Page":"Teleop","Format":"Count","Success":"Scored","Miss":"Missed","Compacting":0,"Additions":null}
+{"Task":"RP","Actor":"Final","Page":"Final","Format":"Switch","Success":"Rotors","Miss":"Pressure","Compacting":1,"Additions":null}

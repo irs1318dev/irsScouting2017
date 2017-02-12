@@ -18,7 +18,6 @@ class LabelMaker {
     List<Page> pages(Request request, PageManager pageManager) {
         List<Page> pageList = new ArrayList<>();
         int current = -1;
-        String actor = null;
 
         //Prepare for layout file
         Gson gson = new Gson();
@@ -30,9 +29,8 @@ class LabelMaker {
 
         for(Task task : tasks) if(usePage(task.getActor(), pageManager.position)) {
             //Create each page
-            if(current == -1 || !pageList.get(current).name.equals(task.getPage()) || !actor.equals(task.getActor())) {
+            if(current == -1 || !pageList.get(current).name.equals(task.getPage())) {
                 pageList.add(pageManager.makePage(task.getPage()));
-                actor = task.getActor();
                 current++;
             }
             //Add task to page
@@ -43,10 +41,10 @@ class LabelMaker {
 
     private boolean usePage(String actor, String position) {
         //Check if page is to be used
-        boolean use = actor.equals("Robot") && position.substring(position.length() - 1).matches("\\d");
-        if(!use) use = actor.equals("Final") && position.charAt(position.length() - 1) == '1';
-        if(!use) use = actor.equals("Pilot") && position.contains("Pilot");
-        return use;
+        if(actor.equals("Robot") && !position.contains("Pilot")) return true;
+        if(actor.equals("Final") && position.charAt(position.length() - 1) == '1') return true;
+        if(actor.equals("Pilot") && position.contains("Pilot")) return true;
+        return false;
     }
 
     private Label makeLabel(Task task, Context context) {

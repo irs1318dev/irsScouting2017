@@ -15,8 +15,9 @@ public class Counter extends Label {
 
     @Override
     protected View part(String name) {
+        name += ": 0";
         Button button = new Button(getContext());
-        button.setText(name + ": 0");
+        button.setText(name);
         linearLayout.addView(button);
         return button;
     }

@@ -47,7 +47,7 @@
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/scout_1"
+                android:text="@string/scout_3"
                 android:id="@+id/RedScouter3" android:layout_row="0" android:layout_column="2"
                 android:background="@color/colorRed" android:textColor="@android:color/white"
                 android:textSize="50sp" android:onClick="position" android:layout_margin="10dp"/>
@@ -75,7 +75,7 @@
             android:textColor="@color/colorText"/>
 
     <Button
-            android:text="Button"
+            android:text="@string/form_last"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -85,7 +85,7 @@
             android:visibility="gone"/>
 
     <Button
-            android:text="Button"
+            android:text="@string/form_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -99,18 +99,19 @@
             android:layout_height="match_parent"
             android:id="@+id/Frame"
             android:layout_below="@+id/Status"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:visibility="gone">
 
     </FrameLayout>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/Previous"
-            android:layout_alignParentEnd="true"
             android:id="@+id/PageStatus"
             android:textSize="24sp"
             android:textColor="@color/colorText"
-            android:text="@string/form_status"/>
+            android:text="@string/form_status"
+            android:layout_above="@+id/AddressBar"
+            android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>
