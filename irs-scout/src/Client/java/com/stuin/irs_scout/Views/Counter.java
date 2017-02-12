@@ -1,7 +1,8 @@
 package com.stuin.irs_scout.Views;
 
 import android.content.Context;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.Button;
 import com.stuin.irs_scout.Data.Task;
 
 /**
@@ -13,10 +14,10 @@ public class Counter extends Label {
     }
 
     @Override
-    public void create(LinearLayout column) {
-        if(task.Compacting == 0) super.create(column);
-
-        LinearLayout linearLayout = new LinearLayout(getContext());
-        column.addView(linearLayout);
+    protected View part(String name) {
+        Button button = new Button(getContext());
+        button.setText(name + ": 0");
+        linearLayout.addView(button);
+        return button;
     }
 }

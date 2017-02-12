@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
-    private Form form;
+    private PageManager form;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +32,14 @@ public class MainActivity extends Activity {
         findViewById(R.id.gridLayout).setVisibility(View.GONE);
 
         //Start
-        form = new Form(this, request, position);
+        form = new PageManager(this, request, position);
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.Frame);
         frameLayout.addView(form);
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 
     public void nextPage(View view) {

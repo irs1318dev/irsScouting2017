@@ -1,4 +1,4 @@
-package com.stuin.irs_scout;
+package com.stuin.irs_scout.Views;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,11 +10,11 @@ import com.stuin.irs_scout.Views.Label;
 import java.util.ArrayList;
 import java.util.List;
 
-class FormPage extends LinearLayout {
-    String name;
+public class Page extends LinearLayout {
+    public String name;
     private LinearLayout column;
 
-    FormPage(Context context, String name) {
+    public Page(Context context, String name) {
         //Create Page
         super(context);
         this.name = name;
@@ -24,7 +24,7 @@ class FormPage extends LinearLayout {
         newCol();
     }
 
-    void add(Label objectView) {
+    public void add(Label objectView) {
         objectView.create(column);
     }
 
