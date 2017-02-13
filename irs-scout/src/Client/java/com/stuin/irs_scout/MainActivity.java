@@ -4,11 +4,16 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
+
+import java.util.List;
 
 
 public class MainActivity extends Activity {
     private PageManager form;
+    static String address;
+    private String position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,18 +26,27 @@ public class MainActivity extends Activity {
     public void position(View view) {
         //Get tablet position
         TextView textView = (TextView) view;
-        String position = textView.getText().toString();
+        position = textView.getText().toString();
 
         //Get server address
         textView = (TextView) findViewById(R.id.AddressBar);
-        Request request = new Request(textView.getText().toString(), this);
+        address = textView.getText().toString();
 
+        class Connected extends Next {
+            public void run(List<String> s) {
+                connected();
+            }
+        }
+        new Request("",new Connected());
+    }
+
+    private void connected() {
         //Hide start screen
-        textView.setVisibility(View.GONE);
+        findViewById(R.id.AddressBar).setVisibility(View.GONE);
         findViewById(R.id.gridLayout).setVisibility(View.GONE);
 
         //Start
-        form = new PageManager(this, request, position);
+        form = new PageManager(this, position);
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.Frame);
         frameLayout.setVisibility(View.VISIBLE);
         frameLayout.addView(form);

@@ -13,16 +13,14 @@ import java.util.List;
 
 class PageManager extends LinearLayout {
     private List<Page> pages = new ArrayList<>();
-    private Request request;
     private int current = -1;
     private Activity activity;
 
     String position;
 
-    PageManager(Activity activity, Request request, String position) {
+    PageManager(Activity activity, String position) {
         //Start Layout
         super(activity);
-        this.request = request;
         this.position = position;
         this.activity = activity;
 
@@ -32,7 +30,17 @@ class PageManager extends LinearLayout {
         setGravity(Gravity.CENTER);
 
         //Generate Pages
-        pages = new LabelMaker().pages(request,this);
+        class Generate extends Next {
+            @Override
+            public void run(List<String> s) {
+                generate(s);
+            }
+        }
+        new Request("game",new Generate());
+    }
+
+    private void generate(List<String> s) {
+        pages = new LabelMaker().pages(this, s);
 
         //Set default page
         current = 0;
@@ -79,6 +87,6 @@ class PageManager extends LinearLayout {
         textView.setText(pages.get(current).name);
 
         //Notify server
-        request.post("Tablet/" + position, "Page" + current);
+
     }
 }

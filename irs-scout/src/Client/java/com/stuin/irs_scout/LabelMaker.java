@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Stuart on 2/12/2017.
  */
 class LabelMaker {
-    List<Page> pages(Request request, PageManager pageManager) {
+    List<Page> pages(PageManager pageManager, List<String> layout) {
         List<Page> pageList = new ArrayList<>();
         int current = -1;
 
@@ -24,7 +24,6 @@ class LabelMaker {
         List<Task> tasks = new ArrayList<>();
 
         //Get layout and translate
-        List<String> layout = request.get("Game/layout");
         for(String s : layout) tasks.add(gson.fromJson(s, Task.class));
 
         for(Task task : tasks) if(usePage(task.Actor, pageManager.position)) {
