@@ -23,6 +23,7 @@ public class Label extends TextView {
     }
 
     void create(LinearLayout column) {
+        //Make label
         if(task.Compacting < 1) {
             setTextSize(20);
             setText(task.Task);
@@ -31,10 +32,12 @@ public class Label extends TextView {
             column.addView(this);
         }
 
+        //Make new row
         linearLayout = new LinearLayout(getContext());
         linearLayout.setGravity(Gravity.CENTER);
         column.addView(linearLayout);
 
+        //Create two objects
         views.add(part(task.Success));
         if(!task.Miss.isEmpty()) views.add(part(task.Miss));
         update(measure);

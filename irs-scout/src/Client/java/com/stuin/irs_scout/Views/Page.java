@@ -21,11 +21,13 @@ public class Page extends LinearLayout {
     }
 
     public void add(Label objectView) {
+        //Add object to column
         if(objectView.task.NewPart) newCol();
         objectView.create(column);
     }
 
     private void newCol() {
+        //Make new column
         divider();
         column = new LinearLayout(getContext());
         column.setOrientation(VERTICAL);
@@ -34,6 +36,7 @@ public class Page extends LinearLayout {
     }
 
     private void divider() {
+        //Add decoration line
         TextView textView = new TextView(getContext());
         textView.setHeight(600);
         textView.setWidth(2);

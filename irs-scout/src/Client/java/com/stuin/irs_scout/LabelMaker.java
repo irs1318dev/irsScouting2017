@@ -16,16 +16,16 @@ import java.util.List;
  */
 class LabelMaker {
     List<Page> pages(PageManager pageManager, List<String> layout) {
+        //Prepare variables
         List<Page> pageList = new ArrayList<>();
-        int current = -1;
-
-        //Prepare for layout file
-        Gson gson = new Gson();
         List<Task> tasks = new ArrayList<>();
+        int current = -1;
+        Gson gson = new Gson();
 
-        //Get layout and translate
+        //Translate layout file
         for(String s : layout) tasks.add(gson.fromJson(s, Task.class));
 
+        //Build pages
         for(Task task : tasks) if(usePage(task.Actor, pageManager.position)) {
             //Create each page
             if(current == -1 || !pageList.get(current).name.equals(task.Page)) {
@@ -47,6 +47,7 @@ class LabelMaker {
     }
 
     private Label makeLabel(Task task, Context context) {
+        //Choose format to create
         switch(task.Format.charAt(0)) {
             case 'S':
                 return new Switcher(context, task);

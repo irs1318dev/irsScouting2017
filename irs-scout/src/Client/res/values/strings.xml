@@ -3,7 +3,7 @@
     <string name="form_status">Status</string>
     <string name="form_next">Next</string>
     <string name="form_last">Previous</string>
-    <string name="form_ip">192.168.42.167</string>
+    <string name="form_ip">192.168.42.</string>
 
     <string name="scout_1">Red 1</string>
     <string name="scout_2">Red 2</string>
