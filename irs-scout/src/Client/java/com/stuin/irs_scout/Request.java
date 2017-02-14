@@ -46,7 +46,6 @@ class Request {
                     return out;
                 } catch(Exception e) {
                     //No connection
-                    e.toString();
                 }
             }
             return out;

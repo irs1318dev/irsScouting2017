@@ -13,6 +13,7 @@ public class Switcher extends Label {
 
     @Override
     protected TextView part(String name) {
+        //Create simple checkbox
         CheckBox checkBox = new CheckBox(getContext());
         checkBox.setText(name);
         checkBox.setTextSize(18);
@@ -24,6 +25,8 @@ public class Switcher extends Label {
     @Override
     protected void update(Measure measure) {
         super.update(measure);
+
+        //Match checkboxes to value
         CheckBox checkBox = (CheckBox) views.get(0);
         checkBox.setChecked(measure.Success == 1);
 
@@ -36,6 +39,7 @@ public class Switcher extends Label {
     private CompoundButton.OnCheckedChangeListener changeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            //Update measure by boolean
             if(views.indexOf(compoundButton) == 0) {
                 if(b) measure.Success = 1;
                 else measure.Success = 0;
