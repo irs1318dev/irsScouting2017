@@ -13,13 +13,11 @@ def getSched(event, season, level = "qual"):
 
     url = ("https://frc-api.firstinspires.org/v2.0/" + season + "/schedule/" +
            event + "?tournamentLevel=" + level)
-    print url #debug:
 
     # build headers
 
     hdrs = {"Accept": "application/json", 'Authorization': token}
     req = Request(url, headers = hdrs)
-    print hdrs #debug:
 
 
 
@@ -28,3 +26,4 @@ def getSched(event, season, level = "qual"):
     return sched.read()
 
 print getSched('WAAMV', '2016', level='qual')
+
