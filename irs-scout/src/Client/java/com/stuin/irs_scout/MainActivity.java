@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 
         class Connected extends Next {
             public void run(List<String> s) {
-                connected();
+                //connected();
             }
         }
         new Request("",new Connected());

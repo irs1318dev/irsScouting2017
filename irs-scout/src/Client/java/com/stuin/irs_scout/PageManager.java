@@ -36,7 +36,7 @@ class PageManager extends LinearLayout {
                 generate(s);
             }
         }
-        new Request("game",new Generate());
+        new Request("/game",new Generate());
     }
 
     private void generate(List<String> s) {
