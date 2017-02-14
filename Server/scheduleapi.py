@@ -11,6 +11,4 @@ class Schedule(object):
     def sched(self, event):
         return firstapi.getSched(event, '2016')
 
-cherrypy.config.update(
-    {'server.socket_port': 1318})
 cherrypy.quickstart(Schedule())
