@@ -16,41 +16,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" android:layout_margin="10dp"
                 android:id="@+id/BlueScouter1" android:text="@string/scout_4" android:background="@color/colorBlue"
-                android:textColor="@android:color/white" android:layout_row="1" android:layout_column="0" android:textSize="50sp"
+                android:textColor="@android:color/white" android:layout_row="1" android:layout_column="0" android:textSize="@dimen/text_large"
                 android:onClick="position"/>
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/scout_5" android:layout_margin="10dp"
                 android:id="@+id/BlueScouter2" android:background="@color/colorBlue" android:textColor="@android:color/white"
-                android:layout_row="1" android:layout_column="1" android:textSize="50sp" android:onClick="position"/>
+                android:layout_row="1" android:layout_column="1" android:textSize="@dimen/text_large" android:onClick="position"/>
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/scout_6"
                 android:id="@+id/BlueScouter3" android:background="@color/colorBlue" android:layout_row="1"
                 android:layout_column="2" android:textColor="@android:color/white"
-                android:textSize="50sp" android:onClick="position" android:layout_margin="10dp"/>
+                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/scout_1"
                 android:id="@+id/RedScouter1" android:background="@color/colorRed"
                 android:textColor="@android:color/white" android:layout_row="0" android:layout_column="0"
-                android:textSize="50sp" android:onClick="position" android:layout_margin="10dp"/>
+                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/RedScouter2" android:text="@string/scout_2" android:background="@color/colorRed"
                 android:textColor="@android:color/white" android:layout_row="0" android:layout_column="1"
-                android:textSize="50sp" android:onClick="position" android:layout_margin="10dp"/>
+                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/scout_3"
                 android:id="@+id/RedScouter3" android:layout_row="0" android:layout_column="2"
                 android:background="@color/colorRed" android:textColor="@android:color/white"
-                android:textSize="50sp" android:onClick="position" android:layout_margin="10dp"/>
+                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
     </GridLayout>
 
     <EditText
@@ -61,17 +61,17 @@
             android:id="@+id/AddressBar"
             android:text="@string/form_ip"
             android:layout_below="@+id/Status" android:layout_centerHorizontal="true"
-            android:textSize="30sp"
+            android:textSize="@dimen/text_large"
             android:textColor="@color/colorText"/>
 
-    <RadioButton
+    <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/form_status"
             android:id="@+id/Status"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:textSize="24sp"
+            android:textSize="@dimen/text_large"
             android:textColor="@color/colorText"/>
 
     <Button
@@ -81,6 +81,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:id="@+id/Previous"
+            android:textSize="@dimen/text_large"
             android:onClick="lastPage"
             android:visibility="gone"/>
 
@@ -91,6 +92,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:id="@+id/Next"
+            android:textSize="@dimen/text_large"
             android:onClick="nextPage"
             android:visibility="gone"/>
 
@@ -108,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/PageStatus"
-            android:textSize="24sp"
+            android:textSize="@dimen/text_large"
             android:textColor="@color/colorText"
             android:text="@string/form_status"
             android:layout_above="@+id/AddressBar"

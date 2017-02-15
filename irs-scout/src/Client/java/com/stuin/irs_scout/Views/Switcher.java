@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.*;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
+import com.stuin.irs_scout.R;
 
 public class Switcher extends Label {
     public Switcher(Context context, Task task) {
@@ -16,7 +17,7 @@ public class Switcher extends Label {
         //Create simple checkbox
         CheckBox checkBox = new CheckBox(getContext());
         checkBox.setText(name);
-        checkBox.setTextSize(18);
+        checkBox.setTextSize(getResources().getDimension(R.dimen.text_norm));
         checkBox.setOnCheckedChangeListener(changeListener);
         linearLayout.addView(checkBox);
         return checkBox;
@@ -47,6 +48,7 @@ public class Switcher extends Label {
                 if(b) measure.Miss = 1;
                 else measure.Miss = 0;
             }
+            update(measure);
         }
     };
 }

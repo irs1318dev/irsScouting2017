@@ -13,8 +13,9 @@ import java.util.List;
 
 class PageManager extends LinearLayout {
     private List<Page> pages = new ArrayList<>();
-    private int current = -1;
+    private int current = 0;
     private Activity activity;
+    private MatchMaker matchMaker;
 
     PageManager(Activity activity) {
         //Start Layout
@@ -42,7 +43,10 @@ class PageManager extends LinearLayout {
 
         //Set default page
         setPage();
-        if(pages.size() > 1) activity.findViewById(R.id.Next).setVisibility(0);
+        if(pages.size() > 1) activity.findViewById(R.id.Next).setVisibility(VISIBLE);
+
+        //Get Match
+        matchMaker = new MatchMaker(pages, activity.findViewById(R.id.Status));
     }
 
     Page makePage(String name) {
@@ -71,7 +75,7 @@ class PageManager extends LinearLayout {
 
         //Set shown buttons
         activity.findViewById(R.id.Next).setVisibility(VISIBLE);
-        if(current == 0) view.setVisibility(GONE);
+        if(current == 1) view.setVisibility(GONE);
 
         //Set new page
         current--;
