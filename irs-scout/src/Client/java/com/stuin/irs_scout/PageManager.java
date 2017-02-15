@@ -16,12 +16,9 @@ class PageManager extends LinearLayout {
     private int current = -1;
     private Activity activity;
 
-    String position;
-
-    PageManager(Activity activity, String position) {
+    PageManager(Activity activity) {
         //Start Layout
         super(activity);
-        this.position = position;
         this.activity = activity;
 
         //Setup centering

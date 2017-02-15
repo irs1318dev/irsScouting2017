@@ -8,9 +8,13 @@ class HelloWorld(object):
 
     @cherrypy.expose
     def game(self):
-        with open("layout.txt", "r") as json:
+        with open("TestJson/layout", "r") as json:
             return json.read()
 
+    @cherrypy.expose
+    def match(self):
+        with open("TestJson/match", "r") as json:
+            return json.read()
 
 if __name__ == '__main__':
     cherrypy.config.update(

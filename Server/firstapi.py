@@ -4,7 +4,7 @@ from urllib2 import Request, urlopen
 import auth
 
 
-def getSched(event, season, level = "qual"):
+def getSched(event, season, level="qual"):
     # build authorization token
     raw_token = auth.username + ":" + auth.key
     token =  "Basic " + b64encode(raw_token)
@@ -17,9 +17,7 @@ def getSched(event, season, level = "qual"):
     # build headers
 
     hdrs = {"Accept": "application/json", 'Authorization': token}
-    req = Request(url, headers = hdrs)
-
-
+    req = Request(url, headers=hdrs)
 
     # send url request
     sched = urlopen(req)

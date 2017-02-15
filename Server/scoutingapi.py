@@ -1,5 +1,6 @@
 import cherrypy
 
+
 class Scouting(object):
     def __init__(self):
         self.actions = {}
@@ -15,10 +16,12 @@ class Scouting(object):
     def index(self, name):
         return 'About %s...' % name
 
+
 class Match(object):
     @cherrypy.expose
     def index(self,vpath):
         return 'About match %s...' % (vpath.pop())
+
 
 class Event(object):
     @cherrypy.expose

@@ -15,7 +15,7 @@ import java.util.List;
 public class MainActivity extends Activity {
     private PageManager form;
     static String address;
-    private String position;
+    static String position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
         findViewById(R.id.gridLayout).setVisibility(View.GONE);
 
         //Start
-        form = new PageManager(this, position);
+        form = new PageManager(this);
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.Frame);
         frameLayout.setVisibility(View.VISIBLE);
         frameLayout.addView(form);
