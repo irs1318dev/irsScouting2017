@@ -31,18 +31,20 @@ class MatchMaker {
         class Data extends Next {
             @Override
             public void run(List<String> s) {
+                super.run(s);
                 match = new Gson().fromJson(s.get(0), Match.class);
-                setMatch();
+                if(!MainActivity.position.contains(match.Alliance)) match = new Gson().fromJson(s.get(1), Match.class);
 
                 class Set extends Next {
                     @Override
                     public void run(List<String> measures) {
+                        super.run(measures);
                         Gson gson = new Gson();
                         for(String s : measures) data.add(gson.fromJson(s, Measure.class));
                         setMatch();
                     }
                 }
-                //new Request("/matchdata",new Set());
+                new Request("/matchteam?team=" + getTeam(),new Set());
             }
         }
         new Request("/match", new Data());
@@ -55,21 +57,18 @@ class MatchMaker {
             p.setMeasures(pageData, match.Number, getTeam());
         }
 
-        status.setText("Match: " + match.Number + " Team: " + getTeam());
+        status.setText("Match: " + match.Number + " Team " + MainActivity.position + ": " + getTeam());
     }
 
     int getTeam() {
         String position = MainActivity.position;
         switch(position.charAt(position.length() - 1)) {
             case '1':
-                if(position.charAt(0) == 'R') return match.Red1;
-                else return match.Blue1;
+                return match.Team1;
             case '2':
-                if(position.charAt(0) == 'R') return match.Red2;
-                else return match.Blue2;
+                return match.Team2;
             case '3':
-                if(position.charAt(0) == 'R') return match.Red3;
-                else return match.Blue3;
+                return match.Team3;
         }
         return 0;
     }

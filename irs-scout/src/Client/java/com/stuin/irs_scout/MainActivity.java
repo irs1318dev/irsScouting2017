@@ -14,6 +14,7 @@ import java.util.List;
 
 public class MainActivity extends Activity {
     private PageManager form;
+
     static String address;
     static String position;
 
