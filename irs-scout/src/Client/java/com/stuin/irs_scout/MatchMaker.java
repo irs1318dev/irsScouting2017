@@ -1,5 +1,6 @@
 package com.stuin.irs_scout;
 
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
 import com.google.gson.Gson;
@@ -8,16 +9,14 @@ import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Views.Page;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Stuart on 2/14/2017.
  */
 class MatchMaker {
     private Match match = new Match();
-    private List<Measure> data = new ArrayList<>();
+    private List<Measure> data;
     private List<Page> pages;
     private TextView status;
 
@@ -31,14 +30,14 @@ class MatchMaker {
         class Data extends Next {
             @Override
             public void run(List<String> s) {
-                super.run(s);
                 match = new Gson().fromJson(s.get(0), Match.class);
                 if(!MainActivity.position.contains(match.alliance)) match = new Gson().fromJson(s.get(1), Match.class);
+                status.setText("Match: " + match.number + " Team " + MainActivity.position + ": " + getTeam());
+                data = new ArrayList<>();
 
                 class Set extends Next {
                     @Override
                     public void run(List<String> measures) {
-                        super.run(measures);
                         Gson gson = new Gson();
                         for(String s : measures) data.add(gson.fromJson(s, Measure.class));
                         setMatch();
@@ -52,12 +51,10 @@ class MatchMaker {
 
     private void setMatch() {
         for(Page p : pages) {
-            Map<String, Measure> pageData = new HashMap<>();
-            for(Measure m : data) if(m.page.equals(p.name)) pageData.put(m.task, m);
+            SparseArray<Measure> pageData = new SparseArray<>();
+            for(Measure m : data) if(m.page.equals(p.name)) pageData.put(m.taskId, m);
             p.setMeasures(pageData, match.number, getTeam());
         }
-
-        status.setText("Match: " + match.number + " Team " + MainActivity.position + ": " + getTeam());
     }
 
     int getTeam() {

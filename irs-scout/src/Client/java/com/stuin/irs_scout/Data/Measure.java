@@ -6,18 +6,16 @@ package com.stuin.irs_scout.Data;
 public class Measure {
     final public int match;
     final public int team;
+    final public int taskId;
     final public String page;
-    final public String actor;
-    final public String task;
     public int success;
     public int miss;
 
     public Measure() {
         match = 0;
         team = 0;
-        task = "";
+        taskId = 0;
         page = "";
-        actor = "";
         success = 0;
         miss = 0;
     }
@@ -25,9 +23,8 @@ public class Measure {
     public Measure(Task task, int match, int team) {
         this.match = match;
         this.team = team;
+        this.taskId = task.id;
         this.page = task.page;
-        this.actor = task.actor;
-        this.task = task.task;
         this.success = 0;
         this.miss = 0;
     }

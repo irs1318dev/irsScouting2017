@@ -2,6 +2,7 @@ package com.stuin.irs_scout.Views;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,10 +34,10 @@ public class Page extends LinearLayout {
         objectView.create(column);
     }
 
-    public void setMeasures(Map<String, Measure> measures,int match, int team) {
+    public void setMeasures(SparseArray<Measure> measures, int match, int team) {
         for(Label l : labels) {
-            if(measures.containsKey(l.task.task)) l.update(measures.get(l.task.task));
-            else l.update(new Measure(l.task, match, team));
+            if(measures.get(l.task.id) != null) l.update(measures.get(l.task.id), false);
+            else l.update(new Measure(l.task, match, team), false);
         }
     }
 

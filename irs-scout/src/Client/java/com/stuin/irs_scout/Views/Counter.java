@@ -28,8 +28,8 @@ public class Counter extends Label {
     }
 
     @Override
-    protected void update(Measure measure) {
-        super.update(measure);
+    protected void update(Measure measure, boolean send) {
+        super.update(measure, send);
 
         //Set button text
         views.get(0).setText(task.success + ": " + measure.success);
@@ -43,7 +43,7 @@ public class Counter extends Label {
             if(views.indexOf((TextView) view) == 0) measure.success++;
             else measure.miss++;
 
-            update(measure);
+            update(measure, true);
         }
     };
 }
