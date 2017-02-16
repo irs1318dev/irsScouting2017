@@ -1,7 +1,6 @@
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import ForeignKey
 
 # Here is the connection string for our database.
 engine = create_engine('postgresql://irs1318:steamworks@localhost:5432/scouting')
@@ -10,7 +9,6 @@ engine = create_engine('postgresql://irs1318:steamworks@localhost:5432/scouting'
 Base = declarative_base()
 
 # Create a table
-
 
 
 class Match(Base):
@@ -22,7 +20,6 @@ class Match(Base):
 Base.metadata.create_all(engine)
 
 match_number = Match(id=1, name='match number 1')
-
 
 
 class Level(Base):
@@ -60,42 +57,45 @@ class Team(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
 
+
 # Tell the database server to create the table
 Base.metadata.create_all(engine)
 
 # Create a team object
 tm_irs = Team(id=1318, name='Issaquah Robotics Society')
 
-class Event(Base):
-    __tablename__ = "events"
+
+class Phase(Base):
+    __tablename__ = "phases"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
 
 Base.metadata.create_all(engine)
 
+auto = Phase(name='auto')
+teleop = Phase(name='teleop')
+final = Phase(name='final')
+
 
 class Measure(Base):
     __tablename__ = "measures"
 
     id = Column(Integer, primary_key=True)
-    team_id = Column(String, ForeignKey('teams.id'))#done
-    event_id = Column(String, ForeignKey('events.id'))#done
-    match_id = Column(String, ForeignKey('matches.id'))#done
-    level_id = Column(String, ForeignKey('levels.id'))#done
-    date_id = Column(String, ForeignKey('dates.id'))#not done
-    alliance_id = Column(String, ForeignKey('alliances.id'))#not done
-    station_id = Column(String, ForeignKey('stations.id'))#partlly done
-    actor_id = Column(String, ForeignKey('actors.id'))#not done
-    task_id = Column(String, ForeignKey('tasks.id'))#not done
-    format_id = Column(String, ForeignKey('formats.id'))#not done
-    phase_id = Column(String, ForeignKey('phases.id'))#not done
-
-
+    team_id = Column(Integer, ForeignKey('teams.id')) #done
+    event_id = Column(Integer, ForeignKey('events.id')) #not done
+    match_id = Column(Integer, ForeignKey('matches.id')) #done
+    level_id = Column(Integer, ForeignKey('levels.id')) #done
+    date_id = Column(Integer, ForeignKey('dates.id')) #not done
+    alliance_id = Column(Integer, ForeignKey('alliances.id')) #not done
+    station_id = Column(Integer, ForeignKey('stations.id')) #partly done
+    actor_id = Column(Integer, ForeignKey('actors.id')) #not done
+    task_id = Column(Integer, ForeignKey('tasks.id')) #not done
+    format_id = Column(Integer, ForeignKey('formats.id')) #not done
+    phase_id = Column(Integer, ForeignKey('phases.id')) #done
 
 
 Base.metadata.create_all(engine)
-
 
 # Create a session object that will allow us to talk to the database
 Session = sessionmaker(bind=engine)
