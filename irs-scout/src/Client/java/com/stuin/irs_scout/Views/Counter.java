@@ -32,16 +32,16 @@ public class Counter extends Label {
         super.update(measure);
 
         //Set button text
-        views.get(0).setText(task.Success + ": " + measure.Success);
-        if(!task.Miss.isEmpty()) views.get(1).setText(task.Miss + ": " + measure.Miss);
+        views.get(0).setText(task.success + ": " + measure.success);
+        if(!task.miss.isEmpty()) views.get(1).setText(task.miss + ": " + measure.miss);
     }
 
     private View.OnClickListener clickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
             //Add to values
-            if(views.indexOf((TextView) view) == 0) measure.Success++;
-            else measure.Miss++;
+            if(views.indexOf((TextView) view) == 0) measure.success++;
+            else measure.miss++;
 
             update(measure);
         }

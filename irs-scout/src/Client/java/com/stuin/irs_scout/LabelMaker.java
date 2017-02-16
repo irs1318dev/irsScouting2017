@@ -26,10 +26,10 @@ class LabelMaker {
         for(String s : layout) tasks.add(gson.fromJson(s, Task.class));
 
         //Build pages
-        for(Task task : tasks) if(usePage(task.Actor, MainActivity.position)) {
+        for(Task task : tasks) if(usePage(task.actor, MainActivity.position)) {
             //Create each page
-            if(current == -1 || !pageList.get(current).name.equals(task.Page)) {
-                pageList.add(pageManager.makePage(task.Page));
+            if(current == -1 || !pageList.get(current).name.equals(task.page)) {
+                pageList.add(pageManager.makePage(task.page));
                 current++;
             }
             //Add task to page
@@ -48,7 +48,7 @@ class LabelMaker {
 
     private Label makeLabel(Task task, Context context) {
         //Choose format to create
-        switch(task.Format.charAt(0)) {
+        switch(task.format.charAt(0)) {
             case 'S':
                 return new Switcher(context, task);
             case 'C':

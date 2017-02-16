@@ -24,9 +24,9 @@ public class Label extends TextView {
 
     void create(LinearLayout column) {
         //Make label
-        if(task.Compacting < 1) {
+        if(task.compacting < 1) {
             setTextSize(getResources().getDimension(R.dimen.text_norm));
-            setText(task.Task);
+            setText(task.task);
             setTextColor(getResources().getColor(R.color.colorText));
             setGravity(Gravity.CENTER);
             column.addView(this);
@@ -38,8 +38,8 @@ public class Label extends TextView {
         column.addView(linearLayout);
 
         //Create two objects
-        views.add(part(task.Success));
-        if(!task.Miss.isEmpty()) views.add(part(task.Miss));
+        views.add(part(task.success));
+        if(!task.miss.isEmpty()) views.add(part(task.miss));
         update(measure);
     }
 

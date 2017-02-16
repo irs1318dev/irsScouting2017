@@ -33,7 +33,7 @@ class MatchMaker {
             public void run(List<String> s) {
                 super.run(s);
                 match = new Gson().fromJson(s.get(0), Match.class);
-                if(!MainActivity.position.contains(match.Alliance)) match = new Gson().fromJson(s.get(1), Match.class);
+                if(!MainActivity.position.contains(match.alliance)) match = new Gson().fromJson(s.get(1), Match.class);
 
                 class Set extends Next {
                     @Override
@@ -53,22 +53,22 @@ class MatchMaker {
     private void setMatch() {
         for(Page p : pages) {
             Map<String, Measure> pageData = new HashMap<>();
-            for(Measure m : data) if(m.Page.equals(p.name)) pageData.put(m.Task, m);
-            p.setMeasures(pageData, match.Number, getTeam());
+            for(Measure m : data) if(m.page.equals(p.name)) pageData.put(m.task, m);
+            p.setMeasures(pageData, match.number, getTeam());
         }
 
-        status.setText("Match: " + match.Number + " Team " + MainActivity.position + ": " + getTeam());
+        status.setText("Match: " + match.number + " Team " + MainActivity.position + ": " + getTeam());
     }
 
     int getTeam() {
         String position = MainActivity.position;
         switch(position.charAt(position.length() - 1)) {
             case '1':
-                return match.Team1;
+                return match.team1;
             case '2':
-                return match.Team2;
+                return match.team2;
             case '3':
-                return match.Team3;
+                return match.team3;
         }
         return 0;
     }

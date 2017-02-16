@@ -1,7 +1,6 @@
 package com.stuin.irs_scout.Views;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.*;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
@@ -29,11 +28,11 @@ public class Switcher extends Label {
 
         //Match checkboxes to value
         CheckBox checkBox = (CheckBox) views.get(0);
-        checkBox.setChecked(measure.Success == 1);
+        checkBox.setChecked(measure.success == 1);
 
-        if(!task.Miss.isEmpty()) {
+        if(!task.miss.isEmpty()) {
             checkBox = (CheckBox) views.get(1);
-            checkBox.setChecked(measure.Miss == 1);
+            checkBox.setChecked(measure.miss == 1);
         }
     }
 
@@ -42,11 +41,11 @@ public class Switcher extends Label {
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
             //Update measure by boolean
             if(views.indexOf(compoundButton) == 0) {
-                if(b) measure.Success = 1;
-                else measure.Success = 0;
+                if(b) measure.success = 1;
+                else measure.success = 0;
             } else {
-                if(b) measure.Miss = 1;
-                else measure.Miss = 0;
+                if(b) measure.miss = 1;
+                else measure.miss = 0;
             }
             update(measure);
         }
