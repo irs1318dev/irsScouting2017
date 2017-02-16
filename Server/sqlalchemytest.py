@@ -10,7 +10,15 @@ Base = declarative_base()
 
 # Create a table
 
-class
+class Measure(Base)
+    __tablename__ = "measures"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+Base.metadata.create_all(engine)
+
+
 class Match(Base):
     __tablename__ = "matches"
 
