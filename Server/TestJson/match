@@ -1,1 +1,38 @@
 {"Number":1,"Red1":1318,"Red2":1983,"Red3":2337,"Blue1":360,"Blue2":488,"Blue3":999}
+
+import json
+import psycopg2
+
+def db(database_name='matches'):
+    return psycopg2.connect(database=database_name)
+
+def query_db(query):
+    cur = db().cursor()
+    cur.execute(query)
+    r = [dict((cur.description[i][0], value) \
+               for i, value in enumerate(row)) for row in cur.fetchall()]
+    cur.connection.close()
+    return (r[0] if r else None) if one else r
+
+my_query = query_db("select * from matches")
+
+json_output = json.dumps(my_query)
+
+#original
+#import json
+#import psycopg2
+
+#def db(database_name='pepe'):
+    #return psycopg2.connect(database=database_name)
+
+#def query_db(query, args=(), one=False):
+    #cur = db().cursor()
+    #cur.execute(query, args)
+    #r = [dict((cur.description[i][0], value) \
+               #for i, value in enumerate(row)) for row in cur.fetchall()]
+    #cur.connection.close()
+    #return (r[0] if r else None) if one else r
+
+#my_query = query_db("select * from majorroadstiger limit %s", (3,))
+
+#json_output = json.dumps(my_query)
