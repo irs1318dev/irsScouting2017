@@ -10,7 +10,7 @@ Base = declarative_base()
 
 # Create a table
 
-
+class
 class Match(Base):
     __tablename__ = "matches"
 
@@ -34,7 +34,7 @@ Base.metadata.create_all(engine)
 level_qual = Level(name='Qualifications')
 level_playoff = Level(name='Playoffs')
 
-class stations(Base)
+class stations(Base):
     __tablename__ = "stations"
 
     id = Column(Integer, primary_key=True)
@@ -45,7 +45,10 @@ Base.metadata.create_all(engine)
 station_red = Station(id=1, name='red1')
 station_red = Station(id=2, name='red2')
 station_red = Station(id=3, name='red3')
-station_ = Station(name='na')
+station_all = Station(name='na')
+station_blue = Station(id=1, name='blue3')
+station_blue = Station(id=2, name='blue2')
+station_blue = Station(id=3, name='blue3')
 
 class Team(Base):
     __tablename__ = "teams"
