@@ -25,7 +25,7 @@ public class Label extends TextView {
     void create(LinearLayout column) {
         //Make label
         if(task.Compacting < 1) {
-            setTextSize(20);
+            setTextSize(getResources().getDimension(R.dimen.text_norm));
             setText(task.Task);
             setTextColor(getResources().getColor(R.color.colorText));
             setGravity(Gravity.CENTER);

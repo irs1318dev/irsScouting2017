@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {"Number":1,"Red1":1318,"Red2":1983,"Red3":2337,"Blue1":360,"Blue2":488,"Blue3":999}
 
 import json
@@ -36,3 +37,7 @@ json_output = json.dumps(my_query)
 #my_query = query_db("select * from majorroadstiger limit %s", (3,))
 
 #json_output = json.dumps(my_query)
+=======
+{"Number":1,"Team1":1318,"Team2":1983,"Team3":2337,"Alliance":"Red"}
+{"Number":1,"Team1":488,"Team2":2017,"Team3":999,"Alliance":"Blue"}
+>>>>>>> a9c9112a89b16fa594f32dbbd103294430a2a191

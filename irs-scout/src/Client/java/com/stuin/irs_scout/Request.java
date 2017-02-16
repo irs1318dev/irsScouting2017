@@ -17,10 +17,12 @@ import java.util.Scanner;
  */
 class Request {
     private Next next;
+    private static boolean running;
 
     Request(String query, Next next) {
         this.next = next;
-        new serverRequest().execute(query, "http://" + MainActivity.address + ":8080");
+        if(!running) new serverRequest().execute(query, "http://" + MainActivity.address + ":8080");
+        running = true;
     }
 
     private class serverRequest extends AsyncTask<String, String, List<String>> {
@@ -32,6 +34,8 @@ class Request {
                 try {
                     URL url = new URL(params[1] + params[0]);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setReadTimeout(500);
+                    connection.setConnectTimeout(500);
 
                     try {
                         reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -53,6 +57,7 @@ class Request {
 
         @Override
         protected void onPostExecute(List<String> strings) {
+            running = false;
             if(!strings.isEmpty()) next.run(strings);
         }
     }

@@ -26,7 +26,7 @@ class LabelMaker {
         for(String s : layout) tasks.add(gson.fromJson(s, Task.class));
 
         //Build pages
-        for(Task task : tasks) if(usePage(task.Actor, pageManager.position)) {
+        for(Task task : tasks) if(usePage(task.Actor, MainActivity.position)) {
             //Create each page
             if(current == -1 || !pageList.get(current).name.equals(task.Page)) {
                 pageList.add(pageManager.makePage(task.Page));

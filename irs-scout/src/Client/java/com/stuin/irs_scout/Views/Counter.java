@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
+import com.stuin.irs_scout.R;
 
 /**
  * Created by Stuart on 2/11/2017.
@@ -20,6 +21,7 @@ public class Counter extends Label {
         //Simple counter button
         Button button = new Button(getContext());
         button.setText(name);
+        button.setTextSize(getResources().getDimension(R.dimen.text_norm));
         button.setOnClickListener(clickListener);
         linearLayout.addView(button);
         return button;
