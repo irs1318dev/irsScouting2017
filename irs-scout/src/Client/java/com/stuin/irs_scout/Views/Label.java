@@ -6,7 +6,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
+import com.stuin.irs_scout.Next;
 import com.stuin.irs_scout.R;
+import com.stuin.irs_scout.Request;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,14 +42,21 @@ public class Label extends TextView {
         //Create two objects
         views.add(part(task.success));
         if(!task.miss.isEmpty()) views.add(part(task.miss));
-        update(measure);
+        update(measure, false);
     }
 
     protected TextView part(String name) {
         return new TextView(getContext());
     }
 
-    protected void update(Measure measure) {
+    protected void update(Measure measure, boolean send) {
         this.measure = measure;
+
+        if(send) {
+            String s = "/data?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.taskId;
+            if(measure.success != 0) s += "&success=" + measure.success;
+            if(measure.miss != 0) s += "&miss=" + measure.miss;
+            new Request(s, new Next());
+        }
     }
 }

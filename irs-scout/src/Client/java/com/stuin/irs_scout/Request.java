@@ -15,11 +15,11 @@ import java.util.Scanner;
 /**
  * Created by Stuart on 2/11/2017.
  */
-class Request {
+public class Request {
     private Next next;
     private static boolean running;
 
-    Request(String query, Next next) {
+    public Request(String query, Next next) {
         this.next = next;
         if(!running) new serverRequest().execute(query, "http://" + MainActivity.address + ":8080");
         running = true;

@@ -23,8 +23,8 @@ public class Switcher extends Label {
     }
 
     @Override
-    protected void update(Measure measure) {
-        super.update(measure);
+    protected void update(Measure measure, boolean send) {
+        super.update(measure, send);
 
         //Match checkboxes to value
         CheckBox checkBox = (CheckBox) views.get(0);
@@ -47,7 +47,7 @@ public class Switcher extends Label {
                 if(b) measure.miss = 1;
                 else measure.miss = 0;
             }
-            update(measure);
+            update(measure, true);
         }
     };
 }
