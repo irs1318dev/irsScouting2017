@@ -6,9 +6,9 @@ package com.stuin.irs_scout.Data;
 public class Measure {
     final public int Match;
     final public int Team;
-    final public String Task;
     final public String Page;
     final public String Actor;
+    final public String Task;
     public int Success;
     public int Miss;
 
@@ -25,9 +25,9 @@ public class Measure {
     public Measure(Task task, int match, int team) {
         Match = match;
         Team = team;
-        Task = task.Task;
         Page = task.Page;
         Actor = task.Actor;
+        Task = task.Task;
         Success = 0;
         Miss = 0;
     }
