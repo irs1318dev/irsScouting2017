@@ -24,7 +24,7 @@ class HelloWorld(object):
 
     @cherrypy.expose
     def matchteam(self, match=current,team=0):
-        with open("TestJson/matchteam", "r") as json:
+        with open("TestJson/measures", "r") as json:
             out = ""
             for line in json:
                 if """"Match":""" + str(match) in line:
