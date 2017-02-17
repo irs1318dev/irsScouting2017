@@ -1,0 +1,6 @@
+{"id":0,"task":"Baseline","actor":"Robot","page":"Auto","format":"Switch","success":"Crossed","miss":"No Show"}
+{"id":1,"task":"High Boiler","actor":"Robot","page":"Auto","format":"Count","success":"Scored","miss":"Missed","newpart":true}
+{"id":2,"task":"Low Boiler","actor":"Robot","page":"Auto","format":"Count","success":"Scored","miss":"Missed"}
+{"id":3,"task":"High Boiler","actor":"Robot","page":"Teleop","format":"Count","success":"Scored","miss":"Missed"}
+{"id":4,"task":"Low Boiler","actor":"Robot","page":"Teleop","format":"Count","success":"Scored","miss":"Missed"}
+{"id":5,"task":"RP","actor":"Alliance","page":"Final","format":"Switch","success":"Rotors","miss":"Pressure","compacting":1}

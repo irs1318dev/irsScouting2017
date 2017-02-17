@@ -13,15 +13,13 @@ import java.util.List;
 
 class PageManager extends LinearLayout {
     private List<Page> pages = new ArrayList<>();
-    private int current = -1;
+    private int current = 0;
     private Activity activity;
+    private MatchMaker matchMaker;
 
-    String position;
-
-    PageManager(Activity activity, String position) {
+    PageManager(Activity activity) {
         //Start Layout
         super(activity);
-        this.position = position;
         this.activity = activity;
 
         //Setup centering
@@ -29,7 +27,7 @@ class PageManager extends LinearLayout {
         setLayoutParams(lp);
         setGravity(Gravity.CENTER);
 
-        //Generate Pages
+        //Download layout
         class Generate extends Next {
             @Override
             public void run(List<String> s) {
@@ -40,16 +38,19 @@ class PageManager extends LinearLayout {
     }
 
     private void generate(List<String> s) {
+        //Generate pages
         pages = new LabelMaker().pages(this, s);
 
         //Set default page
-        current = 0;
         setPage();
-        if(pages.size() > 1) activity.findViewById(R.id.Next).setVisibility(0);
+        if(pages.size() > 1) activity.findViewById(R.id.Next).setVisibility(VISIBLE);
+
+        //Get Match
+        matchMaker = new MatchMaker(pages, activity.findViewById(R.id.Status));
     }
 
     Page makePage(String name) {
-        current++;
+        //Create page object
         Page page = new Page(getContext(), name);
         page.setVisibility(GONE);
         addView(page);
@@ -69,20 +70,23 @@ class PageManager extends LinearLayout {
     }
 
     void lastPage(View view) {
-        //Show next page
+        //Hide old page
         pages.get(current).setVisibility(GONE);
-        current--;
 
         //Set shown buttons
         activity.findViewById(R.id.Next).setVisibility(VISIBLE);
-        if(current == 0) view.setVisibility(GONE);
+        if(current == 1) view.setVisibility(GONE);
 
+        //Set new page
+        current--;
         setPage();
     }
 
     private void setPage() {
+        //Show new page
         pages.get(current).setVisibility(VISIBLE);
 
+        //Set page title
         TextView textView = (TextView) activity.findViewById(R.id.PageStatus);
         textView.setText(pages.get(current).name);
 

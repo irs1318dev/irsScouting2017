@@ -6,7 +6,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
+import com.stuin.irs_scout.Next;
 import com.stuin.irs_scout.R;
+import com.stuin.irs_scout.Request;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,28 +25,38 @@ public class Label extends TextView {
     }
 
     void create(LinearLayout column) {
-        if(task.Compacting < 1) {
-            setTextSize(20);
-            setText(task.Task);
+        //Make label
+        if(task.compacting < 1) {
+            setTextSize(getResources().getDimension(R.dimen.text_norm));
+            setText(task.task);
             setTextColor(getResources().getColor(R.color.colorText));
             setGravity(Gravity.CENTER);
             column.addView(this);
         }
 
+        //Make new row
         linearLayout = new LinearLayout(getContext());
         linearLayout.setGravity(Gravity.CENTER);
         column.addView(linearLayout);
 
-        views.add(part(task.Success));
-        if(!task.Miss.isEmpty()) views.add(part(task.Miss));
-        update(measure);
+        //Create two objects
+        views.add(part(task.success));
+        if(!task.miss.isEmpty()) views.add(part(task.miss));
+        update(measure, false);
     }
 
     protected TextView part(String name) {
         return new TextView(getContext());
     }
 
-    protected void update(Measure measure) {
+    protected void update(Measure measure, boolean send) {
         this.measure = measure;
+
+        if(send) {
+            String s = "/data?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.taskId;
+            if(measure.success != 0) s += "&success=" + measure.success;
+            if(measure.miss != 0) s += "&miss=" + measure.miss;
+            new Request(s, new Next());
+        }
     }
 }

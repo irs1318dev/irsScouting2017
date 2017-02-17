@@ -4,17 +4,28 @@ package com.stuin.irs_scout.Data;
  * Created by Stuart on 2/10/2017.
  */
 public class Measure {
-    final public int Match;
-    final public int Team;
-    final public int Task;
-    public int Success;
-    public int Miss;
+    final public int match;
+    final public int team;
+    final public int taskId;
+    final public String page;
+    public int success;
+    public int miss;
 
     public Measure() {
-        Match = 0;
-        Team = 0;
-        Task = 0;
-        Success = 0;
-        Miss = 0;
+        match = 0;
+        team = 0;
+        taskId = 0;
+        page = "";
+        success = 0;
+        miss = 0;
+    }
+
+    public Measure(Task task, int match, int team) {
+        this.match = match;
+        this.team = team;
+        this.taskId = task.id;
+        this.page = task.page;
+        this.success = 0;
+        this.miss = 0;
     }
 }

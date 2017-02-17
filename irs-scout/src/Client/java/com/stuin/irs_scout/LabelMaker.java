@@ -16,20 +16,20 @@ import java.util.List;
  */
 class LabelMaker {
     List<Page> pages(PageManager pageManager, List<String> layout) {
+        //Prepare variables
         List<Page> pageList = new ArrayList<>();
-        int current = -1;
-
-        //Prepare for layout file
-        Gson gson = new Gson();
         List<Task> tasks = new ArrayList<>();
+        int current = -1;
+        Gson gson = new Gson();
 
-        //Get layout and translate
+        //Translate layout file
         for(String s : layout) tasks.add(gson.fromJson(s, Task.class));
 
-        for(Task task : tasks) if(usePage(task.Actor, pageManager.position)) {
+        //Build pages
+        for(Task task : tasks) if(usePage(task.actor, MainActivity.position)) {
             //Create each page
-            if(current == -1 || !pageList.get(current).name.equals(task.Page)) {
-                pageList.add(pageManager.makePage(task.Page));
+            if(current == -1 || !pageList.get(current).name.equals(task.page)) {
+                pageList.add(pageManager.makePage(task.page));
                 current++;
             }
             //Add task to page
@@ -41,13 +41,14 @@ class LabelMaker {
     private boolean usePage(String actor, String position) {
         //Check if page is to be used
         if(actor.equals("Robot") && !position.contains("Pilot")) return true;
-        if(actor.equals("Final") && position.charAt(position.length() - 1) == '1') return true;
+        if(actor.equals("Alliance") && position.charAt(position.length() - 1) == '1') return true;
         if(actor.equals("Pilot") && position.contains("Pilot")) return true;
         return false;
     }
 
     private Label makeLabel(Task task, Context context) {
-        switch(task.Format.charAt(0)) {
+        //Choose format to create
+        switch(task.format.charAt(0)) {
             case 'S':
                 return new Switcher(context, task);
             case 'C':
