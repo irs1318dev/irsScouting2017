@@ -145,8 +145,29 @@ class Format(Base):
 Base.metadata.create_all(engine)
 
 
+class Game(Base):
+    __tablename__ = "games"
+
+    id = Column(Integer, primary_key=True)
+    actor_id = Column(String, ForeignKey('actors.id'))
+    task_id = Column(String, ForeignKey('tasks.id'))
 
 
+
+class Schedule(Base):
+    __tablename__ = "schedules"
+
+    id = Column(Integer, primary_key=True)
+    event_id= Column(String, ForeignKey('events.id'))
+    match_id = Column(String, ForeignKey('matches.id'))
+    team_id = Column(String, ForeignKey('teams.id'))
+    level_id = Column(String, ForeignKey('levels.id'))
+    date_id = Column(String, ForeignKey('dates.id'))
+    alliance_id = Column(String, ForeignKey('alliances.id'))
+    station_id = Column(String, ForeignKey('stations.id'))
+
+
+Base.metadata.create_all(engine)
 
 
 class Measure(Base):
