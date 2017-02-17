@@ -1,7 +1,6 @@
 package com.stuin.irs_scout;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -15,7 +14,6 @@ class PageManager extends LinearLayout {
     private List<Page> pages = new ArrayList<>();
     private int current = 0;
     private Activity activity;
-    private MatchMaker matchMaker;
 
     PageManager(Activity activity) {
         //Start Layout
@@ -28,13 +26,13 @@ class PageManager extends LinearLayout {
         setGravity(Gravity.CENTER);
 
         //Download layout
-        class Generate extends Next {
+        class Generate extends Request {
             @Override
             public void run(List<String> s) {
                 generate(s);
             }
         }
-        new Request("/game",new Generate());
+        new Generate().start("/gamelayout");
     }
 
     private void generate(List<String> s) {
@@ -46,7 +44,8 @@ class PageManager extends LinearLayout {
         if(pages.size() > 1) activity.findViewById(R.id.Next).setVisibility(VISIBLE);
 
         //Get Match
-        matchMaker = new MatchMaker(pages, activity.findViewById(R.id.Status));
+        MatchMaker matchMaker = new MatchMaker(pages, activity.findViewById(R.id.Status));
+        new Updater(matchMaker);
     }
 
     Page makePage(String name) {

@@ -16,13 +16,15 @@ import java.util.Scanner;
  * Created by Stuart on 2/11/2017.
  */
 public class Request {
-    private Next next;
     private static boolean running;
 
-    public Request(String query, Next next) {
-        this.next = next;
+    public void start(String query) {
         if(!running) new serverRequest().execute(query, "http://" + MainActivity.address + ":8080");
         running = true;
+    }
+
+    public void run(List<String> s) {
+
     }
 
     private class serverRequest extends AsyncTask<String, String, List<String>> {
@@ -50,6 +52,7 @@ public class Request {
                     return out;
                 } catch(Exception e) {
                     //No connection
+                    e.toString();
                 }
             }
             return out;
@@ -58,7 +61,7 @@ public class Request {
         @Override
         protected void onPostExecute(List<String> strings) {
             running = false;
-            if(!strings.isEmpty()) next.run(strings);
+            if(!strings.isEmpty()) run(strings);
         }
     }
 }

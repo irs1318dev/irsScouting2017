@@ -6,7 +6,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
-import com.stuin.irs_scout.Next;
 import com.stuin.irs_scout.R;
 import com.stuin.irs_scout.Request;
 
@@ -53,10 +52,11 @@ public class Label extends TextView {
         this.measure = measure;
 
         if(send) {
-            String s = "/data?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.taskId;
+            String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.taskId;
             if(measure.success != 0) s += "&success=" + measure.success;
             if(measure.miss != 0) s += "&miss=" + measure.miss;
-            new Request(s, new Next());
+
+            new Request().start(s);
         }
     }
 }

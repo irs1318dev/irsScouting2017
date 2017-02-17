@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -41,12 +40,12 @@ public class MainActivity extends Activity {
         address = textView.getText().toString();
 
         //Check connection
-        class Connected extends Next {
+        class Connected extends Request {
             public void run(List<String> s) {
                 connected();
             }
         }
-        new Request("",new Connected());
+        new Connected().start("");
     }
 
     private void connected() {

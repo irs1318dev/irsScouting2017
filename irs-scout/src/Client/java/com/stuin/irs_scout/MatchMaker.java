@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Stuart on 2/14/2017.
  */
 class MatchMaker {
-    private Match match = new Match();
+    Match match = new Match();
     private List<Measure> data;
     private List<Page> pages;
     private TextView status;
@@ -24,10 +24,11 @@ class MatchMaker {
         this.pages = pages;
         status = (TextView) view;
         newMatch();
+
     }
 
     void newMatch() {
-        class Data extends Next {
+        class Data extends Request {
             @Override
             public void run(List<String> s) {
                 match = new Gson().fromJson(s.get(0), Match.class);
@@ -35,18 +36,18 @@ class MatchMaker {
                 status.setText("Match: " + match.number + " Team " + MainActivity.position + ": " + getTeam());
                 data = new ArrayList<>();
 
-                class Set extends Next {
+                class Set extends Request {
                     @Override
                     public void run(List<String> measures) {
                         Gson gson = new Gson();
-                        for(String s : measures) data.add(gson.fromJson(s, Measure.class));
+                        for(String s : measures) if(!s.contains("end")) data.add(gson.fromJson(s, Measure.class));
                         setMatch();
                     }
                 }
-                new Request("/matchteam?team=" + getTeam(),new Set());
+                new Set().start("/matchteamtasks?team=" + getTeam());
             }
         }
-        new Request("/match", new Data());
+        new Data().start("/matchteams");
     }
 
     private void setMatch() {
@@ -57,7 +58,7 @@ class MatchMaker {
         }
     }
 
-    int getTeam() {
+    private int getTeam() {
         String position = MainActivity.position;
         switch(position.charAt(position.length() - 1)) {
             case '1':

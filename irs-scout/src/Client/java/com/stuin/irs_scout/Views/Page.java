@@ -10,7 +10,6 @@ import com.stuin.irs_scout.Data.Measure;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Page extends LinearLayout {
     public String name;
