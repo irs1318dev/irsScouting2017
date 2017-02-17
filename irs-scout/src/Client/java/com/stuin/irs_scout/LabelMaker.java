@@ -3,10 +3,7 @@ package com.stuin.irs_scout;
 import android.content.Context;
 import com.google.gson.Gson;
 import com.stuin.irs_scout.Data.Task;
-import com.stuin.irs_scout.Views.Counter;
-import com.stuin.irs_scout.Views.Label;
-import com.stuin.irs_scout.Views.Page;
-import com.stuin.irs_scout.Views.Switcher;
+import com.stuin.irs_scout.Views.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +39,6 @@ class LabelMaker {
         //Check if page is to be used
         if(actor.equals("Robot") && !position.contains("Pilot")) return true;
         if(actor.equals("Alliance") && position.charAt(position.length() - 1) == '1') return true;
-        if(actor.equals("Pilot") && position.contains("Pilot")) return true;
         return false;
     }
 
@@ -53,6 +49,8 @@ class LabelMaker {
                 return new Switcher(context, task);
             case 'C':
                 return new Counter(context, task);
+            case 'M':
+                return new Multi(context, task);
         }
         return new Label(context, task);
     }
