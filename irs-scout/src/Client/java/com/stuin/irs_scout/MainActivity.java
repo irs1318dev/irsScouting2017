@@ -16,6 +16,7 @@ public class MainActivity extends Activity {
 
     static String address;
     static String position;
+    static boolean error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

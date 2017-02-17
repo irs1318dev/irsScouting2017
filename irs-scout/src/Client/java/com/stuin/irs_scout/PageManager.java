@@ -14,6 +14,7 @@ class PageManager extends LinearLayout {
     private List<Page> pages = new ArrayList<>();
     private int current = 0;
     private Activity activity;
+    private Updater updater;
 
     PageManager(Activity activity) {
         //Start Layout
@@ -45,7 +46,7 @@ class PageManager extends LinearLayout {
 
         //Get Match
         MatchMaker matchMaker = new MatchMaker(pages, activity.findViewById(R.id.Status));
-        new Updater(matchMaker);
+        updater = new Updater(matchMaker, activity.findViewById(R.id.PageStatus));
     }
 
     Page makePage(String name) {
@@ -90,6 +91,6 @@ class PageManager extends LinearLayout {
         textView.setText(pages.get(current).name);
 
         //Notify server
-
+        if(updater != null) updater.setStatus();
     }
 }

@@ -1,6 +1,7 @@
 package com.stuin.irs_scout;
 
 import android.os.AsyncTask;
+import android.widget.RadioButton;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -53,6 +54,7 @@ public class Request {
                 } catch(Exception e) {
                     //No connection
                     e.toString();
+                    MainActivity.error = true;
                 }
             }
             return out;
@@ -61,7 +63,9 @@ public class Request {
         @Override
         protected void onPostExecute(List<String> strings) {
             running = false;
+            MainActivity.error = false;
             if(!strings.isEmpty()) run(strings);
+            else MainActivity.error = true;
         }
     }
 }
