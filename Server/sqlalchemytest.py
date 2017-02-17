@@ -75,6 +75,80 @@ class Event(Base):
 Base.metadata.create_all(engine)
 
 
+class Phase(Base):
+    __tablename__ = "phases"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+Base.metadata.create_all(engine)
+
+auto = Phase(name='auto')
+teleop = Phase(name='teleop')
+final = Phase(name='final')
+
+
+class Date(Base):
+    __tablename__ = "dates"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+Base.metadata.create_all(engine)
+
+
+class Alliance(Base):
+    __tablename__ = "alliances"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+Base.metadata.create_all(engine)
+
+red = Alliance(name='red')
+blue = Alliance(name='blue')
+
+
+class Task(Base):
+    __tablename__ = "taskss"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+Base.metadata.create_all(engine)
+
+
+class Actor(Base):
+    __tablename__ = "actors"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+Base.metadata.create_all(engine)
+
+
+class Alliance(Base):
+    __tablename__ = "alliances"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+Base.metadata.create_all(engine)
+
+
+class Format(Base):
+    __tablename__ = "formats"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+Base.metadata.create_all(engine)
+
+
+
+
+
+
 class Measure(Base):
     __tablename__ = "measures"
 
@@ -83,13 +157,13 @@ class Measure(Base):
     event_id = Column(String, ForeignKey('events.id'))#done
     match_id = Column(String, ForeignKey('matches.id'))#done
     level_id = Column(String, ForeignKey('levels.id'))#done
-    date_id = Column(String, ForeignKey('dates.id'))#not done
-    alliance_id = Column(String, ForeignKey('alliances.id'))#not done
-    station_id = Column(String, ForeignKey('stations.id'))#partlly done
-    actor_id = Column(String, ForeignKey('actors.id'))#not done
-    task_id = Column(String, ForeignKey('tasks.id'))#not done
-    format_id = Column(String, ForeignKey('formats.id'))#not done
-    phase_id = Column(String, ForeignKey('phases.id'))#not done
+    date_id = Column(String, ForeignKey('dates.id'))#partly done
+    alliance_id = Column(String, ForeignKey('alliances.id'))#done
+    station_id = Column(String, ForeignKey('stations.id'))#partly done
+    actor_id = Column(String, ForeignKey('actors.id'))#done need to add
+    task_id = Column(String, ForeignKey('tasks.id'))#done need to add
+    format_id = Column(String, ForeignKey('formats.id'))#done need to add
+    phase_id = Column(String, ForeignKey('phases.id'))#done
 
 
 
@@ -103,5 +177,5 @@ session = Session()
 
 
 # Send the team object to the database.
-session.add(match_number)
+session.add()
 session.commit()
