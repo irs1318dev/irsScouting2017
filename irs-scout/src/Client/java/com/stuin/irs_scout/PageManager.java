@@ -39,6 +39,7 @@ class PageManager extends LinearLayout {
     private void generate(List<String> s) {
         //Generate pages
         pages = new LabelMaker().pages(this, s);
+        pages.add(new Page(getContext(), "Waiting"));
 
         //Set default page
         setPage();

@@ -17,6 +17,7 @@ public class Label extends TextView {
     LinearLayout linearLayout;
     List<TextView> views = new ArrayList<>();
     Measure measure = new Measure();
+    boolean defaults = true;
 
     public Label(Context context, Task task) {
         super(context);
@@ -32,11 +33,12 @@ public class Label extends TextView {
         linearLayout.setGravity(Gravity.CENTER);
         column.addView(linearLayout);
 
-        //Create two objects
-        views.add(part(task.success));
-        if(!task.miss.isEmpty()) views.add(part(task.miss));
-        update(measure, false);
-
+        if(defaults) {
+            //Create two objects
+            views.add(part(task.success));
+            if(!task.miss.isEmpty()) views.add(part(task.miss));
+            update(measure, false);
+        }
     }
 
     void make(LinearLayout column) {

@@ -48,12 +48,14 @@ class LabelMaker {
         switch(task.format.charAt(0)) {
             case 'S':
                 return new Switcher(context, task);
-            case 'C':
-                return new Counter(context, task);
-            case 'M':
-                return new Multi(context, task);
             case 'N':
                 return new Number(context, task);
+            case 'C':
+                return new Choice(context, task);
+            case 'M':
+                return new Multi(context, task);
+            case 'E':
+                return new Enter(context, task);
         }
         return new Label(context, task);
     }
