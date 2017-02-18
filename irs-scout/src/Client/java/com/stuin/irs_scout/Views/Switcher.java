@@ -1,6 +1,7 @@
 package com.stuin.irs_scout.Views;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.*;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;

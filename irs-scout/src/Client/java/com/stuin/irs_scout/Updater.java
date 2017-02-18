@@ -11,9 +11,8 @@ import java.util.*;
  * Created by Stuart on 2/16/2017.
  */
 public class Updater {
-    public static Stack<Measure> allMeasures = new Stack<>();
+    static public List<Measure> measures = new ArrayList<>();
 
-    private Queue<Measure> measures;
     private MatchMaker matchMaker;
     private RadioButton status;
 
@@ -23,7 +22,7 @@ public class Updater {
         countDownTimer.start();
     }
 
-    private CountDownTimer countDownTimer = new CountDownTimer(10000,1000) {
+    private CountDownTimer countDownTimer = new CountDownTimer(10000,100) {
         @Override
         public void onTick(long l) {
             status.setChecked(MainActivity.error);
@@ -49,53 +48,25 @@ public class Updater {
     }
 
     private void send() {
-        if(!MainActivity.error & allMeasures.size() > 0) {
-            clear();
-            Measure measure = measures.peek();
+        if(!MainActivity.error) {
+            for(Measure measure : measures) {
+                String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.taskId;
+                if(measure.success != 0) s += "&success=" + measure.success;
+                if(measure.miss != 0) s += "&miss=" + measure.miss;
 
-            String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.taskId;
-            if(measure.success != 0) s += "&success=" + measure.success;
-            if(measure.miss != 0) s += "&miss=" + measure.miss;
+                class Remove extends Request {
+                    private Measure measure;
 
-            class Remove extends Request {
-                private Measure measure;
+                    private Remove(Measure measure) {
+                        this.measure = measure;
+                    }
 
-                private Remove(Measure measure) {
-                    this.measure = measure;
+                    @Override
+                    public void run(List<String> s) {
+                        measures.remove(measure);
+                    }
                 }
-
-                @Override
-                public void run(List<String> s) {
-                    measures.remove(measure);
-                    send();
-                }
-            }
-            new Remove(measure).start(s);
-        }
-    }
-
-    private void clear() {
-        measures = new ArrayDeque<>();
-        Collection<Integer> tasks = new ArrayList<>();
-
-        class Link {
-            int task;
-            int team;
-            String page;
-
-            Link(int task, int team, String page) {
-                this.task = task;
-                this.team = team;
-                this.page = page;
-            }
-        }
-
-        while(allMeasures.size() > 0) {
-            Measure m = allMeasures.pop();
-            Link link = new Link(m.taskId, m.team, m.page);
-            if(!tasks.contains(link.hashCode())) {
-                tasks.add(link.hashCode());
-                measures.add(m);
+                new Remove(measure).start(s);
             }
         }
     }

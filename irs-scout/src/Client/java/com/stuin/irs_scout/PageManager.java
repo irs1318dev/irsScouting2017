@@ -60,18 +60,20 @@ class PageManager extends LinearLayout {
     void nextPage(View view) {
         //Show next page
         pages.get(current).setVisibility(GONE);
-        current++;
+        pages.get(current).send();
 
         //Set shown buttons
         activity.findViewById(R.id.Previous).setVisibility(VISIBLE);
-        if(current + 1 == pages.size()) view.setVisibility(GONE);
+        if(current + 2 == pages.size()) view.setVisibility(GONE);
 
+        current++;
         setPage();
     }
 
     void lastPage(View view) {
         //Hide old page
         pages.get(current).setVisibility(GONE);
+        pages.get(current).send();
 
         //Set shown buttons
         activity.findViewById(R.id.Next).setVisibility(VISIBLE);

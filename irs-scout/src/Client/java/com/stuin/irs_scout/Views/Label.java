@@ -25,7 +25,7 @@ public class Label extends TextView {
 
     void create(LinearLayout column) {
         //Make label
-        if(task.compacting < 1) make(column);
+        if(!task.compacting) make(column);
 
         //Make new row
         linearLayout = new LinearLayout(getContext());
@@ -54,6 +54,6 @@ public class Label extends TextView {
     protected void update(Measure measure, boolean send) {
         this.measure = measure;
 
-        if(send) Updater.allMeasures.push(measure);
+        if(send) Updater.measures.add(measure);
     }
 }

@@ -40,6 +40,10 @@ public class Page extends LinearLayout {
         }
     }
 
+    public void send() {
+        for(Label label : labels) if(label.measure.success + label.measure.miss > 0) label.update(label.measure, true);
+    }
+
     private void newCol() {
         //Make new column
         divider();

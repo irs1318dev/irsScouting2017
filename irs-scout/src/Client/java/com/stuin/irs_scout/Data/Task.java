@@ -12,7 +12,7 @@ public class Task {
     final public String success;
     final public String miss;
     final public String additions;
-    final public int compacting;
+    final public boolean compacting;
     final public boolean newpart;
 
     public Task() {
@@ -24,7 +24,7 @@ public class Task {
         success = "";
         miss = "";
         additions = "";
-        compacting = 0;
+        compacting = false;
         newpart = false;
     }
 }

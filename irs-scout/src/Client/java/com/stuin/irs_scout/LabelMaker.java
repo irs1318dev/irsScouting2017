@@ -4,6 +4,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.Views.*;
+import com.stuin.irs_scout.Views.Number;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,8 @@ class LabelMaker {
                 return new Counter(context, task);
             case 'M':
                 return new Multi(context, task);
+            case 'N':
+                return new Number(context, task);
         }
         return new Label(context, task);
     }

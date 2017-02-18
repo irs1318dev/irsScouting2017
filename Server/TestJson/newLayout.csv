@@ -1,0 +1,15 @@
+1,Baseline,Robot,Auto,Multi,Crossed,,FALSE,FALSE,Retrieval>Boiler,
+2,Gear,Robot,Auto,Multi,Placed,Attempted,FALSE,FALSE,Retrieval>Center>Boiler,Slow?
+3,High Boiler,Robot,Auto,Count,Scored,Missed,FALSE,TRUE,10,
+4,Low Boiler,Robot,Auto,Count,Scored,Missed,FALSE,FALSE,10,
+5,No Show,Robot,Auto,Switch,No Show,,TRUE,FALSE,,
+6,Gear,Robot,Tele,Count,Placed,Dropped,FALSE,FALSE,18,
+7,Gear Slot,Robot,Tele,Count,Collected,Missload,FALSE,FALSE,18,
+8,Gear Ground,Robot,Tele,Count,Ground Pickup,,TRUE,FALSE,18,
+9,Fuel Collected,Robot,Tele,Switch,Floor,Retrieval,FALSE,TRUE,,
+10,Hopper,Robot,Tele,Count,Hoppers Hit,,TRUE,FALSE,5,
+11,Climbing,Robot,Tele,Multi,Completed,,FALSE,FALSE,Completed>Tried,Time?
+12,Score,Alliance,Final,Number,Total,,FALSE,FALSE,  ,
+13,Win,Alliance,Final,Multi,RP,,FALSE,TRUE,Tie>Win,
+14,All Rotors,Alliance,Final,Switch,All Rotors,,TRUE,FALSE,,
+15,Full Steam,Alliance,Final,Switch,Full Steam,,TRUE,FALSE,,
