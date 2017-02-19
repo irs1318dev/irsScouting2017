@@ -5,8 +5,10 @@ from sqlalchemy.sql import text
 from sqlalchemy import ForeignKey
 
 # ========== Database Connection ==============================================
-connection_string = 'postgresql://irs1318:steamworks@localhost:5432/scouting'
-def getDbEngine():
+connection_string = 'postgresql://irs1318:irs1318@localhost:5432/scouting'
+
+
+def getdbengine():
     return create_engine(connection_string)
 
 
@@ -105,21 +107,26 @@ class Team(Base):
 
 
 def createTables():
-    engine = getDbEngine()
+    engine = getdbengine()
     Base.metadata.create_all(engine)
 
 
 
 def loadMasterData():
-    engine = getDbEngine()
+    engine = getdbengine()
     conn = engine.connect()
     for i in range(1, 201):
         match = "match " + str(i)
         select = text(
             "INSERT INTO matches(name) "
-            "VALUES (:x);"
+            "VALUES (:name) "
+            "ON CONFLICT (name) "
+            "DO "
+                "UPDATE "
+                    "SET name = :name WHERE $name;"
+
         )
-        conn.execute(select, x=match)
+        conn.execute(select, name=match)
 
 
 
