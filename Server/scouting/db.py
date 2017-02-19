@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import text
 from sqlalchemy import ForeignKey
 
 # ========== Database Connection ==============================================
@@ -103,20 +104,23 @@ class Team(Base):
     year_founded = Column(String)
 
 
-def createTables(drop=False):
+def createTables():
     engine = getDbEngine()
-    if drop:
-        Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
 
 
 def loadMasterData():
     engine = getDbEngine()
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    session.query(Match).delete()
-    session.commit()
+    conn = engine.connect()
+    for i in range(1, 201):
+        match = "match " + str(i)
+        select = text(
+            "INSERT INTO matches(name) "
+            "VALUES (:x);"
+        )
+        conn.execute(select, x=match)
+
 
 
 # ====================== Add Data to Tables =================================
