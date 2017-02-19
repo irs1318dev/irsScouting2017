@@ -8,8 +8,10 @@ connection_string = 'postgresql://irs1318:steamworks@localhost:5432/scouting'
 def getDbEngine():
     return create_engine(connection_string)
 
+
 # ========== Table Definitions ================================================
 Base = declarative_base()
+
 
 class Match(Base):
     __tablename__ = "matches"
@@ -41,11 +43,13 @@ class Event(Base):
     state = Column(String)
     type = Column(String)
 
+
 class Phase(Base):
     __tablename__ = "phases"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
+
 
 class Date(Base):
     __tablename__ = "dates"
@@ -92,32 +96,33 @@ class Team(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
-
-    name = Column(String, unique=True, nullable=False)
-    long_name = Column(String, unique=True, nullable=False)
+    long_name = Column(String, unique=True)
     city = Column(String)
     state = Column(String)
     region = Column(String)
     year_founded = Column(String)
 
 
+def createTables(drop=False):
+    engine = getDbEngine()
+    if drop:
+        Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
 
-Base.metadata.create_all(engine)
 
 
-class MasterData(Base):
-
-
-    event = Event()
-    alliance_red = Alliance(name='red')
-    alliance_blue = Alliance(name='blue')
-
+def loadMasterData():
+    engine = getDbEngine()
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    session.query(Match).delete()
+    session.commit()
 
 
 # ====================== Add Data to Tables =================================
 
-#Session = sessionmaker(bind=engine)
-#session = Session()
+# Session = sessionmaker(bind=engine)
+# session = Session()
 
 
 #match_number = Match(id=1, name='match number 1')
@@ -126,7 +131,7 @@ class MasterData(Base):
 #level_playoff = Level(name='Playoffs')
 
 
-# session.add_all([level_playoff, level_qual])
+ #session.add_all([level_playoff, level_qual])
 
 #session.commit()
 
