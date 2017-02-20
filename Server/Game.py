@@ -2,12 +2,13 @@ import json
 
 
 class Measure(object):
-    def __init__(self, match, team, task, success, miss):
+    def __init__(self, match, team, task, success, miss, page):
         self.match = match
         self.team = team
         self.taskId = task
         self.success = success
         self.miss = miss
+        self.page = page
 
 
 class Task(object):
@@ -62,18 +63,13 @@ class HelloWorld(object):
 
     @staticmethod
     def data(match, team, task, success, miss):
-        m = Measure(match, team, task, success, miss)
+        m = Measure(match, team, task, success, miss, page)
+        out = json.dumps(m, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
 
-        with open("TestJson/newLayout.csv", "r") as text:
-            for line in text:
-                if m.taskId in line.split(',')[0]:
-                    m.page = line.split(',')[3]
-            out = json.dumps(m, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
+        for value in out.split(','):
+            if m.page not in value:
+                out = out.replace(value, value.split(':')[0] + ':' + value.split(':')[1].replace('"', ''))
 
-            for value in out.split(','):
-                if m.page not in value:
-                    out = out.replace(value, value.split(':')[0] + ':' + value.split(':')[1].replace('"', ''))
-
-            with open("TestJson/measures", "a") as new:
-                new.write('\n' + out)
+        with open("TestJson/measures", "a") as new:
+            new.write('\n' + out)
 

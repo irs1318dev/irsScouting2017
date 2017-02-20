@@ -19,7 +19,6 @@ public class Updater {
     Updater(MatchMaker matchMaker, View view) {
         this.matchMaker = matchMaker;
         status = (RadioButton) view;
-        countDownTimer.start();
     }
 
     private CountDownTimer countDownTimer = new CountDownTimer(10000,100) {
@@ -31,15 +30,14 @@ public class Updater {
 
         @Override
         public void onFinish() {
-            if(status.getText().equals("Waiting")) {
-                class Status extends Request {
-                    @Override
-                    public void run(List<String> s) {
-                        if(!s.get(0).equals(String.valueOf(matchMaker.match.number))) matchMaker.newMatch();
-                    }
+            String s = "/tablet?status=" + status.getText().toString().replace(" ", "");
+            class Status extends Request {
+                @Override
+                public void run(List<String> s) {
+                    if(!s.get(0).equals(String.valueOf(matchMaker.match.number))) matchMaker.newMatch();
                 }
-                new Status().start("/tablet?status=" + status.getText());
-            } else new Request().start("/tablet?status=" + status.getText());
+            }
+            new Status().start(s);
             countDownTimer.start();
         }
     };

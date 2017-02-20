@@ -16,15 +16,17 @@ import java.util.List;
  */
 class MatchMaker {
     Match match = new Match();
+
+    private PageManager pageManager;
     private List<Measure> data;
     private List<Page> pages;
     private TextView status;
 
-    MatchMaker(List<Page> pages, View view) {
-        this.pages = pages;
+    MatchMaker(PageManager pageManager, View view) {
+        this.pages = pageManager.pages;
+        this.pageManager = pageManager;
         status = (TextView) view;
         newMatch();
-
     }
 
     void newMatch() {
@@ -33,7 +35,7 @@ class MatchMaker {
             public void run(List<String> s) {
                 match = new Gson().fromJson(s.get(0), Match.class);
                 if(!MainActivity.position.contains(match.alliance)) match = new Gson().fromJson(s.get(1), Match.class);
-                status.setText("Match: " + match.number + " Team " + MainActivity.position + ": " + getTeam());
+                status.setText("Match: " + match.number + " Team: " + getTeam());
                 data = new ArrayList<>();
 
                 class Set extends Request {
@@ -51,6 +53,7 @@ class MatchMaker {
     }
 
     private void setMatch() {
+        pageManager.reset();
         for(Page p : pages) {
             SparseArray<Measure> pageData = new SparseArray<>();
             for(Measure m : data) if(m.page.equals(p.name)) pageData.put(m.taskId, m);

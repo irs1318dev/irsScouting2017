@@ -35,8 +35,6 @@ public class Multi extends Label {
     @Override
     protected void update(Measure measure, boolean send) {
         super.update(measure, send);
-
-
     }
 
     private Switch.OnCheckedChangeListener successListener = new Switch.OnCheckedChangeListener() {

@@ -5,16 +5,20 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.stuin.irs_scout.Data.Task;
+import com.stuin.irs_scout.Views.Label;
+import com.stuin.irs_scout.Views.Number;
 import com.stuin.irs_scout.Views.Page;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class PageManager extends LinearLayout {
-    private List<Page> pages = new ArrayList<>();
-    private int current = 0;
+    List<Page> pages = new ArrayList<>();
+    Updater updater;
+
+    private int current = -1;
     private Activity activity;
-    private Updater updater;
 
     PageManager(Activity activity) {
         //Start Layout
@@ -39,15 +43,21 @@ class PageManager extends LinearLayout {
     private void generate(List<String> s) {
         //Generate pages
         pages = new LabelMaker().pages(this, s);
-        pages.add(new Page(getContext(), "Waiting"));
-
-        //Set default page
-        setPage();
-        if(pages.size() > 1) activity.findViewById(R.id.Next).setVisibility(VISIBLE);
 
         //Get Match
-        MatchMaker matchMaker = new MatchMaker(pages, activity.findViewById(R.id.Status));
+        MatchMaker matchMaker = new MatchMaker(this, activity.findViewById(R.id.Status));
         updater = new Updater(matchMaker, activity.findViewById(R.id.PageStatus));
+    }
+
+    void reset() {
+        //Set default page
+        if(current != -1) pages.get(current).setVisibility(GONE);
+
+        current = 0;
+        setPage();
+
+        activity.findViewById(R.id.Previous).setVisibility(GONE);
+        if(pages.size() > 1) activity.findViewById(R.id.Next).setVisibility(VISIBLE);
     }
 
     Page makePage(String name) {
@@ -91,7 +101,7 @@ class PageManager extends LinearLayout {
 
         //Set page title
         TextView textView = (TextView) activity.findViewById(R.id.PageStatus);
-        textView.setText(pages.get(current).name);
+        textView.setText(MainActivity.position + ": " + pages.get(current).name);
 
         //Notify server
         if(updater != null) updater.setStatus();

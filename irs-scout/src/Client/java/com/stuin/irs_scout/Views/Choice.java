@@ -32,9 +32,11 @@ public class Choice extends Label {
         radioGroup.setGravity(Gravity.CENTER);
         column.addView(radioGroup);
 
+        for(String s : choices) part(s);
+
         if(!task.miss.isEmpty()) {
             Switch switch1 = new Switch(getContext());
-            switch1.setText(measure.success);
+            switch1.setText(task.success);
             switch1.setTextSize(getResources().getDimension(R.dimen.text_norm));
             switch1.setOnCheckedChangeListener(missListener);
             views.add(switch1);
@@ -68,8 +70,10 @@ public class Choice extends Label {
         }
 
         for(int i = 0; i < choices.length; i++) {
-            radioButton = (RadioButton) views.get(i);
-            //radioButton.setChecked(i + 1 == measure.success || i + 1 == measure.miss);
+            radioButton = (CompoundButton) views.get(i);
+            if(i + 1 == measure.success || i + 1 == measure.miss) {
+                radioButton.setChecked(true);
+            }
         }
     }
 
