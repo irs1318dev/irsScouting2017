@@ -28,4 +28,8 @@ public class Measure {
         this.success = 0;
         this.miss = 0;
     }
+
+    public boolean matches(Measure measure) {
+        return (measure.taskId == taskId && measure.team == team && measure.match == match);
+    }
 }

@@ -13,5 +13,5 @@
     <string name="scout_6">Blue 3</string>
 
     <dimen name="text_large">50sp</dimen>
-    <dimen name="text_norm">20sp</dimen>
+    <dimen name="text_norm">15sp</dimen>
 </resources>

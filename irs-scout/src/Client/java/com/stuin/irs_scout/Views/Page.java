@@ -10,7 +10,6 @@ import com.stuin.irs_scout.Data.Measure;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Page extends LinearLayout {
     public String name;
@@ -39,6 +38,10 @@ public class Page extends LinearLayout {
             if(measures.get(l.task.id) != null) l.update(measures.get(l.task.id), false);
             else l.update(new Measure(l.task, match, team), false);
         }
+    }
+
+    public void send() {
+        for(Label label : labels) if(label.measure.success + label.measure.miss > 0) label.update(label.measure, true);
     }
 
     private void newCol() {

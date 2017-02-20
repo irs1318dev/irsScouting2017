@@ -1,0 +1,15 @@
+1,Start,Robot,Auto,Choice,Started,,FALSE,FALSE,Retrieval>Center>Boiler,TRUE,Start,
+2,Baseline,Robot,Auto,Switch,Crossed,Moved,FALSE,FALSE,,TRUE,BaseA,
+3,Gear,Robot,Auto,Choice,Placed in time,Attempted,FALSE,FALSE,Retrieval>Center>Boiler,TRUE,GearA,Slow?
+4,High Boiler,Robot,Auto,Number,Scored,Missed,FALSE,TRUE,10,TRUE,HighA,
+5,Low Boiler,Robot,Auto,Number,Scored,Missed,FALSE,FALSE,10,TRUE,LowA,
+6,Show,Robot,Auto,Switch,No Show,,TRUE,FALSE,,TRUE,Show,
+7,Gear,Robot,Tele,Number,Placed,Dropped,FALSE,FALSE,18,TRUE,GearT,
+8,Gear Peg,Robot,Tele,Multi,Placed,,TRUE,FALSE,Retrieval>Center>Boiler,TRUE,GearPeg, 
+9,Gear Load,Robot,Tele,Number,Collected,Missload,FALSE,FALSE,18,TRUE,GearLoad,
+10,Gear Ground,Robot,Tele,Number,Ground Pickup,,TRUE,FALSE,18,TRUE,GearGround,
+11,Fuel Collected,Robot,Tele,Multi,From,,FALSE,TRUE,Floor>Station>Hopper,TRUE,FuelCollect,
+12,Hopper,Robot,Tele,Number,Hoppers Hit,,TRUE,FALSE,5,TRUE,FuelHopper,
+13,Climbing,Robot,Tele,Choice,Completed,,FALSE,FALSE,Completed>Tried,TRUE,Climb,Time?
+14,Defended,Robot,Tele,Number,Self,Against,FALSE,TRUE,,TRUE,Defence,
+15,Waiting for Server,Robot,Waiting,Label,Nothing,,FALSE,FALSE,,TRUE,Wait,

@@ -15,41 +15,45 @@ import java.util.List;
  * Created by Stuart on 2/14/2017.
  */
 class MatchMaker {
-    private Match match = new Match();
+    Match match = new Match();
+
+    private PageManager pageManager;
     private List<Measure> data;
     private List<Page> pages;
     private TextView status;
 
-    MatchMaker(List<Page> pages, View view) {
-        this.pages = pages;
+    MatchMaker(PageManager pageManager, View view) {
+        this.pages = pageManager.pages;
+        this.pageManager = pageManager;
         status = (TextView) view;
         newMatch();
     }
 
     void newMatch() {
-        class Data extends Next {
+        class Data extends Request {
             @Override
             public void run(List<String> s) {
                 match = new Gson().fromJson(s.get(0), Match.class);
                 if(!MainActivity.position.contains(match.alliance)) match = new Gson().fromJson(s.get(1), Match.class);
-                status.setText("Match: " + match.number + " Team " + MainActivity.position + ": " + getTeam());
+                status.setText("Match: " + match.number + " Team: " + getTeam());
                 data = new ArrayList<>();
 
-                class Set extends Next {
+                class Set extends Request {
                     @Override
                     public void run(List<String> measures) {
                         Gson gson = new Gson();
-                        for(String s : measures) data.add(gson.fromJson(s, Measure.class));
+                        for(String s : measures) if(!s.contains("end")) data.add(gson.fromJson(s, Measure.class));
                         setMatch();
                     }
                 }
-                new Request("/matchteam?team=" + getTeam(),new Set());
+                new Set().start("/matchteamtasks?team=" + getTeam());
             }
         }
-        new Request("/match", new Data());
+        new Data().start("/matchteams");
     }
 
     private void setMatch() {
+        pageManager.reset();
         for(Page p : pages) {
             SparseArray<Measure> pageData = new SparseArray<>();
             for(Measure m : data) if(m.page.equals(p.name)) pageData.put(m.taskId, m);
@@ -57,7 +61,7 @@ class MatchMaker {
         }
     }
 
-    int getTeam() {
+    private int getTeam() {
         String position = MainActivity.position;
         switch(position.charAt(position.length() - 1)) {
             case '1':

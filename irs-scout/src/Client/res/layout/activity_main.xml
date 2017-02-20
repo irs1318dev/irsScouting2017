@@ -106,7 +106,7 @@
 
     </FrameLayout>
 
-    <TextView
+    <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/PageStatus"
@@ -114,6 +114,7 @@
             android:textColor="@color/colorText"
             android:text="@string/form_status"
             android:layout_above="@+id/AddressBar"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+            android:onClick="status"/>
 
 </RelativeLayout>

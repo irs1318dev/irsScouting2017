@@ -1,30 +1,49 @@
-import cherrypy
 import json
 
 
 class Measure(object):
-    def __init__(self, match, team, task, success, miss):
+    def __init__(self, match, team, task, success, miss, page):
         self.match = match
         self.team = team
         self.taskId = task
         self.success = success
         self.miss = miss
+        self.page = page
+
+
+class Task(object):
+    def __init__(self, line):
+        value = line.split(',')
+        self.id = value[0]
+        self.task = value[1]
+        self.actor = value[2]
+        self.page = value[3]
+        self.format = value[4]
+        self.success = value[5]
+        self.miss = value[6]
+        self.compacting = value[7].lower()
+        self.newpart = value[8].lower()
+        self.additions = value[9]
 
 
 class HelloWorld(object):
-    current = 1
+    @staticmethod
+    def game():
+        with open("TestJson/newLayout.csv", "r") as text:
+            out = ''
+            for line in text:
+                task = Task(line)
+                data = json.dumps(task, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
 
-    @cherrypy.expose
-    def index(self):
-        return "Hello"
+                for value in data.split(','):
+                    if 'id' in value or 'compacting' in value or 'newpart' in value:
+                        data = data.replace(value, value.split(':')[0] + ':' + value.split(':')[1].replace('"', ''))
 
-    @cherrypy.expose
-    def game(self):
-        with open("TestJson/layout", "r") as text:
-            return text.read()
+                out += data + '\n'
+            return out
 
-    @cherrypy.expose
-    def match(self, number=current):
+    @staticmethod
+    def match(number):
         with open("TestJson/match", "r") as text:
             out = ""
             for line in text:
@@ -32,39 +51,25 @@ class HelloWorld(object):
                     out += line
             return out
 
-    @cherrypy.expose
-    def matchteam(self, match=current, team=0):
-        with open("TestJson/matchteam", "r") as text:
+    @staticmethod
+    def matchteam(match, team):
+        with open("TestJson/measures", "r") as text:
             out = ""
             for line in text:
                 if '"match":' + str(match) in line:
                     if '"team":' + str(team) in line:
                         out += line
-            return out
+            return out + 'end'
 
-    @cherrypy.expose
-    def data(self, match=current, team=-1, task=-1, success=0, miss=0):
-        m = Measure(match, team, task, success, miss)
+    @staticmethod
+    def data(match, team, task, success, miss):
+        m = Measure(match, team, task, success, miss, page)
+        out = json.dumps(m, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
 
-        if not task == -1 and not team == -1:
-            with open("TestJson/layout", "r") as text:
-                for line in text:
-                    if '''''''"id":''' + str(task) in line:
-                        for value in line.split(','):
-                            if 'page' in value:
-                                m.page = value.split(':')[1].replace('"', '')
-            out = json.dumps(m, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
+        for value in out.split(','):
+            if m.page not in value:
+                out = out.replace(value, value.split(':')[0] + ':' + value.split(':')[1].replace('"', ''))
 
-            for value in out.split(','):
-                if 'taskId' in value or 'team' in value or 'success' in value:
-                    out = out.replace(value, value.split(':')[0] + ':' + value.split(':')[1].replace('"', ''))
+        with open("TestJson/measures", "a") as new:
+            new.write('\n' + out)
 
-            with open("TestJson/matchteam", "a") as text:
-                text.write('\n' + out)
-
-        return str(self.current)
-
-if __name__ == '__main__':
-    cherrypy.config.update(
-        {'server.socket_host': '0.0.0.0'})
-    cherrypy.quickstart(HelloWorld())

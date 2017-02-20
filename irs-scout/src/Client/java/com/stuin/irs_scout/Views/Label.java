@@ -6,9 +6,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
-import com.stuin.irs_scout.Next;
 import com.stuin.irs_scout.R;
-import com.stuin.irs_scout.Request;
+import com.stuin.irs_scout.Updater;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +17,7 @@ public class Label extends TextView {
     LinearLayout linearLayout;
     List<TextView> views = new ArrayList<>();
     Measure measure = new Measure();
+    boolean defaults = true;
 
     public Label(Context context, Task task) {
         super(context);
@@ -26,23 +26,27 @@ public class Label extends TextView {
 
     void create(LinearLayout column) {
         //Make label
-        if(task.compacting < 1) {
-            setTextSize(getResources().getDimension(R.dimen.text_norm));
-            setText(task.task);
-            setTextColor(getResources().getColor(R.color.colorText));
-            setGravity(Gravity.CENTER);
-            column.addView(this);
-        }
+        if(!task.compacting) make(column);
 
         //Make new row
         linearLayout = new LinearLayout(getContext());
         linearLayout.setGravity(Gravity.CENTER);
         column.addView(linearLayout);
 
-        //Create two objects
-        views.add(part(task.success));
-        if(!task.miss.isEmpty()) views.add(part(task.miss));
-        update(measure, false);
+        if(defaults) {
+            //Create two objects
+            views.add(part(task.success));
+            if(!task.miss.isEmpty()) views.add(part(task.miss));
+            update(measure, false);
+        }
+    }
+
+    void make(LinearLayout column) {
+        setTextSize(getResources().getDimension(R.dimen.text_norm));
+        setText(task.task);
+        setTextColor(getResources().getColor(R.color.colorText));
+        setGravity(Gravity.CENTER);
+        column.addView(this);
     }
 
     protected TextView part(String name) {
@@ -52,11 +56,6 @@ public class Label extends TextView {
     protected void update(Measure measure, boolean send) {
         this.measure = measure;
 
-        if(send) {
-            String s = "/data?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.taskId;
-            if(measure.success != 0) s += "&success=" + measure.success;
-            if(measure.miss != 0) s += "&miss=" + measure.miss;
-            new Request(s, new Next());
-        }
+        if(send) Updater.measures.add(measure);
     }
 }
