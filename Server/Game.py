@@ -2,13 +2,12 @@ import json
 
 
 class Measure(object):
-    def __init__(self, match, team, task, success, miss, page):
+    def __init__(self, match, team, task, success, miss):
         self.match = match
         self.team = team
         self.taskId = task
         self.success = success
         self.miss = miss
-        self.page = page
 
 
 class Task(object):
@@ -63,7 +62,7 @@ class HelloWorld(object):
 
     @staticmethod
     def data(match, team, task, success, miss):
-        m = Measure(match, team, task, success, miss, page)
+        m = Measure(match, team, task, success, miss)
         out = json.dumps(m, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
 
         for value in out.split(','):

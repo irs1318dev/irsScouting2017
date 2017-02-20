@@ -38,8 +38,8 @@ class LabelMaker {
 
     private boolean usePage(String actor, String position) {
         //Check if page is to be used
-        if(actor.equals("Robot") && !position.contains("Pilot")) return true;
-        if(actor.equals("Alliance") && position.charAt(position.length() - 1) == '1') return true;
+        if(actor.equals("robot") && !position.contains("Boiler")) return true;
+        if(actor.equals("boiler") && position.contains("Boiler")) return true;
         return false;
     }
 

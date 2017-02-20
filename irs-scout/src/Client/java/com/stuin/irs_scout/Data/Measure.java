@@ -6,7 +6,7 @@ package com.stuin.irs_scout.Data;
 public class Measure {
     final public int match;
     final public int team;
-    final public int taskId;
+    final public String task;
     final public String page;
     public int success;
     public int miss;
@@ -14,7 +14,7 @@ public class Measure {
     public Measure() {
         match = 0;
         team = 0;
-        taskId = 0;
+        task = "";
         page = "";
         success = 0;
         miss = 0;
@@ -23,13 +23,9 @@ public class Measure {
     public Measure(Task task, int match, int team) {
         this.match = match;
         this.team = team;
-        this.taskId = task.id;
+        this.task = task.name;
         this.page = task.page;
         this.success = 0;
         this.miss = 0;
-    }
-
-    public boolean matches(Measure measure) {
-        return (measure.taskId == taskId && measure.team == team && measure.match == match);
     }
 }

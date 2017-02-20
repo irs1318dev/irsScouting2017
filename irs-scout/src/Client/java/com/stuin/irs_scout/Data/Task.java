@@ -4,7 +4,7 @@ package com.stuin.irs_scout.Data;
  * Created by Stuart on 2/10/2017.
  */
 public class Task {
-    final public int id;
+    final public String name;
     final public String task;
     final public String actor;
     final public String page;
@@ -16,7 +16,7 @@ public class Task {
     final public boolean newpart;
 
     public Task() {
-        id = 0;
+        name = "";
         task = "";
         actor = "";
         page = "";
