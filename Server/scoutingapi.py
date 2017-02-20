@@ -75,7 +75,7 @@ class Scouting(object):
         return 'dimension'
 
     # Completed functions here on
-    # _________________________________________________________________
+    # __________________________________________________________________________
 
     alltablets = list({scouting.tablet.TabletDAL('TestSystem', 'Waiting')})
 

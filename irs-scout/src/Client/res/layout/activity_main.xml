@@ -115,6 +115,6 @@
             android:text="@string/form_status"
             android:layout_above="@+id/AddressBar"
             android:layout_alignParentEnd="true"
-            android:clickable="false"/>
+            android:onClick="status"/>
 
 </RelativeLayout>

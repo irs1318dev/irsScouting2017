@@ -71,6 +71,10 @@ public class MainActivity extends Activity {
 
     }
 
+    public void status(View view) {
+        form.updater.setStatus();
+    }
+
     public void nextPage(View view) {
         //Next page button
         form.nextPage(view);
