@@ -70,6 +70,20 @@ class Alliance(Base):
     name = Column(String, unique=True, nullable=False)
 
 
+class Attempt(Base):
+    __tablename__ = "attempts"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+
+class Reason(Base):
+    __tablename__ = "reasonss"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+
 class Task(Base):
     __tablename__ = "tasks"
 
