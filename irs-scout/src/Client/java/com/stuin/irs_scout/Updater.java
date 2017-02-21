@@ -50,7 +50,7 @@ public class Updater {
     private void send() {
         if(!MainActivity.error) {
             for(Measure measure : measures) {
-                String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.taskId;
+                String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task;
                 if(measure.success != 0) s += "&success=" + measure.success;
                 if(measure.miss != 0) s += "&miss=" + measure.miss;
 

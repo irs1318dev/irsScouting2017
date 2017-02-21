@@ -48,7 +48,9 @@ class Scouting(object):
         return 'match with id'
 
     @cherrypy.expose
-    def matchteams(self, match=currentMatch):
+    def matchteams(self, match=-1):
+        if match == -1:
+            match = self.currentMatch
         return Game.HelloWorld.match(match)
     # All teams in match
 
@@ -57,12 +59,14 @@ class Scouting(object):
         return 'matchteam with match and team'
 
     @cherrypy.expose
-    def matchteamtasks(self, team, match=currentMatch):
+    def matchteamtasks(self, team, match=-1):
+        if match == -1:
+            match = self.currentMatch
         return Game.HelloWorld.matchteam(match, team)
     # Get data from match and team
 
     @cherrypy.expose
-    def matchteamtask(self, match, team, task, success=0, miss=0):
+    def matchteamtask(self, match, team, task, page, success=0, miss=0):
         Game.HelloWorld.data(match, team, task, success, miss)
         return 'put measure to system'
 

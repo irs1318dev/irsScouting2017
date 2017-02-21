@@ -9,7 +9,9 @@ import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Views.Page;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Stuart on 2/14/2017.
@@ -55,8 +57,8 @@ class MatchMaker {
     private void setMatch() {
         pageManager.reset();
         for(Page p : pages) {
-            SparseArray<Measure> pageData = new SparseArray<>();
-            for(Measure m : data) if(m.page.equals(p.name)) pageData.put(m.taskId, m);
+            Map<String, Measure> pageData = new HashMap<>();
+            for(Measure m : data) if(m.page.equals(p.name)) pageData.put(m.task, m);
             p.setMeasures(pageData, match.number, getTeam());
         }
     }
