@@ -3,6 +3,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
 from sqlalchemy import ForeignKey
+import csv
+import os
 
 # ========== Database Connection ==============================================
 connection_string = 'postgresql://irs1318:irs1318@localhost:5432/scouting'
@@ -120,6 +122,15 @@ class Team(Base):
     year_founded = Column(String)
 
 
+class Game(Base):
+    __tablename__ = "games"
+
+    id = Column(Integer, primary_key=True)
+    actor = Column(String)
+    task = Column(String)
+    phase = Column(String)
+
+
 class Schedule(Base):
     __tablename__ = "schedules"
 
@@ -178,9 +189,30 @@ def loadMasterData():
         )
         conn.execute(select, name=match)
 
+def loadGameSheet():
+    engine = getdbengine()
+    conn = engine.connect()
+    os.chdir(
+        "C:\Users\Jpowaz100\Desktop\Programming\irsScouting2017\Server\scouting")
+    file = open('game_sheet.csv')
+    sheet = csv.reader(file)
+    for row in sheet:
+            print(row)
+            select = text(
+                "INSERT INTO games(actor, task, phase) "
+                "VALUES (:name) "
+                "ON CONFLICT (name) "
+                "DO "
+                    "UPDATE "
+                        "SET name = :name WHERE $name;"
+
+                )
+                conn.execute(select, name=)
 
 
-# ====================== Add Data to Tables =================================
+
+
+                # ====================== Add Data to Tables =================================
 
 # Session = sessionmaker(bind=engine)
 # session = Session()
@@ -268,6 +300,28 @@ def loadMasterData():
 # blue = Alliance(name='blue')
 #
 #
+# class Task(Base):
+#     __tablename__ = "taskss"
+#
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String, unique=True, nullable=False)
+#
+#
+#
+# class Actor(Base):
+#     __tablename__ = "actors"
+#
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String, unique=True, nullable=False)
+#
+#
+# class Format(Base):
+#     __tablename__ = "formats"
+#
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String, unique=True, nullable=False)
+#
+#
 # class Game(Base):
 #     __tablename__ = "games"
 #
@@ -277,7 +331,37 @@ def loadMasterData():
 #
 #
 #
-
+# class Schedule(Base):
+#     __tablename__ = "schedules"
+#
+#     id = Column(Integer, primary_key=True)
+#     event_id= Column(String, ForeignKey('events.id'))
+#     match_id = Column(String, ForeignKey('matches.id'))
+#     team_id = Column(String, ForeignKey('teams.id'))
+#     level_id = Column(String, ForeignKey('levels.id'))
+#     date_id = Column(String, ForeignKey('dates.id'))
+#     alliance_id = Column(String, ForeignKey('alliances.id'))
+#     station_id = Column(String, ForeignKey('stations.id'))
+#
+#
+# class Measure(Base):
+#     __tablename__ = "measures"
+#
+#     id = Column(Integer, primary_key=True)
+#     team_id = Column(String, ForeignKey('teams.id'))#done
+#     event_id = Column(String, ForeignKey('events.id'))#done
+#     match_id = Column(String, ForeignKey('matches.id'))#done
+#     level_id = Column(String, ForeignKey('levels.id'))#done
+#     date_id = Column(String, ForeignKey('dates.id'))#partly done
+#     alliance_id = Column(String, ForeignKey('alliances.id'))#done
+#     station_id = Column(String, ForeignKey('stations.id'))#partly done
+#     actor_id = Column(String, ForeignKey('actors.id'))#done need to add
+#     task_id = Column(String, ForeignKey('tasks.id'))#done need to add
+#     format_id = Column(String, ForeignKey('formats.id'))#done need to add
+#     phase_id = Column(String, ForeignKey('phases.id'))#done
+#     attempt_id = Column(String, ForeignKey('attempt.id'))#not done
+#     reason_id = Column(String, ForeignKey('reason.id'))#not done
+#
 
 #
 #
