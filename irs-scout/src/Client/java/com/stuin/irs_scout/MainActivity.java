@@ -76,12 +76,12 @@ public class MainActivity extends Activity {
     }
 
     public void nextPage(View view) {
-        //Next page button
+        //Next phase button
         form.nextPage(view);
     }
 
     public void lastPage(View view) {
-        //Previous page button
+        //Previous phase button
         form.lastPage(view);
     }
 }

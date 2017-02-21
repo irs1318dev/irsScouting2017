@@ -5,18 +5,30 @@ package com.stuin.irs_scout.Data;
  */
 public class Task {
     final public String task;
-    final public String actor;
-    final public String page;
+    final public String observer;
+    final public String phase;
     final public String format;
     final public String successname;
     final public String missname;
+    final public String enums;
 
     public Task() {
         task = "";
-        actor = "";
-        page = "";
+        observer = "";
+        phase = "";
         format = "";
         successname = "";
         missname = "";
+        enums = "";
+    }
+
+    public Task(String name) {
+        task = "";
+        observer = "";
+        phase = "";
+        format = "label";
+        successname = name;
+        missname = "";
+        enums = "";
     }
 }

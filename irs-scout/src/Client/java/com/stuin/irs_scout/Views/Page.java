@@ -18,7 +18,7 @@ public class Page extends LinearLayout {
     private List<Label> labels = new ArrayList<>();
 
     public Page(Context context, String name) {
-        //Create page
+        //Create phase
         super(context);
         this.name = name;
 
@@ -29,14 +29,13 @@ public class Page extends LinearLayout {
 
     public void add(Label objectView) {
         //Add object to column
-        if(objectView.task.newpart) newCol();
         labels.add(objectView);
         objectView.create(column);
     }
 
     public void setMeasures(Map<String, Measure> measures, int match, int team) {
         for(Label l : labels) {
-            if(measures.get(l.task.name) != null) l.update(measures.get(l.task.name), false);
+            if(measures.get(l.task.successname) != null) l.update(measures.get(l.task.successname), false);
             else l.update(new Measure(l.task, match, team), false);
         }
     }

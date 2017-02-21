@@ -12,15 +12,14 @@ import com.stuin.irs_scout.R;
 /**
  * Created by Stuart on 2/11/2017.
  */
-public class Number extends Label {
+public class Count extends Label {
     private CountDownTimer countDownTimer;
     private boolean drop;
     private boolean missing;
-    private int max = 1000;
+    private int max = 20;
 
-    public Number(Context context, Task task) {
+    public Count(Context context, Task task) {
         super(context, task);
-        if(!task.additions.isEmpty()) max = Integer.valueOf(task.additions);
     }
 
     @Override
@@ -40,8 +39,8 @@ public class Number extends Label {
         super.update(measure, send);
 
         //Set button text
-        views.get(0).setText(task.success + ": " + measure.success);
-        if(!task.miss.isEmpty()) views.get(1).setText(task.miss + ": " + measure.miss);
+        views.get(0).setText(task.successname + ": " + measure.success);
+        if(!task.missname.isEmpty()) views.get(1).setText(task.missname + ": " + measure.miss);
     }
 
     private View.OnClickListener clickListener = new OnClickListener() {

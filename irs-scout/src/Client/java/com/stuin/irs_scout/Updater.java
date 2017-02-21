@@ -14,6 +14,7 @@ public class Updater {
     static public List<Measure> measures = new ArrayList<>();
 
     private MatchMaker matchMaker;
+    private Queue<Measure> finished = new ArrayDeque<>();
     private RadioButton status;
 
     Updater(MatchMaker matchMaker, View view) {
@@ -51,6 +52,7 @@ public class Updater {
         if(!MainActivity.error) {
             for(Measure measure : measures) {
                 String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task;
+                if(!measure.value.isEmpty()) s += "&value=" + measure.value;
                 if(measure.success != 0) s += "&success=" + measure.success;
                 if(measure.miss != 0) s += "&miss=" + measure.miss;
 
@@ -63,11 +65,12 @@ public class Updater {
 
                     @Override
                     public void run(List<String> s) {
-                        measures.remove(measure);
+                        finished.add(measure);
                     }
                 }
                 new Remove(measure).start(s);
             }
+            while(!finished.isEmpty()) measures.remove(finished.poll());
         }
     }
 }

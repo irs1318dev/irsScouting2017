@@ -1,6 +1,5 @@
 package com.stuin.irs_scout;
 
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
 import com.google.gson.Gson;
