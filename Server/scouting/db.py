@@ -212,7 +212,7 @@ def loadGameSheet():
 
 
 
-                # ====================== Add Data to Tables =================================
+# ====================== Add Data to Tables =================================
 
 # Session = sessionmaker(bind=engine)
 # session = Session()

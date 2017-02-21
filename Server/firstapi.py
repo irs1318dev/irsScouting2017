@@ -23,5 +23,5 @@ def getSched(event, season, level="qual"):
     sched = urlopen(req)
     return sched.read()
 
-print getSched('WAAMV', '2016', level='qual')
+print getSched('WAAMV', '2017', level='qual')
 
