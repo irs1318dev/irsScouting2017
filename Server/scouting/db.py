@@ -3,8 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
 from sqlalchemy import ForeignKey
-import csv
-import os
+
 
 # ========== Database Connection ==============================================
 connection_string = 'postgresql://irs1318:irs1318@localhost:5432/scouting'
@@ -80,7 +79,7 @@ class Attempt(Base):
 
 
 class Reason(Base):
-    __tablename__ = "reasonss"
+    __tablename__ = "reasons"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
@@ -127,39 +126,43 @@ class Game(Base):
 
     id = Column(Integer, primary_key=True)
     actor = Column(String)
-    task = Column(String)
-    phase = Column(String)
+    task = Column(String, unique= True)
+    claim = Column(String)
+    auto = Column(String)
+    teleop = Column(String)
+    final = Column(String)
+
 
 
 class Schedule(Base):
     __tablename__ = "schedules"
 
     id = Column(Integer, primary_key=True)
-    event = Column(String,'event')
-    match = Column(String, 'match')
-    team = Column(String,'team')
-    level = Column(String,'level')
-    date = Column(String, 'date')
-    alliance = Column(String,'alliance')
-    station = Column(String,'station')
+    event = Column(String)
+    match = Column(String)
+    team = Column(String)
+    level = Column(String)
+    date = Column(String)
+    alliance = Column(String)
+    station = Column(String)
 
 
 class Measure(Base):
     __tablename__ = "measures"
 
-    team_id = Column(Integer, ForeignKey('teams.id'))
-    event_id = Column(Integer, ForeignKey('events.id'))
-    match_id = Column(Integer, ForeignKey('matches.id'))
-    level_id = Column(Integer, ForeignKey('levels.id'))
-    date_id = Column(Integer, ForeignKey('dates.id'))
-    alliance_id = Column(Integer, ForeignKey('alliances.id'))
-    station_id = Column(Integer, ForeignKey('stations.id'))
-    actor_id = Column(Integer, ForeignKey('actors.id'))
-    task_id = Column(Integer, ForeignKey('tasks.id'))
-    format_id = Column(Integer, ForeignKey('formats.id'))
-    phase_id = Column(Integer, ForeignKey('phases.id'))
-    attempt_id = Column(Integer, ForeignKey('attempt.id'))
-    reason_id = Column(Integer, ForeignKey('reason.id'))
+    team_id = Column(Integer, ForeignKey('teams.id'), primary_key=True)
+    event_id = Column(Integer, ForeignKey('events.id'), primary_key=True)
+    match_id = Column(Integer, ForeignKey('matches.id'), primary_key=True)
+    level_id = Column(Integer, ForeignKey('levels.id'), primary_key=True)
+    date_id = Column(Integer, ForeignKey('dates.id'), primary_key=True)
+    alliance_id = Column(Integer, ForeignKey('alliances.id'), primary_key=True)
+    station_id = Column(Integer, ForeignKey('stations.id'), primary_key=True)
+    actor_id = Column(Integer, ForeignKey('actors.id'), primary_key=True)
+    task_id = Column(Integer, ForeignKey('tasks.id'), primary_key=True)
+    format_id = Column(Integer, ForeignKey('formats.id'), primary_key=True)
+    phase_id = Column(Integer, ForeignKey('phases.id'), primary_key=True)
+    attempt_id = Column(Integer, ForeignKey('attempts.id'), primary_key=True)
+    reason_id = Column(Integer, ForeignKey('reasons.id'), primary_key=True)
     capability = Column(Integer)
     attempts = Column(Integer)
     successes = Column(Integer)
@@ -189,25 +192,6 @@ def loadMasterData():
         )
         conn.execute(select, name=match)
 
-def loadGameSheet():
-    engine = getdbengine()
-    conn = engine.connect()
-    os.chdir(
-        "C:\Users\Jpowaz100\Desktop\Programming\irsScouting2017\Server\scouting")
-    file = open('game_sheet.csv')
-    sheet = csv.reader(file)
-    for row in sheet:
-            print(row)
-            select = text(
-                "INSERT INTO games(actor, task, phase) "
-                "VALUES (:name) "
-                "ON CONFLICT (name) "
-                "DO "
-                    "UPDATE "
-                        "SET name = :name WHERE $name;"
-
-                )
-                conn.execute(select, name=)
 
 
 
