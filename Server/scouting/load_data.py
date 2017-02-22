@@ -44,11 +44,6 @@ def insertsched(event, season, level='qual'):
             team = tm['teamNumber']
             station = tm['station']
             alliance = tm['station'][0:-1]
-
-
-
-
-
             select = text(
                 "INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
                 "VALUES (:event,:match,:team,:level,:date,:alliance,:station); "
