@@ -1,0 +1,9 @@
+actor,observer,phase,category,new,tasks
+robot,match,auto,Movement,FALSE,startingLocation|moveBaseline
+robot,match,auto,Gear,FALSE,holdGear|placeGear
+robot,match,auto,Fuel,TRUE,holdFuelCapacity|shootLowBoiler|shootHighBoiler
+robot,match,teleop,Gear,FALSE,placeGear|pickupGearRetrieval|pickupGearFloor
+robot,match,teleop,Fuel,TRUE,pickupFuelRetrieval|pickupFuelHopper|pickupFuelFloor
+robot,match,teleop,Climb,FALSE,pushTouchpad|maintainContact
+robot,boiler,teleop,Fuel,FALSE,shootLowBoiler|shootHighBoiler
+robot,boiler,teleop,Final,TRUE,shotPercentage
