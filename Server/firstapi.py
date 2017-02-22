@@ -1,5 +1,7 @@
 from base64 import b64encode
 from urllib2 import Request, urlopen
+import scouting.db as db
+from sqlalchemy.sql import text
 
 import auth
 
@@ -22,6 +24,3 @@ def getSched(event, season, level="qual"):
     # send url request
     sched = urlopen(req)
     return sched.read()
-
-print getSched('WAAMV', '2017', level='qual')
-
