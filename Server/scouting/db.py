@@ -131,7 +131,8 @@ class Schedule(Base):
     date = Column(String, 'date')
     alliance = Column(String,'alliance')
     station = Column(String,'station')
-
+    match_status = Column(String, 'match_status')
+    tablet_status = Column(String, 'tablet_status')
 
 class Measure(Base):
     __tablename__ = "measures"
@@ -145,7 +146,7 @@ class Measure(Base):
     station_id = Column(Integer, ForeignKey('stations.id'))
     actor_id = Column(Integer, ForeignKey('actors.id'))
     task_id = Column(Integer, ForeignKey('tasks.id'))
-    format_id = Column(Integer, ForeignKey('formats.id'))
+    measuretype_id = Column(Integer, ForeignKey('measuretype.id'))
     phase_id = Column(Integer, ForeignKey('phases.id'))
     attempt_id = Column(Integer, ForeignKey('attempt.id'))
     reason_id = Column(Integer, ForeignKey('reason.id'))

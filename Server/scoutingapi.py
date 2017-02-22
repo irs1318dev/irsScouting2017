@@ -11,6 +11,7 @@ class Scouting(object):
     # def matchApi = new Match()
 
     def __init__(self):
+        self.matchDal = MatchDal()
         return
 
     @cherrypy.expose
@@ -62,12 +63,14 @@ class Scouting(object):
     def matchteamtasks(self, team, match=-1):
         if match == -1:
             match = self.currentMatch
-        return Game.HelloWorld.matchteam(match, team)
+        #return Game.HelloWorld.matchteam(match, team)
+        return MatchDal.matchteamtasks(match, team, phase)
     # Get data from match and team
 
     @cherrypy.expose
-    def matchteamtask(self, match, team, task, page, success=0, miss=0):
-        Game.HelloWorld.data(match, team, task, success, miss)
+    def matchteamtask(self, match, team, task, phase, success=0, miss=0):
+        return MatchDal.matchteamtask(match, team, phase, success, miss)
+        #Game.HelloWorld.data(match, team, task, success, miss)
         return 'put measure to system'
 
     @cherrypy.expose
