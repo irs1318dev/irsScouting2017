@@ -26,6 +26,7 @@ class Scouting(object):
         return Game.HelloWorld.gamesections()
     # All tasks in layout
 
+    @cherrypy.expose
     def gametasks(self):
         return Game.HelloWorld.gametasks()
 
@@ -70,7 +71,8 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchteamtask(self, match, team, task, phase, value='', success=0, miss=0):
-        return Game.HelloWorld.data(match, team, task, )
+        Game.HelloWorld.data(match, team, task, phase, value, success, miss)
+        return 'Got it'
 
     @cherrypy.expose
     def dimensions(self):

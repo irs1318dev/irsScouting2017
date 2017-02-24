@@ -22,13 +22,21 @@ public class Measure {
         miss = 0;
     }
 
-    public Measure(Task task, int match, int team) {
+    public Measure(Task task, int match, int team, String phase) {
         this.match = match;
         this.team = team;
         this.task = task.task;
-        this.page = task.phase;
+        this.page = phase;
         this.value = "";
         this.success = 0;
         this.miss = 0;
+    }
+
+    public boolean Equals(Measure measure) {
+        if(!task.equals(measure.task)) return false;
+        if(!value.equals(measure.value)) return false;
+        if(success != measure.success) return false;
+        if(miss != measure.miss) return false;
+        return true;
     }
 }

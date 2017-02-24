@@ -2,7 +2,6 @@ package com.stuin.irs_scout.Views;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.SparseArray;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,16 +34,16 @@ public class Page extends LinearLayout {
 
     public void setMeasures(Map<String, Measure> measures, int match, int team) {
         for(Label l : labels) {
-            if(measures.get(l.task.successname) != null) l.update(measures.get(l.task.successname), false);
-            else l.update(new Measure(l.task, match, team), false);
+            if(measures.get(l.task.success) != null) l.update(measures.get(l.task.success), false);
+            else l.update(new Measure(l.task, match, team, name), false);
         }
     }
 
     public void send() {
-        for(Label label : labels) if(label.measure.success + label.measure.miss > 0) label.update(label.measure, true);
+        for(Label label : labels) if(label.measure.success + label.measure.miss > 0) label.update(label.measure, false);
     }
 
-    private void newCol() {
+    public void newCol() {
         //Make new column
         divider();
         column = new LinearLayout(getContext());

@@ -13,19 +13,18 @@ import java.util.List;
 import java.util.Map;
 
 class PageManager extends LinearLayout {
-    Map<String, Page> fullPages = new HashMap<>();
     List<Page> pages = new ArrayList<>();
     Updater updater;
 
     private int current = -1;
     private Activity activity;
-    private PageManager pageManager;
+    private LabelMaker labelMaker;
 
     PageManager(Activity newActivity) {
         super(newActivity);
         //Start Layout
-        pageManager = this;
         this.activity = newActivity;
+        labelMaker = new LabelMaker(this);
 
         //Setup centering
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
@@ -36,15 +35,15 @@ class PageManager extends LinearLayout {
         class Layout extends Request {
             @Override
             public void run(List<String> s) {
-                fullPages = new LabelMaker().pages(pageManager, s);
+                labelMaker.pages(s);
 
                 class Tasks extends Request {
                     @Override
                     public void run(List<String> s) {
-                        pages = new LabelMaker().taskMake(getContext(), s, fullPages);
+                        pages = labelMaker.taskMake( s);
 
                         //Get Match
-                        MatchMaker matchMaker = new MatchMaker(pageManager, activity.findViewById(R.id.Status));
+                        MatchMaker matchMaker = new MatchMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
                         updater = new Updater(matchMaker, activity.findViewById(R.id.PageStatus));
                     }
                 }

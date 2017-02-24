@@ -6,29 +6,35 @@ package com.stuin.irs_scout.Data;
 public class Task {
     final public String task;
     final public String observer;
-    final public String phase;
-    final public String format;
-    final public String successname;
-    final public String missname;
+    final public String claim;
+    final public String auto;
+    final public String teleop;
+    final public String finish;
+    final public String success;
+    final public String miss;
     final public String enums;
 
     public Task() {
         task = "";
         observer = "";
-        phase = "";
-        format = "";
-        successname = "";
-        missname = "";
+        claim = "";
+        auto = "";
+        teleop = "";
+        finish = "";
+        success = "";
+        miss = "";
         enums = "";
     }
 
     public Task(String name) {
         task = "";
-        observer = "";
-        phase = "";
-        format = "label";
-        successname = name;
-        missname = "";
+        observer = "robot";
+        claim = "label";
+        auto = "label";
+        teleop = "label";
+        finish = "label";
+        success = name;
+        miss = "";
         enums = "";
     }
 }

@@ -19,7 +19,7 @@ class Section(object):
         self.observer = value[1]
         self.phase = value[2]
         self.category = value[3]
-        self.new = value[4].lower()
+        self.newpart = value[4].lower()
         self.tasks = value[5].split('|')
 
 
@@ -31,7 +31,7 @@ class Task(object):
         self.claim = value[2]
         self.auto = value[3]
         self.teleop = value[4]
-        self.final = value[5]
+        self.finish = value[5]
         self.success = value[6]
         self.miss = value[7]
         self.enums = value[8]
@@ -86,4 +86,4 @@ class HelloWorld(object):
 
         with open("TestJson/measures", "a") as new:
             new.write('\n' + out)
-
+        return out

@@ -2,8 +2,10 @@ package com.stuin.irs_scout.Views;
 
 import android.content.Context;
 import android.os.CountDownTimer;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
@@ -23,6 +25,17 @@ public class Count extends Label {
     }
 
     @Override
+    void create(LinearLayout column) {
+        linearLayout = new LinearLayout(getContext());
+        linearLayout.setGravity(Gravity.CENTER);
+        column.addView(linearLayout);
+
+        part(task.success);
+        if(!task.miss.isEmpty()) part(task.miss);
+    }
+
+
+    @Override
     protected TextView part(String name) {
         //Simple counter button
         Button button = new Button(getContext());
@@ -30,6 +43,7 @@ public class Count extends Label {
         button.setTextSize(getResources().getDimension(R.dimen.text_norm));
         button.setOnClickListener(clickListener);
         button.setOnLongClickListener(longClickListener);
+        views.add(button);
         linearLayout.addView(button);
         return button;
     }
@@ -39,8 +53,8 @@ public class Count extends Label {
         super.update(measure, send);
 
         //Set button text
-        views.get(0).setText(task.successname + ": " + measure.success);
-        if(!task.missname.isEmpty()) views.get(1).setText(task.missname + ": " + measure.miss);
+        views.get(0).setText(task.success + ": " + measure.success);
+        if(!task.miss.isEmpty()) views.get(1).setText(task.miss + ": " + measure.miss);
     }
 
     private View.OnClickListener clickListener = new OnClickListener() {

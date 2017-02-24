@@ -17,30 +17,38 @@ import java.util.Map;
  */
 class LabelMaker {
     private List<Section> sections = new ArrayList<>();
+    PageManager pageManager;
+    private Map<String, Page> pageList = new HashMap<>();
 
-    Map<String, Page> pages(PageManager pageManager, List<String> layout) {
+    LabelMaker(PageManager pageManager) {
+        this.pageManager = pageManager;
+    }
+
+    void pages(List<String> layout) {
         //Prepare variables
-        Map<String, Page> pageList = new HashMap<>();
-        int current = -1;
+        String current = "";
         Gson gson = new Gson();
 
         //Translate layout file
-        for(String s : layout) sections.add(gson.fromJson(s, Section.class));
+        for(String s : layout) {
+            Section section = gson.fromJson(s, Section.class);
+            if(usePage(section.observer, MainActivity.position)) sections.add(section);
+        }
 
         //Build pages
-        for(Section section : sections) if(usePage(section.observer, MainActivity.position)) {
+        for(Section section : sections)  {
             //Create each phase
-            if(current == -1 || !pageList.get(current).name.equals(section.phase)) {
+            if(current.isEmpty() || !pageList.get(current).name.equals(section.phase)) {
                 pageList.put(section.phase, pageManager.makePage(section.phase));
-                current++;
+                current = section.phase;
             }
         }
-        return pageList;
     }
 
-    List<Page> taskMake(Context context, List<String> strings, Map<String, Page> pageList) {
+    List<Page> taskMake(List<String> strings) {
         Map<String, Task> tasks = new HashMap<>();
         Gson gson = new Gson();
+        Context context = pageManager.getContext();
         List<Page> pages = new ArrayList<>();
 
         for(String s : strings) {
@@ -49,8 +57,12 @@ class LabelMaker {
         }
 
         for(Section s : sections) {
+            if(s.newpart.equals("true")) pageList.get(s.phase).newCol();
             pageList.get(s.phase).add(new Label(context, new Task(s.category)));
-            for(String t : s.tasks) pageList.get(s.phase).add(makeLabel(tasks.get(t), context));
+
+            for(String t : s.tasks) if(tasks.containsKey(t)) {
+                pageList.get(s.phase).add(makeLabel(tasks.get(t), context, s.phase));
+            }
 
             if(!pages.contains(pageList.get(s.phase))) pages.add(pageList.get(s.phase));
         }
@@ -65,9 +77,27 @@ class LabelMaker {
         return false;
     }
 
-    private Label makeLabel(Task task, Context context) {
+    private Label makeLabel(Task task, Context context, String phase) {
+        //Get format from phase
+        String format = "na";
+        switch(phase.charAt(0)) {
+            case 'c':
+                format = task.claim;
+                break;
+            case 'a':
+                format = task.auto;
+                break;
+            case 't':
+                format = task.teleop;
+                break;
+            case 'f':
+                format = task.finish;
+                break;
+        }
+
         //Choose format to create
-        switch(task.format.charAt(0)) {
+
+        switch(format.charAt(0)) {
             case 'b':
                 return new Switcher(context, task);
             case 'c':
@@ -76,7 +106,9 @@ class LabelMaker {
                 return new Choice(context, task);
             case 'p':
                 return new Enter(context, task);
+            case 'l':
+                return new Label(context, task);
         }
-        return new Label(context, task);
+        return new Label(context, new Task());
     }
 }

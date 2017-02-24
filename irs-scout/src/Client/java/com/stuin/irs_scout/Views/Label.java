@@ -26,7 +26,7 @@ public class Label extends TextView {
 
     void create(LinearLayout linearLayout) {
         setTextSize(getResources().getDimension(R.dimen.text_norm));
-        setText(task.task);
+        setText(task.success);
         setTextColor(getResources().getColor(R.color.colorText));
         setGravity(Gravity.CENTER);
         linearLayout.addView(this);

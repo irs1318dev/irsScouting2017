@@ -5,6 +5,7 @@ import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
@@ -19,6 +20,13 @@ public class Enter extends Label{
     }
 
     @Override
+    void create(LinearLayout linearLayout) {
+        this.linearLayout = linearLayout;
+        part(task.success);
+    }
+
+
+    @Override
     protected TextView part(String name) {
         EditText editText = new EditText(getContext());
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -26,6 +34,7 @@ public class Enter extends Label{
         editText.setWidth(200);
         editText.setOnEditorActionListener(actionListener);
         linearLayout.addView(editText);
+        views.add(editText);
         return editText;
     }
 

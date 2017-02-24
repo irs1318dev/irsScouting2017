@@ -9,6 +9,7 @@ public class Section {
     final public String phase;
     final public String category;
     final public String[] tasks;
+    final public String newpart;
 
     public Section() {
         actor = "";
@@ -16,5 +17,6 @@ public class Section {
         phase = "";
         category = "";
         tasks = new String[0];
+        newpart = "false";
     }
 }

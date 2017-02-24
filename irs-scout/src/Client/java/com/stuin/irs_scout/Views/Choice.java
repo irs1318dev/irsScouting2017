@@ -19,7 +19,7 @@ public class Choice extends Label {
         super(context, task);
         defaults = false;
 
-        choices = task.enums.split("|");
+        choices = task.enums.replace('|','>').split(">");
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Choice extends Label {
 
         for(int i = 0; i < choices.length; i++) {
             radioButton = (CompoundButton) views.get(i);
-            radioButton.setChecked(choices[i].equals(measure.success));
+            radioButton.setChecked(choices[i].equals(measure.value));
         }
     }
 
@@ -60,9 +60,6 @@ public class Choice extends Label {
         @Override
         public void onCheckedChanged(CompoundButton radioButton, boolean b) {
             if(b) {
-                int i = 0;
-                while(radioButton != views.get(i)) i++;
-
                 measure.value = radioButton.getText().toString();
 
                 update(measure, true);
