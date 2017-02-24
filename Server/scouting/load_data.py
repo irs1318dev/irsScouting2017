@@ -14,22 +14,19 @@ def loadGameSheet():
     os.chdir(fpath)
     file = open('game_sheet.csv')
     sheet = csv.reader(file)
-    # writer = csv.DictWriter(sheet, fieldnames=["actor", "task", "claim", "auto", "teleop",
-                                             #"final", "successname", "missname", "enums"], delimitor=',')
-    # writer.writeheader()
     for row in sheet:
         if row[0] != 'actor':
             insertgame(row[0],row[1],row[2],row[3],row[4],row[5])
 
 
-def insertgame(actor, task, claim, auto, teleop, final):
+def insertgame(actor, task, claim, auto, teleop, finish):
     engine = db.getdbengine()
     conn = engine.connect()
     select = text(
-        "INSERT INTO games (actor, task, claim, auto, teleop, final) " +
-        "VALUES (:actor,:task,:claim,:auto,:teleop,:final); "
+        "INSERT INTO games (actor, task, claim, auto, teleop, finish) " +
+        "VALUES (:actor,:task,:claim,:auto,:teleop,:finish); "
     )
-    conn.execute(select, actor=actor, task=task, claim=claim, auto=auto, teleop=teleop, final=final)
+    conn.execute(select, actor=actor, task=task, claim=claim, auto=auto, teleop=teleop, finish=finish)
 
 
 def insertsched(event, season, level='qual'):

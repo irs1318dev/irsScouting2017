@@ -130,7 +130,7 @@ class Game(Base):
     claim = Column(String)
     auto = Column(String)
     teleop = Column(String)
-    final = Column(String)
+    finish = Column(String)
 
 
 
