@@ -30,7 +30,6 @@ class MatchDal(object):
         pass
 
     def matchteamtasks(self, match, team, phase):
-
         current_match = event.EventDal.current_match(match, team)
         event_id = self.events[current_match['event']]
         match_id = self.matches[match]
@@ -48,7 +47,7 @@ class MatchDal(object):
         measures = []
         for measure in results:
             measures.append(dict(measure))
-        return json.dump(measures)
+        return json.dumps(measures)
 
     def matchteamtask(self, match, team, task, phase, value):
         # find the parameter ids for match team task phase-- make a map
@@ -57,7 +56,7 @@ class MatchDal(object):
         phase_id = self.phases[phase]
         task_id = self.tasks[task]
         # find ids event date alliance station from the schedule table --make a map
-        current_match = event.current_match(match, team)
+        current_match = event.EventDal.current_match(match, team)
         date_id = self.dates[current_match['date']]
         event_id = self.events[current_match['event']]
         alliance_id = self.alliances[current_match['alliance']]

@@ -6,7 +6,8 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 class EventDal(object):
 
-    def current_match(self, match, team):
+    @staticmethod
+    def current_match(match, team):
         cur.execute("SELECT * FROM schedules WHERE "
                     "match_status = 'current' "
                     " AND team = " + team
