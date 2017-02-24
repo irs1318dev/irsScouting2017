@@ -5,8 +5,12 @@ conn = psycopg2.connect("dbname=scouting host=localhost user=postgres password=i
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 class EventDal(object):
-    def current_match(self, match_status, match, team):
-        cur.execute("SELECT * FROM schedules WHERE match_status = " + match_status + " AND team = " + team + "AND match = " + match + ";")
+
+    def current_match(self, match, team):
+        cur.execute("SELECT * FROM schedules WHERE "
+                    "match_status = 'current' "
+                    " AND team = " + team
+                    + "AND match = " + match + ";")
         event = cur.fetchall()
         current_match = []
         for row in event:

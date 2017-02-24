@@ -101,8 +101,8 @@ class Actor(Base):
     name = Column(String, unique=True, nullable=False)
 
 
-class Format(Base):
-    __tablename__ = "formats"
+class MeasureType(Base):
+    __tablename__ = "measuretypes"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
@@ -137,19 +137,19 @@ class Schedule(Base):
 class Measure(Base):
     __tablename__ = "measures"
 
-    team_id = Column(Integer, ForeignKey('teams.id'))
-    event_id = Column(Integer, ForeignKey('events.id'))
-    match_id = Column(Integer, ForeignKey('matches.id'))
-    level_id = Column(Integer, ForeignKey('levels.id'))
-    date_id = Column(Integer, ForeignKey('dates.id'))
-    alliance_id = Column(Integer, ForeignKey('alliances.id'))
-    station_id = Column(Integer, ForeignKey('stations.id'))
-    actor_id = Column(Integer, ForeignKey('actors.id'))
-    task_id = Column(Integer, ForeignKey('tasks.id'))
-    measuretype_id = Column(Integer, ForeignKey('measuretype.id'))
-    phase_id = Column(Integer, ForeignKey('phases.id'))
-    attempt_id = Column(Integer, ForeignKey('attempt.id'))
-    reason_id = Column(Integer, ForeignKey('reason.id'))
+    date_id = Column(Integer, ForeignKey('dates.id'), primary_key=True)
+    event_id = Column(Integer, ForeignKey('events.id'), primary_key=True)
+    level_id = Column(Integer, ForeignKey('levels.id'), primary_key=True)
+    match_id = Column(Integer, ForeignKey('matches.id'), primary_key=True)
+    alliance_id = Column(Integer, ForeignKey('alliances.id'), primary_key=True)
+    team_id = Column(Integer, ForeignKey('teams.id'), primary_key=True)
+    station_id = Column(Integer, ForeignKey('stations.id'), primary_key=True)
+    actor_id = Column(Integer, ForeignKey('actors.id'), primary_key=True)
+    task_id = Column(Integer, ForeignKey('tasks.id'), primary_key=True)
+    measuretype_id = Column(Integer, ForeignKey('measuretypes.id'), primary_key=True)
+    phase_id = Column(Integer, ForeignKey('phases.id'), primary_key=True)
+    attempt_id = Column(Integer, ForeignKey('attempt.id'), primary_key=True)
+    reason_id = Column(Integer, ForeignKey('reason.id'), primary_key=True)
     capability = Column(Integer)
     attempts = Column(Integer)
     successes = Column(Integer)
