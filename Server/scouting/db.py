@@ -1,7 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.sql import text
 from sqlalchemy import ForeignKey
 
 
@@ -17,25 +15,13 @@ def getdbengine():
 Base = declarative_base()
 
 
-class Match(Base):
-    __tablename__ = "matches"
+class Date(Base):
+    __tablename__ = "dates"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
 
-
-class Level(Base):
-    __tablename__ = "levels"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
-
-
-class Station(Base):
-    __tablename__ = "stations"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
+    date = Column(String)
 
 
 class Event(Base):
@@ -48,24 +34,72 @@ class Event(Base):
     type = Column(String)
 
 
-class Phase(Base):
-    __tablename__ = "phases"
+class Level(Base):
+    __tablename__ = "levels"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
 
 
-class Date(Base):
-    __tablename__ = "dates"
+class Match(Base):
+    __tablename__ = "matches"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
-
-    date = Column(String)
 
 
 class Alliance(Base):
     __tablename__ = "alliances"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+
+class Team(Base):
+    __tablename__ = "teams"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+    long_name = Column(String, unique=True)
+    city = Column(String)
+    state = Column(String)
+    region = Column(String)
+    year_founded = Column(String)
+
+
+class Station(Base):
+    __tablename__ = "stations"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+
+class Actor(Base):
+    __tablename__ = "actors"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+
+class Task(Base):
+    __tablename__ = "tasks"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+    type = Column(String)
+    display_name = Column(String)
+
+
+class MeasureType(Base):
+    __tablename__ = "measuretypes"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+
+class Phase(Base):
+    __tablename__ = "phases"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
@@ -85,42 +119,6 @@ class Reason(Base):
     name = Column(String, unique=True, nullable=False)
 
 
-class Task(Base):
-    __tablename__ = "tasks"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
-
-    type = Column(String)
-    display_name = Column(String)
-
-
-class Actor(Base):
-    __tablename__ = "actors"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
-
-
-class Format(Base):
-    __tablename__ = "formats"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
-
-
-class Team(Base):
-    __tablename__ = "teams"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
-    long_name = Column(String, unique=True)
-    city = Column(String)
-    state = Column(String)
-    region = Column(String)
-    year_founded = Column(String)
-
-
 class Game(Base):
     __tablename__ = "games"
 
@@ -138,220 +136,39 @@ class Schedule(Base):
     __tablename__ = "schedules"
 
     id = Column(Integer, primary_key=True)
-    event = Column(String)
-    match = Column(String)
-    team = Column(String)
-    level = Column(String)
-    date = Column(String)
-    alliance = Column(String)
-    station = Column(String)
+    date = Column(String, 'date')
+    event = Column(String, 'event')
+    level = Column(String, 'level')
+    match = Column(String, 'match')
+    alliance = Column(String, 'alliance')
+    team = Column(String, 'team')
+    station = Column(String, 'station')
+    match_status = Column(String, 'match_status')
+    tablet_status = Column(String, 'tablet_status')
 
 
 class Measure(Base):
     __tablename__ = "measures"
 
-    team_id = Column(Integer, ForeignKey('teams.id'), primary_key=True)
-    event_id = Column(Integer, ForeignKey('events.id'), primary_key=True)
-    match_id = Column(Integer, ForeignKey('matches.id'), primary_key=True)
-    level_id = Column(Integer, ForeignKey('levels.id'), primary_key=True)
     date_id = Column(Integer, ForeignKey('dates.id'), primary_key=True)
+    event_id = Column(Integer, ForeignKey('events.id'), primary_key=True)
+    level_id = Column(Integer, ForeignKey('levels.id'), primary_key=True)
+    match_id = Column(Integer, ForeignKey('matches.id'), primary_key=True)
     alliance_id = Column(Integer, ForeignKey('alliances.id'), primary_key=True)
+    team_id = Column(Integer, ForeignKey('teams.id'), primary_key=True)
     station_id = Column(Integer, ForeignKey('stations.id'), primary_key=True)
     actor_id = Column(Integer, ForeignKey('actors.id'), primary_key=True)
     task_id = Column(Integer, ForeignKey('tasks.id'), primary_key=True)
-    format_id = Column(Integer, ForeignKey('formats.id'), primary_key=True)
+    measuretype_id = Column(Integer, ForeignKey('measuretypes.id'), primary_key=True)
     phase_id = Column(Integer, ForeignKey('phases.id'), primary_key=True)
-    attempt_id = Column(Integer, ForeignKey('attempts.id'), primary_key=True)
-    reason_id = Column(Integer, ForeignKey('reasons.id'), primary_key=True)
+    attempt_id = Column(Integer, ForeignKey('attempt.id'), primary_key=True)
+    reason_id = Column(Integer, ForeignKey('reason.id'), primary_key=True)
     capability = Column(Integer)
     attempts = Column(Integer)
     successes = Column(Integer)
     cycle_time = Column(Integer)
 
 
-
-def createTables():
+def create_tables():
     engine = getdbengine()
     Base.metadata.create_all(engine)
-
-
-
-def loadMasterData():
-    engine = getdbengine()
-    conn = engine.connect()
-    for i in range(1, 201):
-        match = "match " + str(i)
-        select = text(
-            "INSERT INTO matches(name) "
-            "VALUES (:name) "
-            "ON CONFLICT (name) "
-            "DO "
-                "UPDATE "
-                    "SET name = :name WHERE $name;"
-
-        )
-        conn.execute(select, name=match)
-
-
-
-
-
-# ====================== Add Data to Tables =================================
-
-# Session = sessionmaker(bind=engine)
-# session = Session()
-
-
-#match_number = Match(id=1, name='match number 1')
-
-#level_qual = Level(name='Qualifications')
-#level_playoff = Level(name='Playoffs')
-
-
- #session.add_all([level_playoff, level_qual])
-
-#session.commit()
-
-# All dimensions tables have id(serial), name (unique)
-#
-# class Station(Base):
-#     __tablename__ = "stations"
-#
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String, unique=True, nullable=False)
-#
-#
-# station_red = Station(id=1, name='red1')
-# station_red = Station(id=2, name='red2')
-# station_red = Station(id=3, name='red3')
-# station_all = Station(name='na')
-# station_blue = Station(id=1, name='blue3')
-# station_blue = Station(id=2, name='blue2')
-# station_blue = Station(id=3, name='blue3')
-#
-#
-# class Team(Base):
-#     __tablename__ = "teams"
-#
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String, unique=True, nullable=False)
-#
-# # Tell the database server to create the table
-#
-# # Create a team object
-# tm_irs = Team(id=1318, name='Issaquah Robotics Society')
-#    region, state, city
-#
-#
-# class Event(Base):
-#     __tablename__ = "events"
-#
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String, unique=True, nullable=False)
-#       #state and type(district, championships)
-#
-#
-# class Phase(Base):
-#     __tablename__ = "phases"
-#
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String, unique=True, nullable=False)
-#
-#
-# auto = Phase(name='auto')
-# teleop = Phase(name='teleop')
-# post = Phase(name='post')
-# prep = Phase(name='prep')
-# na = Phase(name='na')
-#
-#
-# class Date(Base):
-#     __tablename__ = "dates"
-#
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String, unique=True, nullable=False)
-#
-#
-#
-# class Alliance(Base):
-#     __tablename__ = "alliances"
-#
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String, unique=True, nullable=False)
-#
-#
-# red = Alliance(name='red')
-# blue = Alliance(name='blue')
-#
-#
-# class Task(Base):
-#     __tablename__ = "taskss"
-#
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String, unique=True, nullable=False)
-#
-#
-#
-# class Actor(Base):
-#     __tablename__ = "actors"
-#
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String, unique=True, nullable=False)
-#
-#
-# class Format(Base):
-#     __tablename__ = "formats"
-#
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String, unique=True, nullable=False)
-#
-#
-# class Game(Base):
-#     __tablename__ = "games"
-#
-#     id = Column(Integer, primary_key=True)
-#     actor_id = Column(String, ForeignKey('actors.id'))
-#     task_id = Column(String, ForeignKey('tasks.id'))
-#
-#
-#
-# class Schedule(Base):
-#     __tablename__ = "schedules"
-#
-#     id = Column(Integer, primary_key=True)
-#     event_id= Column(String, ForeignKey('events.id'))
-#     match_id = Column(String, ForeignKey('matches.id'))
-#     team_id = Column(String, ForeignKey('teams.id'))
-#     level_id = Column(String, ForeignKey('levels.id'))
-#     date_id = Column(String, ForeignKey('dates.id'))
-#     alliance_id = Column(String, ForeignKey('alliances.id'))
-#     station_id = Column(String, ForeignKey('stations.id'))
-#
-#
-# class Measure(Base):
-#     __tablename__ = "measures"
-#
-#     id = Column(Integer, primary_key=True)
-#     team_id = Column(String, ForeignKey('teams.id'))#done
-#     event_id = Column(String, ForeignKey('events.id'))#done
-#     match_id = Column(String, ForeignKey('matches.id'))#done
-#     level_id = Column(String, ForeignKey('levels.id'))#done
-#     date_id = Column(String, ForeignKey('dates.id'))#partly done
-#     alliance_id = Column(String, ForeignKey('alliances.id'))#done
-#     station_id = Column(String, ForeignKey('stations.id'))#partly done
-#     actor_id = Column(String, ForeignKey('actors.id'))#done need to add
-#     task_id = Column(String, ForeignKey('tasks.id'))#done need to add
-#     format_id = Column(String, ForeignKey('formats.id'))#done need to add
-#     phase_id = Column(String, ForeignKey('phases.id'))#done
-#     attempt_id = Column(String, ForeignKey('attempt.id'))#not done
-#     reason_id = Column(String, ForeignKey('reason.id'))#not done
-#
-
-#
-#
-# Create a session object that will allow us to talk to the database
-
-#
-# # Send the team object to the database.
-# session.add()
-# session.commit()
