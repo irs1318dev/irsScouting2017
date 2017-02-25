@@ -53,7 +53,7 @@ public class Updater {
     private void send() {
         try {
             for(Measure measure : measures) {
-                String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.page;
+                String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.phase;
                 if(!measure.value.isEmpty()) s += "&value=" + measure.value;
                 if(measure.success != 0) s += "&success=" + measure.success;
                 if(measure.miss != 0) s += "&miss=" + measure.miss;

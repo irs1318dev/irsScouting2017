@@ -7,7 +7,7 @@ public class Measure {
     final public int match;
     final public int team;
     final public String task;
-    final public String page;
+    final public String phase;
     public String value;
     public int success;
     public int miss;
@@ -16,7 +16,7 @@ public class Measure {
         match = 0;
         team = 0;
         task = "";
-        page = "";
+        phase = "";
         value = "";
         success = 0;
         miss = 0;
@@ -26,17 +26,9 @@ public class Measure {
         this.match = match.number;
         this.team = match.getTeam(position);
         this.task = task.task;
-        this.page = phase;
+        this.phase = phase;
         this.value = "";
         this.success = 0;
         this.miss = 0;
-    }
-
-    public boolean Equals(Measure measure) {
-        if(!task.equals(measure.task)) return false;
-        if(!value.equals(measure.value)) return false;
-        if(success != measure.success) return false;
-        if(miss != measure.miss) return false;
-        return true;
     }
 }

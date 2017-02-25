@@ -57,7 +57,7 @@ class MatchMaker {
         pageManager.reset();
         for(Page p : pages) {
             Map<String, Measure> pageData = new HashMap<>();
-            for(Measure m : data) if(m.page.equals(p.name)) pageData.put(m.task, m);
+            for(Measure m : data) if(m.phase.equals(p.name)) pageData.put(m.task, m);
             p.setMeasures(pageData, match);
         }
     }
