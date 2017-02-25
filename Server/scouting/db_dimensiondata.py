@@ -15,21 +15,40 @@ def add_name(table, col, val):
     conn.execute(select, val=val)
 
 
-def add_many_names(table, col, max_val, template):
+def add_many_names(table, col, n, template):
     engine = db.getdbengine()
     conn = engine.connect()
-    for i in range(1, max_val):
+    for i in range(1, n):
         name = template.format(i)
         sql = text(
             "INSERT INTO " + table + " (" + col + ") " +
             "VALUES (:name) "
             "ON CONFLICT (" + col + ") " +
             "DO UPDATE "
-            "SET " + col + " = :match RETURNING id; "
+            "SET " + col + " = :name RETURNING id; "
 
         )
         conn.execute(sql, name=name)
 
+# This function does not yet work -- don't use it. Check with Stacy if you
+# have questions.
+def add_many_cols(table, cols, vals) :
+    engine = db.getdbengine()
+    conn = engine.connect()
+
+    # Buld string containing column names
+    col_names = ""
+    for col in cols:
+        if col_names == "":
+            col_names = col
+        else:
+            col_names = col_names + ", " + col
+
+    sql = text(
+        "INSERT INTO " + table + " (" + col_names + ") " +
+        "VALUES (:name)"
+    ).params(vals)
+    conn.execute(sql)
 
 # dates imported from schedule
 
@@ -38,25 +57,25 @@ def add_many_names(table, col, max_val, template):
 add_name("levels", "name", "qual")
 add_name("levels", "name", "playoff")
 
-add_many_names("matches", "name", 150, "{}-Q")
-add_name("matches", "name", "Q1.1")
-add_name("matches", "name", "Q1.2")
-add_name("matches", "name", "Q1.3")
-add_name("matches", "name", "Q2.1")
-add_name("matches", "name", "Q2.2")
-add_name("matches", "name", "Q2.3")
-add_name("matches", "name", "Q3.1")
-add_name("matches", "name", "Q3.2")
-add_name("matches", "name", "Q3.3")
-add_name("matches", "name", "S1.1")
-add_name("matches", "name", "S1.2")
-add_name("matches", "name", "S1.3")
-add_name("matches", "name", "S2.1")
-add_name("matches", "name", "S2.2")
-add_name("matches", "name", "S2.3")
-add_name("matches", "name", "F1")
-add_name("matches", "name", "F2")
-add_name("matches", "name", "F3")
+add_many_names("matches", "name", 150, "{0:0>3}-q")
+add_name("matches", "name", "q1.1")
+add_name("matches", "name", "q1.2")
+add_name("matches", "name", "q1.3")
+add_name("matches", "name", "q2.1")
+add_name("matches", "name", "q2.2")
+add_name("matches", "name", "q2.3")
+add_name("matches", "name", "q3.1")
+add_name("matches", "name", "q3.2")
+add_name("matches", "name", "q3.3")
+add_name("matches", "name", "s1.1")
+add_name("matches", "name", "s1.2")
+add_name("matches", "name", "s1.3")
+add_name("matches", "name", "s2.1")
+add_name("matches", "name", "s2.2")
+add_name("matches", "name", "s2.3")
+add_name("matches", "name", "f1")
+add_name("matches", "name", "f2")
+add_name("matches", "name", "f3")
 
 add_name("alliances", "name", "na")
 add_name("alliances", "name", "blue")
@@ -94,7 +113,7 @@ add_name("phases", "name", "teleop")
 add_name("phases", "name", "finish")
 
 add_name("attempts", "name", "summary")
-add_many_names("attempts", "name", 31, "attempt{}")
+add_many_names("attempts", "name", 31, "{}")
 
 add_name("reasons", "name", "na")
 add_name("reasons", "name", "dropped")

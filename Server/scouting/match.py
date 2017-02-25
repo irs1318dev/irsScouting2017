@@ -1,10 +1,11 @@
-import psycopg2.extras
 import event
 import dimension
 import json
-conn = psycopg2.connect("dbname=scouting host=localhost user=irs1318 password=irs1318")
-cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+import db
+from sqlalchemy import text
 
+engine = db.getdbengine()
+conn = engine.connect()
 
 class MatchDal(object):
 
@@ -34,40 +35,43 @@ class MatchDal(object):
         match_id = self.matches[match]
         team_id = self.teams[team]
         phase_id = self.phases[phase]
-        cur.execute(
+        conn.execute(
             "SELECT * FROM measures " +
             "WHERE " +
             " event_id = :event_id" +
             " AND match_id = :match_id" +
             " AND team_id = :team_id " +
-            " AND phase_id = :phase_id;")
+            " AND phase_id = :phase_id;",
+        event_id=event_id, match_id=match_id,team_id=team_id,phase_id=phase_id)
         #todo add prepared statement parameters
-        results = cur.fetchall()
+        results = conn.fetchall()
         measures = []
         for measure in results:
             measures.append(dict(measure))
         return json.dumps(measures)
 
-    def matchteamtask(self, match, team, task, phase, value):
+    @staticmethod
+    def matchteamtask(match, team, task, phase, value):
         # find the parameter ids for match team task phase-- make a map
-        match_id = self.matches[match]
-        team_id = self.teams[team]
-        phase_id = self.phases[phase]
-        task_id = self.tasks[task]
+        match_id = MatchDal.matches[match]
+        team_id = MatchDal.teams[team]
+        phase_id = MatchDal.phases[phase]
+        task_id = MatchDal.tasks[task]
         # find ids event date alliance station from the schedule table --make a map
         current_match = event.EventDal.current_match(match, team)
-        date_id = self.dates[current_match['date']]
-        event_id = self.events[current_match['event']]
-        alliance_id = self.alliances[current_match['alliance']]
-        station_id = self.stations[current_match['station']]
+        date_id = MatchDal.dates[current_match['date']]
+        event_id = MatchDal.events[current_match['event']]
+        level_id = MatchDal.events[current_match['level']]
+        alliance_id = MatchDal.alliances[current_match['alliance']]
+        station_id = MatchDal.stations[current_match['station']]
 
         # match status is equal to current (call event.current_match)
         # convert the event date alliance station to appropriate ids
         # find the actor and measuretype for the given task and phase
 
         # look up summary attempt id and the na reason id
-        attempt_id = self.attempts['summary']
-        reason_id = self.reasons['na']
+        attempt_id = MatchDal.attempts['summary']
+        reason_id = MatchDal.reasons['na']
 
         # based on measure type, set the value (capability, attempt, success, cycle_time)
 
@@ -76,7 +80,8 @@ class MatchDal(object):
         # values (:event_id, : ...)
         # on conflict update measures set capability = :capability, attempts = attempats + :attempts, sccess = success + :success, cycle_time)
         # where event_id = :event_id and match_id = :match_id, ... and reason_id = :reason_id
-        cur.execute(
+
+        sql = text(
             "INSERT INTO measures "
             "( "
             "date_id, "
@@ -132,5 +137,9 @@ class MatchDal(object):
             "AND phase_id =:phase_id "
             "AND attempt_id= :attempt_id "
             "AND reason_id =:reason_id;")
+        conn.execute(sql,
+        date_id=date_id,event_id=event_id,level_id=level_id,match_id=match_id,alliance_id=alliance_id,team_id=team_id,station_id=station_id,
+        actor_id=actor_id,task_id=task_id,measuretype_id=measuretype_id,phase_id=phase_id,attempt_id=attempt_id,reason_id=reason_id,
+        capability=0,attempts=0,success=0,cycle_time=0)
         #todo add prepared statement parameters
 
