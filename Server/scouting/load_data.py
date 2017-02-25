@@ -49,3 +49,5 @@ def insertsched(event, season, level='qual'):
             conn.execute(select, event=event, match=match, team=team, level=level, date=date, alliance=alliance, station=station)
 
 
+
+
