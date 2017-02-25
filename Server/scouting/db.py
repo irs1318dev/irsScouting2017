@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
 from sqlalchemy import ForeignKey
 
+
 # ========== Database Connection ==============================================
 connection_string = 'postgresql://irs1318:irs1318@localhost:5432/scouting'
 
@@ -78,7 +79,7 @@ class Attempt(Base):
 
 
 class Reason(Base):
-    __tablename__ = "reasonss"
+    __tablename__ = "reasons"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
@@ -120,35 +121,48 @@ class Team(Base):
     year_founded = Column(String)
 
 
+class Game(Base):
+    __tablename__ = "games"
+
+    id = Column(Integer, primary_key=True)
+    actor = Column(String)
+    task = Column(String, unique= True)
+    claim = Column(String)
+    auto = Column(String)
+    teleop = Column(String)
+    finish = Column(String)
+
+
+
 class Schedule(Base):
     __tablename__ = "schedules"
 
     id = Column(Integer, primary_key=True)
-    event = Column(String,'event')
-    match = Column(String, 'match')
-    team = Column(String,'team')
-    level = Column(String,'level')
-    date = Column(String, 'date')
-    alliance = Column(String,'alliance')
-    station = Column(String,'station')
+    event = Column(String)
+    match = Column(String)
+    team = Column(String)
+    level = Column(String)
+    date = Column(String)
+    alliance = Column(String)
+    station = Column(String)
 
 
 class Measure(Base):
     __tablename__ = "measures"
 
-    team_id = Column(Integer, ForeignKey('teams.id'))
-    event_id = Column(Integer, ForeignKey('events.id'))
-    match_id = Column(Integer, ForeignKey('matches.id'))
-    level_id = Column(Integer, ForeignKey('levels.id'))
-    date_id = Column(Integer, ForeignKey('dates.id'))
-    alliance_id = Column(Integer, ForeignKey('alliances.id'))
-    station_id = Column(Integer, ForeignKey('stations.id'))
-    actor_id = Column(Integer, ForeignKey('actors.id'))
-    task_id = Column(Integer, ForeignKey('tasks.id'))
-    format_id = Column(Integer, ForeignKey('formats.id'))
-    phase_id = Column(Integer, ForeignKey('phases.id'))
-    attempt_id = Column(Integer, ForeignKey('attempt.id'))
-    reason_id = Column(Integer, ForeignKey('reason.id'))
+    team_id = Column(Integer, ForeignKey('teams.id'), primary_key=True)
+    event_id = Column(Integer, ForeignKey('events.id'), primary_key=True)
+    match_id = Column(Integer, ForeignKey('matches.id'), primary_key=True)
+    level_id = Column(Integer, ForeignKey('levels.id'), primary_key=True)
+    date_id = Column(Integer, ForeignKey('dates.id'), primary_key=True)
+    alliance_id = Column(Integer, ForeignKey('alliances.id'), primary_key=True)
+    station_id = Column(Integer, ForeignKey('stations.id'), primary_key=True)
+    actor_id = Column(Integer, ForeignKey('actors.id'), primary_key=True)
+    task_id = Column(Integer, ForeignKey('tasks.id'), primary_key=True)
+    format_id = Column(Integer, ForeignKey('formats.id'), primary_key=True)
+    phase_id = Column(Integer, ForeignKey('phases.id'), primary_key=True)
+    attempt_id = Column(Integer, ForeignKey('attempts.id'), primary_key=True)
+    reason_id = Column(Integer, ForeignKey('reasons.id'), primary_key=True)
     capability = Column(Integer)
     attempts = Column(Integer)
     successes = Column(Integer)
@@ -177,6 +191,8 @@ def loadMasterData():
 
         )
         conn.execute(select, name=match)
+
+
 
 
 
@@ -268,6 +284,28 @@ def loadMasterData():
 # blue = Alliance(name='blue')
 #
 #
+# class Task(Base):
+#     __tablename__ = "taskss"
+#
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String, unique=True, nullable=False)
+#
+#
+#
+# class Actor(Base):
+#     __tablename__ = "actors"
+#
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String, unique=True, nullable=False)
+#
+#
+# class Format(Base):
+#     __tablename__ = "formats"
+#
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String, unique=True, nullable=False)
+#
+#
 # class Game(Base):
 #     __tablename__ = "games"
 #
@@ -277,7 +315,37 @@ def loadMasterData():
 #
 #
 #
-
+# class Schedule(Base):
+#     __tablename__ = "schedules"
+#
+#     id = Column(Integer, primary_key=True)
+#     event_id= Column(String, ForeignKey('events.id'))
+#     match_id = Column(String, ForeignKey('matches.id'))
+#     team_id = Column(String, ForeignKey('teams.id'))
+#     level_id = Column(String, ForeignKey('levels.id'))
+#     date_id = Column(String, ForeignKey('dates.id'))
+#     alliance_id = Column(String, ForeignKey('alliances.id'))
+#     station_id = Column(String, ForeignKey('stations.id'))
+#
+#
+# class Measure(Base):
+#     __tablename__ = "measures"
+#
+#     id = Column(Integer, primary_key=True)
+#     team_id = Column(String, ForeignKey('teams.id'))#done
+#     event_id = Column(String, ForeignKey('events.id'))#done
+#     match_id = Column(String, ForeignKey('matches.id'))#done
+#     level_id = Column(String, ForeignKey('levels.id'))#done
+#     date_id = Column(String, ForeignKey('dates.id'))#partly done
+#     alliance_id = Column(String, ForeignKey('alliances.id'))#done
+#     station_id = Column(String, ForeignKey('stations.id'))#partly done
+#     actor_id = Column(String, ForeignKey('actors.id'))#done need to add
+#     task_id = Column(String, ForeignKey('tasks.id'))#done need to add
+#     format_id = Column(String, ForeignKey('formats.id'))#done need to add
+#     phase_id = Column(String, ForeignKey('phases.id'))#done
+#     attempt_id = Column(String, ForeignKey('attempt.id'))#not done
+#     reason_id = Column(String, ForeignKey('reason.id'))#not done
+#
 
 #
 #
