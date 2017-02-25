@@ -20,8 +20,8 @@ public class Count extends Label {
     private boolean missing;
     private int max = 20;
 
-    public Count(Context context, Task task) {
-        super(context, task);
+    public Count(Context context, Task task, String position) {
+        super(context, task, position);
     }
 
     @Override

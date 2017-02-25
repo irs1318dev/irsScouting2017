@@ -8,8 +8,8 @@ import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.R;
 
 public class Switcher extends Label {
-    public Switcher(Context context, Task task) {
-        super(context, task);
+    public Switcher(Context context, Task task, String position) {
+        super(context, task, position);
     }
 
     @Override

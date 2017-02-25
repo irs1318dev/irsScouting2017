@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
 
 import java.util.ArrayList;
@@ -32,10 +33,13 @@ public class Page extends LinearLayout {
         objectView.create(column);
     }
 
-    public void setMeasures(Map<String, Measure> measures, int match, int team) {
+    public void setMeasures(Map<String, Measure> measures, Match match) {
         for(Label l : labels) {
-            if(measures.get(l.task.success) != null) l.update(measures.get(l.task.success), false);
-            else l.update(new Measure(l.task, match, team, name), false);
+            if(measures.get(l.task.success) != null) {
+                Measure measure = measures.get(l.task.success);
+                if(match.getTeam(l.position) == measure.team) l.update(measure, false);
+            }
+            else l.update(new Measure(l.task, match, l.position, name), false);
         }
     }
 

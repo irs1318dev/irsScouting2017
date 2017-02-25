@@ -15,8 +15,8 @@ import com.stuin.irs_scout.R;
  * Created by Stuart on 2/17/2017.
  */
 public class Enter extends Label{
-    public Enter(Context context, Task task) {
-        super(context, task);
+    public Enter(Context context, Task task, String position) {
+        super(context, task, position);
     }
 
     @Override

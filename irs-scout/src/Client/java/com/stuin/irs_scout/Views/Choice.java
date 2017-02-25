@@ -15,8 +15,8 @@ public class Choice extends Label {
     private RadioGroup radioGroup;
     private String[] choices;
 
-    public Choice(Context context, Task task) {
-        super(context, task);
+    public Choice(Context context, Task task, String position) {
+        super(context, task, position);
         defaults = false;
 
         choices = task.enums.replace('|','>').split(">");

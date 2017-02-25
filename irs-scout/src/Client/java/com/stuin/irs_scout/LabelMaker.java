@@ -58,10 +58,10 @@ class LabelMaker {
 
         for(Section s : sections) {
             if(s.newpart.equals("true")) pageList.get(s.phase).newCol();
-            pageList.get(s.phase).add(new Label(context, new Task(s.category)));
+            pageList.get(s.phase).add(new Label(context, new Task(s.category), s.position));
 
             for(String t : s.tasks) if(tasks.containsKey(t)) {
-                pageList.get(s.phase).add(makeLabel(tasks.get(t), context, s.phase));
+                pageList.get(s.phase).add(makeLabel(tasks.get(t), context, s.phase, s.position));
             }
 
             if(!pages.contains(pageList.get(s.phase))) pages.add(pageList.get(s.phase));
@@ -77,7 +77,7 @@ class LabelMaker {
         return false;
     }
 
-    private Label makeLabel(Task task, Context context, String phase) {
+    private Label makeLabel(Task task, Context context, String phase, String position) {
         //Get format from phase
         String format = "na";
         switch(phase.charAt(0)) {
@@ -99,16 +99,16 @@ class LabelMaker {
 
         switch(format.charAt(0)) {
             case 'b':
-                return new Switcher(context, task);
+                return new Switcher(context, task, position);
             case 'c':
-                return new Count(context, task);
+                return new Count(context, task, position);
             case 'e':
-                return new Choice(context, task);
+                return new Choice(context, task, position);
             case 'p':
-                return new Enter(context, task);
+                return new Enter(context, task, position);
             case 'l':
-                return new Label(context, task);
+                return new Label(context, task, position);
         }
-        return new Label(context, new Task());
+        return new Label(context, new Task(), position);
     }
 }

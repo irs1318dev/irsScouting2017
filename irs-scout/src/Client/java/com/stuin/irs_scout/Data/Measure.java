@@ -22,9 +22,9 @@ public class Measure {
         miss = 0;
     }
 
-    public Measure(Task task, int match, int team, String phase) {
-        this.match = match;
-        this.team = team;
+    public Measure(Task task, Match match, String position, String phase) {
+        this.match = match.number;
+        this.team = match.getTeam(position);
         this.task = task.task;
         this.page = phase;
         this.value = "";

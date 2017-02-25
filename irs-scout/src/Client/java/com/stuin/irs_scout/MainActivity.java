@@ -15,7 +15,7 @@ public class MainActivity extends Activity {
     private PageManager form;
 
     static String address;
-    static String position;
+    public static String position;
     static boolean error;
 
     @Override
