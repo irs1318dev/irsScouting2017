@@ -136,15 +136,15 @@ class Schedule(Base):
     __tablename__ = "schedules"
 
     id = Column(Integer, primary_key=True)
-    date = Column(String, 'date')
-    event = Column(String, 'event')
-    level = Column(String, 'level')
-    match = Column(String, 'match')
-    alliance = Column(String, 'alliance')
-    team = Column(String, 'team')
-    station = Column(String, 'station')
-    match_status = Column(String, 'match_status')
-    tablet_status = Column(String, 'tablet_status')
+    date = Column('date', String)
+    event = Column('event', String)
+    level = Column('level', String)
+    match = Column('match', String)
+    alliance = Column('alliance', String)
+    team = Column('team', String)
+    station = Column('station', String)
+    match_status = Column('match_status', String)
+    tablet_status = Column('tablet_status', String)
 
 
 class Measure(Base):
