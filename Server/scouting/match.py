@@ -1,4 +1,3 @@
-import psycopg2
 import psycopg2.extras
 import event
 import dimension
@@ -9,19 +8,19 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 class MatchDal(object):
 
-    dates, date_ids = dimension.find_id("dates")
-    events, event_ids = dimension.find_id("events")
-    levels, level_ids = dimension.find_id("levels")
-    matches, match_ids = dimension.find_id("matches")
-    alliances, alliance_ids = dimension.find_id("alliances")
-    teams, team_ids = dimension.find_id("teams")
-    stations, stations_ids = dimension.find_id("stations")
-    actors, actor_ids = dimension.find_id("actors")
-    tasks, task_ids = dimension.find_id("tasks")
-    measuretypes, measturetype_ids = dimension.find_id("measuretypes")
-    phases, phase_ids = dimension.find_id("phases")
-    attempts, attempt_ids = dimension.find_id("attempts")
-    reasons, reasons_ids = dimension.find_id("reasons")
+    dates, date_ids = dimension.DimensionDal.build_dimension_dicts("dates")
+    events, event_ids = dimension.DimensionDal.build_dimension_dicts("events")
+    levels, level_ids = dimension.DimensionDal.build_dimension_dicts("levels")
+    matches, match_ids = dimension.DimensionDal.build_dimension_dicts("matches")
+    alliances, alliance_ids = dimension.DimensionDal.build_dimension_dicts("alliances")
+    teams, team_ids = dimension.DimensionDal.build_dimension_dicts("teams")
+    stations, stations_ids = dimension.DimensionDal.build_dimension_dicts("stations")
+    actors, actor_ids = dimension.DimensionDal.build_dimension_dicts("actors")
+    tasks, task_ids = dimension.DimensionDal.build_dimension_dicts("tasks")
+    measuretypes, measturetype_ids = dimension.DimensionDal.build_dimension_dicts("measuretypes")
+    phases, phase_ids = dimension.DimensionDal.build_dimension_dicts("phases")
+    attempts, attempt_ids = dimension.DimensionDal.build_dimension_dicts("attempts")
+    reasons, reasons_ids = dimension.DimensionDal.build_dimension_dicts("reasons")
 
     def __init__(self):
         pass

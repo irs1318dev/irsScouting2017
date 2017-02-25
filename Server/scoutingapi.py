@@ -2,16 +2,14 @@ import cherrypy
 import Game
 import scouting.tablet
 
-# import Match
+import scouting.match
 
 
 class Scouting(object):
     currentMatch = 1
 
-    # def matchApi = new Match()
-
     def __init__(self):
-        self.matchDal = MatchDal()
+        self.matchDal = scouting.match.MatchDal()
         return
 
     @cherrypy.expose
@@ -25,6 +23,7 @@ class Scouting(object):
     @cherrypy.expose
     def gamelayout(self):
         return Game.HelloWorld.game()
+
     # All tasks in layout
 
     @cherrypy.expose
@@ -42,7 +41,8 @@ class Scouting(object):
     @cherrypy.expose
     def matches(self):
         return 'matches'
-#        return matchApi.matches()
+
+    #        return matchApi.matches()
 
     @cherrypy.expose
     def match(self, match):
@@ -53,6 +53,7 @@ class Scouting(object):
         if match == -1:
             match = self.currentMatch
         return Game.HelloWorld.match(match)
+
     # All teams in match
 
     @cherrypy.expose
@@ -60,18 +61,18 @@ class Scouting(object):
         return 'matchteam with match and team'
 
     @cherrypy.expose
-    def matchteamtasks(self, team, match=-1):
+    def matchteamtasks(self, team, match=-1, phase='claim'):
         if match == -1:
             match = self.currentMatch
-        #return Game.HelloWorld.matchteam(match, team)
-        return MatchDal.matchteamtasks(match, team, phase)
+        # return Game.HelloWorld.matchteam(match, team)
+        return scouting.match.MatchDal.matchteamtasks(match, team, phase)
+
     # Get data from match and team
 
     @cherrypy.expose
     def matchteamtask(self, match, team, task, phase, success=0, miss=0):
-        return MatchDal.matchteamtask(match, team, phase, success, miss)
-        #Game.HelloWorld.data(match, team, task, success, miss)
-        return 'put measure to system'
+        return scouting.match.MatchDal.matchteamtask(match, team, task, phase, success, miss)
+        # Game.HelloWorld.data(match, team, task, success, miss)
 
     @cherrypy.expose
     def dimensions(self):
@@ -131,4 +132,3 @@ if __name__ == '__main__':
     cherrypy.config.update(
         {'server.socket_host': '0.0.0.0'})
     cherrypy.quickstart(Scouting())
-
