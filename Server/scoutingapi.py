@@ -23,8 +23,12 @@ class Scouting(object):
 
     @cherrypy.expose
     def gamelayout(self):
-        return Game.HelloWorld.game()
+        return Game.HelloWorld.gamesections()
     # All tasks in layout
+
+    @cherrypy.expose
+    def gametasks(self):
+        return Game.HelloWorld.gametasks()
 
     @cherrypy.expose
     def gameimport(self):
@@ -66,9 +70,9 @@ class Scouting(object):
     # Get data from match and team
 
     @cherrypy.expose
-    def matchteamtask(self, match, team, task, page, success=0, miss=0):
-        Game.HelloWorld.data(match, team, task, success, miss)
-        return 'put measure to system'
+    def matchteamtask(self, match, team, task, phase, value='', success=0, miss=0):
+        Game.HelloWorld.data(match, team, task, phase, value, success, miss)
+        return 'Got it'
 
     @cherrypy.expose
     def dimensions(self):
@@ -104,7 +108,7 @@ class Scouting(object):
                 nextmatch = False
 
         if nextmatch:
-            if '''"number":''' + str(self.currentMatch + 1) in Game.HelloWorld.match(self.currentMatch + 1):
+            if '''"number":''' + str(self.currentMatch + 1) in 'get list of matches':
                 self.currentMatch += 1
 
         return str(self.currentMatch)

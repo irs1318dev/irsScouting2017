@@ -2,43 +2,62 @@ import json
 
 
 class Measure(object):
-    def __init__(self, match, team, task, success, miss):
+    def __init__(self, match, team, task, phase, value, success, miss):
         self.match = match
         self.team = team
-        self.taskId = task
+        self.task = task
+        self.phase = phase
+        self.value = value
         self.success = success
         self.miss = miss
+
+
+class Section(object):
+    def __init__(self, line):
+        value = line.split(',')
+        self.actor = value[0]
+        self.observer = value[1]
+        self.phase = value[2]
+        self.category = value[3]
+        self.newpart = value[4].lower()
+        self.tasks = value[5].split('|')
 
 
 class Task(object):
     def __init__(self, line):
         value = line.split(',')
-        self.id = value[0]
+        self.actor = value[0]
         self.task = value[1]
-        self.actor = value[2]
-        self.page = value[3]
-        self.format = value[4]
-        self.success = value[5]
-        self.miss = value[6]
-        self.compacting = value[7].lower()
-        self.newpart = value[8].lower()
-        self.additions = value[9]
+        self.claim = value[2]
+        self.auto = value[3]
+        self.teleop = value[4]
+        self.finish = value[5]
+        self.success = value[6]
+        self.miss = value[7]
+        self.enums = value[8]
 
 
 class HelloWorld(object):
     @staticmethod
-    def game():
-        with open("TestJson/newLayout.csv", "r") as text:
+    def gametasks():
+        with open("TestJson/gametasks.csv", "r") as text:
             out = ''
             for line in text:
-                task = Task(line)
-                data = json.dumps(task, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
+                if 'actor,task' not in line:
+                    task = Task(line)
+                    data = json.dumps(task, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
+                    out += data + '\n'
+            return out
 
-                for value in data.split(','):
-                    if 'id' in value or 'compacting' in value or 'newpart' in value:
-                        data = data.replace(value, value.split(':')[0] + ':' + value.split(':')[1].replace('"', ''))
-
-                out += data + '\n'
+    @staticmethod
+    def gamesections():
+        with open("TestJson/observertasks.csv", "r") as text:
+            out = ''
+            for line in text:
+                if 'actor,observer' not in line:
+                    section = Section(line)
+                    data = json.dumps(section, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
+                    out += data + '\n'
             return out
 
     @staticmethod
@@ -61,14 +80,10 @@ class HelloWorld(object):
             return out + 'end'
 
     @staticmethod
-    def data(match, team, task, success, miss):
-        m = Measure(match, team, task, success, miss)
+    def data(match, team, task, phase, value, success, miss):
+        m = Measure(match, team, task, phase, value, success, miss)
         out = json.dumps(m, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
-
-        for value in out.split(','):
-            if m.page not in value:
-                out = out.replace(value, value.split(':')[0] + ':' + value.split(':')[1].replace('"', ''))
 
         with open("TestJson/measures", "a") as new:
             new.write('\n' + out)
-
+        return out

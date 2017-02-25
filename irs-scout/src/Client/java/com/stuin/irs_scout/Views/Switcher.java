@@ -1,15 +1,25 @@
 package com.stuin.irs_scout.Views;
 
 import android.content.Context;
-import android.view.View;
+import android.view.Gravity;
 import android.widget.*;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.R;
 
 public class Switcher extends Label {
-    public Switcher(Context context, Task task) {
-        super(context, task);
+    public Switcher(Context context, Task task, String position) {
+        super(context, task, position);
+    }
+
+    @Override
+    void create(LinearLayout column) {
+        linearLayout = new LinearLayout(getContext());
+        linearLayout.setGravity(Gravity.CENTER);
+        column.addView(linearLayout);
+
+        part(task.success);
+        if(!task.miss.isEmpty()) part(task.miss);
     }
 
     @Override
@@ -19,6 +29,7 @@ public class Switcher extends Label {
         checkBox.setText(name);
         checkBox.setTextSize(getResources().getDimension(R.dimen.text_norm));
         checkBox.setOnCheckedChangeListener(changeListener);
+        views.add(checkBox);
         linearLayout.addView(checkBox);
         return checkBox;
     }
@@ -48,6 +59,7 @@ public class Switcher extends Label {
                 if(b) measure.miss = 1;
                 else measure.miss = 0;
             }
+
             update(measure, true);
         }
     };

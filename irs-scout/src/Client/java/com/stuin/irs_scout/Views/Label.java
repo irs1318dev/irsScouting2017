@@ -14,19 +14,21 @@ import java.util.List;
 
 public class Label extends TextView {
     Task task;
+    String position;
     LinearLayout linearLayout;
     List<TextView> views = new ArrayList<>();
     Measure measure = new Measure();
     boolean defaults = true;
 
-    public Label(Context context, Task task) {
+    public Label(Context context, Task task, String position) {
         super(context);
         this.task = task;
+        this.position = position;
     }
 
     void create(LinearLayout linearLayout) {
         setTextSize(getResources().getDimension(R.dimen.text_norm));
-        setText(task.task);
+        setText(task.success);
         setTextColor(getResources().getColor(R.color.colorText));
         setGravity(Gravity.CENTER);
         linearLayout.addView(this);
