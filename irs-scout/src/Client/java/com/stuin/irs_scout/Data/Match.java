@@ -17,4 +17,16 @@ public class Match {
         team3 = 0;
         alliance = "";
     }
+
+    public int getTeam(String position) {
+        switch(position.charAt(position.length() - 1)) {
+            case '1':
+                return team1;
+            case '2':
+                return team2;
+            case '3':
+                return team3;
+        }
+        return 0;
+    }
 }

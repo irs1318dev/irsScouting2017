@@ -2,8 +2,10 @@ package com.stuin.irs_scout.Views;
 
 import android.content.Context;
 import android.os.CountDownTimer;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
@@ -12,16 +14,26 @@ import com.stuin.irs_scout.R;
 /**
  * Created by Stuart on 2/11/2017.
  */
-public class Number extends Label {
+public class Count extends Label {
     private CountDownTimer countDownTimer;
     private boolean drop;
     private boolean missing;
-    private int max = 1000;
+    private int max = 20;
 
-    public Number(Context context, Task task) {
-        super(context, task);
-        if(!task.additions.isEmpty()) max = Integer.valueOf(task.additions);
+    public Count(Context context, Task task, String position) {
+        super(context, task, position);
     }
+
+    @Override
+    void create(LinearLayout column) {
+        linearLayout = new LinearLayout(getContext());
+        linearLayout.setGravity(Gravity.CENTER);
+        column.addView(linearLayout);
+
+        part(task.success);
+        if(!task.miss.isEmpty()) part(task.miss);
+    }
+
 
     @Override
     protected TextView part(String name) {
@@ -31,6 +43,7 @@ public class Number extends Label {
         button.setTextSize(getResources().getDimension(R.dimen.text_norm));
         button.setOnClickListener(clickListener);
         button.setOnLongClickListener(longClickListener);
+        views.add(button);
         linearLayout.addView(button);
         return button;
     }

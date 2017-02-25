@@ -1,6 +1,5 @@
 package com.stuin.irs_scout;
 
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
 import com.google.gson.Gson;
@@ -37,7 +36,7 @@ class MatchMaker {
             public void run(List<String> s) {
                 match = new Gson().fromJson(s.get(0), Match.class);
                 if(!MainActivity.position.contains(match.alliance)) match = new Gson().fromJson(s.get(1), Match.class);
-                status.setText("Match: " + match.number + " Team: " + getTeam());
+                status.setText("Match: " + match.number + " Team: " + match.getTeam(MainActivity.position));
                 data = new ArrayList<>();
 
                 class Set extends Request {
@@ -48,7 +47,7 @@ class MatchMaker {
                         setMatch();
                     }
                 }
-                new Set().start("/matchteamtasks?team=" + getTeam());
+                new Set().start("/matchteamtasks?team=" + match.getTeam(MainActivity.position));
             }
         }
         new Data().start("/matchteams");
@@ -59,20 +58,7 @@ class MatchMaker {
         for(Page p : pages) {
             Map<String, Measure> pageData = new HashMap<>();
             for(Measure m : data) if(m.page.equals(p.name)) pageData.put(m.task, m);
-            p.setMeasures(pageData, match.number, getTeam());
+            p.setMeasures(pageData, match);
         }
-    }
-
-    private int getTeam() {
-        String position = MainActivity.position;
-        switch(position.charAt(position.length() - 1)) {
-            case '1':
-                return match.team1;
-            case '2':
-                return match.team2;
-            case '3':
-                return match.team3;
-        }
-        return 0;
     }
 }

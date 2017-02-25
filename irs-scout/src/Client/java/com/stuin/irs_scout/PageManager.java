@@ -5,13 +5,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.stuin.irs_scout.Data.Task;
-import com.stuin.irs_scout.Views.Label;
-import com.stuin.irs_scout.Views.Number;
 import com.stuin.irs_scout.Views.Page;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 class PageManager extends LinearLayout {
     List<Page> pages = new ArrayList<>();
@@ -19,11 +18,13 @@ class PageManager extends LinearLayout {
 
     private int current = -1;
     private Activity activity;
+    private LabelMaker labelMaker;
 
-    PageManager(Activity activity) {
+    PageManager(Activity newActivity) {
+        super(newActivity);
         //Start Layout
-        super(activity);
-        this.activity = activity;
+        this.activity = newActivity;
+        labelMaker = new LabelMaker(this);
 
         //Setup centering
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
@@ -31,26 +32,29 @@ class PageManager extends LinearLayout {
         setGravity(Gravity.CENTER);
 
         //Download layout
-        class Generate extends Request {
+        class Layout extends Request {
             @Override
             public void run(List<String> s) {
-                generate(s);
+                labelMaker.pages(s);
+
+                class Tasks extends Request {
+                    @Override
+                    public void run(List<String> s) {
+                        pages = labelMaker.taskMake( s);
+
+                        //Get Match
+                        MatchMaker matchMaker = new MatchMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
+                        updater = new Updater(matchMaker, activity.findViewById(R.id.PageStatus));
+                    }
+                }
+                new Tasks().start("/gametasks");
             }
         }
-        new Generate().start("/gamelayout");
-    }
-
-    private void generate(List<String> s) {
-        //Generate pages
-        pages = new LabelMaker().pages(this, s);
-
-        //Get Match
-        MatchMaker matchMaker = new MatchMaker(this, activity.findViewById(R.id.Status));
-        updater = new Updater(matchMaker, activity.findViewById(R.id.PageStatus));
+        new Layout().start("/gamelayout");
     }
 
     void reset() {
-        //Set default page
+        //Set default phase
         if(current != -1) pages.get(current).setVisibility(GONE);
 
         current = 0;
@@ -61,7 +65,7 @@ class PageManager extends LinearLayout {
     }
 
     Page makePage(String name) {
-        //Create page object
+        //Create phase object
         Page page = new Page(getContext(), name);
         page.setVisibility(GONE);
         addView(page);
@@ -69,7 +73,7 @@ class PageManager extends LinearLayout {
     }
 
     void nextPage(View view) {
-        //Show next page
+        //Show next phase
         pages.get(current).setVisibility(GONE);
         pages.get(current).send();
 
@@ -82,7 +86,7 @@ class PageManager extends LinearLayout {
     }
 
     void lastPage(View view) {
-        //Hide old page
+        //Hide old phase
         pages.get(current).setVisibility(GONE);
         pages.get(current).send();
 
@@ -90,16 +94,16 @@ class PageManager extends LinearLayout {
         activity.findViewById(R.id.Next).setVisibility(VISIBLE);
         if(current == 1) view.setVisibility(GONE);
 
-        //Set new page
+        //Set new phase
         current--;
         setPage();
     }
 
     private void setPage() {
-        //Show new page
+        //Show new phase
         pages.get(current).setVisibility(VISIBLE);
 
-        //Set page title
+        //Set phase title
         TextView textView = (TextView) activity.findViewById(R.id.PageStatus);
         textView.setText(MainActivity.position + ": " + pages.get(current).name);
 

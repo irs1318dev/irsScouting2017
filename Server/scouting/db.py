@@ -2,6 +2,7 @@ from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import ForeignKey
 
+
 # ========== Database Connection ==============================================
 connection_string = 'postgresql://irs1318:irs1318@localhost:5432/scouting'
 
@@ -112,10 +113,23 @@ class Attempt(Base):
 
 
 class Reason(Base):
-    __tablename__ = "reasonss"
+    __tablename__ = "reasons"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)
+
+
+class Game(Base):
+    __tablename__ = "games"
+
+    id = Column(Integer, primary_key=True)
+    actor = Column(String)
+    task = Column(String, unique= True)
+    claim = Column(String)
+    auto = Column(String)
+    teleop = Column(String)
+    finish = Column(String)
+
 
 
 class Schedule(Base):

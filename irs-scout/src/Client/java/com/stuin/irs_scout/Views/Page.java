@@ -2,10 +2,10 @@ package com.stuin.irs_scout.Views;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.SparseArray;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class Page extends LinearLayout {
     private List<Label> labels = new ArrayList<>();
 
     public Page(Context context, String name) {
-        //Create page
+        //Create phase
         super(context);
         this.name = name;
 
@@ -29,23 +29,25 @@ public class Page extends LinearLayout {
 
     public void add(Label objectView) {
         //Add object to column
-        if(objectView.task.newpart) newCol();
         labels.add(objectView);
         objectView.create(column);
     }
 
-    public void setMeasures(Map<String, Measure> measures, int match, int team) {
+    public void setMeasures(Map<String, Measure> measures, Match match) {
         for(Label l : labels) {
-            if(measures.get(l.task.name) != null) l.update(measures.get(l.task.name), false);
-            else l.update(new Measure(l.task, match, team), false);
+            if(measures.get(l.task.success) != null) {
+                Measure measure = measures.get(l.task.success);
+                if(match.getTeam(l.position) == measure.team) l.update(measure, false);
+            }
+            else l.update(new Measure(l.task, match, l.position, name), false);
         }
     }
 
     public void send() {
-        for(Label label : labels) if(label.measure.success + label.measure.miss > 0) label.update(label.measure, true);
+        for(Label label : labels) if(label.measure.success + label.measure.miss > 0) label.update(label.measure, false);
     }
 
-    private void newCol() {
+    public void newCol() {
         //Make new column
         divider();
         column = new LinearLayout(getContext());
