@@ -27,6 +27,7 @@ def insertgame(actor, task, claim, auto, teleop, finish):
         "VALUES (:actor,:task,:claim,:auto,:teleop,:finish); "
     )
     conn.execute(select, actor=actor, task=task, claim=claim, auto=auto, teleop=teleop, finish=finish)
+    data.add_name("tasks", "name", task)
 
 
 def insertsched(event, season, level='qual'):
