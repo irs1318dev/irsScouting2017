@@ -12,7 +12,7 @@ import db_dimensiondata as data
 def loadGameSheet():
     fpath = os.path.dirname(os.path.abspath(__file__))
     os.chdir(fpath)
-    file = open('game_sheet.csv')
+    file = open('gametasks.csv')
     sheet = csv.reader(file)
     for row in sheet:
         if row[0] != 'actor':
