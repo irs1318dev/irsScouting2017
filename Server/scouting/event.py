@@ -1,19 +1,22 @@
-import psycopg2
-import psycopg2.extras
+import scouting.db as db
+from sqlalchemy import text
 
-conn = psycopg2.connect("dbname=scouting host=localhost user=postgres password=irs1318")
-cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+engine = db.getdbengine()
+conn = engine.connect()
+
+# conn = psycopg2.connect("dbname=scouting host=localhost user=postgres password=irs1318")
+# cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
 class EventDal(object):
 
     @staticmethod
     def current_match(match, team):
-        cur.execute("SELECT * FROM schedules WHERE "
+        sql = text("SELECT * FROM schedules WHERE "
                     "match_status = 'current' "
-                    " AND team = " + team
-                    + "AND match = " + match + ";")
-        event = cur.fetchall()
+                    " AND team = :team "
+                    + " AND match = :match;")
+        event = conn.execute(sql,team=team,match=match)
         current_match = []
         for row in event:
             current_match.append(dict(row))

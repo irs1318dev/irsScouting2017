@@ -3,6 +3,7 @@ import dimension
 import json
 import db
 from sqlalchemy import text
+import game
 
 engine = db.getdbengine()
 conn = engine.connect()
@@ -57,13 +58,24 @@ class MatchDal(object):
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
         task_id = MatchDal.tasks[task]
+        actor_measure = game.GameDal.getActorMeasure(task, phase)
+        actor_id = MatchDal.actors[actor_measure["actor"]]
+        measuretype_id = MatchDal.measuretypes[actor_measure[phase]]
         # find ids event date alliance station from the schedule table --make a map
         current_match = event.EventDal.current_match(match, team)
-        date_id = MatchDal.dates[current_match['date']]
-        event_id = MatchDal.events[current_match['event']]
-        level_id = MatchDal.events[current_match['level']]
-        alliance_id = MatchDal.alliances[current_match['alliance']]
-        station_id = MatchDal.stations[current_match['station']]
+        if len(current_match)> 0:
+            date_id = MatchDal.dates[current_match[1]['date']]
+            event_id = MatchDal.events[current_match[1]['event']]
+            level_id = MatchDal.events[current_match[1]['level']]
+            alliance_id = MatchDal.alliances[current_match[1]['alliance']]
+            station_id = MatchDal.stations[current_match[1]['station']]
+        else:
+            date_id = 0
+            event_id = 0
+            level_id = 0
+            alliance_id = 0
+            station_id = 0
+
 
         # match status is equal to current (call event.current_match)
         # convert the event date alliance station to appropriate ids
@@ -99,8 +111,8 @@ class MatchDal(object):
             "reason_id, "
             "capability, "
             "attempts, "
-            "success, "
-            "cycle_time"
+            "successes, "
+            "cycle_times"
             ") "
             " VALUES("
             ":date_id, "
@@ -118,11 +130,11 @@ class MatchDal(object):
             ":reason_id, "
             ":capability, "
             ":attempts, "
-            ":success, "
-            ":cycle_time )" +
-            " ON CONFLICT (measures) DO UPDATE "
-            "SET capability= :capability, attempts= attempts + :attempts, "
-            "success= success +:success, cycle_time=:cycle_time"
+            ":successes, "
+            ":cycle_times )" +
+            " ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
+            "SET capability=:capability, attempts=:attempts, "
+            "successes=:successes, cycle_times=:cycle_times"
             " WHERE "
             "date_id = :date_id "
             "AND event_id = :event_id "
@@ -140,6 +152,6 @@ class MatchDal(object):
         conn.execute(sql,
         date_id=date_id,event_id=event_id,level_id=level_id,match_id=match_id,alliance_id=alliance_id,team_id=team_id,station_id=station_id,
         actor_id=actor_id,task_id=task_id,measuretype_id=measuretype_id,phase_id=phase_id,attempt_id=attempt_id,reason_id=reason_id,
-        capability=0,attempts=0,success=0,cycle_time=0)
+        capability=0,attempts=0,successes=0,cycle_times=0)
         #todo add prepared statement parameters
 

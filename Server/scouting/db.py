@@ -166,7 +166,7 @@ class Measure(Base):
     capability = Column(Integer)
     attempts = Column(Integer)
     successes = Column(Integer)
-    cycle_time = Column(Integer)
+    cycle_times = Column(Integer)
 
 
 def create_tables():

@@ -10,7 +10,6 @@ conn = engine.connect()
 
 
 class GameDal(object):
-
     # @staticmethod
     # def game(actor, measuretype):
     #     cur.execute("SELECT * FROM games WHERE "
@@ -24,12 +23,13 @@ class GameDal(object):
     #     return
     #
     @staticmethod
-    def getActor(task, phase):
+    def getActorMeasure(task, phase):
         sql = text("SELECT actor, " + phase + " FROM games WHERE "
                    "task = :task "
         )
-        results = conn.execute(sql, task=task,phase=phase)
+        results = conn.execute(sql, task=task,phase=phase).fetchone()
         return(results)
+
 
 
 # class EventDal(object):
