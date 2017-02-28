@@ -104,8 +104,10 @@ class PageManager extends LinearLayout {
         pages.get(current).setVisibility(VISIBLE);
 
         //Set phase title
+        String name = pages.get(current).name;
+        name = name.substring(0,1).toUpperCase() + name.substring(1);
         TextView textView = (TextView) activity.findViewById(R.id.PageStatus);
-        textView.setText(MainActivity.position + ": " + pages.get(current).name);
+        textView.setText(MainActivity.position + ": " + name);
 
         //Notify server
         if(updater != null) updater.setStatus();

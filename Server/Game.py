@@ -40,7 +40,7 @@ class Task(object):
 class HelloWorld(object):
     @staticmethod
     def gametasks():
-        with open("TestJson/gametasks.csv", "r") as text:
+        with open("Scouting/gametasks.csv", "r") as text:
             out = ''
             for line in text:
                 if 'actor,task' not in line:
@@ -77,7 +77,7 @@ class HelloWorld(object):
                 if '"match":' + str(match) in line:
                     if '"team":' + str(team) in line:
                         out += line
-            return out + 'end'
+            return out
 
     @staticmethod
     def data(match, team, task, phase, value, success, miss):

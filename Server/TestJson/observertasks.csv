@@ -7,3 +7,4 @@ robot,match,teleop,Fuel,TRUE,pickupFuelRetrieval|pickupFuelHopper|pickupFuelFloo
 robot,match,teleop,Climb,FALSE,pushTouchPad|maintainContact,
 robot,boiler,teleop,Fuel,FALSE,shootLowBoiler|shootHighBoiler,
 robot,boiler,teleop,Final,TRUE,shotPercentage,
+robot,match,waiting,Waiting,FALSE,,

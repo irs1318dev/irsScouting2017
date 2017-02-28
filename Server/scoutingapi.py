@@ -7,6 +7,7 @@ import scouting.match
 
 class Scouting(object):
     currentMatch = 1
+    maxMatch = 2
 
     def __init__(self):
         self.matchDal = scouting.match.MatchDal()
@@ -67,15 +68,15 @@ class Scouting(object):
     def matchteamtasks(self, team, match=-1, phase='claim'):
         if match == -1:
             match = self.currentMatch
-        # return Game.HelloWorld.matchteam(match, team)
-        return scouting.match.MatchDal.matchteamtasks(match, team, phase)
+        #return scouting.match.MatchDal.matchteamtasks(match, team, phase)
+            return '{}'
 
     # Get data from match and team
 
     @cherrypy.expose
     def matchteamtask(self, match, team, task, phase, success=0, miss=0):
-        return scouting.match.MatchDal.matchteamtask(match, team, task, phase, success, miss)
-        # Game.HelloWorld.data(match, team, task, success, miss)
+        # return scouting.match.MatchDal.matchteamtask(match, team, task, phase, success, miss)
+        return 'Temp fix here'
 
     @cherrypy.expose
     def dimensions(self):
@@ -111,7 +112,7 @@ class Scouting(object):
                 nextmatch = False
 
         if nextmatch:
-            if '''"number":''' + str(self.currentMatch + 1) in 'get list of matches':
+            if self.currentMatch < self.maxMatch:
                 self.currentMatch += 1
 
         return str(self.currentMatch)
