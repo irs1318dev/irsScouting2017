@@ -11,7 +11,10 @@
     <string name="scout_4">Blue 1</string>
     <string name="scout_5">Blue 2</string>
     <string name="scout_6">Blue 3</string>
+    <string name="scout_7">R Fuel</string>
+    <string name="scout_8">B Fuel</string>
+
 
     <dimen name="text_large">50sp</dimen>
-    <dimen name="text_norm">15sp</dimen>
+    <dimen name="text_norm">20sp</dimen>
 </resources>

@@ -53,8 +53,8 @@ class Scouting(object):
         return 'match with id'
 
     @cherrypy.expose
-    def matchteams(self, match=-1):
-        if match == -1:
+    def matchteams(self, match='hi'):
+        if match is 'hi':
             match = self.currentMatch
         return Game.HelloWorld.match(match)
 

@@ -8,8 +8,9 @@ class Section(object):
         self.observer = value[1]
         self.phase = value[2]
         self.category = value[3]
-        self.newpart = value[4].lower()
-        self.tasks = value[5].split('|')
+        self.position = value[4]
+        self.newpart = value[5].lower()
+        self.tasks = value[6].split('|')
 
 
 class Observers(object):
