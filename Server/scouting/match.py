@@ -64,18 +64,11 @@ class MatchDal(object):
         # find ids event date alliance station from the schedule table --make a map
         current_match = event.EventDal.current_match(match, team)
         if len(current_match)> 0:
-            date_id = MatchDal.dates[current_match[1]['date']]
-            event_id = MatchDal.events[current_match[1]['event']]
-            level_id = MatchDal.events[current_match[1]['level']]
-            alliance_id = MatchDal.alliances[current_match[1]['alliance']]
-            station_id = MatchDal.stations[current_match[1]['station']]
-        else:
-            date_id = 0
-            event_id = 0
-            level_id = 0
-            alliance_id = 0
-            station_id = 0
-
+            date_id = MatchDal.dates[current_match[0]['date']]
+            event_id = MatchDal.events[current_match[0]['event']]
+            level_id = MatchDal.levels[current_match[0]['level']]
+            alliance_id = MatchDal.alliances[current_match[0]['alliance']]
+            station_id = MatchDal.stations[current_match[0]['station']]
 
         # match status is equal to current (call event.current_match)
         # convert the event date alliance station to appropriate ids
@@ -133,25 +126,12 @@ class MatchDal(object):
             ":successes, "
             ":cycle_times )" +
             " ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
-            "SET capability=:capability, attempts=:attempts, "
-            "successes=:successes, cycle_times=:cycle_times"
-            " WHERE "
-            "date_id = :date_id "
-            "AND event_id = :event_id "
-            "AND level_id = :level_id "
-            "AND match_id = :match_id "
-            "AND alliance_id = :alliance_id "
-            "AND team_id= :team_id "
-            "AND station_id = :station_id "
-            "AND actor_id =:actor_id "
-            "AND task_id =:task_id "
-            "AND measuretype_id =:measuretype_id "
-            "AND phase_id =:phase_id "
-            "AND attempt_id= :attempt_id "
-            "AND reason_id =:reason_id;")
+            "SET capability=:capability, attempts=attempts + :attempts, "
+            "successes=successes + :successes, cycle_times=:cycle_times;")
         conn.execute(sql,
         date_id=date_id,event_id=event_id,level_id=level_id,match_id=match_id,alliance_id=alliance_id,team_id=team_id,station_id=station_id,
         actor_id=actor_id,task_id=task_id,measuretype_id=measuretype_id,phase_id=phase_id,attempt_id=attempt_id,reason_id=reason_id,
-        capability=0,attempts=0,successes=0,cycle_times=0)
+        capability=1,attempts=0,successes=0,cycle_times=0)
         #todo add prepared statement parameters
 
+MatchDal.matchteamtask('001-q', '4918', 'placeGear', 'auto', 5)
