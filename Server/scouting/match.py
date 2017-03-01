@@ -52,7 +52,7 @@ class MatchDal(object):
         return json.dumps(measures)
 
     @staticmethod
-    def matchteamtask(match, team, task, phase, value):
+    def matchteamtask(match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
         # find the parameter ids for match team task phase-- make a map
         match_id = MatchDal.matches[match]
         team_id = MatchDal.teams[team]
@@ -60,7 +60,8 @@ class MatchDal(object):
         task_id = MatchDal.tasks[task]
         actor_measure = game.GameDal.getActorMeasure(task, phase)
         actor_id = MatchDal.actors[actor_measure["actor"]]
-        measuretype_id = MatchDal.measuretypes[actor_measure[phase]]
+        measure = actor_measure[phase]
+        measuretype_id = MatchDal.measuretypes[measure]
         # find ids event date alliance station from the schedule table --make a map
         current_match = event.EventDal.current_match(match, team)
         if len(current_match)> 0:
@@ -75,8 +76,11 @@ class MatchDal(object):
         # find the actor and measuretype for the given task and phase
 
         # look up summary attempt id and the na reason id
-        attempt_id = MatchDal.attempts['summary']
+# move this to transform_measure
+#        attempt_id = MatchDal.attempts['summary']
         reason_id = MatchDal.reasons['na']
+
+        capability, attempt, success, cycle_time, attempt_id = transform_measure(measure, capability, attempt, success, cycle_time)
 
         # based on measure type, set the value (capability, attempt, success, cycle_time)
 
@@ -131,7 +135,7 @@ class MatchDal(object):
         conn.execute(sql,
         date_id=date_id,event_id=event_id,level_id=level_id,match_id=match_id,alliance_id=alliance_id,team_id=team_id,station_id=station_id,
         actor_id=actor_id,task_id=task_id,measuretype_id=measuretype_id,phase_id=phase_id,attempt_id=attempt_id,reason_id=reason_id,
-        capability=1,attempts=0,successes=0,cycle_times=0)
+        capability=capability,attempts=attempt,successes=success,cycle_times=cycle_time)
         #todo add prepared statement parameters
 
 MatchDal.matchteamtask('001-q', '4918', 'placeGear', 'auto', 5)
