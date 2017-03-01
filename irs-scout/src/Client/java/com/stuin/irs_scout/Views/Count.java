@@ -19,6 +19,7 @@ public class Count extends Label {
     private boolean drop;
     private boolean missing;
     private int max = 20;
+    public boolean large = false;
 
     public Count(Context context, Task task, String position) {
         super(context, task, position);
@@ -32,6 +33,8 @@ public class Count extends Label {
 
         part(task.success);
         if(!task.miss.isEmpty()) part(task.miss);
+
+        if(large) part("+10");
     }
 
 
@@ -62,9 +65,11 @@ public class Count extends Label {
         public void onClick(View view) {
             //Add to values
             if(!drop) {
-                if(views.indexOf((TextView) view) == 0) {
+                if(view == views.get(0)) {
                     if(measure.success < max) measure.success++;
-                } else if(measure.miss < max) measure.miss++;
+                } else if(view == views.get(1)) {
+                    if(measure.miss < max) measure.miss++;
+                } else if(large && measure.success + 9 < max) measure.success += 10;
             } else {
                 countDownTimer.cancel();
                 drop = false;
@@ -81,7 +86,7 @@ public class Count extends Label {
                 missing = false;
                 if(measure.success > 0) measure.success--;
             }
-            else {
+            else if(view == views.get(1)) {
                 missing = true;
                 if(measure.miss > 0) measure.miss--;
             }

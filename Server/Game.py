@@ -49,16 +49,6 @@ class HelloWorld(object):
                     out += data + '\n'
             return out
 
-    @staticmethod
-    def gamesections():
-        with open("TestJson/observertasks.csv", "r") as text:
-            out = ''
-            for line in text:
-                if 'actor,observer' not in line:
-                    section = Section(line)
-                    data = json.dumps(section, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
-                    out += data + '\n'
-            return out
 
     @staticmethod
     def match(number):

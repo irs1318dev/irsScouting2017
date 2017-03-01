@@ -1,6 +1,7 @@
 import cherrypy
 import Game
 import scouting.tablet
+import scouting.sections
 
 import scouting.match
 
@@ -23,8 +24,7 @@ class Scouting(object):
 
     @cherrypy.expose
     def gamelayout(self):
-        return Game.HelloWorld.gamesections()
-    # All tasks in layout
+        return scouting.sections.Observers().load()
 
     @cherrypy.expose
     def gametasks(self):
