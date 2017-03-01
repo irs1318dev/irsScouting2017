@@ -15,14 +15,17 @@ import com.stuin.irs_scout.R;
  * Created by Stuart on 2/11/2017.
  */
 public class Count extends Label {
-    private CountDownTimer countDownTimer;
     private boolean drop;
     private boolean missing;
-    private int max = 20;
-    public boolean large = false;
+    private boolean miss;
+    private boolean large;
+    private int max = 18;
 
-    public Count(Context context, Task task, String position) {
+    public Count(Context context, Task task, String position, boolean large) {
         super(context, task, position);
+        miss = !task.miss.isEmpty();
+        this.large = large;
+        if(large) max = 100;
     }
 
     @Override
@@ -32,8 +35,7 @@ public class Count extends Label {
         column.addView(linearLayout);
 
         part(task.success);
-        if(!task.miss.isEmpty()) part(task.miss);
-
+        if(miss) part(task.miss);
         if(large) part("+10");
     }
 
@@ -57,7 +59,7 @@ public class Count extends Label {
 
         //Set button text
         views.get(0).setText(task.success + ": " + measure.success);
-        if(!task.miss.isEmpty()) views.get(1).setText(task.miss + ": " + measure.miss);
+        if(miss) views.get(1).setText(task.miss + ": " + measure.miss);
     }
 
     private View.OnClickListener clickListener = new OnClickListener() {
@@ -67,7 +69,7 @@ public class Count extends Label {
             if(!drop) {
                 if(view == views.get(0)) {
                     if(measure.success < max) measure.success++;
-                } else if(view == views.get(1)) {
+                } else if(miss && view == views.get(1)) {
                     if(measure.miss < max) measure.miss++;
                 } else if(large && measure.success + 9 < max) measure.success += 10;
             } else {
@@ -82,35 +84,42 @@ public class Count extends Label {
     private View.OnLongClickListener longClickListener = new OnLongClickListener() {
         @Override
         public boolean onLongClick(View view) {
+            boolean start = true;
+
             if(view == views.get(0)) {
                 missing = false;
                 if(measure.success > 0) measure.success--;
-            }
-            else if(view == views.get(1)) {
+            } else if(miss && view == views.get(1)) {
                 missing = true;
                 if(measure.miss > 0) measure.miss--;
+            } else if(large) {
+                measure.success -= 10;
+                if(measure.success < 0) measure.success = 0;
+                start = false;
             }
 
             drop = true;
-            countDownTimer = new CountDownTimer(400, 10) {
-                @Override
-                public void onTick(long l) {
-                }
-
-                @Override
-                public void onFinish() {
-                    if(drop) {
-                        if(!missing) {
-                            if(measure.success > 0) measure.success--;
-                        } else if(measure.miss > 0) measure.miss--;
-                        countDownTimer.start();
-                    }
-                    update(measure,false);
-                }
-            }.start();
+            if(start) countDownTimer.start();
 
             update(measure, false);
             return false;
+        }
+    };
+
+    private CountDownTimer countDownTimer = new CountDownTimer(400, 10) {
+        @Override
+        public void onTick(long l) {
+        }
+
+        @Override
+        public void onFinish() {
+            if(drop) {
+                if(!missing) {
+                    if(measure.success > 0) measure.success--;
+                } else if(measure.miss > 0) measure.miss--;
+                countDownTimer.start();
+            }
+            update(measure,false);
         }
     };
 }

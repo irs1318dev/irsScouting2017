@@ -101,13 +101,13 @@ class LabelMaker {
             case 'b':
                 return new Switcher(context, task, position);
             case 'c':
-                return new Count(context, task, position);
+                return new Count(context, task, position, false);
             case 'e':
                 return new Choice(context, task, position);
             case 'p':
                 return new Enter(context, task, position);
             case 'l':
-                return new Label(context, task, position);
+                return new Count(context, task, position, true);
         }
         return new Label(context, new Task(), position);
     }
