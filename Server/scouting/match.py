@@ -23,6 +23,9 @@ class MatchDal(object):
     phases, phase_ids = dimension.DimensionDal.build_dimension_dicts("phases")
     attempts, attempt_ids = dimension.DimensionDal.build_dimension_dicts("attempts")
     reasons, reasons_ids = dimension.DimensionDal.build_dimension_dicts("reasons")
+    task_options, task_option_ids = dimension.DimensionDal.build_task_option_dicts()
+
+
 
     def __init__(self):
         pass
@@ -52,7 +55,9 @@ class MatchDal(object):
         return json.dumps(measures)
 
     @staticmethod
-    def matchteamtask(match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
+    def matchteamtask(team, task, match='na',phase='claim', capability=0, attempt_count=0,success_count=0, cycle_time=0):
+        event_name = event.EventDal.current_event()
+
         # find the parameter ids for match team task phase-- make a map
         match_id = MatchDal.matches[match]
         team_id = MatchDal.teams[team]
@@ -63,7 +68,7 @@ class MatchDal(object):
         measure = actor_measure[phase]
         measuretype_id = MatchDal.measuretypes[measure]
         # find ids event date alliance station from the schedule table --make a map
-        current_match = event.EventDal.current_match(match, team)
+        current_match = event.EventDal.current_match(event_name, match, team)
         if len(current_match)> 0:
             date_id = MatchDal.dates[current_match[0]['date']]
             event_id = MatchDal.events[current_match[0]['event']]
@@ -71,16 +76,13 @@ class MatchDal(object):
             alliance_id = MatchDal.alliances[current_match[0]['alliance']]
             station_id = MatchDal.stations[current_match[0]['station']]
 
-        # match status is equal to current (call event.current_match)
-        # convert the event date alliance station to appropriate ids
-        # find the actor and measuretype for the given task and phase
-
         # look up summary attempt id and the na reason id
-# move this to transform_measure
+        # move this to transform_measure
 #        attempt_id = MatchDal.attempts['summary']
         reason_id = MatchDal.reasons['na']
 
-        capability, attempt, success, cycle_time, attempt_id = transform_measure(measure, capability, attempt, success, cycle_time)
+        capability, attempt_count, success_count, cycle_time, attempt_id = \
+            MatchDal.transform_measure(measure, capability, attempt_count, success_count, cycle_time)
 
         # based on measure type, set the value (capability, attempt, success, cycle_time)
 
@@ -133,9 +135,57 @@ class MatchDal(object):
             "SET capability=:capability, attempts=attempts + :attempts, "
             "successes=successes + :successes, cycle_times=:cycle_times;")
         conn.execute(sql,
-        date_id=date_id,event_id=event_id,level_id=level_id,match_id=match_id,alliance_id=alliance_id,team_id=team_id,station_id=station_id,
-        actor_id=actor_id,task_id=task_id,measuretype_id=measuretype_id,phase_id=phase_id,attempt_id=attempt_id,reason_id=reason_id,
-        capability=capability,attempts=attempt,successes=success,cycle_times=cycle_time)
+        date_id=date_id,
+        event_id=event_id,
+        level_id=level_id,
+        match_id=match_id,
+        alliance_id=alliance_id,
+        team_id=team_id,
+        station_id=station_id,
+        actor_id=actor_id,
+        task_id=task_id,
+        measuretype_id=measuretype_id,
+        phase_id=phase_id,
+        attempt_id=attempt_id,
+        reason_id=reason_id,
+        capability=capability,
+        attempts=attempt_count,
+        successes=success_count,
+        cycle_times=cycle_time)
         #todo add prepared statement parameters
 
-MatchDal.matchteamtask('001-q', '4918', 'placeGear', 'auto', 5)
+    @staticmethod
+    def transform_measure(measure, capability, attempt_count, success_count, cycle_time, task_name):
+        attempt_id = MatchDal.attempts['summary']
+        if measure == 'na':
+            return 0, 0, 0, 0, attempt_id
+        elif measure == 'count':
+            return 0, attempt_count, success_count, 0, attempt_id
+        elif measure == 'percentage':
+            return capability, 0, 0, 0, attempt_id
+        elif measure == 'boolean':
+            return capability, 0, 0, 0, attempt_id
+        elif measure == 'enum':
+            task_option = '{}-{}'.format(task_name, capability)
+            option_id = MatchDal.task_option_ids[task_option]
+            return option_id, 0, 0, 0, attempt_id
+        elif measure == 'attempt':
+            return 0
+        elif measure == 'cycletime':
+            return 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# MatchDal.matchteamtask('001-q', '4918', 'placeGear', 'auto', 5)

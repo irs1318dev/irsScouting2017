@@ -113,7 +113,7 @@ def insertData():
     add_name("phases", "name", "finish")
 
     add_name("attempts", "name", "summary")
-    add_many_names("attempts", "name", 31, "{}")
+    add_many_names("attempts", "name", 31, "{0:0>2}")
 
     add_name("reasons", "name", "na")
     add_name("reasons", "name", "dropped")
