@@ -131,6 +131,15 @@ class Game(Base):
     finish = Column(String)
 
 
+class TaskOptions(Base):
+    __tablename__ = "task_options"
+
+    id = Column(Integer, primary_key=True)
+    task_name = Column(String, unique=True)
+    type = Column(String, unique=True)
+    option_name = Column(String, unique=True)
+
+
 
 class Schedule(Base):
     __tablename__ = "schedules"
