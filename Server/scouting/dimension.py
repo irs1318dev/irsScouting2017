@@ -19,8 +19,8 @@ class DimensionDal(object):
             id_to_name[row_dict['id']] = row_dict['name']
         return name_to_id, id_to_name
 
-
-    def build_task_option_dicts(self):
+    @staticmethod
+    def build_task_option_dicts():
         name_to_id = {}
         id_to_name = {}
 
