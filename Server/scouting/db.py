@@ -169,6 +169,16 @@ class Measure(Base):
     cycle_times = Column(Integer)
 
 
+class Status(Base):
+    __tablename__ = "status"
+
+    id = Column(Integer, primary_key=True)
+    event = Column('event', String)
+    match = Column('match', String)
+
+
+
+
 def create_tables():
     engine = getdbengine()
     Base.metadata.create_all(engine)
