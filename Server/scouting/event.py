@@ -33,3 +33,34 @@ class EventDal(object):
             for row in results:
                 current_match.append(dict(row))
         return current_match
+
+
+def setCurrentEvent(event):
+    event = event.lower()
+
+    sql_sel = text("SELECT * FROM status;")
+    results = conn.execute(sql_sel).fetchall()
+    if len(results) == 1:
+        sql_upd = text("UPDATE status SET event = :event WHERE id = :id;")
+        conn.execute(sql_upd, event = event, id = results[0]['id'])
+    elif len(results) == 0:
+        sql_ins = text("INSERT INTO status (event) VALUES (:event);")
+        conn.execute(sql_ins, event = event)
+
+def getCurrentEvent():
+    sql = text("SELECT event FROM status;")
+    return conn.execute(sql).scalar()
+
+def setCurrentMatch(match):
+    sql_sel = text("SELECT * FROM status;")
+    results = conn.execute(sql_sel).fetchall()
+    if len(results) == 1:
+        sql_upd = text("UPDATE status SET match = :match WHERE id = :id;")
+        conn.execute(sql_upd, match = match, id = results[0]['id'])
+    elif len(results) == 0:
+        sql_ins = text("INSERT INTO status (match) VALUES (:match);")
+        conn.execute(sql_ins, match = match)
+
+def getCurrentMatch():
+    sql = text("SELECT match FROM status;")
+    return conn.execute(sql).scalar()

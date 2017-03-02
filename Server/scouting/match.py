@@ -30,25 +30,30 @@ class MatchDal(object):
     def matchteams(self, station, team):
         pass
 
-    def matchteamtasks(self, match, team, phase):
-        current_match = event.EventDal.current_match(match, team)
-        event_id = self.events[current_match['event']]
-        match_id = self.matches[match]
-        team_id = self.teams[team]
-        phase_id = self.phases[phase]
-        conn.execute(
-            "SELECT * FROM measures " +
-            "WHERE " +
-            " event_id = :event_id" +
-            " AND match_id = :match_id" +
-            " AND team_id = :team_id " +
-            " AND phase_id = :phase_id;",
-        event_id=event_id, match_id=match_id,team_id=team_id,phase_id=phase_id)
-        #todo add prepared statement parameters
-        results = conn.fetchall()
+    @staticmethod
+    def matchteamtasks(match, team, phase):
+        # status = getStatus() #This still needs to be implemented
+        match_id = MatchDal.matches[match]
+        team_id = MatchDal.teams[team]
+        phase_id = MatchDal.phases[phase]
+        # event = status['event'] getStatus still needs to be implemented
+        event = "waamv"
+        event_id = MatchDal.events[event]
+
+
+        sql = text("SELECT * FROM measures WHERE "
+                     "event_id = :event_id "
+                     "AND match_id = :match_id "
+                     "AND team_id = :team_id "
+                     "AND phase = :phase_id"
+        )
+
+        results = conn.execute(sql, event_id = event_id, match_id = match_id,
+                     team_id = team_id, phase_id = phase_id)
+
         measures = []
-        for measure in results:
-            measures.append(dict(measure))
+        for meas in results:
+            measures.append(dict(meas))
         return json.dumps(measures)
 
     @staticmethod
