@@ -1,12 +1,14 @@
 import cherrypy
 import Game
 import scouting.tablet
+import scouting.sections
 
 import scouting.match
 
 
 class Scouting(object):
     currentMatch = 1
+    maxMatch = 2
 
     def __init__(self):
         self.matchDal = scouting.match.MatchDal()
@@ -22,8 +24,7 @@ class Scouting(object):
 
     @cherrypy.expose
     def gamelayout(self):
-        return Game.HelloWorld.gamesections()
-    # All tasks in layout
+        return scouting.sections.Observers().load()
 
     @cherrypy.expose
     def gametasks(self):
@@ -52,8 +53,8 @@ class Scouting(object):
         return 'match with id'
 
     @cherrypy.expose
-    def matchteams(self, match=-1):
-        if match == -1:
+    def matchteams(self, match='hi'):
+        if match is 'hi':
             match = self.currentMatch
         return Game.HelloWorld.match(match)
 
@@ -67,8 +68,8 @@ class Scouting(object):
     def matchteamtasks(self, team, match=-1, phase='claim'):
         if match == -1:
             match = self.currentMatch
-        # return Game.HelloWorld.matchteam(match, team)
-        return scouting.match.MatchDal.matchteamtasks(match, team, phase)
+        #return scouting.match.MatchDal.matchteamtasks(match, team, phase)
+            return '{}'
 
     # Get data from match and team
 
@@ -76,6 +77,7 @@ class Scouting(object):
     def matchteamtask(self, match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
         return scouting.match.MatchDal.matchteamtask(match, team, task, phase, capability, attempt, success, cycle_time)
         # Game.HelloWorld.data(match, team, task, success, miss)
+
 
     @cherrypy.expose
     def dimensions(self):
@@ -111,7 +113,7 @@ class Scouting(object):
                 nextmatch = False
 
         if nextmatch:
-            if '''"number":''' + str(self.currentMatch + 1) in 'get list of matches':
+            if self.currentMatch < self.maxMatch:
                 self.currentMatch += 1
 
         return str(self.currentMatch)
