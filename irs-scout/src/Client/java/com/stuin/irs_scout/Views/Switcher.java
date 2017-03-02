@@ -38,13 +38,13 @@ public class Switcher extends Label {
     protected void update(Measure measure, boolean send) {
         super.update(measure, send);
 
-        //Match checkboxes to value
+        //Match checkboxes to capability
         CheckBox checkBox = (CheckBox) views.get(0);
         checkBox.setChecked(measure.success == 1);
 
         if(!task.miss.isEmpty()) {
             checkBox = (CheckBox) views.get(1);
-            checkBox.setChecked(measure.miss == 1);
+            checkBox.setChecked(measure.attempt == 1);
         }
     }
 
@@ -56,8 +56,8 @@ public class Switcher extends Label {
                 if(b) measure.success = 1;
                 else measure.success = 0;
             } else {
-                if(b) measure.miss = 1;
-                else measure.miss = 0;
+                if(b) measure.attempt = 1;
+                else measure.attempt = 0;
             }
 
             update(measure, true);

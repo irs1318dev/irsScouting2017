@@ -54,9 +54,9 @@ public class Updater {
         try {
             for(Measure measure : measures) {
                 String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.phase;
-                if(!measure.value.isEmpty()) s += "&capability=" + measure.value;
+                if(!measure.capability.isEmpty()) s += "&capability=" + measure.capability;
                 if(measure.success != 0) s += "&success=" + measure.success;
-                if(measure.miss != 0) s += "&miss=" + measure.miss;
+                if(measure.attempt != 0) s += "&attempt=" + measure.attempt;
 
                 if(!s.equals(last)) {
                     class Remove extends Request {

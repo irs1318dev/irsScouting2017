@@ -1,9 +1,9 @@
 package com.stuin.irs_scout.Views;
 
 import android.content.Context;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,7 +33,17 @@ public class Enter extends Label{
         editText.setTextSize(getResources().getDimension(R.dimen.text_norm));
         editText.setWidth(200);
         editText.setOnEditorActionListener(actionListener);
+
+        InputFilter[] filters = new InputFilter[1];
+        filters[0] = new InputFilter.LengthFilter(2);
+        editText.setFilters(filters);
+
+        TextView textView = new TextView(getContext());
+        textView.setText("%");
+        textView.setTextSize(getResources().getDimension(R.dimen.text_norm));
+
         linearLayout.addView(editText);
+        linearLayout.addView(textView);
         views.add(editText);
         return editText;
     }
@@ -52,10 +62,6 @@ public class Enter extends Label{
     private EditText.OnEditorActionListener actionListener = new OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-            if(textView.getText().length() > 0 && textView.getText().length() < 4) {
-                measure.success = Integer.valueOf(textView.getText().toString());
-            } else measure.success = 0;
-
             update(measure, true);
             return false;
         }

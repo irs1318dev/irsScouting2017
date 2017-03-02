@@ -8,18 +8,18 @@ public class Measure {
     final public int team;
     final public String task;
     final public String phase;
-    public String value;
+    public String capability;
     public int success;
-    public int miss;
+    public int attempt;
 
     public Measure() {
         match = "";
         team = 0;
         task = "";
         phase = "";
-        value = "";
+        capability = "";
         success = 0;
-        miss = 0;
+        attempt = 0;
     }
 
     public Measure(Task task, Match match, String position, String phase) {
@@ -27,8 +27,8 @@ public class Measure {
         this.team = match.getTeam(position);
         this.task = task.task;
         this.phase = phase;
-        this.value = "";
+        this.capability = "";
         this.success = 0;
-        this.miss = 0;
+        this.attempt = 0;
     }
 }

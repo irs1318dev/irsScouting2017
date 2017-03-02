@@ -2,9 +2,9 @@ package com.stuin.irs_scout.Views;
 
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
@@ -18,27 +18,36 @@ import com.stuin.irs_scout.R;
 public class Count extends Label {
     private boolean drop;
     private boolean missing;
-    private boolean miss;
     private boolean large = false;
+    private int miss = -1;
     private int max = 18;
+    private GridLayout gridLayout;
 
     public Count(Context context, Task task, String position) {
         super(context, task, position);
-        miss = !task.miss.isEmpty();
+        if(!task.miss.isEmpty()) miss = 1;
 
-        //if(MainActivity.position.contains("Fuel")) large = true;
-        if(large) max = 100;
+        if(MainActivity.position.contains("Fuel")) large = true;
+        if(large) {
+            max = 100;
+            if(miss != -1) miss = 2;
+        }
     }
 
     @Override
     void create(LinearLayout column) {
-        linearLayout = new LinearLayout(getContext());
-        linearLayout.setGravity(Gravity.CENTER);
-        column.addView(linearLayout);
+        gridLayout = new GridLayout(getContext());
+        gridLayout.setColumnCount(2);
+        column.addView(gridLayout);
 
         part(task.success);
-        if(miss) part(task.miss);
         if(large) part("+10");
+
+        if(miss != -1) {
+            part(task.miss);
+            if(large) part("+10");
+        }
+
     }
 
 
@@ -51,7 +60,7 @@ public class Count extends Label {
         button.setOnClickListener(clickListener);
         button.setOnLongClickListener(longClickListener);
         views.add(button);
-        linearLayout.addView(button);
+        gridLayout.addView(button);
         return button;
     }
 
@@ -61,7 +70,7 @@ public class Count extends Label {
 
         //Set button text
         views.get(0).setText(task.success + ": " + measure.success);
-        if(miss) views.get(1).setText(task.miss + ": " + measure.miss);
+        if(miss != -1) views.get(1).setText(task.miss + ": " + (measure.attempt - measure.success));
     }
 
     private View.OnClickListener clickListener = new OnClickListener() {
@@ -70,9 +79,12 @@ public class Count extends Label {
             //Add to values
             if(!drop) {
                 if(view == views.get(0)) {
-                    if(measure.success < max) measure.success++;
-                } else if(miss && view == views.get(1)) {
-                    if(measure.miss < max) measure.miss++;
+                    if(measure.success < max) {
+                        measure.success++;
+                        measure.attempt++;
+                    }
+                } else if(miss != -1 && view == views.get(1)) {
+                    if(measure.attempt < max) measure.attempt++;
                 } else if(large && measure.success + 9 < max) measure.success += 10;
             } else {
                 countDownTimer.cancel();
@@ -90,13 +102,22 @@ public class Count extends Label {
 
             if(view == views.get(0)) {
                 missing = false;
-                if(measure.success > 0) measure.success--;
-            } else if(miss && view == views.get(1)) {
-                missing = true;
-                if(measure.miss > 0) measure.miss--;
-            } else if(large) {
+                if(measure.success > 0) {
+                    measure.success--;
+                    measure.attempt--;
+                }
+            } else if(large && view == views.get(1)) {
+                int old = measure.success;
                 measure.success -= 10;
                 if(measure.success < 0) measure.success = 0;
+                measure.attempt -= (old - measure.success);
+                start = false;
+            } else if(miss != -1 && view == views.get(miss)) {
+                missing = true;
+                if(measure.attempt > 0) measure.attempt--;
+            } else if(miss != -1 && large && view == views.get(3)) {
+                measure.attempt -= 10;
+                if(measure.attempt < 0) measure.attempt = 0;
                 start = false;
             }
 
@@ -117,8 +138,11 @@ public class Count extends Label {
         public void onFinish() {
             if(drop) {
                 if(!missing) {
-                    if(measure.success > 0) measure.success--;
-                } else if(measure.miss > 0) measure.miss--;
+                    if(measure.success > 0) {
+                        measure.success--;
+                        measure.attempt--;
+                    }
+                } else if(measure.attempt > 0) measure.attempt--;
                 countDownTimer.start();
             }
             update(measure,false);
