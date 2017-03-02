@@ -14,10 +14,10 @@ def loadGameSheet():
     sheet = csv.reader(file)
     for row in sheet:
         if row[0] != 'actor':
-            insertgame(row[0], row[1], row[2], row[3], row[4], row[5])
+            insertgame(row[0], row[1], row[2], row[3], row[4], row[5], row[8])
 
 
-def insertgame(actor, task, claim, auto, teleop, finish):
+def insertgame(actor, task, claim, auto, teleop, finish, optionString):
     engine = db.getdbengine()
     conn = engine.connect()
     select = text(
@@ -26,6 +26,8 @@ def insertgame(actor, task, claim, auto, teleop, finish):
     )
     conn.execute(select, actor=actor, task=task, claim=claim, auto=auto, teleop=teleop, finish=finish)
     data.add_name("tasks", "name", task)
+    # create task options if enums is filled with a non-empty value
+    # split on | a dn insert one record for each task, 'capabliity', optionName.
 
 
 def insertsched(event, season, level='qual'):
