@@ -166,7 +166,17 @@ class Measure(Base):
     capability = Column(Integer)
     attempts = Column(Integer)
     successes = Column(Integer)
-    cycle_time = Column(Integer)
+    cycle_times = Column(Integer)
+
+
+class Status(Base):
+    __tablename__ = "status"
+
+    id = Column(Integer, primary_key=True)
+    event = Column('event', String)
+    match = Column('match', String)
+
+
 
 
 def create_tables():

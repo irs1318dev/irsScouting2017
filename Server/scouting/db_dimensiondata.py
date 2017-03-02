@@ -2,6 +2,7 @@ import db
 from sqlalchemy.sql import text
 
 
+
 def add_name(table, col, val):
     engine = db.getdbengine()
     conn = engine.connect()
@@ -50,73 +51,72 @@ def add_many_cols(table, cols, vals) :
     ).params(vals)
     conn.execute(sql)
 
-# dates imported from schedule
 
-# events imported from schedule
+def insertData():
+    add_name("levels", "name", "qual")
+    add_name("levels", "name", "playoff")
 
-add_name("levels", "name", "qual")
-add_name("levels", "name", "playoff")
+    add_many_names("matches", "name", 150, "{0:0>3}-q")
+    add_name("matches", "name", "q1.1")
+    add_name("matches", "name", "q1.2")
+    add_name("matches", "name", "q1.3")
+    add_name("matches", "name", "q2.1")
+    add_name("matches", "name", "q2.2")
+    add_name("matches", "name", "q2.3")
+    add_name("matches", "name", "q3.1")
+    add_name("matches", "name", "q3.2")
+    add_name("matches", "name", "q3.3")
+    add_name("matches", "name", "s1.1")
+    add_name("matches", "name", "s1.2")
+    add_name("matches", "name", "s1.3")
+    add_name("matches", "name", "s2.1")
+    add_name("matches", "name", "s2.2")
+    add_name("matches", "name", "s2.3")
+    add_name("matches", "name", "f1")
+    add_name("matches", "name", "f2")
+    add_name("matches", "name", "f3")
+    add_name("matches", "name", "pit")
 
-add_many_names("matches", "name", 150, "{0:0>3}-q")
-add_name("matches", "name", "q1.1")
-add_name("matches", "name", "q1.2")
-add_name("matches", "name", "q1.3")
-add_name("matches", "name", "q2.1")
-add_name("matches", "name", "q2.2")
-add_name("matches", "name", "q2.3")
-add_name("matches", "name", "q3.1")
-add_name("matches", "name", "q3.2")
-add_name("matches", "name", "q3.3")
-add_name("matches", "name", "s1.1")
-add_name("matches", "name", "s1.2")
-add_name("matches", "name", "s1.3")
-add_name("matches", "name", "s2.1")
-add_name("matches", "name", "s2.2")
-add_name("matches", "name", "s2.3")
-add_name("matches", "name", "f1")
-add_name("matches", "name", "f2")
-add_name("matches", "name", "f3")
+    add_name("alliances", "name", "na")
+    add_name("alliances", "name", "blue")
+    add_name("alliances", "name", "red")
 
-add_name("alliances", "name", "na")
-add_name("alliances", "name", "blue")
-add_name("alliances", "name", "red")
+    # teams imported from schedule
 
-# teams imported from schedule
+    add_name("stations", "name", "na")
+    add_name("stations", "name", "1")
+    add_name("stations", "name", "2")
+    add_name("stations", "name", "3")
 
-add_name("stations", "name", "na")
-add_name("stations", "name", "1")
-add_name("stations", "name", "2")
-add_name("stations", "name", "3")
+    add_name("actors", "name", "na")
+    add_name("actors", "name", "drive_team")
+    add_name("actors", "name", "robot")
+    add_name("actors", "name", "pilot")
+    add_name("actors", "name", "human_player")
+    add_name("actors", "name", "alliance")
+    add_name("actors", "name", "team")
 
-add_name("actors", "name", "na")
-add_name("actors", "name", "drive_team")
-add_name("actors", "name", "robot")
-add_name("actors", "name", "pilot")
-add_name("actors", "name", "human_player")
-add_name("actors", "name", "alliance")
-add_name("actors", "name", "team")
+    # tasks imported from game
 
-# tasks imported from game
+    add_name("measuretypes", "name", "na")
+    add_name("measuretypes", "name", "count")
+    add_name("measuretypes", "name", "percentage")
+    add_name("measuretypes", "name", "boolean")
+    add_name("measuretypes", "name", "enum")
+    add_name("measuretypes", "name", "attempt")
+    add_name("measuretypes", "name", "cycletime")
 
-add_name("measuretypes", "name", "na")
-add_name("measuretypes", "name", "count")
-add_name("measuretypes", "name", "percentage")
-add_name("measuretypes", "name", "boolean")
-add_name("measuretypes", "name", "enum")
-add_name("measuretypes", "name", "attempt")
-add_name("measuretypes", "name", "cycletime")
+    add_name("phases", "name", "na")
+    add_name("phases", "name", "claim")
+    add_name("phases", "name", "auto")
+    add_name("phases", "name", "teleop")
+    add_name("phases", "name", "finish")
 
-add_name("phases", "name", "na")
-add_name("phases", "name", "claim")
-add_name("phases", "name", "auto")
-add_name("phases", "name", "teleop")
-add_name("phases", "name", "finish")
+    add_name("attempts", "name", "summary")
+    add_many_names("attempts", "name", 31, "{}")
 
-add_name("attempts", "name", "summary")
-add_many_names("attempts", "name", 31, "{}")
-
-add_name("reasons", "name", "na")
-add_name("reasons", "name", "dropped")
-add_name("reasons", "name", "blocked")
-add_name("reasons", "name", "defended")
+    add_name("reasons", "name", "na")
+    add_name("reasons", "name", "dropped")
+    add_name("reasons", "name", "blocked")
+    add_name("reasons", "name", "defended")
 

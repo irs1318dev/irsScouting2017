@@ -74,9 +74,10 @@ class Scouting(object):
     # Get data from match and team
 
     @cherrypy.expose
-    def matchteamtask(self, match, team, task, phase, success=0, miss=0):
-        # return scouting.match.MatchDal.matchteamtask(match, team, task, phase, success, miss)
-        return 'Temp fix here'
+    def matchteamtask(self, match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
+        return scouting.match.MatchDal.matchteamtask(match, team, task, phase, capability, attempt, success, cycle_time)
+        # Game.HelloWorld.data(match, team, task, success, miss)
+
 
     @cherrypy.expose
     def dimensions(self):

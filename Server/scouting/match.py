@@ -3,6 +3,7 @@ import dimension
 import json
 import db
 from sqlalchemy import text
+import game
 
 engine = db.getdbengine()
 conn = engine.connect()
@@ -51,27 +52,35 @@ class MatchDal(object):
         return json.dumps(measures)
 
     @staticmethod
-    def matchteamtask(match, team, task, phase, value):
+    def matchteamtask(match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
         # find the parameter ids for match team task phase-- make a map
         match_id = MatchDal.matches[match]
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
         task_id = MatchDal.tasks[task]
+        actor_measure = game.GameDal.getActorMeasure(task, phase)
+        actor_id = MatchDal.actors[actor_measure["actor"]]
+        measure = actor_measure[phase]
+        measuretype_id = MatchDal.measuretypes[measure]
         # find ids event date alliance station from the schedule table --make a map
         current_match = event.EventDal.current_match(match, team)
-        date_id = MatchDal.dates[current_match['date']]
-        event_id = MatchDal.events[current_match['event']]
-        level_id = MatchDal.events[current_match['level']]
-        alliance_id = MatchDal.alliances[current_match['alliance']]
-        station_id = MatchDal.stations[current_match['station']]
+        if len(current_match)> 0:
+            date_id = MatchDal.dates[current_match[0]['date']]
+            event_id = MatchDal.events[current_match[0]['event']]
+            level_id = MatchDal.levels[current_match[0]['level']]
+            alliance_id = MatchDal.alliances[current_match[0]['alliance']]
+            station_id = MatchDal.stations[current_match[0]['station']]
 
         # match status is equal to current (call event.current_match)
         # convert the event date alliance station to appropriate ids
         # find the actor and measuretype for the given task and phase
 
         # look up summary attempt id and the na reason id
-        attempt_id = MatchDal.attempts['summary']
+# move this to transform_measure
+#        attempt_id = MatchDal.attempts['summary']
         reason_id = MatchDal.reasons['na']
+
+        capability, attempt, success, cycle_time, attempt_id = transform_measure(measure, capability, attempt, success, cycle_time)
 
         # based on measure type, set the value (capability, attempt, success, cycle_time)
 
@@ -99,8 +108,8 @@ class MatchDal(object):
             "reason_id, "
             "capability, "
             "attempts, "
-            "success, "
-            "cycle_time"
+            "successes, "
+            "cycle_times"
             ") "
             " VALUES("
             ":date_id, "
@@ -118,28 +127,15 @@ class MatchDal(object):
             ":reason_id, "
             ":capability, "
             ":attempts, "
-            ":success, "
-            ":cycle_time )" +
-            " ON CONFLICT (measures) DO UPDATE "
-            "SET capability= :capability, attempts= attempts + :attempts, "
-            "success= success +:success, cycle_time=:cycle_time"
-            " WHERE "
-            "date_id = :date_id "
-            "AND event_id = :event_id "
-            "AND level_id = :level_id "
-            "AND match_id = :match_id "
-            "AND alliance_id = :alliance_id "
-            "AND team_id= :team_id "
-            "AND station_id = :station_id "
-            "AND actor_id =:actor_id "
-            "AND task_id =:task_id "
-            "AND measuretype_id =:measuretype_id "
-            "AND phase_id =:phase_id "
-            "AND attempt_id= :attempt_id "
-            "AND reason_id =:reason_id;")
+            ":successes, "
+            ":cycle_times )" +
+            " ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
+            "SET capability=:capability, attempts=attempts + :attempts, "
+            "successes=successes + :successes, cycle_times=:cycle_times;")
         conn.execute(sql,
         date_id=date_id,event_id=event_id,level_id=level_id,match_id=match_id,alliance_id=alliance_id,team_id=team_id,station_id=station_id,
         actor_id=actor_id,task_id=task_id,measuretype_id=measuretype_id,phase_id=phase_id,attempt_id=attempt_id,reason_id=reason_id,
-        capability=0,attempts=0,success=0,cycle_time=0)
+        capability=capability,attempts=attempt,successes=success,cycle_times=cycle_time)
         #todo add prepared statement parameters
 
+MatchDal.matchteamtask('001-q', '4918', 'placeGear', 'auto', 5)
