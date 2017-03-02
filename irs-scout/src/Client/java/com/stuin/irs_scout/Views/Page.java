@@ -35,6 +35,8 @@ public class Page extends LinearLayout {
 
     public void setMeasures(Map<String, Measure> measures, Match match) {
         for(Label l : labels) {
+            if(l.sectionLabel && l.task.success.contains("(Team)")) l.setText(String.valueOf(match.getTeam(l.position)));
+
             if(measures.get(l.task.success) != null) {
                 Measure measure = measures.get(l.task.success);
                 if(match.getTeam(l.position) == measure.team) l.update(measure, false);

@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
+import com.stuin.irs_scout.MainActivity;
 import com.stuin.irs_scout.R;
 
 /**
@@ -18,13 +19,14 @@ public class Count extends Label {
     private boolean drop;
     private boolean missing;
     private boolean miss;
-    private boolean large;
+    private boolean large = false;
     private int max = 18;
 
-    public Count(Context context, Task task, String position, boolean large) {
+    public Count(Context context, Task task, String position) {
         super(context, task, position);
         miss = !task.miss.isEmpty();
-        this.large = large;
+
+        //if(MainActivity.position.contains("Fuel")) large = true;
         if(large) max = 100;
     }
 

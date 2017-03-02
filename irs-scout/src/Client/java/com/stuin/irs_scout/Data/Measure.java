@@ -4,7 +4,7 @@ package com.stuin.irs_scout.Data;
  * Created by Stuart on 2/10/2017.
  */
 public class Measure {
-    final public int match;
+    final public String match;
     final public int team;
     final public String task;
     final public String phase;
@@ -13,7 +13,7 @@ public class Measure {
     public int miss;
 
     public Measure() {
-        match = 0;
+        match = "";
         team = 0;
         task = "";
         phase = "";

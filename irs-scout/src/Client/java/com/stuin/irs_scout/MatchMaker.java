@@ -35,8 +35,11 @@ class MatchMaker {
             @Override
             public void run(List<String> s) {
                 match = new Gson().fromJson(s.get(0), Match.class);
-                if(!MainActivity.position.contains(match.alliance)) match = new Gson().fromJson(s.get(1), Match.class);
-                status.setText("Match: " + match.number + " Team: " + match.getTeam(MainActivity.position));
+                if(MainActivity.position.charAt(0) != match.alliance.charAt(0)) match = new Gson().fromJson(s.get(1), Match.class);
+
+                String title = "Match: " + match.number;
+                if(!MainActivity.position.contains("Fuel")) title += " Team: " + match.getTeam(MainActivity.position);
+                status.setText(title);
                 data = new ArrayList<>();
 
                 class Set extends Request {

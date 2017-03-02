@@ -19,6 +19,7 @@ public class Label extends TextView {
     List<TextView> views = new ArrayList<>();
     Measure measure = new Measure();
     boolean defaults = true;
+    public boolean sectionLabel = false;
 
     public Label(Context context, Task task, String position) {
         super(context);

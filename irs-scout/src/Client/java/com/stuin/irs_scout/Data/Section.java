@@ -10,9 +10,9 @@ public class Section {
     final public String observer;
     final public String phase;
     final public String category;
-    final public String position;
     final public String[] tasks;
     final public String newpart;
+    public String position;
 
     public Section() {
         actor = "";

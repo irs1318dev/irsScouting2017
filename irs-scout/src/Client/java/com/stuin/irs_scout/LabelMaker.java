@@ -58,7 +58,11 @@ class LabelMaker {
 
         for(Section s : sections) {
             if(s.newpart.equals("true")) pageList.get(s.phase).newCol();
-            pageList.get(s.phase).add(new Label(context, new Task(s.category), s.position));
+            if(s.position.isEmpty()) s.position = MainActivity.position;
+
+            Label label = new Label(context, new Task(s.category), s.position);
+            label.sectionLabel = true;
+            pageList.get(s.phase).add(label);
 
             for(String t : s.tasks) if(tasks.containsKey(t)) {
                 pageList.get(s.phase).add(makeLabel(tasks.get(t), context, s.phase, s.position));
@@ -72,8 +76,8 @@ class LabelMaker {
 
     private boolean usePage(String observer, String position) {
         //Check if phase is to be used
-        if(observer.equals("match") && !position.contains("Boiler")) return true;
-        if(observer.equals("boiler") && position.contains("Boiler")) return true;
+        if(observer.equals("match") && !position.contains("Fuel")) return true;
+        if(observer.equals("boiler") && position.contains("Fuel")) return true;
         return false;
     }
 
@@ -101,13 +105,13 @@ class LabelMaker {
             case 'b':
                 return new Switcher(context, task, position);
             case 'c':
-                return new Count(context, task, position, false);
+                return new Count(context, task, position);
             case 'e':
                 return new Choice(context, task, position);
             case 'p':
                 return new Enter(context, task, position);
             case 'l':
-                return new Count(context, task, position, true);
+                return new Label(context, task, position);
         }
         return new Label(context, new Task(), position);
     }
