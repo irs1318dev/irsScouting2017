@@ -46,7 +46,7 @@ public class Page extends LinearLayout {
     }
 
     public void send() {
-        for(Label label : labels) if(label.measure.success + label.measure.miss > 0) label.update(label.measure, false);
+        for(Label label : labels) if(label.measure.success + label.measure.attempt > 0) label.update(label.measure, false);
     }
 
     public void newCol() {

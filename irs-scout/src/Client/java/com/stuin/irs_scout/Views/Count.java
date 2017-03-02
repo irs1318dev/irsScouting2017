@@ -70,7 +70,7 @@ public class Count extends Label {
 
         //Set button text
         views.get(0).setText(task.success + ": " + measure.success);
-        if(miss != -1) views.get(1).setText(task.miss + ": " + measure.miss);
+        if(miss != -1) views.get(1).setText(task.miss + ": " + (measure.attempt - measure.success));
     }
 
     private View.OnClickListener clickListener = new OnClickListener() {
@@ -79,9 +79,12 @@ public class Count extends Label {
             //Add to values
             if(!drop) {
                 if(view == views.get(0)) {
-                    if(measure.success < max) measure.success++;
+                    if(measure.success < max) {
+                        measure.success++;
+                        measure.attempt++;
+                    }
                 } else if(miss != -1 && view == views.get(1)) {
-                    if(measure.miss < max) measure.miss++;
+                    if(measure.attempt < max) measure.attempt++;
                 } else if(large && measure.success + 9 < max) measure.success += 10;
             } else {
                 countDownTimer.cancel();
@@ -99,17 +102,22 @@ public class Count extends Label {
 
             if(view == views.get(0)) {
                 missing = false;
-                if(measure.success > 0) measure.success--;
+                if(measure.success > 0) {
+                    measure.success--;
+                    measure.attempt--;
+                }
             } else if(large && view == views.get(1)) {
+                int old = measure.success;
                 measure.success -= 10;
                 if(measure.success < 0) measure.success = 0;
+                measure.attempt -= (old - measure.success);
                 start = false;
             } else if(miss != -1 && view == views.get(miss)) {
                 missing = true;
-                if(measure.miss > 0) measure.miss--;
+                if(measure.attempt > 0) measure.attempt--;
             } else if(miss != -1 && large && view == views.get(3)) {
-                measure.miss -= 10;
-                if(measure.miss < 0) measure.miss = 0;
+                measure.attempt -= 10;
+                if(measure.attempt < 0) measure.attempt = 0;
                 start = false;
             }
 
@@ -130,8 +138,11 @@ public class Count extends Label {
         public void onFinish() {
             if(drop) {
                 if(!missing) {
-                    if(measure.success > 0) measure.success--;
-                } else if(measure.miss > 0) measure.miss--;
+                    if(measure.success > 0) {
+                        measure.success--;
+                        measure.attempt--;
+                    }
+                } else if(measure.attempt > 0) measure.attempt--;
                 countDownTimer.start();
             }
             update(measure,false);
