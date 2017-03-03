@@ -37,7 +37,7 @@ class MatchMaker {
                 match = new Gson().fromJson(s.get(0), Match.class);
                 if(MainActivity.position.charAt(0) != match.alliance.charAt(0)) match = new Gson().fromJson(s.get(1), Match.class);
 
-                String title = "Match: " + match.number;
+                String title = "Match: " + match.match;
                 if(!MainActivity.position.contains("Fuel")) title += " Team: " + match.getTeam(MainActivity.position);
                 status.setText(title);
                 data = new ArrayList<>();

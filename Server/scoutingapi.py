@@ -2,7 +2,6 @@ import cherrypy
 import Game
 import scouting.tablet
 import scouting.sections
-
 import scouting.match
 import scouting.event
 
