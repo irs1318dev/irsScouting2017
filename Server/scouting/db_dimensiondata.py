@@ -33,23 +33,26 @@ def add_many_names(table, col, n, template):
 
 # This function does not yet work -- don't use it. Check with Stacy if you
 # have questions.
-def add_many_cols(table, cols, vals) :
+def add_many_cols(table, data) :
     engine = db.getdbengine()
     conn = engine.connect()
 
     # Buld string containing column names
     col_names = ""
-    for col in cols:
+    val_data = ""
+    for col, _ in data.iteritems():
         if col_names == "":
             col_names = col
+            val_data = ':' + col
         else:
             col_names = col_names + ", " + col
+            val_data = val_data + ", :" + col
 
     sql = text(
         "INSERT INTO " + table + " (" + col_names + ") " +
-        "VALUES (:name)"
-    ).params(vals)
-    conn.execute(sql)
+        "VALUES (" + val_data + ");"
+    )
+    conn.execute(sql, **data)
 
 
 def insertData():
@@ -119,4 +122,58 @@ def insertData():
     add_name("reasons", "name", "dropped")
     add_name("reasons", "name", "blocked")
     add_name("reasons", "name", "defended")
+
+
+def insertTaskOptionData():
+    add_many_cols("task_options", {'task_name': 'startingLocation',
+                                   'type': 'claim',
+                                   'option_name': 'retrieval' })
+    add_many_cols("task_options", {'task_name': 'startingLocation',
+                                   'type': 'claim',
+                                   'option_name': 'center'})
+    add_many_cols("task_options", {'task_name': 'startingLocation',
+                                   'type': 'claim',
+                                   'option_name': 'boiler'})
+    add_many_cols("task_options", {'task_name': 'startingLocation',
+                                   'type': 'auto',
+                                   'option_name': 'retrieval'})
+    add_many_cols("task_options", {'task_name': 'startingLocation',
+                                   'type': 'auto',
+                                   'option_name': 'center'})
+    add_many_cols("task_options", {'task_name': 'startingLocation',
+                                   'type': 'auto',
+                                   'option_name': 'boiler'})
+    add_many_cols("task_options", {'task_name': 'preferredDavit',
+                                   'type': 'claim',
+                                   'option_name': '1'})
+    add_many_cols("task_options", {'task_name': 'preferredDavit',
+                                   'type': 'claim',
+                                   'option_name': '2'})
+    add_many_cols("task_options", {'task_name': 'preferredDavit',
+                                   'type': 'claim',
+                                   'option_name': '3'})
+    add_many_cols("task_options", {'task_name': 'preferredDavit',
+                                   'type': 'teleop',
+                                   'option_name': '1'})
+    add_many_cols("task_options", {'task_name': 'preferredDavit',
+                                   'type': 'teleop',
+                                   'option_name': '2'})
+    add_many_cols("task_options", {'task_name': 'preferredDavit',
+                                   'type': 'teleop',
+                                   'option_name': '3'})
+    add_many_cols("task_options", {'task_name': 'deployRope',
+                                   'type': 'teleop',
+                                   'option_name': 'released'})
+    add_many_cols("task_options", {'task_name': 'deployRope',
+                                   'type': 'teleop',
+                                   'option_name': 'late'})
+    add_many_cols("task_options", {'task_name': 'deployRope',
+                                   'type': 'teleop',
+                                   'option_name': 'never'})
+
+
+
+
+
+
 
