@@ -140,7 +140,6 @@ class TaskOptions(Base):
     option_name = Column(String, unique=True)
 
 
-
 class Schedule(Base):
     __tablename__ = "schedules"
 
@@ -152,8 +151,6 @@ class Schedule(Base):
     alliance = Column('alliance', String)
     team = Column('team', String)
     station = Column('station', String)
-    match_status = Column('match_status', String)
-    tablet_status = Column('tablet_status', String)
 
 
 class Measure(Base):
@@ -184,8 +181,6 @@ class Status(Base):
     id = Column(Integer, primary_key=True)
     event = Column('event', String)
     match = Column('match', String)
-
-
 
 
 def create_tables():

@@ -8,6 +8,7 @@ import game
 engine = db.getdbengine()
 conn = engine.connect()
 
+
 class MatchDal(object):
 
     dates, date_ids = dimension.DimensionDal.build_dimension_dicts("dates")
@@ -43,16 +44,13 @@ class MatchDal(object):
         event = "waamv"
         event_id = MatchDal.events[event]
 
-
         sql = text("SELECT * FROM measures WHERE "
-                     "event_id = :event_id "
-                     "AND match_id = :match_id "
-                     "AND team_id = :team_id "
-                     "AND phase = :phase_id"
-        )
+                    "event_id = :event_id "
+                    "AND match_id = :match_id "
+                    "AND team_id = :team_id "
+                    "AND phase = :phase_id ")
 
-        results = conn.execute(sql, event_id = event_id, match_id = match_id,
-                     team_id = team_id, phase_id = phase_id)
+        results = conn.execute(sql, event_id=event_id, match_id=match_id, team_id=team_id, phase_id=phase_id)
 
         measures = []
         for meas in results:
@@ -60,7 +58,7 @@ class MatchDal(object):
         return json.dumps(measures)
 
     @staticmethod
-    def matchteamtask(team, task, match='na', phase='claim', capability=0, attempt_count=0,success_count=0, cycle_time=0):
+    def matchteamtask(team, task, match='na',phase='claim', capability=0, attempt_count=0,success_count=0, cycle_time=0):
         event_name = event.getCurrentEvent()
 
         # find the parameter ids for match team task phase-- make a map
@@ -73,8 +71,8 @@ class MatchDal(object):
         measure = actor_measure[phase]
         measuretype_id = MatchDal.measuretypes[measure]
         # find ids event date alliance station from the schedule table --make a map
-        current_match = event.EventDal.current_match_team(match, team)
-        if len(current_match)> 0:
+        current_match = event.EventDal.current_match(event_name, match, team)
+        if len(current_match) > 0:
             date_id = MatchDal.dates[current_match[0]['date']]
             event_id = MatchDal.events[current_match[0]['event']]
             level_id = MatchDal.levels[current_match[0]['level']]
@@ -157,7 +155,7 @@ class MatchDal(object):
         attempts=attempt_count,
         successes=success_count,
         cycle_times=cycle_time)
-        #todo add prepared statement parameters
+        # todo add prepared statement parameters
 
     @staticmethod
     def transform_measure(measure, capability, attempt_count, success_count, cycle_time, task_name):
@@ -178,19 +176,6 @@ class MatchDal(object):
             return 0
         elif measure == 'cycletime':
             return 0
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # MatchDal.matchteamtask('001-q', '4918', 'placeGear', 'auto', 5)
