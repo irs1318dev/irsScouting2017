@@ -10,9 +10,9 @@ class ConnectionPool(object):
 
 
     @staticmethod
-    def get_conn():
+    def get_conn(self):
         return pool.getconn()
 
     @staticmethod
     def put_conn(conn):
-        pool.putconn(conn)
+        return pool.putconn(conn)
