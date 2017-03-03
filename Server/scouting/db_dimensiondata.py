@@ -40,17 +40,23 @@ def add_many_cols(table, data) :
     # Buld string containing column names
     col_names = ""
     val_data = ""
+    set_data = ""
     for col, _ in data.iteritems():
         if col_names == "":
             col_names = col
             val_data = ':' + col
+            set_data = col + '=:' + col
         else:
             col_names = col_names + ", " + col
             val_data = val_data + ", :" + col
+            set_data = set_data + ", " + col + '=:' + col
 
     sql = text(
         "INSERT INTO " + table + " (" + col_names + ") " +
-        "VALUES (" + val_data + ");"
+        "VALUES (" + val_data + ")"
+        "ON CONFLICT (" + col_names + ") " +
+        "DO UPDATE "
+        "SET " + set_data + " ; "
     )
     conn.execute(sql, **data)
 
@@ -126,49 +132,31 @@ def insertData():
 
 def insertTaskOptionData():
     add_many_cols("task_options", {'task_name': 'startingLocation',
-                                   'type': 'claim',
+                                   'type': 'capability',
                                    'option_name': 'retrieval' })
     add_many_cols("task_options", {'task_name': 'startingLocation',
-                                   'type': 'claim',
+                                   'type': 'capability',
                                    'option_name': 'center'})
     add_many_cols("task_options", {'task_name': 'startingLocation',
-                                   'type': 'claim',
-                                   'option_name': 'boiler'})
-    add_many_cols("task_options", {'task_name': 'startingLocation',
-                                   'type': 'auto',
-                                   'option_name': 'retrieval'})
-    add_many_cols("task_options", {'task_name': 'startingLocation',
-                                   'type': 'auto',
-                                   'option_name': 'center'})
-    add_many_cols("task_options", {'task_name': 'startingLocation',
-                                   'type': 'auto',
+                                   'type': 'capability',
                                    'option_name': 'boiler'})
     add_many_cols("task_options", {'task_name': 'preferredDavit',
-                                   'type': 'claim',
+                                   'type': 'capability',
                                    'option_name': '1'})
     add_many_cols("task_options", {'task_name': 'preferredDavit',
-                                   'type': 'claim',
+                                   'type': 'capability',
                                    'option_name': '2'})
     add_many_cols("task_options", {'task_name': 'preferredDavit',
-                                   'type': 'claim',
-                                   'option_name': '3'})
-    add_many_cols("task_options", {'task_name': 'preferredDavit',
-                                   'type': 'teleop',
-                                   'option_name': '1'})
-    add_many_cols("task_options", {'task_name': 'preferredDavit',
-                                   'type': 'teleop',
-                                   'option_name': '2'})
-    add_many_cols("task_options", {'task_name': 'preferredDavit',
-                                   'type': 'teleop',
+                                   'type': 'capability',
                                    'option_name': '3'})
     add_many_cols("task_options", {'task_name': 'deployRope',
-                                   'type': 'teleop',
+                                   'type': 'capability',
                                    'option_name': 'released'})
     add_many_cols("task_options", {'task_name': 'deployRope',
-                                   'type': 'teleop',
+                                   'type': 'capability',
                                    'option_name': 'late'})
     add_many_cols("task_options", {'task_name': 'deployRope',
-                                   'type': 'teleop',
+                                   'type': 'capability',
                                    'option_name': 'never'})
 
 
