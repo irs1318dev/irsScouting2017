@@ -2,6 +2,7 @@ package com.stuin.irs_scout.Views;
 
 import android.content.Context;
 import android.os.CountDownTimer;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -33,7 +34,7 @@ public class Count extends Label {
             if(miss != -1) miss = 2;
         }
     }
-
+ 
     @Override
     void create(LinearLayout column) {
         gridLayout = new GridLayout(getContext());
@@ -59,6 +60,7 @@ public class Count extends Label {
         button.setTextSize(getResources().getDimension(R.dimen.text_norm));
         button.setOnClickListener(clickListener);
         button.setOnLongClickListener(longClickListener);
+        button.setGravity(Gravity.CENTER);
         views.add(button);
         gridLayout.addView(button);
         return button;
@@ -70,7 +72,7 @@ public class Count extends Label {
 
         //Set button text
         views.get(0).setText(task.success + ": " + measure.success);
-        if(miss != -1) views.get(1).setText(task.miss + ": " + (measure.attempt - measure.success));
+        if(miss != -1) views.get(miss).setText(task.miss + ": " + (measure.attempt - measure.success));
     }
 
     private View.OnClickListener clickListener = new OnClickListener() {
@@ -83,9 +85,16 @@ public class Count extends Label {
                         measure.success++;
                         measure.attempt++;
                     }
-                } else if(miss != -1 && view == views.get(1)) {
+                } else if(miss != -1 && view == views.get(miss)) {
                     if(measure.attempt < max) measure.attempt++;
-                } else if(large && measure.success + 9 < max) measure.success += 10;
+                } else if(large && view == views.get(1)) {
+                    if(measure.success + 9 < max) {
+                        measure.success += 10;
+                        measure.attempt += 10;
+                    }
+                } else if(miss != -1 && large && view == views.get(3)) {
+                    if(measure.attempt + 9 < max) measure.attempt += 10;
+                }
             } else {
                 countDownTimer.cancel();
                 drop = false;
