@@ -46,7 +46,7 @@ class MatchDal(object):
                      "event_id = :event_id "
                      "AND match_id = :match_id "
                      "AND team_id = :team_id "
-                     "AND phase = :phase_id"
+                     "AND phase_id = :phase_id"
         )
 
         results = conn.execute(sql, event_id = event_id, match_id = match_id,
