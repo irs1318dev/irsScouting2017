@@ -60,8 +60,8 @@ class MatchDal(object):
         return json.dumps(measures)
 
     @staticmethod
-    def matchteamtask(team, task, match='na',phase='claim', capability=0, attempt_count=0,success_count=0, cycle_time=0):
-        event_name = event.EventDal.current_event()
+    def matchteamtask(team, task, match='na', phase='claim', capability=0, attempt_count=0,success_count=0, cycle_time=0):
+        event_name = event.getCurrentEvent()
 
         # find the parameter ids for match team task phase-- make a map
         match_id = MatchDal.matches[match]
@@ -73,7 +73,7 @@ class MatchDal(object):
         measure = actor_measure[phase]
         measuretype_id = MatchDal.measuretypes[measure]
         # find ids event date alliance station from the schedule table --make a map
-        current_match = event.EventDal.current_match(event_name, match, team)
+        current_match = event.EventDal.current_match_team(match, team)
         if len(current_match)> 0:
             date_id = MatchDal.dates[current_match[0]['date']]
             event_id = MatchDal.events[current_match[0]['event']]
