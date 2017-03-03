@@ -1,7 +1,5 @@
 from base64 import b64encode
 from urllib2 import Request, urlopen
-import scouting.db as db
-from sqlalchemy.sql import text
 
 import auth
 

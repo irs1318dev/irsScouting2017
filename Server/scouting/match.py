@@ -33,23 +33,20 @@ class MatchDal(object):
 
     @staticmethod
     def matchteamtasks(match, team, phase):
-        # status = getStatus() #This still needs to be implemented
         match_id = MatchDal.matches[match]
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
-        # event = status['event'] getStatus still needs to be implemented
-        event = "waamv"
-        event_id = MatchDal.events[event]
+
+        evt = event.getCurrentEvent()
+        event_id = MatchDal.events[evt]
 
         sql = text("SELECT * FROM measures WHERE "
-                   "event_id = :event_id "
-                   "AND match_id = :match_id "
-                   "AND team_id = :team_id "
-                   "AND phase = :phase_id"
-                   )
+                    "event_id = :event_id "
+                    "AND match_id = :match_id "
+                    "AND team_id = :team_id "
+                    "AND phase = :phase_id ")
 
-        results = conn.execute(sql, event_id=event_id, match_id=match_id,
-                               team_id=team_id, phase_id=phase_id)
+        results = conn.execute(sql, event_id=event_id, match_id=match_id, team_id=team_id, phase_id=phase_id)
 
         measures = []
         for meas in results:
@@ -66,7 +63,7 @@ class MatchDal(object):
         else:
             match_name = match
 
-        match_id = MatchDal.matches[match_name]
+        match_id = MatchDal.matches[match_name
 
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
@@ -81,6 +78,7 @@ class MatchDal(object):
         level_id = MatchDal.levels[match_details['level']]
         alliance_id = MatchDal.alliances[match_details['alliance']]
         station_id = MatchDal.stations[match_details['station']]
+
         reason_id = MatchDal.reasons['na']
 
         capability, attempt_count, success_count, cycle_time, attempt_id = \
@@ -147,6 +145,7 @@ class MatchDal(object):
                      successes=success_count,
                      cycle_times=cycle_time)
 
+
     @staticmethod
     def transform_measure(measure, capability, attempt_count, success_count, cycle_time, task_name):
         attempt_id = MatchDal.attempts['summary']
@@ -168,4 +167,5 @@ class MatchDal(object):
             return 0
 
 
-            # MatchDal.matchteamtask('001-q', '4918', 'placeGear', 'auto', 5)
+# MatchDal.matchteamtask('001-q', '4918', 'placeGear', 'auto', 5)
+

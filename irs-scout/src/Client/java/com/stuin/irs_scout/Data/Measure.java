@@ -5,7 +5,7 @@ package com.stuin.irs_scout.Data;
  */
 public class Measure {
     final public String match;
-    final public int team;
+    final public String team;
     final public String task;
     final public String phase;
     public String capability;
@@ -14,7 +14,7 @@ public class Measure {
 
     public Measure() {
         match = "";
-        team = 0;
+        team = "";
         task = "";
         phase = "";
         capability = "";
@@ -23,7 +23,7 @@ public class Measure {
     }
 
     public Measure(Task task, Match match, String position, String phase) {
-        this.match = match.number;
+        this.match = match.match;
         this.team = match.getTeam(position);
         this.task = task.task;
         this.phase = phase;

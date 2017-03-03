@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import ForeignKey
+from sqlalchemy import UniqueConstraint
 
 
 # ========== Database Connection ==============================================
@@ -124,7 +125,7 @@ class Game(Base):
 
     id = Column(Integer, primary_key=True)
     actor = Column(String)
-    task = Column(String, unique= True)
+    task = Column(String, unique=True)
     claim = Column(String)
     auto = Column(String)
     teleop = Column(String)
@@ -138,8 +139,8 @@ class TaskOptions(Base):
     task_name = Column(String)
     type = Column(String)
     option_name = Column(String)
-
-
+    __table_args__ = (UniqueConstraint('task_name', 'type', 'option_name'),
+                      )
 
 class Schedule(Base):
     __tablename__ = "schedules"
@@ -152,8 +153,6 @@ class Schedule(Base):
     alliance = Column('alliance', String)
     team = Column('team', String)
     station = Column('station', String)
-    match_status = Column('match_status', String)
-    tablet_status = Column('tablet_status', String)
 
 
 class Measure(Base):
@@ -184,8 +183,6 @@ class Status(Base):
     id = Column(Integer, primary_key=True)
     event = Column('event', String)
     match = Column('match', String)
-
-
 
 
 def create_tables():
