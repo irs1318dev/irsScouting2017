@@ -35,20 +35,18 @@ class MatchDal(object):
 
     @staticmethod
     def matchteamtasks(match, team, phase):
-        # status = getStatus() #This still needs to be implemented
         match_id = MatchDal.matches[match]
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
-        # event = status['event'] getStatus still needs to be implemented
-        event = "waamv"
-        event_id = MatchDal.events[event]
+        evt = event.getCurrentEvent()
+        event_id = MatchDal.events[evt]
 
 
         sql = text("SELECT * FROM measures WHERE "
                      "event_id = :event_id "
                      "AND match_id = :match_id "
                      "AND team_id = :team_id "
-                     "AND phase = :phase_id"
+                     "AND phase_id = :phase_id"
         )
 
         results = conn.execute(sql, event_id = event_id, match_id = match_id,
