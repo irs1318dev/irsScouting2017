@@ -135,9 +135,9 @@ class TaskOptions(Base):
     __tablename__ = "task_options"
 
     id = Column(Integer, primary_key=True)
-    task_name = Column(String, unique=True)
-    type = Column(String, unique=True)
-    option_name = Column(String, unique=True)
+    task_name = Column(String)
+    type = Column(String)
+    option_name = Column(String)
 
 
 class Schedule(Base):
