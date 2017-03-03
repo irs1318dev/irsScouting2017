@@ -63,7 +63,7 @@ class MatchDal(object):
         else:
             match_name = match
 
-        match_id = MatchDal.matches[match_name
+        match_id = MatchDal.matches[match_name]
 
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
