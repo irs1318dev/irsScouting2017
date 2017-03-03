@@ -35,11 +35,11 @@ public class Page extends LinearLayout {
 
     public void setMeasures(Map<String, Measure> measures, Match match) {
         for(Label l : labels) {
-            if(l.sectionLabel && l.task.success.contains("(Team)")) l.setText(String.valueOf(match.getTeam(l.position)));
+            if(l.sectionLabel && l.task.success.contains("Team")) l.setText(match.getTeam(l.position));
 
             if(measures.get(l.task.success) != null) {
                 Measure measure = measures.get(l.task.success);
-                if(match.getTeam(l.position) == measure.team) l.update(measure, false);
+                if(match.getTeam(l.position).equals(measure.team)) l.update(measure, false);
             }
             else l.update(new Measure(l.task, match, l.position, name), false);
         }
@@ -54,6 +54,7 @@ public class Page extends LinearLayout {
         divider();
         column = new LinearLayout(getContext());
         column.setOrientation(VERTICAL);
+        column.setGravity(Gravity.CENTER);
         addView(column);
         divider();
     }

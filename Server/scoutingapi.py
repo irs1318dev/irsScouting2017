@@ -2,17 +2,14 @@ import cherrypy
 import Game
 import scouting.tablet
 import scouting.sections
-
 import scouting.match
+import scouting.event
 
 
 class Scouting(object):
-    # replace with status
-    currentMatch = 1
-    maxMatch = 2
-
     def __init__(self):
         self.matchDal = scouting.match.MatchDal()
+        self.alltablets = scouting.tablet.TabletList()
         return
 
     @cherrypy.expose
@@ -56,8 +53,9 @@ class Scouting(object):
     @cherrypy.expose
     def matchteams(self, match=-1):
         if match == -1:
-            match = self.currentMatch
-        return Game.HelloWorld.match(match)
+            match = scouting.event.getCurrentMatch()
+        return scouting.event.EventDal.current_match(match)
+        # return Game.HelloWorld.match(match)
 
     # All teams in match
 
@@ -68,16 +66,16 @@ class Scouting(object):
     @cherrypy.expose
     def matchteamtasks(self, team, match=-1, phase='claim'):
         if match == -1:
-            match = self.currentMatch
-        return scouting.match.MatchDal.matchteamtasks(match, team, phase)
-        # return '{}'
+            match = scouting.event.getCurrentMatch()
+        # return scouting.match.MatchDal.matchteamtasks(match, team, phase)
+        return '{}'
 
     # Get data from match and team
 
     @cherrypy.expose
     def matchteamtask(self, match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
-        return scouting.match.MatchDal.matchteamtask(match, team, task, phase, capability, attempt, success, cycle_time)
-        # Game.HelloWorld.data(match, team, task, success, miss)
+        scouting.match.MatchDal.matchteamtask(match, team, task, phase, capability, attempt, success, cycle_time)
+        return 'hi'
 
     @cherrypy.expose
     def dimensions(self):
@@ -87,17 +85,14 @@ class Scouting(object):
     def dimension(self, dimension):
         return 'dimension'
 
-    alltablets = scouting.tablet.TabletList()
-
     @cherrypy.expose
     def tablet(self, status):
         newtablet = scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1])
 
         if scouting.tablet.TabletList.settablet(self.alltablets, newtablet):
-            if self.currentMatch < self.maxMatch:
-                self.currentMatch += 1  # make proper go to next match <----
+            scouting.event.setCurrentMatch()
 
-        return str(self.currentMatch)
+        return str(scouting.event.getCurrentMatch())
 
     @cherrypy.expose
     def tablets(self):
@@ -105,7 +100,7 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchcurrent(self, match):
-        self.currentMatch = match
+        scouting.event.setCurrentMatch(match)
         return 'set match'
 
 
