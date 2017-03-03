@@ -19,9 +19,10 @@ class MatchMaker {
     Match match = new Match();
 
     private PageManager pageManager;
-    private List<Measure> data;
     private List<Page> pages;
-    private TextView status;
+    protected TextView status;
+    protected List<Measure> data;
+
 
     MatchMaker(PageManager pageManager, View view) {
         this.pages = pageManager.pages;
@@ -56,7 +57,7 @@ class MatchMaker {
         new Data().start("/matchteams");
     }
 
-    private void setMatch() {
+    protected void setMatch() {
         pageManager.reset();
         for(Page p : pages) {
             Map<String, Measure> pageData = new HashMap<>();

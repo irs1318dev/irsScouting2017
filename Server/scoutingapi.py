@@ -1,5 +1,6 @@
 import cherrypy
-import Game
+import json
+import scouting.tasks
 import scouting.tablet
 import scouting.sections
 import scouting.match
@@ -26,7 +27,14 @@ class Scouting(object):
 
     @cherrypy.expose
     def gametasks(self):
-        return Game.HelloWorld.gametasks()
+        with open("Scouting/gametasks.csv", "r") as text:
+            out = ''
+            for line in text:
+                if 'actor,task' not in line:
+                    task = scouting.tasks.Task(line)
+                    data = json.dumps(task, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
+                    out += data + '\n'
+            return out
 
     @cherrypy.expose
     def gameimport(self):

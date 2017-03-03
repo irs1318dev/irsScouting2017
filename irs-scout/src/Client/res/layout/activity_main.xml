@@ -7,70 +7,6 @@
         android:layout_height="match_parent"
         tools:context="com.stuin.irs_scout.MainActivity" android:background="@color/colorBackground">
 
-    <GridLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" android:columnCount="3" android:rowCount="3"
-            android:id="@+id/gridLayout">
-
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" android:layout_margin="10dp"
-                android:id="@+id/BlueScouter1" android:text="@string/scout_4" android:background="@color/colorBlue"
-                android:textColor="@android:color/white" android:layout_row="1" android:layout_column="0" android:textSize="@dimen/text_large"
-                android:onClick="position"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/scout_5" android:layout_margin="10dp"
-                android:id="@+id/BlueScouter2" android:background="@color/colorBlue" android:textColor="@android:color/white"
-                android:layout_row="1" android:layout_column="1" android:textSize="@dimen/text_large" android:onClick="position"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/scout_6"
-                android:id="@+id/BlueScouter3" android:background="@color/colorBlue" android:layout_row="1"
-                android:layout_column="2" android:textColor="@android:color/white"
-                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/scout_1"
-                android:id="@+id/RedScouter1" android:background="@color/colorRed"
-                android:textColor="@android:color/white" android:layout_row="0" android:layout_column="0"
-                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/RedScouter2" android:text="@string/scout_2" android:background="@color/colorRed"
-                android:textColor="@android:color/white" android:layout_row="0" android:layout_column="1"
-                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/scout_3"
-                android:id="@+id/RedScouter3" android:layout_row="0" android:layout_column="2"
-                android:background="@color/colorRed" android:textColor="@android:color/white"
-                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
-
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/scout_8"
-                android:id="@+id/BlueScouter4" android:background="@color/colorBlue" android:layout_row="2"
-                android:layout_column="0" android:textColor="@android:color/white"
-                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
-
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/scout_7"
-                android:id="@+id/RedScouter4" android:layout_row="2" android:layout_column="2"
-                android:background="@color/colorRed" android:textColor="@android:color/white"
-                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
-
-    </GridLayout>
-
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -134,5 +70,80 @@
             android:layout_above="@+id/AddressBar"
             android:layout_alignParentEnd="true"
             android:onClick="status"/>
+
+    <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="3" android:rowCount="3"
+            android:id="@+id/gridLayout"
+            android:layout_below="@+id/AddressBar"
+            android:layout_centerHorizontal="true">
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" android:layout_margin="10dp"
+                android:id="@+id/BlueScouter1" android:text="@string/scout_4" android:background="@color/colorBlue"
+                android:textColor="@android:color/white" android:layout_row="1" android:layout_column="0" android:textSize="@dimen/text_large"
+                android:onClick="position"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scout_5" android:layout_margin="10dp"
+                android:id="@+id/BlueScouter2" android:background="@color/colorBlue" android:textColor="@android:color/white"
+                android:layout_row="1" android:layout_column="1" android:textSize="@dimen/text_large" android:onClick="position"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scout_6"
+                android:id="@+id/BlueScouter3" android:background="@color/colorBlue" android:layout_row="1"
+                android:layout_column="2" android:textColor="@android:color/white"
+                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scout_1"
+                android:id="@+id/RedScouter1" android:background="@color/colorRed"
+                android:textColor="@android:color/white" android:layout_row="0" android:layout_column="0"
+                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/RedScouter2" android:text="@string/scout_2" android:background="@color/colorRed"
+                android:textColor="@android:color/white" android:layout_row="0" android:layout_column="1"
+                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scout_3"
+                android:id="@+id/RedScouter3" android:layout_row="0" android:layout_column="2"
+                android:background="@color/colorRed" android:textColor="@android:color/white"
+                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scout_8"
+                android:id="@+id/BlueScouter4" android:background="@color/colorBlue" android:layout_row="2"
+                android:layout_column="0" android:textColor="@android:color/white"
+                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scout_7"
+                android:id="@+id/RedScouter4" android:layout_row="2" android:layout_column="2"
+                android:background="@color/colorRed" android:textColor="@android:color/white"
+                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scout_9"
+                android:id="@+id/PitScouter" android:layout_row="2" android:layout_column="1"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_large" android:onClick="position" android:layout_margin="10dp"/>
+
+    </GridLayout>
 
 </RelativeLayout>
