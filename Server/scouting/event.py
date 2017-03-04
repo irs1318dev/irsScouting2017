@@ -55,6 +55,26 @@ class EventDal(object):
             conn.execute(sql_ins, match=match)
 
     @staticmethod
+    def set_next_match(match):
+        if (match == 'na'):
+            return
+
+        # match is in format 001-q
+        result = match.split('-')
+        nextMatchNumber = int(result[0]) + 1
+        nextMatch = "{0:0>3}-q".format(nextMatchNumber)
+
+        sql_sel = text("SELECT * FROM status;")
+        results = conn.execute(sql_sel).fetchall()
+        if len(results) == 1:
+            sql_upd = text("UPDATE status SET match = :match WHERE id = :id;")
+            conn.execute(sql_upd, match=nextMatch, id=results[0]['id'])
+        elif len(results) == 0:
+            sql_ins = text("INSERT INTO status (match) VALUES (:match);")
+            conn.execute(sql_ins, match=nextMatch)
+
+
+    @staticmethod
     def get_current_match():
         match = conn.execute("SELECT match FROM status;").scalar()
         if match is None:

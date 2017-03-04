@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 import event
 import dimension
 import json
@@ -79,27 +81,34 @@ class MatchDal(object):
         sql = text("SELECT * FROM measures WHERE "
                     "event_id = :event_id "
                     "AND match_id = :match_id "
-                    "AND team_id = :team_id "
-                    "AND phase = :phase_id ")
+                    "AND team_id = :team_id;")
 
-        results = conn.execute(sql, event_id=event_id, match_id=match_id, team_id=team_id, phase_id=phase_id)
+        results = conn.execute(sql, event_id=event_id, match_id=match_id,
+                               team_id=team_id, phase_id=phase_id).fetchall()
+        mt_tasks = []
+        for row in results:
+            task = MatchDal.task_ids[row['task_id']]
+            actor = MatchDal.actor_ids[row['actor_id']]
+            measuretype = MatchDal.measturetype_ids[row['measuretype_id']]
+            capability = row['capability']
+            attempts = row['attempts']
+            successes = row['successes']
+            cycle_times = row['cycle_times']
 
-        measures = []
-        for meas in results:
-            measures.append(dict(meas))
-        return json.dumps(measures)
+            mt_tasks.append(OrderedDict([('match', match), ('team', team), ('task', task), ('phase', phase),
+                           ('actor', actor), ('measuretype', measuretype), ('capability', capability),
+                           ('attempts', attempts), ('successes', successes), ('cycle_times', cycle_times)]))
+
+        return json.dumps(mt_tasks)
+
 
     @staticmethod
     def matchteamtask(team, task, match='na', phase='claim', capability=0, attempt_count=0, success_count=0,
                       cycle_time=0):
         event_name = event.EventDal.get_current_event()
         event_id = MatchDal.events[event_name]
-        if match != 'na':
-            match_name = event.EventDal.get_current_match()
-        else:
-            match_name = match
 
-        match_id = MatchDal.matches[match_name]
+        match_id = MatchDal.matches[match]
 
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
@@ -109,7 +118,7 @@ class MatchDal(object):
         measure = actor_measure[phase]
         measuretype_id = MatchDal.measuretypes[measure]
 
-        match_details = event.EventDal.match_details(event_name, match_name, team)
+        match_details = event.EventDal.match_details(event_name, match, team)
         date_id = MatchDal.dates[match_details['date']]
         level_id = MatchDal.levels[match_details['level']]
         alliance_id = MatchDal.alliances[match_details['alliance']]
@@ -118,7 +127,8 @@ class MatchDal(object):
         reason_id = MatchDal.reasons['na']
 
         capability, attempt_count, success_count, cycle_time, attempt_id = \
-            MatchDal.transform_measure(measure, capability, attempt_count, success_count, cycle_time)
+            MatchDal.transform_measure(measure, capability, attempt_count,
+                                       success_count, cycle_time, task)
 
         sql = text(
             "INSERT INTO measures "
@@ -160,8 +170,8 @@ class MatchDal(object):
             ":successes, "
             ":cycle_times )" +
             " ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
-            "SET capability=:capability, attempts=attempts + :attempts, "
-            "successes=successes + :successes, cycle_times=:cycle_times;")
+            "SET capability=:capability, attempts=measures.attempts + :attempts, "
+            "successes=measures.successes + :successes, cycle_times=:cycle_times;")
         conn.execute(sql,
                      date_id=date_id,
                      event_id=event_id,

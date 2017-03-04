@@ -81,7 +81,7 @@ def insert_data():
     add_name("matches", "name", "f1")
     add_name("matches", "name", "f2")
     add_name("matches", "name", "f3")
-    add_name("matches", "name", "pit")
+    add_name("matches", "name", "na")
 
     add_name("alliances", "name", "na")
     add_name("alliances", "name", "blue")
@@ -125,36 +125,6 @@ def insert_data():
     add_name("reasons", "name", "dropped")
     add_name("reasons", "name", "blocked")
     add_name("reasons", "name", "defended")
-
-
-def insert_task_option_data():
-    add_many_cols("task_options", {'task_name': 'startingLocation',
-                                   'type': 'capability',
-                                   'option_name': 'retrieval' })
-    add_many_cols("task_options", {'task_name': 'startingLocation',
-                                   'type': 'capability',
-                                   'option_name': 'center'})
-    add_many_cols("task_options", {'task_name': 'startingLocation',
-                                   'type': 'capability',
-                                   'option_name': 'boiler'})
-    add_many_cols("task_options", {'task_name': 'preferredDavit',
-                                   'type': 'capability',
-                                   'option_name': '1'})
-    add_many_cols("task_options", {'task_name': 'preferredDavit',
-                                   'type': 'capability',
-                                   'option_name': '2'})
-    add_many_cols("task_options", {'task_name': 'preferredDavit',
-                                   'type': 'capability',
-                                   'option_name': '3'})
-    add_many_cols("task_options", {'task_name': 'deployRope',
-                                   'type': 'capability',
-                                   'option_name': 'released'})
-    add_many_cols("task_options", {'task_name': 'deployRope',
-                                   'type': 'capability',
-                                   'option_name': 'late'})
-    add_many_cols("task_options", {'task_name': 'deployRope',
-                                   'type': 'capability',
-                                   'option_name': 'never'})
 
 
 
