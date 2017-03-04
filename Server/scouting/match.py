@@ -37,7 +37,7 @@ class MatchDal(object):
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
 
-        evt = event.getCurrentEvent()
+        evt = event.EventDal.getCurrentEvent()
         event_id = MatchDal.events[evt]
 
         sql = text("SELECT * FROM measures WHERE "

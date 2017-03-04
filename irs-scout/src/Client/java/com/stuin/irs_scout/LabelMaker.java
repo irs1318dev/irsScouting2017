@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.stuin.irs_scout.Data.Section;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.Views.*;
-import com.stuin.irs_scout.Views.Count;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,8 +75,9 @@ class LabelMaker {
 
     private boolean usePage(String observer, String position) {
         //Check if phase is to be used
-        if(observer.equals("match") && !position.contains("Fuel")) return true;
+        if(observer.equals("match") && !position.contains("Fuel") && !position.contains("Pit")) return true;
         if(observer.equals("boiler") && position.contains("Fuel")) return true;
+        if(observer.equals("pit") && position.contains("Pit")) return true;
         return false;
     }
 

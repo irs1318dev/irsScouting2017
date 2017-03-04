@@ -13,6 +13,7 @@
     <string name="scout_6">Blue 3</string>
     <string name="scout_7">R Fuel</string>
     <string name="scout_8">B Fuel</string>
+    <string name="scout_9">Pit</string>
 
 
     <dimen name="text_large">50sp</dimen>
