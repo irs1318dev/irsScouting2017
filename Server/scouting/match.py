@@ -28,8 +28,22 @@ class MatchDal(object):
     def __init__(self):
         pass
 
-    def matchteams(self, match):
-        pass
+    @staticmethod
+    def matchteams(match):
+        eventdal = event.EventDal()
+        match = eventdal.match_teams(eventdal.get_current_event(), match)
+
+        red = TabletMatch("red")
+        blue = TabletMatch("blue")
+        for line in match:
+            if line['alliance'] == 'red':
+                red.teamadd(line['team'], line['match'])
+            if line['alliance'] == 'blue':
+                blue.teamadd(line['team'], line['match'])
+
+        out = json.dumps(red, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True) + '\n'
+        out += json.dumps(blue, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True) + '\n'
+        return out
 
     @staticmethod
     def matchteamtasks(match, team, phase):
@@ -164,3 +178,20 @@ class MatchDal(object):
             return 0
 
 
+class TabletMatch(object):
+    def __init__(self, alliance):
+        self.alliance = alliance
+        self.match = ''
+        self.team1 = ''
+        self.team2 = ''
+        self.team3 = ''
+
+    def teamadd(self, name, match):
+        if self.match is '':
+            self.match = match
+        if self.team1 is '':
+            self.team1 = name
+        if self.team2 is '':
+            self.team2 = name
+        if self.team3 is '':
+            self.team3 = name
