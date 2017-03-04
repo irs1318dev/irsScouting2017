@@ -23,18 +23,6 @@ class EventDal(object):
         return match_details
 
     @staticmethod
-    def match_teams(event, match):
-        match_teams = []
-        sql = text("SELECT * FROM schedules WHERE "
-                   "match = :match "
-                   " AND event = :event ")
-        results = conn.execute(sql, event=event, match=match)
-
-        for row in results:
-            match_teams.append(dict(row))
-        return match_teams
-
-    @staticmethod
     def set_current_event(event):
         event = event.lower()
 
