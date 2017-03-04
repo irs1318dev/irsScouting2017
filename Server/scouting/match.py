@@ -28,8 +28,22 @@ class MatchDal(object):
     def __init__(self):
         pass
 
-    def matchteams(self, match):
-        pass
+    @staticmethod
+    def matchteams(match):
+        eventdal = event.EventDal()
+        match = eventdal.match_teams(eventdal.get_current_event(), match)
+
+        red = TabletMatch("red")
+        blue = TabletMatch("blue")
+        for line in match:
+            if line['alliance'] == 'red':
+                red.teamadd(line['team'], line['match'])
+            if line['alliance'] == 'blue':
+                blue.teamadd(line['team'], line['match'])
+
+        out = json.dumps(red, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True) + '\n'
+        out += json.dumps(blue, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True) + '\n'
+        return out
 
     @staticmethod
     def matchteamtasks(match, team, phase):
@@ -58,12 +72,8 @@ class MatchDal(object):
                       cycle_time=0):
         event_name = event.EventDal.get_current_event()
         event_id = MatchDal.events[event_name]
-        if (match != 'na'):
-            match_name = event.EventDal.get_current_match()
-        else:
-            match_name = match
 
-        match_id = MatchDal.matches[match_name]
+        match_id = MatchDal.matches[match]
 
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
@@ -73,7 +83,7 @@ class MatchDal(object):
         measure = actor_measure[phase]
         measuretype_id = MatchDal.measuretypes[measure]
 
-        match_details = event.EventDal.match_details(event_name, match_name, team)
+        match_details = event.EventDal.match_details(event_name, match, team)
         date_id = MatchDal.dates[match_details['date']]
         level_id = MatchDal.levels[match_details['level']]
         alliance_id = MatchDal.alliances[match_details['alliance']]
@@ -82,7 +92,8 @@ class MatchDal(object):
         reason_id = MatchDal.reasons['na']
 
         capability, attempt_count, success_count, cycle_time, attempt_id = \
-            MatchDal.transform_measure(measure, capability, attempt_count, success_count, cycle_time)
+            MatchDal.transform_measure(measure, capability, attempt_count,
+                                       success_count, cycle_time, task)
 
         sql = text(
             "INSERT INTO measures "
@@ -124,8 +135,8 @@ class MatchDal(object):
             ":successes, "
             ":cycle_times )" +
             " ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
-            "SET capability=:capability, attempts=attempts + :attempts, "
-            "successes=successes + :successes, cycle_times=:cycle_times;")
+            "SET capability=:capability, attempts=measures.attempts + :attempts, "
+            "successes=measures.successes + :successes, cycle_times=:cycle_times;")
         conn.execute(sql,
                      date_id=date_id,
                      event_id=event_id,
@@ -167,5 +178,20 @@ class MatchDal(object):
             return 0
 
 
-# MatchDal.matchteamtask('001-q', '4918', 'placeGear', 'auto', 5)
+class TabletMatch(object):
+    def __init__(self, alliance):
+        self.alliance = alliance
+        self.match = ''
+        self.team1 = ''
+        self.team2 = ''
+        self.team3 = ''
 
+    def teamadd(self, name, match):
+        if self.match is '':
+            self.match = match
+        if self.team1 is '':
+            self.team1 = name
+        if self.team2 is '':
+            self.team2 = name
+        if self.team3 is '':
+            self.team3 = name
