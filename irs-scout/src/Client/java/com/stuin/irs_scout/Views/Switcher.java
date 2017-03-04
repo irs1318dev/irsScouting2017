@@ -40,11 +40,11 @@ public class Switcher extends Label {
 
         //Match checkboxes to capability
         CheckBox checkBox = (CheckBox) views.get(0);
-        checkBox.setChecked(measure.success == 1);
+        checkBox.setChecked(measure.successes == 1);
 
         if(!task.miss.isEmpty()) {
             checkBox = (CheckBox) views.get(1);
-            checkBox.setChecked(measure.attempt == 1);
+            checkBox.setChecked(measure.attempts == 1);
         }
     }
 
@@ -53,11 +53,11 @@ public class Switcher extends Label {
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
             //Update measure by boolean
             if(views.indexOf(compoundButton) == 0) {
-                if(b) measure.success = 1;
-                else measure.success = 0;
+                if(b) measure.successes = 1;
+                else measure.successes = 0;
             } else {
-                if(b) measure.attempt = 1;
-                else measure.attempt = 0;
+                if(b) measure.attempts = 1;
+                else measure.attempts = 0;
             }
 
             update(measure, true);

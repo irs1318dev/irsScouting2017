@@ -56,24 +56,26 @@ class MatchDal(object):
 
     @staticmethod
     def pitteams():
-        pit_teams = []
+        pit_teams = ''
         sql = text("SELECT DISTINCT team FROM schedules WHERE "
                    "event = :event ORDER BY team;")
 
         results = conn.execute(sql, event=event.EventDal.get_current_event())
 
+        first = True
         for row in results:
-            pit_teams.append(row)
+            if first:
+                pit_teams += '"' + str(row).split('\'')[1] + '"'
+                first = False
+            else:
+                pit_teams += ',"' + str(row).split('\'')[1] + '"'
 
-        out = PitMatch(pit_teams)
-
-        return json.dumps(out, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
+        return '''{"match":"na", "teams":[''' + pit_teams + ']}'
 
     @staticmethod
-    def matchteamtasks(match, team, phase):
+    def matchteamtasks(match, team):
         match_id = MatchDal.matches[match]
         team_id = MatchDal.teams[team]
-        phase_id = MatchDal.phases[phase]
 
         evt = event.EventDal.get_current_event()
         event_id = MatchDal.events[evt]
@@ -84,22 +86,24 @@ class MatchDal(object):
                     "AND team_id = :team_id;")
 
         results = conn.execute(sql, event_id=event_id, match_id=match_id,
-                               team_id=team_id, phase_id=phase_id).fetchall()
-        mt_tasks = []
+                               team_id=team_id).fetchall()
+
+        out = ''
         for row in results:
             task = MatchDal.task_ids[row['task_id']]
             actor = MatchDal.actor_ids[row['actor_id']]
+            phase = MatchDal.phase_ids[row['phase_id']]
             measuretype = MatchDal.measturetype_ids[row['measuretype_id']]
             capability = row['capability']
             attempts = row['attempts']
             successes = row['successes']
             cycle_times = row['cycle_times']
 
-            mt_tasks.append(OrderedDict([('match', match), ('team', team), ('task', task), ('phase', phase),
+            out += json.dumps(OrderedDict([('match', match), ('team', team), ('task', task), ('phase', phase),
                            ('actor', actor), ('measuretype', measuretype), ('capability', capability),
-                           ('attempts', attempts), ('successes', successes), ('cycle_times', cycle_times)]))
+                           ('attempts', attempts), ('successes', successes), ('cycle_times', cycle_times)])) + '\n'
 
-        return json.dumps(mt_tasks)
+        return out
 
     @staticmethod
     def matchteamtask(team, task, match='na', phase='claim', capability=0, attempt_count=0, success_count=0,

@@ -51,7 +51,8 @@ class MatchMaker {
                         setMatch();
                     }
                 }
-                new Set().start("/matchteamtasks?team=" + match.getTeam(MainActivity.position));
+                if(!MainActivity.position.contains("Fuel")) new Set().start("/matchteamtasks?team=" + match.getTeam(MainActivity.position));
+                else setMatch();
             }
         }
         new Data().start("/matchteams");
@@ -61,7 +62,9 @@ class MatchMaker {
         pageManager.reset();
         for(Page p : pages) {
             Map<String, Measure> pageData = new HashMap<>();
-            for(Measure m : data) if(m.phase.equals(p.name)) pageData.put(m.task, m);
+            for(Measure m : data) {
+                if(m.phase.equals(p.name)) pageData.put(m.task, m);
+            }
             p.setMeasures(pageData, match);
         }
     }
