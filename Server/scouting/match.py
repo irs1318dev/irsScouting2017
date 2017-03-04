@@ -229,10 +229,12 @@ class TabletMatch(object):
             self.match = match
         if self.team1 is '':
             self.team1 = name
-        if self.team2 is '':
-            self.team2 = name
-        if self.team3 is '':
-            self.team3 = name
+        else:
+            if self.team2 is '':
+                self.team2 = name
+            else:
+                if self.team3 is '':
+                    self.team3 = name
 
 
 class PitMatch(object):

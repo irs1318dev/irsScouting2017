@@ -77,7 +77,7 @@ class Scouting(object):
     def matchteamtasks(self, team='0', match=-1):
         if match == -1:
             match = self.eventDal.get_current_match()
-        return scouting.match.MatchDal.matchteamtasks(match, team)
+        return scouting.match.MatchDal.matchteamtasks(match, team) + '{}'
         # return '{}'
 
     # Get data from match and team
