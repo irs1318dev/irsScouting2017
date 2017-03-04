@@ -23,7 +23,7 @@ class GameDal(object):
     #     return
     #
     @staticmethod
-    def getActorMeasure(task, phase):
+    def get_actor_measure(task, phase):
         sql = text("SELECT actor, " + phase + " FROM games WHERE "
                    "task = :task "
         )

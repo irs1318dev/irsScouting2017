@@ -35,7 +35,7 @@ class EventDal(object):
         return match_details
 
     @staticmethod
-    def setCurrentEvent(event):
+    def set_current_event(event):
         event = event.lower()
 
         sql_sel = text("SELECT * FROM status;")
@@ -48,12 +48,12 @@ class EventDal(object):
             conn.execute(sql_ins, event = event)
 
     @staticmethod
-    def getCurrentEvent():
+    def get_current_event():
         sql = text("SELECT event FROM status;")
         return conn.execute(sql).scalar()
 
     @staticmethod
-    def setCurrentMatch(match):
+    def set_current_match(match):
         sql_sel = text("SELECT * FROM status;")
         results = conn.execute(sql_sel).fetchall()
         if len(results) == 1:
@@ -64,6 +64,6 @@ class EventDal(object):
             conn.execute(sql_ins, match = match)
 
     @staticmethod
-    def getCurrentMatch():
+    def get_current_match():
         sql = text("SELECT match FROM status;")
         return conn.execute(sql).scalar()

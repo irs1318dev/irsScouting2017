@@ -37,7 +37,7 @@ class MatchDal(object):
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
 
-        evt = event.EventDal.getCurrentEvent()
+        evt = event.EventDal.get_current_event()
         event_id = MatchDal.events[evt]
 
         sql = text("SELECT * FROM measures WHERE "
@@ -56,10 +56,10 @@ class MatchDal(object):
     @staticmethod
     def matchteamtask(team, task, match='na', phase='claim', capability=0, attempt_count=0, success_count=0,
                       cycle_time=0):
-        event_name = event.EventDal.getCurrentEvent()
+        event_name = event.EventDal.get_current_event()
         event_id = MatchDal.events[event_name]
         if (match != 'na'):
-            match_name = event.EventDal.getCurrentMatch()
+            match_name = event.EventDal.get_current_match()
         else:
             match_name = match
 
@@ -68,7 +68,7 @@ class MatchDal(object):
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
         task_id = MatchDal.tasks[task]
-        actor_measure = game.GameDal.getActorMeasure(task, phase)
+        actor_measure = game.GameDal.get_actor_measure(task, phase)
         actor_id = MatchDal.actors[actor_measure["actor"]]
         measure = actor_measure[phase]
         measuretype_id = MatchDal.measuretypes[measure]
