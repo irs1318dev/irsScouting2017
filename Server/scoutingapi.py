@@ -62,7 +62,7 @@ class Scouting(object):
     def matchteams(self, match=-1):
         if match == -1:
             match = scouting.event.getCurrentMatch()
-        return scouting.event.EventDal.current_match(match)
+        return scouting.match.MatchDal.matchteams(match)
         # return Game.HelloWorld.match(match)
 
     # All teams in match
