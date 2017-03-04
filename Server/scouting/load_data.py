@@ -22,8 +22,10 @@ def insert_game(actor, task, claim, auto, teleop, finish, optionString):
     conn = engine.connect()
     select = text(
         "INSERT INTO games (actor, task, claim, auto, teleop, finish) " +
-        "VALUES (:actor,:task,:claim,:auto,:teleop,:finish); "
-    )
+        "VALUES (:actor,:task,:claim,:auto,:teleop,:finish)"
+        "ON CONFLICT "
+        "DO UPDATE "
+        "SET actor=:actor, task=:task, claim=:claim, auto=:auto, teleop=:teleop, finish=:finish;")
     conn.execute(select, actor=actor, task=task, claim=claim, auto=auto, teleop=teleop, finish=finish)
     data.add_name("tasks", "name", task)
     # create task options if enums is filled with a non-empty value
