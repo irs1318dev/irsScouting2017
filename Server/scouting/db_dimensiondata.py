@@ -84,7 +84,7 @@ def insertData():
     add_name("matches", "name", "f1")
     add_name("matches", "name", "f2")
     add_name("matches", "name", "f3")
-    add_name("matches", "name", "pit")
+    add_name("matches", "name", "na")
 
     add_name("alliances", "name", "na")
     add_name("alliances", "name", "blue")
