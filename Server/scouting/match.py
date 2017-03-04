@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 import event
 import dimension
 import json
@@ -57,15 +59,26 @@ class MatchDal(object):
         sql = text("SELECT * FROM measures WHERE "
                     "event_id = :event_id "
                     "AND match_id = :match_id "
-                    "AND team_id = :team_id "
-                    "AND phase = :phase_id ")
+                    "AND team_id = :team_id;")
 
-        results = conn.execute(sql, event_id=event_id, match_id=match_id, team_id=team_id, phase_id=phase_id)
+        results = conn.execute(sql, event_id=event_id, match_id=match_id,
+                               team_id=team_id, phase_id=phase_id).fetchall()
+        mt_tasks = []
+        for row in results:
+            task = MatchDal.task_ids[row['task_id']]
+            actor = MatchDal.actor_ids[row['actor_id']]
+            measuretype = MatchDal.measturetype_ids[row['measuretype_id']]
+            capability = row['capability']
+            attempts = row['attempts']
+            successes = row['successes']
+            cycle_times = row['cycle_times']
 
-        measures = []
-        for meas in results:
-            measures.append(dict(meas))
-        return json.dumps(measures)
+            mt_tasks.append(OrderedDict([('match', match), ('team', team), ('task', task), ('phase', phase),
+                           ('actor', actor), ('measuretype', measuretype), ('capability', capability),
+                           ('attempts', attempts), ('successes', successes), ('cycle_times', cycle_times)]))
+
+        return json.dumps(mt_tasks)
+
 
     @staticmethod
     def matchteamtask(team, task, match='na', phase='claim', capability=0, attempt_count=0, success_count=0,
