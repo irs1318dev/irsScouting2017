@@ -1,5 +1,5 @@
 import cherrypy
-import json
+import Game
 import scouting.tasks
 import scouting.tablet
 import scouting.sections
@@ -10,6 +10,7 @@ import scouting.event
 class Scouting(object):
     def __init__(self):
         self.matchDal = scouting.match.MatchDal()
+        self.eventDal = scouting.event.EventDal()
         self.alltablets = scouting.tablet.TabletList()
         return
 
@@ -27,14 +28,7 @@ class Scouting(object):
 
     @cherrypy.expose
     def gametasks(self):
-        with open("Scouting/gametasks.csv", "r") as text:
-            out = ''
-            for line in text:
-                if 'actor,task' not in line:
-                    task = scouting.tasks.Task(line)
-                    data = json.dumps(task, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
-                    out += data + '\n'
-            return out
+        return scouting.tasks.TaskDal.csvtasks()
 
     @cherrypy.expose
     def gameimport(self):
@@ -61,9 +55,9 @@ class Scouting(object):
     @cherrypy.expose
     def matchteams(self, match=-1):
         if match == -1:
-            match = scouting.event.getCurrentMatch()
-        return scouting.match.MatchDal.matchteams(match)
-        # return Game.HelloWorld.match(match)
+            match = '001-q'
+        # return self.eventDal.match_teams(self.eventDal.getCurrentEvent(), self.eventDal.getCurrentMatch())
+        return Game.HelloWorld.match(match)
 
     # All teams in match
 
@@ -74,7 +68,7 @@ class Scouting(object):
     @cherrypy.expose
     def matchteamtasks(self, team, match=-1, phase='claim'):
         if match == -1:
-            match = scouting.event.getCurrentMatch()
+            match = self.eventDal.getCurrentMatch()
         # return scouting.match.MatchDal.matchteamtasks(match, team, phase)
         return '{}'
 
@@ -98,9 +92,9 @@ class Scouting(object):
         newtablet = scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1])
 
         if scouting.tablet.TabletList.settablet(self.alltablets, newtablet):
-            scouting.event.setCurrentMatch()
+            scouting.event.EventDal.setCurrentMatch()
 
-        return str(scouting.event.getCurrentMatch())
+        return self.eventDal.getCurrentMatch()
 
     @cherrypy.expose
     def tablets(self):
@@ -108,7 +102,7 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchcurrent(self, match):
-        scouting.event.setCurrentMatch(match)
+        self.eventDal.setCurrentMatch(match)
         return 'set match'
 
 

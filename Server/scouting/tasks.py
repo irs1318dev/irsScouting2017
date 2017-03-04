@@ -21,7 +21,7 @@ class Task(object):
 
 class TaskDal(object):
     @staticmethod
-    def gettasks():
+    def sqltasks():
         results = conn.execute("SELECT * FROM games")
 
         out = ''
@@ -30,3 +30,14 @@ class TaskDal(object):
             data = json.dumps(task, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
             out += data + '\n'
         return out
+
+    @staticmethod
+    def csvtasks():
+        with open("Scouting/gametasks.csv", "r") as text:
+            out = ''
+            for line in text:
+                if 'actor,task' not in line:
+                    task = Task(line)
+                    data = json.dumps(task, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
+                    out += data + '\n'
+            return out

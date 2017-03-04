@@ -49,13 +49,12 @@ class HelloWorld(object):
                     out += data + '\n'
             return out
 
-
     @staticmethod
     def match(number):
         with open("TestJson/match", "r") as text:
             out = ""
             for line in text:
-                if '''"number":''' + str(number) in line:
+                if '''"match":"''' + str(number) in line:
                     out += line
             return out
 
