@@ -30,12 +30,19 @@ class MatchDal(object):
 
     @staticmethod
     def matchteams(match):
-        eventdal = event.EventDal()
-        match = eventdal.match_teams(eventdal.get_current_event(), match)
+        match_teams = []
+        sql = text("SELECT * FROM schedules WHERE "
+                   "match = :match "
+                   " AND event = :event ")
+        results = conn.execute(sql, event=event, match=match)
+
+        for row in results:
+            match_teams.append(dict(row))
 
         red = TabletMatch("red")
         blue = TabletMatch("blue")
-        for line in match:
+
+        for line in match_teams:
             if line['alliance'] == 'red':
                 red.teamadd(line['team'], line['match'])
             if line['alliance'] == 'blue':
@@ -44,6 +51,21 @@ class MatchDal(object):
         out = json.dumps(red, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True) + '\n'
         out += json.dumps(blue, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True) + '\n'
         return out
+
+    @staticmethod
+    def pitteams():
+        pit_teams = []
+        sql = text("SELECT DISTINCT team FROM schedules WHERE "
+                   "event = :event ORDER BY team;")
+
+        results = conn.execute(sql, event=event.EventDal.get_current_event())
+
+        for row in results:
+            pit_teams.append(row)
+
+        out = PitMatch(pit_teams)
+
+        return json.dumps(out, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
 
     @staticmethod
     def matchteamtasks(match, team, phase):
@@ -198,3 +220,9 @@ class TabletMatch(object):
             self.team2 = name
         if self.team3 is '':
             self.team3 = name
+
+
+class PitMatch(object):
+    def __init__(self, teams):
+        self.match = 'na'
+        self.teams = teams

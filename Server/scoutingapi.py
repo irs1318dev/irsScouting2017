@@ -1,5 +1,4 @@
 import cherrypy
-import Game
 import scouting.tasks
 import scouting.tablet
 import scouting.sections
@@ -56,6 +55,8 @@ class Scouting(object):
     def matchteams(self, match=-1):
         if match == -1:
             match = self.eventDal.get_current_match()
+        if match == 'na':
+            return scouting.match.MatchDal.pitteams()
         return scouting.match.MatchDal.matchteams(match)
 
     # All teams in match
@@ -91,7 +92,7 @@ class Scouting(object):
         newtablet = scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1])
 
         if scouting.tablet.TabletList.settablet(self.alltablets, newtablet):
-            scouting.event.EventDal.set_current_match()
+            scouting.event.EventDal.get_current_match()
 
         return self.eventDal.get_current_match()
 

@@ -21,7 +21,7 @@ public class TeamMenu extends Page {
     public PitMaker pitMaker;
 
     public TeamMenu(Context context) {
-        super(context, "setup");
+        super(context, "pit");
         spinner = new Spinner(context);
         spinner.setOnItemSelectedListener(selectedListener);
         addView(spinner);
