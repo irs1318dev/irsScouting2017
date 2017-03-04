@@ -34,22 +34,30 @@ class Scouting(object):
         return 'gameimport'
 
     @cherrypy.expose
+    def status(self):
+        return scouting.event.EventDal.get_current_status()
+
+
+    @cherrypy.expose
     def events(self):
-        return 'event'
+        return scouting.event.EventDal.list_events()
 
     @cherrypy.expose
     def event(self, event):
-        return 'event with id'
+        return scouting.event.EventDal.set_current_event(event)
 
     @cherrypy.expose
-    def matches(self):
-        return 'matches'
+    def matches(self, event='na'):
+        if (event == 'na'):
+            event = scouting.event.EventDal.get_current_event()
+
+        return scouting.event.EventDal.list_matches(event)
 
     #        return matchApi.matches()
 
     @cherrypy.expose
     def match(self, match):
-        return 'match with id'
+        return scouting.event.EventDal.set_current_match(match)
 
     @cherrypy.expose
     def matchteams(self, match=-1):

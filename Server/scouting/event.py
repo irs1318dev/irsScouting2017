@@ -1,5 +1,6 @@
 import scouting.db as db
 from sqlalchemy import text
+import json
 
 engine = db.getdbengine()
 conn = engine.connect()
@@ -9,6 +10,25 @@ conn = engine.connect()
 
 
 class EventDal(object):
+
+    @staticmethod
+    def list_events():
+        events = []
+        sql = text("SELECT distinct event FROM schedules ORDER BY event ")
+        results = conn.execute(sql)
+        for row in results:
+            events.append(dict(row))
+        return json.dumps(events)
+
+
+    @staticmethod
+    def list_matches(event):
+        matches = []
+        sql = text("SELECT distinct(match), event FROM schedules where event = :event ORDER BY match ")
+        results = conn.execute(sql, event=event)
+        for row in results:
+            matches.append(dict(row))
+        return json.dumps(matches)
 
     @staticmethod
     def match_details(event, match, team):
@@ -36,6 +56,15 @@ class EventDal(object):
             conn.execute(sql_ins, event=event)
 
     @staticmethod
+    def get_current_status():
+        status = {}
+        sql = text("SELECT * FROM status")
+        results = conn.execute(sql)
+        for row in results:
+            status = dict(row)
+        return json.dumps(status)
+
+    @staticmethod
     def get_current_event():
         event = conn.execute("SELECT event FROM status;").scalar()
         if event is None:
@@ -53,6 +82,8 @@ class EventDal(object):
         elif len(results) == 0:
             sql_ins = text("INSERT INTO status (match) VALUES (:match);")
             conn.execute(sql_ins, match=match)
+        return 'current match '  + match
+
 
     @staticmethod
     def set_next_match(match):
