@@ -36,7 +36,7 @@ class MatchDal(object):
         sql = text("SELECT * FROM schedules WHERE "
                    "match = :match "
                    " AND event = :event ")
-        results = conn.execute(sql, event=event, match=match)
+        results = conn.execute(sql, event=event.EventDal.get_current_event(), match=match)
 
         for row in results:
             match_teams.append(dict(row))
@@ -100,7 +100,6 @@ class MatchDal(object):
                            ('attempts', attempts), ('successes', successes), ('cycle_times', cycle_times)]))
 
         return json.dumps(mt_tasks)
-
 
     @staticmethod
     def matchteamtask(team, task, match='na', phase='claim', capability=0, attempt_count=0, success_count=0,
@@ -170,8 +169,8 @@ class MatchDal(object):
             ":successes, "
             ":cycle_times )" +
             " ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
-            "SET capability=:capability, attempts=measures.attempts + :attempts, "
-            "successes=measures.successes + :successes, cycle_times=:cycle_times;")
+            "SET capability=:capability, attempts=:attempts, "
+            "successes=:successes, cycle_times=:cycle_times;")
         conn.execute(sql,
                      date_id=date_id,
                      event_id=event_id,
@@ -202,10 +201,10 @@ class MatchDal(object):
         elif measure == 'percentage':
             return capability, 0, 0, 0, attempt_id
         elif measure == 'boolean':
-            return capability, 0, 0, 0, attempt_id
+            return 0, attempt_count, success_count, 0, attempt_id
         elif measure == 'enum':
             task_option = '{}-{}'.format(task_name, capability)
-            option_id = MatchDal.task_option_ids[task_option]
+            option_id = MatchDal.task_options[task_option]
             return option_id, 0, 0, 0, attempt_id
         elif measure == 'attempt':
             return 0

@@ -76,7 +76,7 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchteamtask(self, match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
-        scouting.match.MatchDal.matchteamtask(match, team, task, phase, capability, attempt, success, cycle_time)
+        scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
         return 'hi'
 
     @cherrypy.expose
@@ -92,7 +92,7 @@ class Scouting(object):
         newtablet = scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1])
 
         if scouting.tablet.TabletList.settablet(self.alltablets, newtablet):
-            scouting.event.EventDal.get_current_match()
+            scouting.event.EventDal.set_next_match(self.eventDal.get_current_match())
 
         return self.eventDal.get_current_match()
 
