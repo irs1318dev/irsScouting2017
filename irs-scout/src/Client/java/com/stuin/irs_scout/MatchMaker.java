@@ -46,7 +46,7 @@ class MatchMaker {
                     public void run(List<String> measures) {
                         Gson gson = new Gson();
                         for(String s : measures) if(!s.contains("end")) data.add(gson.fromJson(s, Measure.class));
-                        if(!nextTeams.isEmpty()) new Set().start(nextTeams.poll());
+                        if(nextTeams != null) new Set().start(nextTeams.poll());
                         setMatch();
                     }
                 }
