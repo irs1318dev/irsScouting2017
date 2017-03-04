@@ -30,8 +30,22 @@ class MatchDal(object):
     def __init__(self):
         pass
 
-    def matchteams(self, match):
-        pass
+    @staticmethod
+    def matchteams(match):
+        eventdal = event.EventDal()
+        match = eventdal.match_teams(eventdal.get_current_event(), match)
+
+        red = TabletMatch("red")
+        blue = TabletMatch("blue")
+        for line in match:
+            if line['alliance'] == 'red':
+                red.teamadd(line['team'], line['match'])
+            if line['alliance'] == 'blue':
+                blue.teamadd(line['team'], line['match'])
+
+        out = json.dumps(red, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True) + '\n'
+        out += json.dumps(blue, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True) + '\n'
+        return out
 
     @staticmethod
     def matchteamtasks(match, team, phase):
@@ -39,7 +53,7 @@ class MatchDal(object):
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
 
-        evt = event.EventDal.getCurrentEvent()
+        evt = event.EventDal.get_current_event()
         event_id = MatchDal.events[evt]
 
         sql = text("SELECT * FROM measures WHERE "
@@ -69,7 +83,7 @@ class MatchDal(object):
     @staticmethod
     def matchteamtask(team, task, match='na', phase='claim', capability=0, attempt_count=0, success_count=0,
                       cycle_time=0):
-        event_name = event.EventDal.getCurrentEvent()
+        event_name = event.EventDal.get_current_event()
         event_id = MatchDal.events[event_name]
 
         match_id = MatchDal.matches[match]
@@ -77,7 +91,7 @@ class MatchDal(object):
         team_id = MatchDal.teams[team]
         phase_id = MatchDal.phases[phase]
         task_id = MatchDal.tasks[task]
-        actor_measure = game.GameDal.getActorMeasure(task, phase)
+        actor_measure = game.GameDal.get_actor_measure(task, phase)
         actor_id = MatchDal.actors[actor_measure["actor"]]
         measure = actor_measure[phase]
         measuretype_id = MatchDal.measuretypes[measure]
@@ -177,3 +191,20 @@ class MatchDal(object):
             return 0
 
 
+class TabletMatch(object):
+    def __init__(self, alliance):
+        self.alliance = alliance
+        self.match = ''
+        self.team1 = ''
+        self.team2 = ''
+        self.team3 = ''
+
+    def teamadd(self, name, match):
+        if self.match is '':
+            self.match = match
+        if self.team1 is '':
+            self.team1 = name
+        if self.team2 is '':
+            self.team2 = name
+        if self.team3 is '':
+            self.team3 = name

@@ -2,7 +2,6 @@ import db
 from sqlalchemy.sql import text
 
 
-
 def add_name(table, col, val):
     engine = db.getdbengine()
     conn = engine.connect()
@@ -31,8 +30,6 @@ def add_many_names(table, col, n, template):
         )
         conn.execute(sql, name=name)
 
-# This function does not yet work -- don't use it. Check with Stacy if you
-# have questions.
 def add_many_cols(table, data) :
     engine = db.getdbengine()
     conn = engine.connect()
@@ -61,7 +58,7 @@ def add_many_cols(table, data) :
     conn.execute(sql, **data)
 
 
-def insertData():
+def insert_data():
     add_name("levels", "name", "qual")
     add_name("levels", "name", "playoff")
 
@@ -128,36 +125,6 @@ def insertData():
     add_name("reasons", "name", "dropped")
     add_name("reasons", "name", "blocked")
     add_name("reasons", "name", "defended")
-
-
-def insertTaskOptionData():
-    add_many_cols("task_options", {'task_name': 'startingLocation',
-                                   'type': 'capability',
-                                   'option_name': 'retrieval' })
-    add_many_cols("task_options", {'task_name': 'startingLocation',
-                                   'type': 'capability',
-                                   'option_name': 'center'})
-    add_many_cols("task_options", {'task_name': 'startingLocation',
-                                   'type': 'capability',
-                                   'option_name': 'boiler'})
-    add_many_cols("task_options", {'task_name': 'preferredDavit',
-                                   'type': 'capability',
-                                   'option_name': '1'})
-    add_many_cols("task_options", {'task_name': 'preferredDavit',
-                                   'type': 'capability',
-                                   'option_name': '2'})
-    add_many_cols("task_options", {'task_name': 'preferredDavit',
-                                   'type': 'capability',
-                                   'option_name': '3'})
-    add_many_cols("task_options", {'task_name': 'deployRope',
-                                   'type': 'capability',
-                                   'option_name': 'released'})
-    add_many_cols("task_options", {'task_name': 'deployRope',
-                                   'type': 'capability',
-                                   'option_name': 'late'})
-    add_many_cols("task_options", {'task_name': 'deployRope',
-                                   'type': 'capability',
-                                   'option_name': 'never'})
 
 
 
