@@ -55,9 +55,8 @@ class Scouting(object):
     @cherrypy.expose
     def matchteams(self, match=-1):
         if match == -1:
-            match = '001-q'
-        # return self.eventDal.match_teams(self.eventDal.getCurrentEvent(), self.eventDal.getCurrentMatch())
-        return Game.HelloWorld.match(match)
+            match = self.eventDal.get_current_match()
+        return scouting.match.MatchDal.matchteams(match)
 
     # All teams in match
 

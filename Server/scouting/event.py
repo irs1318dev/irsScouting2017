@@ -16,23 +16,23 @@ class EventDal(object):
         sql = text("SELECT * FROM schedules WHERE "
                    "match = :match "
                    " AND team = :team "
-                   " AND event = :event " )
-        results = conn.execute(sql,event=event,
-                               match=match, team=team)
+                   " AND event = :event ")
+        results = conn.execute(sql, event=event, match=match, team=team)
         for row in results:
             match_details = dict(row)
         return match_details
 
     @staticmethod
     def match_teams(event, match):
-        match_details = {}
+        match_teams = []
         sql = text("SELECT * FROM schedules WHERE "
                    "match = :match "
                    " AND event = :event ")
         results = conn.execute(sql, event=event, match=match)
+
         for row in results:
-            match_details = dict(row)
-        return match_details
+            match_teams.append(dict(row))
+        return match_teams
 
     @staticmethod
     def set_current_event(event):
@@ -42,15 +42,18 @@ class EventDal(object):
         results = conn.execute(sql_sel).fetchall()
         if len(results) == 1:
             sql_upd = text("UPDATE status SET event = :event WHERE id = :id;")
-            conn.execute(sql_upd, event = event, id = results[0]['id'])
+            conn.execute(sql_upd, event=event, id=results[0]['id'])
         elif len(results) == 0:
             sql_ins = text("INSERT INTO status (event) VALUES (:event);")
-            conn.execute(sql_ins, event = event)
+            conn.execute(sql_ins, event=event)
 
     @staticmethod
     def get_current_event():
-        sql = text("SELECT event FROM status;")
-        return conn.execute(sql).scalar()
+        event = conn.execute("SELECT event FROM status;").scalar()
+        if event is None:
+            event = conn.execute("SELECT name FROM events LIMIT 1")
+            EventDal.set_current_event(event)
+        return event
 
     @staticmethod
     def set_current_match(match):
@@ -58,12 +61,15 @@ class EventDal(object):
         results = conn.execute(sql_sel).fetchall()
         if len(results) == 1:
             sql_upd = text("UPDATE status SET match = :match WHERE id = :id;")
-            conn.execute(sql_upd, match = match, id = results[0]['id'])
+            conn.execute(sql_upd, match=match, id=results[0]['id'])
         elif len(results) == 0:
             sql_ins = text("INSERT INTO status (match) VALUES (:match);")
-            conn.execute(sql_ins, match = match)
+            conn.execute(sql_ins, match=match)
 
     @staticmethod
     def get_current_match():
-        sql = text("SELECT match FROM status;")
-        return conn.execute(sql).scalar()
+        match = conn.execute("SELECT match FROM status;").scalar()
+        if match is None:
+            match = conn.execute("SELECT name FROM matches LIMIT 1").scalar()
+            EventDal.set_current_match(match)
+        return match
