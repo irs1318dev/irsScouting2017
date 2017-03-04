@@ -7,17 +7,17 @@ from sqlalchemy.sql import text
 import db_dimensiondata as data
 
 
-def loadGameSheet():
+def load_game_sheet():
     fpath = os.path.dirname(os.path.abspath(__file__))
     os.chdir(fpath)
     file = open('gametasks.csv')
     sheet = csv.reader(file)
     for row in sheet:
         if row[0] != 'actor':
-            insertgame(row[0], row[1], row[2], row[3], row[4], row[5], row[8])
+            insert_game(row[0], row[1], row[2], row[3], row[4], row[5], row[8])
 
 
-def insertgame(actor, task, claim, auto, teleop, finish, optionString):
+def insert_game(actor, task, claim, auto, teleop, finish, optionString):
     engine = db.getdbengine()
     conn = engine.connect()
     select = text(
@@ -30,7 +30,7 @@ def insertgame(actor, task, claim, auto, teleop, finish, optionString):
     # split on | a dn insert one record for each task, 'capabliity', optionName.
 
 
-def insertsched(event, season, level='qual'):
+def insert_sched(event, season, level='qual'):
     engine = db.getdbengine()
     conn = engine.connect()
     event = event.lower()
