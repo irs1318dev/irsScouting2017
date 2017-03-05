@@ -4,7 +4,7 @@ class TabletDAL(object):
         self.page = page
 
     def write(self):
-        s = self.position + ":" + self.page + ' '
+        s = self.position + ":" + self.page + ', '
         return s
 
 
@@ -29,6 +29,11 @@ class TabletList(object):
             if 'Waiting' not in newtablet.page and 'Pit' not in newtablet.page:
                 nextmatch = False
 
+        if nextmatch:
+            self.alltablets[0].page = "Reset"
+        else:
+            self.alltablets[0].page = "Waiting"
+
         return nextmatch
 
     def gettablets(self):
@@ -38,3 +43,9 @@ class TabletList(object):
             s += tab.write()
 
         return s
+
+    def inserttablets(self, table):
+        for tablet in self.alltablets:
+            table.replace('{' + tablet.position + '}', tablet.page)
+
+        return table

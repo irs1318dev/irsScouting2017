@@ -20,7 +20,6 @@ class EventDal(object):
             events.append(dict(row))
         return json.dumps(events)
 
-
     @staticmethod
     def list_matches(event):
         matches = []
@@ -84,10 +83,9 @@ class EventDal(object):
             conn.execute(sql_ins, match=match)
         return 'current match '  + match
 
-
     @staticmethod
     def set_next_match(match):
-        if (match == 'na'):
+        if match == 'na':
             return
 
         # match is in format 001-q
@@ -103,7 +101,6 @@ class EventDal(object):
         elif len(results) == 0:
             sql_ins = text("INSERT INTO status (match) VALUES (:match);")
             conn.execute(sql_ins, match=nextMatch)
-
 
     @staticmethod
     def get_current_match():

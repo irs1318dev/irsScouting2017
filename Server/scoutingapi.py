@@ -4,6 +4,7 @@ import scouting.tablet
 import scouting.sections
 import scouting.match
 import scouting.event
+import scouting.export
 
 
 class Scouting(object):
@@ -15,7 +16,9 @@ class Scouting(object):
 
     @cherrypy.expose
     def index(self):
-        return 'nothing to see here'
+        match = self.eventDal.get_current_match()
+        out = open("web/admin.html").read().replace('{Match}', match)
+        return self.alltablets.inserttablets(out)
 
     @cherrypy.expose
     def games(self):
@@ -84,7 +87,10 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchteamtask(self, match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
-        scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
+        try:
+            scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
+        except KeyError:
+            print("No key found")
         return 'hi'
 
     @cherrypy.expose
@@ -111,8 +117,12 @@ class Scouting(object):
     @cherrypy.expose
     def matchcurrent(self, match):
         self.eventDal.set_current_match(match)
-        return 'set match'
+        return open("web/reset.html").read()
 
+    @cherrypy.expose
+    def output(self):
+        scouting.export.ExportCSV.alltables()
+        return 'output all tables'
 
 if __name__ == '__main__':
     cherrypy.config.update(
