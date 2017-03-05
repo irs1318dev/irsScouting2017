@@ -12,6 +12,7 @@ import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.MainActivity;
 import com.stuin.irs_scout.R;
+import com.stuin.irs_scout.Updater;
 
 /**
  * Created by Stuart on 2/11/2017.
@@ -21,7 +22,7 @@ public class Count extends Label {
     private boolean missing;
     private boolean large = false;
     private int miss = -1;
-    private int max = 18;
+    private int max = 30;
     private GridLayout gridLayout;
 
     public Count(Context context, Task task, String position) {
@@ -30,7 +31,7 @@ public class Count extends Label {
 
         if(MainActivity.position.contains("Fuel")) large = true;
         if(large) {
-            max = 100;
+            max = 300;
             if(miss != -1) miss = 2;
         }
     }
@@ -68,7 +69,18 @@ public class Count extends Label {
 
     @Override
     protected void update(Measure measure, boolean send) {
-        super.update(measure, send);
+        this.measure = measure;
+
+        if(send) {
+            if(task.getFormat(measure.phase).contains("time")) {
+                Measure out = measure;
+                out.cycletime = out.successes;
+                out.successes = 0;
+                out.attempts = 0;
+                Updater.measures.add(out);
+            }
+            else Updater.measures.add(measure);
+        }
 
         //Set button text
         views.get(0).setText(task.success + ": " + measure.successes);

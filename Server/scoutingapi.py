@@ -16,9 +16,11 @@ class Scouting(object):
 
     @cherrypy.expose
     def index(self):
-        match = self.eventDal.get_current_match()
-        out = open("web/admin.html").read().replace('{Match}', match)
-        return self.alltablets.inserttablets(out)
+        out = open("web/admin.html").read()
+        out = out.replace("{Tablets}", self.alltablets.gettablets())
+        out = out.replace('{Match}', self.eventDal.get_current_match())
+        out = out.replace('{Event}', self.eventDal.get_current_event())
+        return out
 
     @cherrypy.expose
     def games(self):
@@ -39,7 +41,6 @@ class Scouting(object):
     @cherrypy.expose
     def status(self):
         return scouting.event.EventDal.get_current_status()
-
 
     @cherrypy.expose
     def events(self):
@@ -122,7 +123,7 @@ class Scouting(object):
     @cherrypy.expose
     def output(self):
         scouting.export.ExportCSV.alltables()
-        return 'output all tables'
+        return open("web/reset.html").read()
 
 if __name__ == '__main__':
     cherrypy.config.update(

@@ -9,9 +9,7 @@ import com.stuin.irs_scout.Views.Page;
 import com.stuin.irs_scout.Views.TeamMenu;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 class PageManager extends LinearLayout {
     List<Page> pages = new ArrayList<>();

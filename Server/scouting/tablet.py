@@ -20,13 +20,13 @@ class TabletList(object):
             if self.alltablets[i].position in newtablet.position:
                 self.alltablets[i].page = newtablet.page
                 found = True
-            if 'Waiting' not in self.alltablets[i].page and 'Pit' not in newtablet.page:
+            if 'Waiting' not in self.alltablets[i].page:
                 nextmatch = False
             i += 1
 
         if not found:
             self.alltablets.append(newtablet)
-            if 'Waiting' not in newtablet.page and 'Pit' not in newtablet.page:
+            if 'Waiting' not in newtablet.page:
                 nextmatch = False
 
         if nextmatch:

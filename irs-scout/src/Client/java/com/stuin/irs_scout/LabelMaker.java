@@ -82,22 +82,7 @@ class LabelMaker {
     }
 
     private Label makeLabel(Task task, Context context, String phase, String position) {
-        //Get format from phase
-        String format = "na";
-        switch(phase.charAt(0)) {
-            case 'c':
-                format = task.claim;
-                break;
-            case 'a':
-                format = task.auto;
-                break;
-            case 't':
-                format = task.teleop;
-                break;
-            case 'f':
-                format = task.finish;
-                break;
-        }
+        String format = task.getFormat(phase);
 
         //Choose format to create
 

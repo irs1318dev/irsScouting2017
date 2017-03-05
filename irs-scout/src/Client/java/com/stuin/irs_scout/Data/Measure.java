@@ -11,6 +11,7 @@ public class Measure {
     public String capability;
     public int successes;
     public int attempts;
+    public int cycletime;
 
     public Measure() {
         match = "";
@@ -20,6 +21,7 @@ public class Measure {
         capability = "";
         successes = 0;
         attempts = 0;
+        cycletime = 0;
     }
 
     public Measure(Task task, Match match, String position, String phase) {
@@ -30,5 +32,6 @@ public class Measure {
         this.capability = "";
         this.successes = 0;
         this.attempts = 0;
+        this.cycletime = 0;
     }
 }
