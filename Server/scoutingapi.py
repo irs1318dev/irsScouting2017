@@ -17,9 +17,9 @@ class Scouting(object):
     @cherrypy.expose
     def index(self):
         out = open("web/admin.html").read()
-        out = out.replace("{Tablets}", self.alltablets.gettablets())
         out = out.replace('{Match}', self.eventDal.get_current_match())
         out = out.replace('{Event}', self.eventDal.get_current_event())
+        out = self.alltablets.inserttablets(out)
         return out
 
     @cherrypy.expose
@@ -103,8 +103,8 @@ class Scouting(object):
         return 'dimension'
 
     @cherrypy.expose
-    def tablet(self, status):
-        newtablet = scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1])
+    def tablet(self, status, id=-1):
+        newtablet = scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1], id)
 
         if scouting.tablet.TabletList.settablet(self.alltablets, newtablet):
             scouting.event.EventDal.set_next_match(self.eventDal.get_current_match())
