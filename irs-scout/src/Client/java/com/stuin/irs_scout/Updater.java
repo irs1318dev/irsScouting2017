@@ -37,7 +37,7 @@ public class Updater {
             class Status extends Request {
                 @Override
                 public void run(List<String> s) {
-                    if(!s.get(0).equals(String.valueOf(matchMaker.match.number))) matchMaker.newMatch();
+                    if(!s.get(0).equals(String.valueOf(matchMaker.match.match))) matchMaker.newMatch();
                 }
             }
             new Status().start(s);
@@ -54,9 +54,9 @@ public class Updater {
         try {
             for(Measure measure : measures) {
                 String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.phase;
-                if(!measure.value.isEmpty()) s += "&value=" + measure.value;
-                if(measure.success != 0) s += "&success=" + measure.success;
-                if(measure.miss != 0) s += "&miss=" + measure.miss;
+                if(!measure.capability.isEmpty()) s += "&capability=" + measure.capability;
+                if(measure.successes != 0) s += "&success=" + measure.successes;
+                if(measure.attempts != 0) s += "&attempt=" + measure.attempts;
 
                 if(!s.equals(last)) {
                     class Remove extends Request {

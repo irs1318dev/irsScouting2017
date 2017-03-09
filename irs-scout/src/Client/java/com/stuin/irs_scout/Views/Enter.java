@@ -1,10 +1,12 @@
 package com.stuin.irs_scout.Views;
 
 import android.content.Context;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
@@ -28,12 +30,24 @@ public class Enter extends Label{
 
     @Override
     protected TextView part(String name) {
+        TextView textView = new TextView(getContext());
+        textView.setText(task.success);
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextSize(getResources().getDimension(R.dimen.text_norm));
+        linearLayout.addView(textView);
+
         EditText editText = new EditText(getContext());
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setTextSize(getResources().getDimension(R.dimen.text_norm));
         editText.setWidth(200);
+        editText.setGravity(Gravity.CENTER);
         editText.setOnEditorActionListener(actionListener);
         linearLayout.addView(editText);
+
+        InputFilter[] filters = new InputFilter[1];
+        filters[0] = new InputFilter.LengthFilter(3);
+        editText.setFilters(filters);
+
         views.add(editText);
         return editText;
     }
@@ -42,8 +56,7 @@ public class Enter extends Label{
     protected void update(Measure measure, boolean send) {
         super.update(measure, send);
 
-        String s = measure.success + "";
-        if(s.equals("0")) s = "";
+        String s = measure.capability + "%";
 
         EditText editText = (EditText) views.get(0);
         editText.setText(s);
@@ -52,11 +65,8 @@ public class Enter extends Label{
     private EditText.OnEditorActionListener actionListener = new OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-            if(textView.getText().length() > 0 && textView.getText().length() < 4) {
-                measure.success = Integer.valueOf(textView.getText().toString());
-            } else measure.success = 0;
-
-            update(measure, true);
+            measure.capability = textView.getText().toString().replace("%", "");
+            update(measure, !measure.capability.isEmpty());
             return false;
         }
     };

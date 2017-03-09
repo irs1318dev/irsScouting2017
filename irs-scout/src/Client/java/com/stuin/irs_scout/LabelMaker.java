@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.stuin.irs_scout.Data.Section;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.Views.*;
-import com.stuin.irs_scout.Views.Count;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +57,11 @@ class LabelMaker {
 
         for(Section s : sections) {
             if(s.newpart.equals("true")) pageList.get(s.phase).newCol();
-            pageList.get(s.phase).add(new Label(context, new Task(s.category), s.position));
+            if(s.position.isEmpty()) s.position = MainActivity.position;
+
+            Label label = new Label(context, new Task(s.category), s.position);
+            label.sectionLabel = true;
+            pageList.get(s.phase).add(label);
 
             for(String t : s.tasks) if(tasks.containsKey(t)) {
                 pageList.get(s.phase).add(makeLabel(tasks.get(t), context, s.phase, s.position));
@@ -72,8 +75,9 @@ class LabelMaker {
 
     private boolean usePage(String observer, String position) {
         //Check if phase is to be used
-        if(observer.equals("match") && !position.contains("Boiler")) return true;
-        if(observer.equals("boiler") && position.contains("Boiler")) return true;
+        if(observer.equals("match") && !position.contains("Fuel") && !position.contains("Pit")) return true;
+        if(observer.equals("boiler") && position.contains("Fuel")) return true;
+        if(observer.equals("pit") && position.contains("Pit")) return true;
         return false;
     }
 

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Views.Page;
+import com.stuin.irs_scout.Views.TeamMenu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +44,13 @@ class PageManager extends LinearLayout {
                         pages = labelMaker.taskMake( s);
 
                         //Get Match
-                        MatchMaker matchMaker = new MatchMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
+                        MatchMaker matchMaker;
+                        if(MainActivity.position.contains("Pit")) {
+                            matchMaker = new PitMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
+                            TeamMenu teamMenu = (TeamMenu) pages.get(0);
+                            teamMenu.pitMaker = (PitMaker) matchMaker;
+                        } else matchMaker = new MatchMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
+
                         updater = new Updater(matchMaker, activity.findViewById(R.id.PageStatus));
                     }
                 }
@@ -67,6 +74,8 @@ class PageManager extends LinearLayout {
     Page makePage(String name) {
         //Create phase object
         Page page = new Page(getContext(), name);
+        if(name.equals("pit")) page = new TeamMenu(getContext());
+
         page.setVisibility(GONE);
         addView(page);
         return page;
@@ -75,7 +84,6 @@ class PageManager extends LinearLayout {
     void nextPage(View view) {
         //Show next phase
         pages.get(current).setVisibility(GONE);
-        pages.get(current).send();
 
         //Set shown buttons
         activity.findViewById(R.id.Previous).setVisibility(VISIBLE);
@@ -88,7 +96,6 @@ class PageManager extends LinearLayout {
     void lastPage(View view) {
         //Hide old phase
         pages.get(current).setVisibility(GONE);
-        pages.get(current).send();
 
         //Set shown buttons
         activity.findViewById(R.id.Next).setVisibility(VISIBLE);
@@ -104,8 +111,10 @@ class PageManager extends LinearLayout {
         pages.get(current).setVisibility(VISIBLE);
 
         //Set phase title
+        String name = pages.get(current).name;
+        name = name.substring(0,1).toUpperCase() + name.substring(1);
         TextView textView = (TextView) activity.findViewById(R.id.PageStatus);
-        textView.setText(MainActivity.position + ": " + pages.get(current).name);
+        textView.setText(MainActivity.position + ": " + name);
 
         //Notify server
         if(updater != null) updater.setStatus();

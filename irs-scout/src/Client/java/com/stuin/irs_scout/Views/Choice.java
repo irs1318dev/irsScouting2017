@@ -52,7 +52,7 @@ public class Choice extends Label {
 
         for(int i = 0; i < choices.length; i++) {
             radioButton = (CompoundButton) views.get(i);
-            radioButton.setChecked(choices[i].equals(measure.value));
+            radioButton.setChecked(choices[i].toLowerCase().equals(measure.capability));
         }
     }
 
@@ -60,7 +60,7 @@ public class Choice extends Label {
         @Override
         public void onCheckedChanged(CompoundButton radioButton, boolean b) {
             if(b) {
-                measure.value = radioButton.getText().toString();
+                measure.capability = radioButton.getText().toString().toLowerCase();
 
                 update(measure, true);
             }
@@ -70,7 +70,7 @@ public class Choice extends Label {
     private View.OnLongClickListener longClickListener = new OnLongClickListener() {
         @Override
         public boolean onLongClick(View view) {
-            measure.value = "";
+            measure.capability = "";
 
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(false);
