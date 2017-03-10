@@ -61,6 +61,23 @@ def insert_sched(event, season, level='qual'):
             data.add_name("dates", "name", date)
 
 
+def insert_MatchResults(event, season, matchNumber):
+    engine = db.getdbengine()
+    conn = engine.connect()
+    event = event.lower()
+    result_json = api.getMatchResults(event.upper(), season, matchNumber)
+    result = json.loads(result_json)['MatchResults']
+    for mch in result:
+        match = "{0:0>3}-q".format(mch['matchNumber'])
+        date = mch['startTime']
+        for tm in mch['Teams']:
+            team = tm['teamNumber']
+            station = tm['station'][-1:]
+            alliance = tm['station'][0:-1].lower()
+            select = text(
+                "INSERT INTO "
+            )
+
 
 
 

@@ -22,3 +22,19 @@ def getSched(event, season, level="qual"):
     # send url request
     sched = urlopen(req)
     return sched.read()
+
+
+def getMatchResults(event, season, matchNumber, tournamentLevel):
+    raw_token = auth.username + ":" + auth.key
+    token = "Basic " + b64encode(raw_token)
+    print token
+
+    url = ("https://frc-api.firstinspires.org/v2.0/" + season + "/matches/" +
+           event + "?matchNumber=" + matchNumber + "&tournamentLevel=" + tournamentLevel)
+    print url
+
+    hdrs = {"Accept": "application/json", 'Authorization': token}
+    req = Request(url, headers=hdrs)
+
+    results = urlopen(req)
+    return results.read()
