@@ -66,7 +66,7 @@ public class Enter extends Label{
         @Override
         public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
             measure.capability = textView.getText().toString().replace("%", "");
-            update(measure, true);
+            update(measure, !measure.capability.isEmpty());
             return false;
         }
     };

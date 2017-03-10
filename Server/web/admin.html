@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<h1>IRS Scouting Admin</h1>
+
+<h3>Current Match: {Match}</h3>
+
+<script type="text/javascript">
+    function setMatch() {
+        var match = document.getElementById('match').value;
+        window.location = "/matchcurrent?match=" + match;
+    }
+</script>
+<input type="text" id="match" name="Match Number"/>
+<input type="submit" value="Set Match" onclick="setMatch();"/>
+
+<h3>Tablets: </h3>
+<table>
+    <tr>
+        <th>Red</th>
+        <td>{Red1}</td>
+        <td>{Red2}</td>
+        <td>{Red3}</td>
+        <td>{RFuel}</td>
+    </tr>
+    <tr>
+        <th>Blue</th>
+        <td>{Blue1}</td>
+        <td>{Blue2}</td>
+        <td>{Blue3}</td>
+        <td>{BFuel}</td>
+    </tr>
+</table>
+
+{TestSystem}
+
+</body>
+</html>

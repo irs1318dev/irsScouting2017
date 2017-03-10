@@ -37,10 +37,8 @@ public class Page extends LinearLayout {
         for(Label l : labels) {
             if(l.sectionLabel && l.task.success.contains("Team")) l.setText(match.getTeam(l.position));
 
-            if(measures.get(l.task.success) != null) {
-                Measure measure = measures.get(l.task.success);
-                if(match.getTeam(l.position).equals(measure.team)) l.update(measure, false);
-            }
+            String key = l.task.task + ':' + match.getTeam(l.position);
+            if(measures.get(key) != null) l.update(measures.get(key), false);
             else l.update(new Measure(l.task, match, l.position, name), false);
         }
     }

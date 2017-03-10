@@ -44,12 +44,12 @@ class PageManager extends LinearLayout {
                         pages = labelMaker.taskMake( s);
 
                         //Get Match
-                        MatchMaker matchMaker = new MatchMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
+                        MatchMaker matchMaker;
                         if(MainActivity.position.contains("Pit")) {
                             matchMaker = new PitMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
                             TeamMenu teamMenu = (TeamMenu) pages.get(0);
                             teamMenu.pitMaker = (PitMaker) matchMaker;
-                        }
+                        } else matchMaker = new MatchMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
 
                         updater = new Updater(matchMaker, activity.findViewById(R.id.PageStatus));
                     }
@@ -74,7 +74,7 @@ class PageManager extends LinearLayout {
     Page makePage(String name) {
         //Create phase object
         Page page = new Page(getContext(), name);
-        if(name.equals("setup")) page = new TeamMenu(getContext());
+        if(name.equals("pit")) page = new TeamMenu(getContext());
 
         page.setVisibility(GONE);
         addView(page);

@@ -1,6 +1,7 @@
 import csv
 import os
 import db
+import db_dimensiondata as ddd
 import firstapi as api
 import json
 from sqlalchemy.sql import text
@@ -21,14 +22,20 @@ def insert_game(actor, task, claim, auto, teleop, finish, optionString):
     engine = db.getdbengine()
     conn = engine.connect()
     select = text(
-        "INSERT INTO games (actor, task, claim, auto, teleop, finish) " +
-        "VALUES (:actor,:task,:claim,:auto,:teleop,:finish); "
-    )
+        "INSERT INTO games (actor, task, claim, auto, teleop, finish) "
+        "VALUES (:actor,:task,:claim,:auto,:teleop,:finish) "
+        "ON CONFLICT (task) "
+        "DO UPDATE "
+        "SET actor=:actor, task=:task, claim=:claim, auto=:auto, teleop=:teleop, finish=:finish;")
     conn.execute(select, actor=actor, task=task, claim=claim, auto=auto, teleop=teleop, finish=finish)
     data.add_name("tasks", "name", task)
-    # create task options if enums is filled with a non-empty value
-    # split on | a dn insert one record for each task, 'capabliity', optionName.
 
+    if not optionString.strip():
+        optionNames = optionString.split('|')
+        for optionName in optionNames:
+            ddd.add_many_cols("task_options", {'task_name': task,
+                                           'type': 'capability',
+                                           'option_name': optionName})
 
 def insert_sched(event, season, level='qual'):
     engine = db.getdbengine()

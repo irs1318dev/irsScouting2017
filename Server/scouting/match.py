@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 import event
 import dimension
 import json
@@ -30,12 +32,19 @@ class MatchDal(object):
 
     @staticmethod
     def matchteams(match):
-        eventdal = event.EventDal()
-        match = eventdal.match_teams(eventdal.get_current_event(), match)
+        match_teams = []
+        sql = text("SELECT * FROM schedules WHERE "
+                   "match = :match "
+                   " AND event = :event ")
+        results = conn.execute(sql, event=event.EventDal.get_current_event(), match=match)
+
+        for row in results:
+            match_teams.append(dict(row))
 
         red = TabletMatch("red")
         blue = TabletMatch("blue")
-        for line in match:
+
+        for line in match_teams:
             if line['alliance'] == 'red':
                 red.teamadd(line['team'], line['match'])
             if line['alliance'] == 'blue':
@@ -46,10 +55,27 @@ class MatchDal(object):
         return out
 
     @staticmethod
-    def matchteamtasks(match, team, phase):
+    def pitteams():
+        pit_teams = ''
+        sql = text("SELECT DISTINCT team FROM schedules WHERE "
+                   "event = :event ORDER BY team;")
+
+        results = conn.execute(sql, event=event.EventDal.get_current_event())
+
+        first = True
+        for row in results:
+            if first:
+                pit_teams += '"' + str(row).split('\'')[1] + '"'
+                first = False
+            else:
+                pit_teams += ',"' + str(row).split('\'')[1] + '"'
+
+        return '''{"match":"na", "teams":[''' + pit_teams + ']}'
+
+    @staticmethod
+    def matchteamtasks(match, team):
         match_id = MatchDal.matches[match]
         team_id = MatchDal.teams[team]
-        phase_id = MatchDal.phases[phase]
 
         evt = event.EventDal.get_current_event()
         event_id = MatchDal.events[evt]
@@ -57,15 +83,27 @@ class MatchDal(object):
         sql = text("SELECT * FROM measures WHERE "
                     "event_id = :event_id "
                     "AND match_id = :match_id "
-                    "AND team_id = :team_id "
-                    "AND phase = :phase_id ")
+                    "AND team_id = :team_id;")
 
-        results = conn.execute(sql, event_id=event_id, match_id=match_id, team_id=team_id, phase_id=phase_id)
+        results = conn.execute(sql, event_id=event_id, match_id=match_id,
+                               team_id=team_id).fetchall()
 
-        measures = []
-        for meas in results:
-            measures.append(dict(meas))
-        return json.dumps(measures)
+        out = ''
+        for row in results:
+            task = MatchDal.task_ids[row['task_id']]
+            actor = MatchDal.actor_ids[row['actor_id']]
+            phase = MatchDal.phase_ids[row['phase_id']]
+            measuretype = MatchDal.measturetype_ids[row['measuretype_id']]
+            capability = row['capability']
+            attempts = row['attempts']
+            successes = row['successes']
+            cycle_times = row['cycle_times']
+
+            out += json.dumps(OrderedDict([('match', match), ('team', team), ('task', task), ('phase', phase),
+                           ('actor', actor), ('measuretype', measuretype), ('capability', capability),
+                           ('attempts', attempts), ('successes', successes), ('cycle_times', cycle_times)])) + '\n'
+
+        return out
 
     @staticmethod
     def matchteamtask(team, task, match='na', phase='claim', capability=0, attempt_count=0, success_count=0,
@@ -135,8 +173,8 @@ class MatchDal(object):
             ":successes, "
             ":cycle_times )" +
             " ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
-            "SET capability=:capability, attempts=measures.attempts + :attempts, "
-            "successes=measures.successes + :successes, cycle_times=:cycle_times;")
+            "SET capability=:capability, attempts=:attempts, "
+            "successes=:successes, cycle_times=:cycle_times;")
         conn.execute(sql,
                      date_id=date_id,
                      event_id=event_id,
@@ -167,10 +205,10 @@ class MatchDal(object):
         elif measure == 'percentage':
             return capability, 0, 0, 0, attempt_id
         elif measure == 'boolean':
-            return capability, 0, 0, 0, attempt_id
+            return 0, attempt_count, success_count, 0, attempt_id
         elif measure == 'enum':
             task_option = '{}-{}'.format(task_name, capability)
-            option_id = MatchDal.task_option_ids[task_option]
+            option_id = MatchDal.task_options[task_option]
             return option_id, 0, 0, 0, attempt_id
         elif measure == 'attempt':
             return 0
@@ -191,7 +229,15 @@ class TabletMatch(object):
             self.match = match
         if self.team1 is '':
             self.team1 = name
-        if self.team2 is '':
-            self.team2 = name
-        if self.team3 is '':
-            self.team3 = name
+        else:
+            if self.team2 is '':
+                self.team2 = name
+            else:
+                if self.team3 is '':
+                    self.team3 = name
+
+
+class PitMatch(object):
+    def __init__(self, teams):
+        self.match = 'na'
+        self.teams = teams
