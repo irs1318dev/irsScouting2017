@@ -45,7 +45,7 @@ public class Enter extends Label{
         linearLayout.addView(editText);
 
         InputFilter[] filters = new InputFilter[1];
-        filters[0] = new InputFilter.LengthFilter(3);
+        filters[0] = new InputFilter.LengthFilter(4);
         editText.setFilters(filters);
 
         views.add(editText);
@@ -66,6 +66,7 @@ public class Enter extends Label{
         @Override
         public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
             measure.capability = textView.getText().toString().replace("%", "");
+            if(Integer.valueOf(measure.capability) > 100) measure.capability = "100";
             update(measure, !measure.capability.isEmpty());
             return false;
         }

@@ -37,4 +37,24 @@ public class Task {
         miss = "";
         enums = "";
     }
+
+    public String getFormat(String phase) {
+        //Get format from phase
+        String format = "na";
+        switch(phase.charAt(0)) {
+            case 'c':
+                format = claim;
+                break;
+            case 'a':
+                format = auto;
+                break;
+            case 't':
+                format = teleop;
+                break;
+            case 'f':
+                format = finish;
+                break;
+        }
+        return format;
+    }
 }
