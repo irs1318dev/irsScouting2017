@@ -30,6 +30,7 @@ def add_many_names(table, col, n, template):
         )
         conn.execute(sql, name=name)
 
+
 def add_many_cols(table, data) :
     engine = db.getdbengine()
     conn = engine.connect()

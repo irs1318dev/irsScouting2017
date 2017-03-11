@@ -23,7 +23,7 @@ public class Updater {
         status = (RadioButton) view;
     }
 
-    private CountDownTimer countDownTimer = new CountDownTimer(50000,100) {
+    private CountDownTimer countDownTimer = new CountDownTimer(10000,100) {
         @Override
         public void onTick(long l) {
             status.setChecked(MainActivity.error);

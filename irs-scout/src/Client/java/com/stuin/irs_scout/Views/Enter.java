@@ -6,7 +6,6 @@ import android.text.InputType;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
