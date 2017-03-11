@@ -13,6 +13,10 @@ def load_game_sheet():
     os.chdir(fpath)
     file = open('gametasks.csv')
     sheet = csv.reader(file)
+
+    ddd.add_many_cols("task_options", {'task_name': 'na',
+                                       'type': 'capability',
+                                       'option_name': 'na'})
     for row in sheet:
         if row[0] != 'actor':
             insert_game(row[0], row[1], row[2], row[3], row[4], row[5], row[8])
@@ -36,6 +40,7 @@ def insert_game(actor, task, claim, auto, teleop, finish, optionString):
             ddd.add_many_cols("task_options", {'task_name': task,
                                            'type': 'capability',
                                            'option_name': optionName})
+
 
 def insert_sched(event, season, level='qual'):
     engine = db.getdbengine()

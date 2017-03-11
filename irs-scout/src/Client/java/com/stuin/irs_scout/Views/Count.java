@@ -12,7 +12,6 @@ import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.MainActivity;
 import com.stuin.irs_scout.R;
-import com.stuin.irs_scout.Updater;
 
 /**
  * Created by Stuart on 2/11/2017.
@@ -69,18 +68,7 @@ public class Count extends Label {
 
     @Override
     protected void update(Measure measure, boolean send) {
-        this.measure = measure;
-
-        if(send) {
-            if(task.getFormat(measure.phase).contains("time")) {
-                Measure out = measure;
-                out.cycletime = out.successes;
-                out.successes = 0;
-                out.attempts = 0;
-                Updater.measures.add(out);
-            }
-            else Updater.measures.add(measure);
-        }
+        super.update(measure, send);
 
         //Set button text
         views.get(0).setText(task.success + ": " + measure.successes);
@@ -98,14 +86,14 @@ public class Count extends Label {
                         measure.attempts++;
                     }
                 } else if(miss != -1 && view == views.get(miss)) {
-                    if(measure.attempts < max) measure.attempts++;
+                    if(measure.attempts - measure.successes < max) measure.attempts++;
                 } else if(large && view == views.get(1)) {
                     if(measure.successes + 9 < max) {
                         measure.successes += 10;
                         measure.attempts += 10;
                     }
                 } else if(miss != -1 && large && view == views.get(3)) {
-                    if(measure.attempts + 9 < max) measure.attempts += 10;
+                    if(measure.attempts - measure.successes + 9 < max) measure.attempts += 10;
                 }
             } else {
                 countDownTimer.cancel();
@@ -163,7 +151,7 @@ public class Count extends Label {
                         measure.successes--;
                         measure.attempts--;
                     }
-                } else if(measure.attempts > 0) measure.attempts--;
+                } else if(measure.attempts - measure.successes > 0) measure.attempts--;
                 countDownTimer.start();
             }
             update(measure,false);

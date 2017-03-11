@@ -139,8 +139,8 @@ class TaskOptions(Base):
     task_name = Column(String)
     type = Column(String)
     option_name = Column(String)
-    __table_args__ = (UniqueConstraint('task_name', 'type', 'option_name'),
-                      )
+    __table_args__ = (UniqueConstraint('task_name', 'type', 'option_name'),)
+
 
 class Schedule(Base):
     __tablename__ = "schedules"

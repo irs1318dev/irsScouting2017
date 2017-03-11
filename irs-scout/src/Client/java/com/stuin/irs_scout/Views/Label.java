@@ -31,8 +31,7 @@ public class Label extends TextView {
         setTextSize(getResources().getDimension(R.dimen.text_norm));
         setText(task.success);
         setTextColor(getResources().getColor(R.color.colorText));
-        setGravity(Gravity.CENTER);
-        linearLayout.addView(this);
+        setGravity(Gravity.CENTER);        linearLayout.addView(this);
     }
 
     protected TextView part(String name) {
