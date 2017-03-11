@@ -47,11 +47,6 @@ class Scouting(object):
         return scouting.event.EventDal.list_events()
 
     @cherrypy.expose
-    def event(self, event):
-        scouting.event.EventDal.set_current_event(event)
-        return open("web/reset.html").read()
-
-    @cherrypy.expose
     def matches(self, event='na'):
         if event == 'na':
             event = scouting.event.EventDal.get_current_event()
@@ -118,12 +113,23 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchcurrent(self, match):
+        self.tablet('TestSystem:Reset')
         self.eventDal.set_current_match(match)
         return open("web/reset.html").read()
 
     @cherrypy.expose
-    def output(self):
-        scouting.export.ExportCSV.alltables()
+    def eventcurrent(self, event):
+        scouting.event.EventDal.set_current_event(event)
+        return open("web/reset.html").read()
+
+    @cherrypy.expose
+    def backup(self):
+
+        return open("web/reset.html").read()
+
+    @cherrypy.expose
+    def restore(self, path):
+
         return open("web/reset.html").read()
 
 if __name__ == '__main__':

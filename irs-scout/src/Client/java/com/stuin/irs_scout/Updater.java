@@ -54,7 +54,7 @@ public class Updater {
         try {
             for(Measure measure : measures) {
                 String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.phase;
-                if(!measure.capability.isEmpty()) s += "&capability=" + measure.capability;
+                if(!measure.capability.isEmpty() && !measure.capability.equals("0")) s += "&capability=" + measure.capability;
                 if(measure.successes != 0) s += "&success=" + measure.successes;
                 if(measure.attempts != 0) s += "&attempt=" + measure.attempts;
 
