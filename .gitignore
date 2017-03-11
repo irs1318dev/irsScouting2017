@@ -1,2 +1,3 @@
-auth.py
+**/auth.py
 .idea
+*.iml

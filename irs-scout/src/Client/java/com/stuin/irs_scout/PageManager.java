@@ -1,26 +1,29 @@
 package com.stuin.irs_scout;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Views.Page;
+import com.stuin.irs_scout.Views.TeamMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class PageManager extends LinearLayout {
-    private List<Page> pages = new ArrayList<>();
-    private int current = 0;
-    private Activity activity;
-    private MatchMaker matchMaker;
+    List<Page> pages = new ArrayList<>();
+    Updater updater;
 
-    PageManager(Activity activity) {
+    private int current = -1;
+    private Activity activity;
+    private LabelMaker labelMaker;
+
+    PageManager(Activity newActivity) {
+        super(newActivity);
         //Start Layout
-        super(activity);
-        this.activity = activity;
+        this.activity = newActivity;
+        labelMaker = new LabelMaker(this);
 
         //Setup centering
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
@@ -28,69 +31,90 @@ class PageManager extends LinearLayout {
         setGravity(Gravity.CENTER);
 
         //Download layout
-        class Generate extends Next {
+        class Layout extends Request {
             @Override
             public void run(List<String> s) {
-                generate(s);
+                labelMaker.pages(s);
+
+                class Tasks extends Request {
+                    @Override
+                    public void run(List<String> s) {
+                        pages = labelMaker.taskMake( s);
+
+                        //Get Match
+                        MatchMaker matchMaker;
+                        if(MainActivity.position.contains("Pit")) {
+                            matchMaker = new PitMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
+                            TeamMenu teamMenu = (TeamMenu) pages.get(0);
+                            teamMenu.pitMaker = (PitMaker) matchMaker;
+                        } else matchMaker = new MatchMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
+
+                        updater = new Updater(matchMaker, activity.findViewById(R.id.PageStatus));
+                    }
+                }
+                new Tasks().start("/gametasks");
             }
         }
-        new Request("/game",new Generate());
+        new Layout().start("/gamelayout");
     }
 
-    private void generate(List<String> s) {
-        //Generate pages
-        pages = new LabelMaker().pages(this, s);
+    void reset() {
+        //Set default phase
+        if(current != -1) pages.get(current).setVisibility(GONE);
 
-        //Set default page
+        current = 0;
         setPage();
-        if(pages.size() > 1) activity.findViewById(R.id.Next).setVisibility(VISIBLE);
 
-        //Get Match
-        matchMaker = new MatchMaker(pages, activity.findViewById(R.id.Status));
+        activity.findViewById(R.id.Previous).setVisibility(GONE);
+        if(pages.size() > 1) activity.findViewById(R.id.Next).setVisibility(VISIBLE);
     }
 
     Page makePage(String name) {
-        //Create page object
+        //Create phase object
         Page page = new Page(getContext(), name);
+        if(name.equals("pit")) page = new TeamMenu(getContext());
+
         page.setVisibility(GONE);
         addView(page);
         return page;
     }
 
     void nextPage(View view) {
-        //Show next page
+        //Show next phase
         pages.get(current).setVisibility(GONE);
-        current++;
 
         //Set shown buttons
         activity.findViewById(R.id.Previous).setVisibility(VISIBLE);
-        if(current + 1 == pages.size()) view.setVisibility(GONE);
+        if(current + 2 == pages.size()) view.setVisibility(GONE);
 
+        current++;
         setPage();
     }
 
     void lastPage(View view) {
-        //Hide old page
+        //Hide old phase
         pages.get(current).setVisibility(GONE);
 
         //Set shown buttons
         activity.findViewById(R.id.Next).setVisibility(VISIBLE);
         if(current == 1) view.setVisibility(GONE);
 
-        //Set new page
+        //Set new phase
         current--;
         setPage();
     }
 
     private void setPage() {
-        //Show new page
+        //Show new phase
         pages.get(current).setVisibility(VISIBLE);
 
-        //Set page title
+        //Set phase title
+        String name = pages.get(current).name;
+        name = name.substring(0,1).toUpperCase() + name.substring(1);
         TextView textView = (TextView) activity.findViewById(R.id.PageStatus);
-        textView.setText(pages.get(current).name);
+        textView.setText(MainActivity.position + ": " + name);
 
         //Notify server
-
+        if(updater != null) updater.setStatus();
     }
 }

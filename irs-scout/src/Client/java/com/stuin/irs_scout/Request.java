@@ -1,6 +1,7 @@
 package com.stuin.irs_scout;
 
 import android.os.AsyncTask;
+import android.widget.RadioButton;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -15,14 +16,16 @@ import java.util.Scanner;
 /**
  * Created by Stuart on 2/11/2017.
  */
-class Request {
-    private Next next;
+public class Request {
     private static boolean running;
 
-    Request(String query, Next next) {
-        this.next = next;
+    public void start(String query) {
         if(!running) new serverRequest().execute(query, "http://" + MainActivity.address + ":8080");
         running = true;
+    }
+
+    public void run(List<String> s) {
+
     }
 
     private class serverRequest extends AsyncTask<String, String, List<String>> {
@@ -50,6 +53,8 @@ class Request {
                     return out;
                 } catch(Exception e) {
                     //No connection
+                    e.toString();
+                    MainActivity.error = true;
                 }
             }
             return out;
@@ -58,7 +63,9 @@ class Request {
         @Override
         protected void onPostExecute(List<String> strings) {
             running = false;
-            if(!strings.isEmpty()) next.run(strings);
+            MainActivity.error = false;
+            if(!strings.isEmpty()) run(strings);
+            else MainActivity.error = true;
         }
     }
 }

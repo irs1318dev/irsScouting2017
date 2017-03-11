@@ -1,14 +1,25 @@
 package com.stuin.irs_scout.Views;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.widget.*;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.R;
 
 public class Switcher extends Label {
-    public Switcher(Context context, Task task) {
-        super(context, task);
+    public Switcher(Context context, Task task, String position) {
+        super(context, task, position);
+    }
+
+    @Override
+    void create(LinearLayout column) {
+        linearLayout = new LinearLayout(getContext());
+        linearLayout.setGravity(Gravity.CENTER);
+        column.addView(linearLayout);
+
+        part(task.success);
+        if(!task.miss.isEmpty()) part(task.miss);
     }
 
     @Override
@@ -18,21 +29,22 @@ public class Switcher extends Label {
         checkBox.setText(name);
         checkBox.setTextSize(getResources().getDimension(R.dimen.text_norm));
         checkBox.setOnCheckedChangeListener(changeListener);
+        views.add(checkBox);
         linearLayout.addView(checkBox);
         return checkBox;
     }
 
     @Override
-    protected void update(Measure measure) {
-        super.update(measure);
+    protected void update(Measure measure, boolean send) {
+        super.update(measure, send);
 
-        //Match checkboxes to value
+        //Match checkboxes to capability
         CheckBox checkBox = (CheckBox) views.get(0);
-        checkBox.setChecked(measure.success == 1);
+        checkBox.setChecked(measure.successes == 1);
 
         if(!task.miss.isEmpty()) {
             checkBox = (CheckBox) views.get(1);
-            checkBox.setChecked(measure.miss == 1);
+            checkBox.setChecked(measure.attempts == 1);
         }
     }
 
@@ -41,13 +53,14 @@ public class Switcher extends Label {
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
             //Update measure by boolean
             if(views.indexOf(compoundButton) == 0) {
-                if(b) measure.success = 1;
-                else measure.success = 0;
+                if(b) measure.successes = 1;
+                else measure.successes = 0;
             } else {
-                if(b) measure.miss = 1;
-                else measure.miss = 0;
+                if(b) measure.attempts = 1;
+                else measure.attempts = 0;
             }
-            update(measure);
+
+            update(measure, true);
         }
     };
 }

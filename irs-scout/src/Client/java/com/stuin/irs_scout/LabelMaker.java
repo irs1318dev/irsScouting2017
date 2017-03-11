@@ -2,58 +2,102 @@ package com.stuin.irs_scout;
 
 import android.content.Context;
 import com.google.gson.Gson;
+import com.stuin.irs_scout.Data.Section;
 import com.stuin.irs_scout.Data.Task;
-import com.stuin.irs_scout.Views.Counter;
-import com.stuin.irs_scout.Views.Label;
-import com.stuin.irs_scout.Views.Page;
-import com.stuin.irs_scout.Views.Switcher;
+import com.stuin.irs_scout.Views.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Stuart on 2/12/2017.
  */
 class LabelMaker {
-    List<Page> pages(PageManager pageManager, List<String> layout) {
+    private List<Section> sections = new ArrayList<>();
+    PageManager pageManager;
+    private Map<String, Page> pageList = new HashMap<>();
+
+    LabelMaker(PageManager pageManager) {
+        this.pageManager = pageManager;
+    }
+
+    void pages(List<String> layout) {
         //Prepare variables
-        List<Page> pageList = new ArrayList<>();
-        List<Task> tasks = new ArrayList<>();
-        int current = -1;
+        String current = "";
         Gson gson = new Gson();
 
         //Translate layout file
-        for(String s : layout) tasks.add(gson.fromJson(s, Task.class));
+        for(String s : layout) {
+            Section section = gson.fromJson(s, Section.class);
+            if(usePage(section.observer, MainActivity.position)) sections.add(section);
+        }
 
         //Build pages
-        for(Task task : tasks) if(usePage(task.actor, MainActivity.position)) {
-            //Create each page
-            if(current == -1 || !pageList.get(current).name.equals(task.page)) {
-                pageList.add(pageManager.makePage(task.page));
-                current++;
+        for(Section section : sections)  {
+            //Create each phase
+            if(current.isEmpty() || !pageList.get(current).name.equals(section.phase)) {
+                pageList.put(section.phase, pageManager.makePage(section.phase));
+                current = section.phase;
             }
-            //Add task to page
-            pageList.get(current).add(makeLabel(task, pageManager.getContext()));
         }
-        return pageList;
     }
 
-    private boolean usePage(String actor, String position) {
-        //Check if page is to be used
-        if(actor.equals("Robot") && !position.contains("Pilot")) return true;
-        if(actor.equals("Final") && position.charAt(position.length() - 1) == '1') return true;
-        if(actor.equals("Pilot") && position.contains("Pilot")) return true;
+    List<Page> taskMake(List<String> strings) {
+        Map<String, Task> tasks = new HashMap<>();
+        Gson gson = new Gson();
+        Context context = pageManager.getContext();
+        List<Page> pages = new ArrayList<>();
+
+        for(String s : strings) {
+            Task task = gson.fromJson(s, Task.class);
+            tasks.put(task.task, task);
+        }
+
+        for(Section s : sections) {
+            if(s.newpart.equals("true")) pageList.get(s.phase).newCol();
+            if(s.position.isEmpty()) s.position = MainActivity.position;
+
+            Label label = new Label(context, new Task(s.category), s.position);
+            label.sectionLabel = true;
+            pageList.get(s.phase).add(label);
+
+            for(String t : s.tasks) if(tasks.containsKey(t)) {
+                pageList.get(s.phase).add(makeLabel(tasks.get(t), context, s.phase, s.position));
+            }
+
+            if(!pages.contains(pageList.get(s.phase))) pages.add(pageList.get(s.phase));
+        }
+
+        return pages;
+    }
+
+    private boolean usePage(String observer, String position) {
+        //Check if phase is to be used
+        if(observer.equals("match") && !position.contains("Fuel") && !position.contains("Pit")) return true;
+        if(observer.equals("boiler") && position.contains("Fuel")) return true;
+        if(observer.equals("pit") && position.contains("Pit")) return true;
         return false;
     }
 
-    private Label makeLabel(Task task, Context context) {
+    private Label makeLabel(Task task, Context context, String phase, String position) {
+        String format = task.getFormat(phase);
+
         //Choose format to create
-        switch(task.format.charAt(0)) {
-            case 'S':
-                return new Switcher(context, task);
-            case 'C':
-                return new Counter(context, task);
+
+        switch(format.charAt(0)) {
+            case 'b':
+                return new Switcher(context, task, position);
+            case 'c':
+                return new Count(context, task, position);
+            case 'e':
+                return new Choice(context, task, position);
+            case 'p':
+                return new Enter(context, task, position);
+            case 'l':
+                return new Label(context, task, position);
         }
-        return new Label(context, task);
+        return new Label(context, new Task(), position);
     }
 }
