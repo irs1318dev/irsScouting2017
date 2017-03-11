@@ -48,11 +48,12 @@ class Scouting(object):
 
     @cherrypy.expose
     def event(self, event):
-        return scouting.event.EventDal.set_current_event(event)
+        scouting.event.EventDal.set_current_event(event)
+        return open("web/reset.html").read()
 
     @cherrypy.expose
     def matches(self, event='na'):
-        if (event == 'na'):
+        if event == 'na':
             event = scouting.event.EventDal.get_current_event()
 
         return scouting.event.EventDal.list_matches(event)
