@@ -185,6 +185,13 @@ class Status(Base):
     match = Column('match', String)
 
 
+class Match_Result(Base):
+    __tablename__ = "match_results"
+
+    id = Column(Integer, primary_key=True)
+
+
+
 def create_tables():
     engine = getdbengine()
     Base.metadata.create_all(engine)
