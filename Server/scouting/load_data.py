@@ -61,7 +61,7 @@ def insert_sched(event, season, level='qual'):
             data.add_name("dates", "name", date)
 
 
-def insert_MatchResults(event, season, matchNumber):
+def insert_MatchResults(event, season, matchNumber, tournamentLevel):
     engine = db.getdbengine()
     conn = engine.connect()
     event = event.lower()
