@@ -14,8 +14,4 @@
     <string name="scout_7">R Fuel</string>
     <string name="scout_8">B Fuel</string>
     <string name="scout_9">Pit</string>
-
-
-    <dimen name="text_large">50sp</dimen>
-    <dimen name="text_norm">20sp</dimen>
 </resources>

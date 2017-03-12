@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_large">50sp</dimen>
+    <dimen name="text_norm">20sp</dimen>
+
+    <style name="style_base">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="style_large" parent="style_base">
+        <item name="android:textSize">@dimen/text_large</item>
+        <item name="android:textColor">@color/colorText</item>
+    </style>
+
+    <style name="style_scout" parent="style_base">
+        <item name="android:textSize">@dimen/text_large</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:onClick">position</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+</resources>
