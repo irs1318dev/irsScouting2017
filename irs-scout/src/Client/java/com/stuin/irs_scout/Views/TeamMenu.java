@@ -18,6 +18,7 @@ import java.util.Map;
  */
 public class TeamMenu extends Page {
     private Spinner spinner;
+    private boolean set = false;
     public PitMaker pitMaker;
 
     public TeamMenu(Context context) {
@@ -31,9 +32,12 @@ public class TeamMenu extends Page {
     public void setMeasures(Map<String, Measure> measures, Match match) {
         PitMatch pitMatch = (PitMatch) match;
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, Arrays.asList(pitMatch.teams));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(dataAdapter);
+        if(!set) {
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, Arrays.asList(pitMatch.teams));
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(dataAdapter);
+            set = true;
+        }
     }
 
     private Spinner.OnItemSelectedListener selectedListener = new Spinner.OnItemSelectedListener() {

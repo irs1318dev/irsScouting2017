@@ -60,10 +60,12 @@ def add_many_cols(table, data) :
 
 
 def insert_data():
+    add_name("levels", "name", "na")
     add_name("levels", "name", "qual")
     add_name("levels", "name", "playoff")
 
     add_many_names("matches", "name", 150, "{0:0>3}-q")
+    add_name("matches", "name", "na")
     add_name("matches", "name", "q1.1")
     add_name("matches", "name", "q1.2")
     add_name("matches", "name", "q1.3")
@@ -82,7 +84,6 @@ def insert_data():
     add_name("matches", "name", "f1")
     add_name("matches", "name", "f2")
     add_name("matches", "name", "f3")
-    add_name("matches", "name", "na")
 
     add_name("alliances", "name", "na")
     add_name("alliances", "name", "blue")

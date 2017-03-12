@@ -37,7 +37,7 @@ public class Updater {
             class Status extends Request {
                 @Override
                 public void run(List<String> s) {
-                    if(!s.get(0).equals(String.valueOf(matchMaker.match.match))) matchMaker.newMatch();
+                    if(!s.get(0).equals(matchMaker.match.match) && !matchMaker.match.match.equals("na")) matchMaker.newMatch();
                 }
             }
             new Status().start(s);
@@ -57,6 +57,8 @@ public class Updater {
                 if(!measure.capability.isEmpty() && !measure.capability.equals("0")) s += "&capability=" + measure.capability;
                 if(measure.successes != 0) s += "&success=" + measure.successes;
                 if(measure.attempts != 0) s += "&attempt=" + measure.attempts;
+
+                matchMaker.update(measure);
 
                 if(!s.equals(last)) {
                     class Remove extends Request {

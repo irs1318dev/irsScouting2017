@@ -74,20 +74,16 @@ class Scouting(object):
         return 'matchteam with match and team'
 
     @cherrypy.expose
-    def matchteamtasks(self, team='0', match=-1):
+    def matchteamtasks(self, team='error', match=-1):
         if match == -1:
             match = self.eventDal.get_current_match()
-        return scouting.match.MatchDal.matchteamtasks(match, team) + '{}'
-        # return '{}'
+        return scouting.match.MatchDal.matchteamtasks(match, team) + '{end}'
 
     # Get data from match and team
 
     @cherrypy.expose
     def matchteamtask(self, match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
-        try:
-            scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
-        except KeyError:
-            print("No key found")
+        scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
         return 'hi'
 
     @cherrypy.expose
