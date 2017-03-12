@@ -42,6 +42,19 @@ class EventDal(object):
         return match_details
 
     @staticmethod
+    def match_details_station(event, match, alliance, station):
+        match_details = {}
+        sql = text("SELECT * FROM schedules WHERE "
+                   "match = :match "
+                   " AND event = :event "
+                   " AND alliance = :alliance "
+                   " AND station = :station ")
+        results = conn.execute(sql, event=event, match=match, station=station, alliance=alliance)
+        for row in results:
+            match_details = dict(row)
+        return match_details
+
+    @staticmethod
     def set_current_event(event):
         event = event.lower()
 
