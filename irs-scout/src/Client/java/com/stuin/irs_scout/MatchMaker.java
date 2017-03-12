@@ -17,7 +17,7 @@ class MatchMaker {
 
     private PageManager pageManager;
     private List<Page> pages;
-    private Queue<String> nextTeams;
+    protected Queue<String> nextTeams;
     protected TextView status;
     protected List<Measure> data;
 
@@ -46,8 +46,8 @@ class MatchMaker {
                     public void run(List<String> measures) {
                         Gson gson = new Gson();
                         for(String s : measures) if(!s.contains("end")) data.add(gson.fromJson(s, Measure.class));
-                        if(nextTeams != null) new Set().start(nextTeams.poll());
-                        setMatch();
+                        if(nextTeams != null && !nextTeams.isEmpty()) new Set().start(nextTeams.poll());
+                        else setMatch();
                     }
                 }
                 if(!MainActivity.position.contains("Fuel")) new Set().start("/matchteamtasks?team=" + match.getTeam(MainActivity.position));
@@ -71,5 +71,14 @@ class MatchMaker {
             }
             p.setMeasures(pageData, match);
         }
+    }
+
+    public void update(Measure measure) {
+        for(int i = 0; i < data.size(); i++) {
+            Measure m = data.get(i);
+            if(measure.task.equals(m.task) && measure.team.equals(m.team) && measure.phase.equals(m.phase)) data.set(i, measure);
+            return;
+        }
+        data.add(measure);
     }
 }

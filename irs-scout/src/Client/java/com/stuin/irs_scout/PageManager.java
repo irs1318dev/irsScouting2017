@@ -43,7 +43,7 @@ class PageManager extends LinearLayout {
 
                         //Get Match
                         MatchMaker matchMaker;
-                        if(MainActivity.position.contains("Pit")) {
+                        if(MainActivity.position.contains("it")) {
                             matchMaker = new PitMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
                             TeamMenu teamMenu = (TeamMenu) pages.get(0);
                             teamMenu.pitMaker = (PitMaker) matchMaker;

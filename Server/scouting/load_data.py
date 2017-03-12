@@ -48,6 +48,13 @@ def insert_sched(event, season, level='qual'):
     event = event.lower()
     sched_json = api.getSched(event.upper(), season, level)
     sched = json.loads(sched_json)['Schedule']
+
+    select = text(
+        "INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
+        "VALUES (:event,'na','na','na','na','na','na'); "
+    )
+    conn.execute(select, event=event)
+
     for mch in sched:
         match = "{0:0>3}-q".format(mch['matchNumber'])
         date = mch['startTime']
