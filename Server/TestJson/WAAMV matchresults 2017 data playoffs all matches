@@ -1,0 +1,769 @@
+{
+  "Matches": [
+    {
+      "actualStartTime": "2017-03-05T13:57:16.1866667",
+      "description": "Quarterfinal 1",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 1,
+      "scoreRedFinal": 210,
+      "scoreRedFoul": 0,
+      "scoreRedAuto": 70,
+      "scoreBlueFinal": 270,
+      "scoreBlueFoul": 5,
+      "scoreBlueAuto": 75,
+      "postResultTime": "2017-03-05T14:00:36.8133333",
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 1258,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 3588,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T14:04:28.12",
+      "description": "Quarterfinal 2",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 2,
+      "scoreRedFinal": 305,
+      "scoreRedFoul": 0,
+      "scoreRedAuto": 75,
+      "scoreBlueFinal": 255,
+      "scoreBlueFoul": 0,
+      "scoreBlueAuto": 75,
+      "postResultTime": "2017-03-05T14:07:31.78",
+      "Teams": [
+        {
+          "teamNumber": 5495,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 360,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 1983,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T14:11:35.7566667",
+      "description": "Quarterfinal 3",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 3,
+      "scoreRedFinal": 255,
+      "scoreRedFoul": 0,
+      "scoreRedAuto": 75,
+      "scoreBlueFinal": 305,
+      "scoreBlueFoul": 0,
+      "scoreBlueAuto": 75,
+      "postResultTime": "2017-03-05T14:14:31.8733333",
+      "Teams": [
+        {
+          "teamNumber": 3786,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 4681,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T14:24:04.8033333",
+      "description": "Quarterfinal 4",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 4,
+      "scoreRedFinal": 145,
+      "scoreRedFoul": 0,
+      "scoreRedAuto": 15,
+      "scoreBlueFinal": 285,
+      "scoreBlueFoul": 75,
+      "scoreBlueAuto": 70,
+      "postResultTime": "2017-03-05T14:27:04.2566667",
+      "Teams": [
+        {
+          "teamNumber": 4131,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4089,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 1899,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T14:30:15.77",
+      "description": "Quarterfinal 5",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 5,
+      "scoreRedFinal": 261,
+      "scoreRedFoul": 25,
+      "scoreRedAuto": 80,
+      "scoreBlueFinal": 225,
+      "scoreBlueFoul": 10,
+      "scoreBlueAuto": 75,
+      "postResultTime": "2017-03-05T14:34:18.7533333",
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 1258,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 3588,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T14:38:03.91",
+      "description": "Quarterfinal 6",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 6,
+      "scoreRedFinal": 270,
+      "scoreRedFoul": 25,
+      "scoreRedAuto": 15,
+      "scoreBlueFinal": 245,
+      "scoreBlueFoul": 0,
+      "scoreBlueAuto": 15,
+      "postResultTime": "2017-03-05T14:42:46.3133333",
+      "Teams": [
+        {
+          "teamNumber": 5495,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 360,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 1983,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T14:44:29.5366667",
+      "description": "Quarterfinal 7",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 7,
+      "scoreRedFinal": 218,
+      "scoreRedFoul": 0,
+      "scoreRedAuto": 75,
+      "scoreBlueFinal": 330,
+      "scoreBlueFoul": 25,
+      "scoreBlueAuto": 75,
+      "postResultTime": "2017-03-05T14:47:19.17",
+      "Teams": [
+        {
+          "teamNumber": 3786,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 4681,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T14:51:51.8533333",
+      "description": "Quarterfinal 8",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 8,
+      "scoreRedFinal": 205,
+      "scoreRedFoul": 150,
+      "scoreRedAuto": 15,
+      "scoreBlueFinal": 190,
+      "scoreBlueFoul": 0,
+      "scoreBlueAuto": 10,
+      "postResultTime": "2017-03-05T14:56:26.2433333",
+      "Teams": [
+        {
+          "teamNumber": 4131,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4089,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 1899,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T15:01:53.8733333",
+      "description": "Tiebreaker 1",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 9,
+      "scoreRedFinal": 271,
+      "scoreRedFoul": 25,
+      "scoreRedAuto": 83,
+      "scoreBlueFinal": 265,
+      "scoreBlueFoul": 0,
+      "scoreBlueAuto": 75,
+      "postResultTime": "2017-03-05T15:04:49.08",
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 1258,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 3588,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T15:09:41.4",
+      "description": "Tiebreaker 4",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 12,
+      "scoreRedFinal": 190,
+      "scoreRedFoul": 0,
+      "scoreRedAuto": 10,
+      "scoreBlueFinal": 205,
+      "scoreBlueFoul": 0,
+      "scoreBlueAuto": 65,
+      "postResultTime": "2017-03-05T15:12:36.8866667",
+      "Teams": [
+        {
+          "teamNumber": 4131,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4089,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 1899,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T15:24:39.3033333",
+      "description": "Semifinal 1",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 13,
+      "scoreRedFinal": 335,
+      "scoreRedFoul": 0,
+      "scoreRedAuto": 81,
+      "scoreBlueFinal": 250,
+      "scoreBlueFoul": 0,
+      "scoreBlueAuto": 70,
+      "postResultTime": "2017-03-05T15:27:40.8266667",
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5495,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T15:33:34.8633333",
+      "description": "Semifinal 2",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 14,
+      "scoreRedFinal": 305,
+      "scoreRedFoul": 0,
+      "scoreRedAuto": 75,
+      "scoreBlueFinal": 160,
+      "scoreBlueFoul": 0,
+      "scoreBlueAuto": 70,
+      "postResultTime": "2017-03-05T15:37:01.1733333",
+      "Teams": [
+        {
+          "teamNumber": 4681,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4089,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 1899,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T15:45:54.8033333",
+      "description": "Semifinal 3",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 15,
+      "scoreRedFinal": 147,
+      "scoreRedFoul": 5,
+      "scoreRedAuto": 12,
+      "scoreBlueFinal": 240,
+      "scoreBlueFoul": 25,
+      "scoreBlueAuto": 75,
+      "postResultTime": "2017-03-05T15:48:53.89",
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5495,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T15:54:04.2866667",
+      "description": "Semifinal 4",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 16,
+      "scoreRedFinal": 310,
+      "scoreRedFoul": 5,
+      "scoreRedAuto": 75,
+      "scoreBlueFinal": 255,
+      "scoreBlueFoul": 0,
+      "scoreBlueAuto": 65,
+      "postResultTime": "2017-03-05T15:57:36.85",
+      "Teams": [
+        {
+          "teamNumber": 4681,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4089,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 1899,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T16:06:27.55",
+      "description": "Tiebreaker 1",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 17,
+      "scoreRedFinal": 240,
+      "scoreRedFoul": 0,
+      "scoreRedAuto": 10,
+      "scoreBlueFinal": 140,
+      "scoreBlueFoul": 30,
+      "scoreBlueAuto": 70,
+      "postResultTime": "2017-03-05T16:09:16.97",
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5495,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T16:19:49.2433333",
+      "description": "Final 1",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 19,
+      "scoreRedFinal": 296,
+      "scoreRedFoul": 15,
+      "scoreRedAuto": 11,
+      "scoreBlueFinal": 280,
+      "scoreBlueFoul": 75,
+      "scoreBlueAuto": 75,
+      "postResultTime": "2017-03-05T16:23:41.4266667",
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 4681,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    },
+    {
+      "actualStartTime": "2017-03-05T16:35:28.7033333",
+      "description": "Final 2",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 20,
+      "scoreRedFinal": 330,
+      "scoreRedFoul": 25,
+      "scoreRedAuto": 75,
+      "scoreBlueFinal": 255,
+      "scoreBlueFoul": 0,
+      "scoreBlueAuto": 75,
+      "postResultTime": "2017-03-05T16:38:17.63",
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 4681,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    }
+  ]
+}

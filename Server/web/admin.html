@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table, th, td {
+            border: 1px solid silver;
+			color: #f9b234;
+        }
+		body, submit, input {
+			background-color: #662382;
+		}
+		h1, h3, a, submit, input {
+			color: #f9b234;
+		}
+		fieldset {
+			display: inline-block;
+		}
+    </style>
+	<meta http-equiv="refresh" content="20;"/>
+</head>
+
+<body>
+<h1>IRS Scouting Director</h1>
+
+<h3>Current Event: {Event}</h3>
+<h3>Current Match: {Match}</h3>
+
+<fieldset>
+	<script type="text/javascript">
+		function setMatch() {
+			var match = document.getElementById('match').value;
+			window.location = "/matchcurrent?match=" + match;
+		}
+	</script>
+	<input type="text" id="match" name="Match Number" value="{Match}"/>
+	<input type="submit" value="Set Match" onclick="setMatch();"/>
+</fieldset>
+
+<h3>Tablets: </h3>
+<table>
+    <tr>
+        <th>Red</th>
+        <td>{Red1}</td>
+        <td>{Red2}</td>
+        <td>{Red3}</td>
+        <td>{RFuel}</td>
+    </tr>
+    <tr>
+        <th>Blue</th>
+        <td>{Blue1}</td>
+        <td>{Blue2}</td>
+        <td>{Blue3}</td>
+        <td>{BFuel}</td>
+    </tr>
+</table>
+
+<h3><a href="/output" color="#f9b234">Output Data</a></h3>
+
+
+</body>
+</html>

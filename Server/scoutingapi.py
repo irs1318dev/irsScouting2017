@@ -1,10 +1,10 @@
 import cherrypy
-import Game
 import scouting.tasks
 import scouting.tablet
 import scouting.sections
 import scouting.match
 import scouting.event
+import scouting.export
 
 
 class Scouting(object):
@@ -16,7 +16,11 @@ class Scouting(object):
 
     @cherrypy.expose
     def index(self):
-        return 'nothing to see here'
+        out = open("web/admin.html").read()
+        out = out.replace('{Match}', self.eventDal.get_current_match())
+        out = out.replace('{Event}', self.eventDal.get_current_event())
+        out = self.alltablets.inserttablets(out)
+        return out
 
     @cherrypy.expose
     def games(self):
@@ -35,29 +39,33 @@ class Scouting(object):
         return 'gameimport'
 
     @cherrypy.expose
+    def status(self):
+        return scouting.event.EventDal.get_current_status()
+
+    @cherrypy.expose
     def events(self):
-        return 'event'
+        return scouting.event.EventDal.list_events()
 
     @cherrypy.expose
-    def event(self, event):
-        return 'event with id'
+    def matches(self, event='na'):
+        if event == 'na':
+            event = scouting.event.EventDal.get_current_event()
 
-    @cherrypy.expose
-    def matches(self):
-        return 'matches'
+        return scouting.event.EventDal.list_matches(event)
 
     #        return matchApi.matches()
 
     @cherrypy.expose
     def match(self, match):
-        return 'match with id'
+        return scouting.event.EventDal.set_current_match(match)
 
     @cherrypy.expose
     def matchteams(self, match=-1):
         if match == -1:
-            match = '001-q'
-        # return self.eventDal.match_teams(self.eventDal.getCurrentEvent(), self.eventDal.getCurrentMatch())
-        return Game.HelloWorld.match(match)
+            match = self.eventDal.get_current_match()
+        if match == 'na':
+            return scouting.match.MatchDal.pitteams()
+        return scouting.match.MatchDal.matchteams(match)
 
     # All teams in match
 
@@ -66,17 +74,16 @@ class Scouting(object):
         return 'matchteam with match and team'
 
     @cherrypy.expose
-    def matchteamtasks(self, team, match=-1, phase='claim'):
+    def matchteamtasks(self, team='error', match=-1):
         if match == -1:
             match = self.eventDal.get_current_match()
-        # return scouting.match.MatchDal.matchteamtasks(match, team, phase)
-        return '{}'
+        return scouting.match.MatchDal.matchteamtasks(match, team) + '{end}'
 
     # Get data from match and team
 
     @cherrypy.expose
     def matchteamtask(self, match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
-        scouting.match.MatchDal.matchteamtask(match, team, task, phase, capability, attempt, success, cycle_time)
+        scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
         return 'hi'
 
     @cherrypy.expose
@@ -88,11 +95,11 @@ class Scouting(object):
         return 'dimension'
 
     @cherrypy.expose
-    def tablet(self, status):
-        newtablet = scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1])
+    def tablet(self, status, id=-1):
+        newtablet = scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1], id)
 
         if scouting.tablet.TabletList.settablet(self.alltablets, newtablet):
-            scouting.event.EventDal.set_current_match()
+            scouting.event.EventDal.set_next_match(self.eventDal.get_current_match())
 
         return self.eventDal.get_current_match()
 
@@ -102,9 +109,24 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchcurrent(self, match):
+        self.tablet('TestSystem:Reset')
         self.eventDal.set_current_match(match)
-        return 'set match'
+        return open("web/reset.html").read()
 
+    @cherrypy.expose
+    def eventcurrent(self, event):
+        scouting.event.EventDal.set_current_event(event)
+        return open("web/reset.html").read()
+
+    @cherrypy.expose
+    def backup(self):
+
+        return open("web/reset.html").read()
+
+    @cherrypy.expose
+    def restore(self, path):
+
+        return open("web/reset.html").read()
 
 if __name__ == '__main__':
     cherrypy.config.update(

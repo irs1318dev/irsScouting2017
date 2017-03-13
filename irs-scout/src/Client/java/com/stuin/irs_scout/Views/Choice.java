@@ -14,6 +14,7 @@ import com.stuin.irs_scout.R;
 public class Choice extends Label {
     private RadioGroup radioGroup;
     private String[] choices;
+    private boolean locked = true;
 
     public Choice(Context context, Task task, String position) {
         super(context, task, position);
@@ -49,18 +50,21 @@ public class Choice extends Label {
         super.update(measure, send);
 
         CompoundButton radioButton;
+        locked = true;
 
         for(int i = 0; i < choices.length; i++) {
             radioButton = (CompoundButton) views.get(i);
-            radioButton.setChecked(choices[i].equals(measure.capability));
+            radioButton.setChecked(choices[i].toLowerCase().equals(measure.capability));
         }
+
+        locked = false;
     }
 
     private RadioButton.OnCheckedChangeListener successListener = new RadioButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton radioButton, boolean b) {
-            if(b) {
-                measure.capability = radioButton.getText().toString();
+            if(b && !locked) {
+                measure.capability = radioButton.getText().toString().toLowerCase();
 
                 update(measure, true);
             }

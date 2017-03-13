@@ -1,0 +1,49 @@
+{
+  "Matches": [
+    {
+      "actualStartTime": "2017-03-05T14:44:29.5366667",
+      "description": "Quarterfinal 7",
+      "tournamentLevel": "Playoff",
+      "matchNumber": 7,
+      "scoreRedFinal": 218,
+      "scoreRedFoul": 0,
+      "scoreRedAuto": 75,
+      "scoreBlueFinal": 330,
+      "scoreBlueFoul": 25,
+      "scoreBlueAuto": 75,
+      "postResultTime": "2017-03-05T14:47:19.17",
+      "Teams": [
+        {
+          "teamNumber": 3786,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 4681,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    }
+  ]
+}

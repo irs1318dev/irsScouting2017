@@ -7,10 +7,7 @@ import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Views.Page;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Stuart on 2/14/2017.
@@ -19,13 +16,12 @@ class MatchMaker {
     Match match = new Match();
 
     private PageManager pageManager;
-    private List<Page> pages;
-    protected TextView status;
+    Queue<String> nextTeams;
+    TextView status;
     protected List<Measure> data;
 
 
     MatchMaker(PageManager pageManager, View view) {
-        this.pages = pageManager.pages;
         this.pageManager = pageManager;
         status = (TextView) view;
         newMatch();
@@ -36,7 +32,7 @@ class MatchMaker {
             @Override
             public void run(List<String> s) {
                 match = new Gson().fromJson(s.get(0), Match.class);
-                if(MainActivity.position.charAt(0) != match.alliance.charAt(0)) match = new Gson().fromJson(s.get(1), Match.class);
+                if(MainActivity.position.toLowerCase().charAt(0) != match.alliance.charAt(0)) match = new Gson().fromJson(s.get(1), Match.class);
 
                 String title = "Match: " + match.match;
                 if(!MainActivity.position.contains("Fuel")) title += " Team: " + match.getTeam(MainActivity.position);
@@ -48,21 +44,42 @@ class MatchMaker {
                     public void run(List<String> measures) {
                         Gson gson = new Gson();
                         for(String s : measures) if(!s.contains("end")) data.add(gson.fromJson(s, Measure.class));
-                        setMatch();
+                        if(nextTeams != null && !nextTeams.isEmpty()) new Set().start(nextTeams.poll());
+                        else setMatch();
                     }
                 }
-                new Set().start("/matchteamtasks?team=" + match.getTeam(MainActivity.position));
+                if(!MainActivity.position.contains("Fuel")) new Set().start("/matchteamtasks?team=" + match.getTeam(MainActivity.position));
+                else {
+                    new Set().start("/matchteamtasks?team=" + match.getTeam("1"));
+                    nextTeams = new ArrayDeque<>();
+                    nextTeams.add("/matchteamtasks?team=" + match.getTeam("2"));
+                    nextTeams.add("/matchteamtasks?team=" + match.getTeam("3"));
+                }
             }
         }
         new Data().start("/matchteams");
     }
 
-    protected void setMatch() {
+    void setMatch() {
         pageManager.reset();
-        for(Page p : pages) {
+        for(int i = 0; i < pageManager.getChildCount(); i++) {
             Map<String, Measure> pageData = new HashMap<>();
-            for(Measure m : data) if(m.phase.equals(p.name)) pageData.put(m.task, m);
+            Page p = (Page) pageManager.getChildAt(i);
+            for(Measure m : data) {
+                if(m.phase.equals(p.name)) pageData.put(m.task + ':' + m.team, m);
+            }
             p.setMeasures(pageData, match);
         }
+    }
+
+    void update(Measure measure) {
+        for(int i = 0; i < data.size(); i++) {
+            Measure m = data.get(i);
+            if(measure.task.equals(m.task) && measure.team.equals(m.team) && measure.phase.equals(m.phase)) {
+                data.set(i, measure);
+                return;
+            }
+        }
+        data.add(measure);
     }
 }

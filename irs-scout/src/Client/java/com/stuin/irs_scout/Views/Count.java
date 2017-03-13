@@ -21,7 +21,7 @@ public class Count extends Label {
     private boolean missing;
     private boolean large = false;
     private int miss = -1;
-    private int max = 18;
+    private int max = 30;
     private GridLayout gridLayout;
 
     public Count(Context context, Task task, String position) {
@@ -30,7 +30,7 @@ public class Count extends Label {
 
         if(MainActivity.position.contains("Fuel")) large = true;
         if(large) {
-            max = 100;
+            max = 300;
             if(miss != -1) miss = 2;
         }
     }
@@ -71,8 +71,8 @@ public class Count extends Label {
         super.update(measure, send);
 
         //Set button text
-        views.get(0).setText(task.success + ": " + measure.success);
-        if(miss != -1) views.get(miss).setText(task.miss + ": " + (measure.attempt - measure.success));
+        views.get(0).setText(task.success + ": " + measure.successes);
+        if(miss != -1) views.get(miss).setText(task.miss + ": " + (measure.attempts - measure.successes));
     }
 
     private View.OnClickListener clickListener = new OnClickListener() {
@@ -81,19 +81,19 @@ public class Count extends Label {
             //Add to values
             if(!drop) {
                 if(view == views.get(0)) {
-                    if(measure.success < max) {
-                        measure.success++;
-                        measure.attempt++;
+                    if(measure.successes < max) {
+                        measure.successes++;
+                        measure.attempts++;
                     }
                 } else if(miss != -1 && view == views.get(miss)) {
-                    if(measure.attempt < max) measure.attempt++;
+                    if(measure.attempts - measure.successes < max) measure.attempts++;
                 } else if(large && view == views.get(1)) {
-                    if(measure.success + 9 < max) {
-                        measure.success += 10;
-                        measure.attempt += 10;
+                    if(measure.successes + 9 < max) {
+                        measure.successes += 10;
+                        measure.attempts += 10;
                     }
                 } else if(miss != -1 && large && view == views.get(3)) {
-                    if(measure.attempt + 9 < max) measure.attempt += 10;
+                    if(measure.attempts - measure.successes + 9 < max) measure.attempts += 10;
                 }
             } else {
                 countDownTimer.cancel();
@@ -111,22 +111,22 @@ public class Count extends Label {
 
             if(view == views.get(0)) {
                 missing = false;
-                if(measure.success > 0) {
-                    measure.success--;
-                    measure.attempt--;
+                if(measure.successes > 0) {
+                    measure.successes--;
+                    measure.attempts--;
                 }
             } else if(large && view == views.get(1)) {
-                int old = measure.success;
-                measure.success -= 10;
-                if(measure.success < 0) measure.success = 0;
-                measure.attempt -= (old - measure.success);
+                int old = measure.successes;
+                measure.successes -= 10;
+                if(measure.successes < 0) measure.successes = 0;
+                measure.attempts -= (old - measure.successes);
                 start = false;
             } else if(miss != -1 && view == views.get(miss)) {
                 missing = true;
-                if(measure.attempt > 0) measure.attempt--;
+                if(measure.attempts > 0) measure.attempts--;
             } else if(miss != -1 && large && view == views.get(3)) {
-                measure.attempt -= 10;
-                if(measure.attempt < 0) measure.attempt = 0;
+                measure.attempts -= 10;
+                if(measure.attempts < 0) measure.attempts = 0;
                 start = false;
             }
 
@@ -147,11 +147,11 @@ public class Count extends Label {
         public void onFinish() {
             if(drop) {
                 if(!missing) {
-                    if(measure.success > 0) {
-                        measure.success--;
-                        measure.attempt--;
+                    if(measure.successes > 0) {
+                        measure.successes--;
+                        measure.attempts--;
                     }
-                } else if(measure.attempt > 0) measure.attempt--;
+                } else if(measure.attempts - measure.successes > 0) measure.attempts--;
                 countDownTimer.start();
             }
             update(measure,false);

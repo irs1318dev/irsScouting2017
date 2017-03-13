@@ -9,8 +9,9 @@ public class Measure {
     final public String task;
     final public String phase;
     public String capability;
-    public int success;
-    public int attempt;
+    public int successes;
+    public int attempts;
+    public int cycle_times;
 
     public Measure() {
         match = "";
@@ -18,8 +19,9 @@ public class Measure {
         task = "";
         phase = "";
         capability = "";
-        success = 0;
-        attempt = 0;
+        successes = 0;
+        attempts = 0;
+        cycle_times = 0;
     }
 
     public Measure(Task task, Match match, String position, String phase) {
@@ -28,7 +30,8 @@ public class Measure {
         this.task = task.task;
         this.phase = phase;
         this.capability = "";
-        this.success = 0;
-        this.attempt = 0;
+        this.successes = 0;
+        this.attempts = 0;
+        this.cycle_times = 0;
     }
 }

@@ -44,11 +44,10 @@ class LabelMaker {
         }
     }
 
-    List<Page> taskMake(List<String> strings) {
+    void taskMake(List<String> strings) {
         Map<String, Task> tasks = new HashMap<>();
         Gson gson = new Gson();
         Context context = pageManager.getContext();
-        List<Page> pages = new ArrayList<>();
 
         for(String s : strings) {
             Task task = gson.fromJson(s, Task.class);
@@ -66,11 +65,7 @@ class LabelMaker {
             for(String t : s.tasks) if(tasks.containsKey(t)) {
                 pageList.get(s.phase).add(makeLabel(tasks.get(t), context, s.phase, s.position));
             }
-
-            if(!pages.contains(pageList.get(s.phase))) pages.add(pageList.get(s.phase));
         }
-
-        return pages;
     }
 
     private boolean usePage(String observer, String position) {
@@ -82,22 +77,7 @@ class LabelMaker {
     }
 
     private Label makeLabel(Task task, Context context, String phase, String position) {
-        //Get format from phase
-        String format = "na";
-        switch(phase.charAt(0)) {
-            case 'c':
-                format = task.claim;
-                break;
-            case 'a':
-                format = task.auto;
-                break;
-            case 't':
-                format = task.teleop;
-                break;
-            case 'f':
-                format = task.finish;
-                break;
-        }
+        String format = task.getFormat(phase);
 
         //Choose format to create
 

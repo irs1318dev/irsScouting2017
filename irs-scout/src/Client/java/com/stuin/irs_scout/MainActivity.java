@@ -60,10 +60,8 @@ public class MainActivity extends Activity {
         findViewById(R.id.gridLayout).setVisibility(View.GONE);
 
         //Start
-        form = new PageManager(this);
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.Frame);
-        frameLayout.setVisibility(View.VISIBLE);
-        frameLayout.addView(form);
+        form = (PageManager) findViewById(R.id.Form);
+        form.start();
     }
 
     @Override

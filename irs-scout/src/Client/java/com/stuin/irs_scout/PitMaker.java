@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.PitMatch;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  */
 public class PitMaker extends MatchMaker {
     private PitMatch pitMatch;
+    private List<String> teams;
     private List<List<Measure>> allData;
 
     PitMaker(PageManager pageManager, View view) {
@@ -26,35 +28,48 @@ public class PitMaker extends MatchMaker {
                 pitMatch = new Gson().fromJson(s.get(0), PitMatch.class);
                 match = pitMatch;
 
-                String title = " Team: " + match.getTeam(MainActivity.position);
-                status.setText(title);
-
+                teams = new ArrayList<>();
+                data = new ArrayList<>();
                 allData = new ArrayList<>();
+                nextTeams = new ArrayDeque<>();
 
-                for(String team : pitMatch.teams) {
-                    allData.add(new ArrayList<>());
+                class Set extends Request {
+                    private int i;
 
-                    class Set extends Request {
-                        private int i = allData.size() - 1;
-
-                        @Override
-                        public void run(List<String> measures) {
-                            Gson gson = new Gson();
-                            for(String s : measures) if(!s.contains("end")) allData.get(i).add(gson.fromJson(s, Measure.class));
-                        }
+                    @Override
+                    public void start(String query) {
+                        super.start(query);
+                        i = teams.indexOf(query.split("=")[1]);
                     }
-                    new Set().start("/matchteamtasks?team=" + team);
+
+                    @Override
+                    public void run(List<String> measures) {
+                        Gson gson = new Gson();
+                        for(String s : measures) if(!s.contains("end")) allData.get(i).add(gson.fromJson(s, Measure.class));
+                        if(!nextTeams.isEmpty()) new Set().start(nextTeams.poll());
+                        else setMatch();
+                    }
                 }
 
-                setMatch();
+                for(String team : pitMatch.teams) if(!team.equals("na")) {
+                    allData.add(new ArrayList<>());
+                    teams.add(team);
+                    nextTeams.add("/matchteamtasks?match=na&team=" + team);
+                }
+
+                new Set().start(nextTeams.poll());
             }
         }
         new Data().start("/matchteams?match=na");
     }
 
     public void setTeam(int i) {
+        allData.set(pitMatch.position, data);
         pitMatch.position = i;
         data = allData.get(i);
+
+        String title = " Team: " + match.getTeam(MainActivity.position);
+        status.setText(title);
 
         setMatch();
     }

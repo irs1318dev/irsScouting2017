@@ -6,7 +6,6 @@ import android.text.InputType;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
@@ -45,7 +44,7 @@ public class Enter extends Label{
         linearLayout.addView(editText);
 
         InputFilter[] filters = new InputFilter[1];
-        filters[0] = new InputFilter.LengthFilter(3);
+        filters[0] = new InputFilter.LengthFilter(4);
         editText.setFilters(filters);
 
         views.add(editText);
@@ -66,7 +65,8 @@ public class Enter extends Label{
         @Override
         public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
             measure.capability = textView.getText().toString().replace("%", "");
-            update(measure, true);
+            if(Integer.valueOf(measure.capability) > 100) measure.capability = "100";
+            update(measure, !measure.capability.isEmpty());
             return false;
         }
     };

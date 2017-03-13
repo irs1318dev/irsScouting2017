@@ -1,3 +1,6 @@
 **/auth.py
+*.pyc
 .idea
 *.iml
+Server/Data
+irs-scout/out
