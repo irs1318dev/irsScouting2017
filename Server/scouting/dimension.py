@@ -1,6 +1,6 @@
 import psycopg2.extras
 
-conn = psycopg2.connect("dbname=scouting host=localhost user=postgres password=irs1318")
+conn = psycopg2.connect("dbname=scouting host=localhost user=irs1318 password=irs1318")
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
