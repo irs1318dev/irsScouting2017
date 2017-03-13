@@ -6,6 +6,8 @@ import firstapi as api
 import json
 from sqlalchemy.sql import text
 import db_dimensiondata as data
+import scouting.match as m
+import scouting.event as e
 
 
 def load_game_sheet():
@@ -73,26 +75,23 @@ def insert_sched(event, season, level='qual'):
             data.add_name("dates", "name", date)
 
 
-def insert_MatchResults(event, season, matchNumber, tournamentLevel):
-    engine = db.getdbengine()
-    conn = engine.connect()
+def insert_MatchResults(event, season, tournamentLevel):
     event = event.lower()
-    result_json = api.getMatchResults(event.upper(), season, matchNumber)
-    result = json.loads(result_json)['MatchResults']
-    for mch in result:
-        match = "{0:0>3}-q".format(mch['matchNumber'])
-        date = mch['startTime']
-        for tm in mch['Teams']:
-            team = tm['teamNumber']
-            station = tm['station'][-1:]
-            alliance = tm['station'][0:-1].lower()
-            select = text(
-                "INSERT INTO "
-            )
-
-
-
-
+    score_json = api.getMatchScores(event, season, tournamentLevel)
+    matchScores = json.loads(score_json)['MatchScores']
+    for mch in matchScores:
+        matchNumber = mch['matchNumber']
+        match = "{0:0>3}-q".format(matchNumber)
+        for alnce in mch['Alliances']:
+            robot1Auto = alnce['robot1Auto']
+            alliance = alnce['alliance'].lower()
+            match_details = e.EventDal.match_details_station(event, match, alliance, str(1))
+            team1 = match_details['team']
+            success_count = 0
+            attempt_count = 1
+            if robot1Auto == 'Mobility':
+               success_count = 1
+            m.MatchDal.matchteamtask(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
 
 
 

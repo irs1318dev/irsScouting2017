@@ -2592,7 +2592,7 @@
           "rotor3Engaged": true,
           "rotor4Engaged": false,
           "teleopFuelLow": 0,
-          "teleopFuelHigh": 0,
+          "teleopFuelHigh": 0,11111111111111111111
           "touchpadNear": "ReadyForTakeoff",
           "touchpadMiddle": "None",
           "touchpadFar": "None",
