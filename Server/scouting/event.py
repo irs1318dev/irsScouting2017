@@ -1,4 +1,4 @@
-import scouting.db as db
+import db as db
 from sqlalchemy import text
 import json
 
@@ -38,8 +38,8 @@ class EventDal(object):
                    " AND event = :event ")
         results = conn.execute(sql, event=event, match=match, team=team)
         for row in results:
-            match_details = dict(row)
-        return match_details
+            current_match.append(dict(row))
+        return current_match
 
     @staticmethod
     def match_details_station(event, match, alliance, station):
@@ -66,6 +66,7 @@ class EventDal(object):
         elif len(results) == 0:
             sql_ins = text("INSERT INTO status (event) VALUES (:event);")
             conn.execute(sql_ins, event=event)
+
 
     @staticmethod
     def get_current_status():
