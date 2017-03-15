@@ -139,8 +139,8 @@ class TaskOptions(Base):
     task_name = Column(String)
     type = Column(String)
     option_name = Column(String)
-    __table_args__ = (UniqueConstraint('task_name', 'type', 'option_name'),
-                      )
+    __table_args__ = (UniqueConstraint('task_name', 'type', 'option_name'),)
+
 
 class Schedule(Base):
     __tablename__ = "schedules"
@@ -183,6 +183,13 @@ class Status(Base):
     id = Column(Integer, primary_key=True)
     event = Column('event', String)
     match = Column('match', String)
+
+
+class Match_Result(Base):
+    __tablename__ = "match_results"
+
+    id = Column(Integer, primary_key=True)
+
 
 
 def create_tables():

@@ -16,9 +16,11 @@ class Scouting(object):
 
     @cherrypy.expose
     def index(self):
-        match = self.eventDal.get_current_match()
-        out = open("web/admin.html").read().replace('{Match}', match)
-        return self.alltablets.inserttablets(out)
+        out = open("web/admin.html").read()
+        out = out.replace('{Match}', self.eventDal.get_current_match())
+        out = out.replace('{Event}', self.eventDal.get_current_event())
+        out = self.alltablets.inserttablets(out)
+        return out
 
     @cherrypy.expose
     def games(self):
@@ -40,18 +42,13 @@ class Scouting(object):
     def status(self):
         return scouting.event.EventDal.get_current_status()
 
-
     @cherrypy.expose
     def events(self):
         return scouting.event.EventDal.list_events()
 
     @cherrypy.expose
-    def event(self, event):
-        return scouting.event.EventDal.set_current_event(event)
-
-    @cherrypy.expose
     def matches(self, event='na'):
-        if (event == 'na'):
+        if event == 'na':
             event = scouting.event.EventDal.get_current_event()
 
         return scouting.event.EventDal.list_matches(event)
@@ -77,20 +74,16 @@ class Scouting(object):
         return 'matchteam with match and team'
 
     @cherrypy.expose
-    def matchteamtasks(self, team='0', match=-1):
+    def matchteamtasks(self, team='error', match=-1):
         if match == -1:
             match = self.eventDal.get_current_match()
-        return scouting.match.MatchDal.matchteamtasks(match, team) + '{}'
-        # return '{}'
+        return scouting.match.MatchDal.matchteamtasks(match, team) + '{end}'
 
     # Get data from match and team
 
     @cherrypy.expose
     def matchteamtask(self, match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
-        try:
-            scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
-        except KeyError:
-            print("No key found")
+        scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
         return 'hi'
 
     @cherrypy.expose
@@ -102,8 +95,8 @@ class Scouting(object):
         return 'dimension'
 
     @cherrypy.expose
-    def tablet(self, status):
-        newtablet = scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1])
+    def tablet(self, status, id=-1):
+        newtablet = scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1], id)
 
         if scouting.tablet.TabletList.settablet(self.alltablets, newtablet):
             scouting.event.EventDal.set_next_match(self.eventDal.get_current_match())
@@ -116,13 +109,24 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchcurrent(self, match):
+        self.tablet('TestSystem:Reset')
         self.eventDal.set_current_match(match)
         return open("web/reset.html").read()
 
     @cherrypy.expose
-    def output(self):
-        scouting.export.ExportCSV.alltables()
-        return 'output all tables'
+    def eventcurrent(self, event):
+        scouting.event.EventDal.set_current_event(event)
+        return open("web/reset.html").read()
+
+    @cherrypy.expose
+    def backup(self):
+
+        return open("web/reset.html").read()
+
+    @cherrypy.expose
+    def restore(self, path):
+
+        return open("web/reset.html").read()
 
 if __name__ == '__main__':
     cherrypy.config.update(

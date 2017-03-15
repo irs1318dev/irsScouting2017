@@ -21,7 +21,7 @@ public class Count extends Label {
     private boolean missing;
     private boolean large = false;
     private int miss = -1;
-    private int max = 18;
+    private int max = 30;
     private GridLayout gridLayout;
 
     public Count(Context context, Task task, String position) {
@@ -30,7 +30,7 @@ public class Count extends Label {
 
         if(MainActivity.position.contains("Fuel")) large = true;
         if(large) {
-            max = 100;
+            max = 300;
             if(miss != -1) miss = 2;
         }
     }
@@ -86,14 +86,14 @@ public class Count extends Label {
                         measure.attempts++;
                     }
                 } else if(miss != -1 && view == views.get(miss)) {
-                    if(measure.attempts < max) measure.attempts++;
+                    if(measure.attempts - measure.successes < max) measure.attempts++;
                 } else if(large && view == views.get(1)) {
                     if(measure.successes + 9 < max) {
                         measure.successes += 10;
                         measure.attempts += 10;
                     }
                 } else if(miss != -1 && large && view == views.get(3)) {
-                    if(measure.attempts + 9 < max) measure.attempts += 10;
+                    if(measure.attempts - measure.successes + 9 < max) measure.attempts += 10;
                 }
             } else {
                 countDownTimer.cancel();
@@ -151,7 +151,7 @@ public class Count extends Label {
                         measure.successes--;
                         measure.attempts--;
                     }
-                } else if(measure.attempts > 0) measure.attempts--;
+                } else if(measure.attempts - measure.successes > 0) measure.attempts--;
                 countDownTimer.start();
             }
             update(measure,false);
