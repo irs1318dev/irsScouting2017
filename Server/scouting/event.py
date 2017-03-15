@@ -1,13 +1,9 @@
-import scouting.db as db
+import db
 from sqlalchemy import text
 import json
 
 engine = db.getdbengine()
 conn = engine.connect()
-
-# conn = psycopg2.connect("dbname=scouting host=localhost user=postgres password=irs1318")
-# cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
 
 class EventDal(object):
 
@@ -42,6 +38,19 @@ class EventDal(object):
         return match_details
 
     @staticmethod
+    def match_details_station(event, match, alliance, station):
+        match_details = {}
+        sql = text("SELECT * FROM schedules WHERE "
+                   "match = :match "
+                   " AND event = :event "
+                   " AND alliance = :alliance "
+                   " AND station = :station ")
+        results = conn.execute(sql, event=event, match=match, station=station, alliance=alliance)
+        for row in results:
+            match_details = dict(row)
+        return match_details
+
+    @staticmethod
     def set_current_event(event):
         event = event.lower()
 
@@ -51,8 +60,10 @@ class EventDal(object):
             sql_upd = text("UPDATE status SET event = :event WHERE id = :id;")
             conn.execute(sql_upd, event=event, id=results[0]['id'])
         elif len(results) == 0:
-            sql_ins = text("INSERT INTO status (event) VALUES (:event);")
-            conn.execute(sql_ins, event=event)
+            default_match = "001-q"
+            sql_ins = text("INSERT INTO status (event, match) VALUES (:event, :match);")
+            conn.execute(sql_ins, event=event, match=default_match)
+
 
     @staticmethod
     def get_current_status():
@@ -106,6 +117,6 @@ class EventDal(object):
     def get_current_match():
         match = conn.execute("SELECT match FROM status;").scalar()
         if match is None:
-            match = conn.execute("SELECT name FROM matches LIMIT 1").scalar()
+            match = "001-q"
             EventDal.set_current_match(match)
         return match
