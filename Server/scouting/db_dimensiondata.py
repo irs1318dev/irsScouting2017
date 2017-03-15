@@ -89,6 +89,8 @@ def insert_data():
     add_name("alliances", "name", "blue")
     add_name("alliances", "name", "red")
 
+    add_name("dates", "name", "na")
+
     # teams imported from schedule
 
     add_name("stations", "name", "na")

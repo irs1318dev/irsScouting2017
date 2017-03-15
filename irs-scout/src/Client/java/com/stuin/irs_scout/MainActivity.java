@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
 
         //Start
         form = (PageManager) findViewById(R.id.Form);
-        form.start();
+        form.start(this);
     }
 
     @Override

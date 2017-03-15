@@ -2,10 +2,10 @@ package com.stuin.irs_scout.Views;
 
 import android.content.Context;
 import android.os.CountDownTimer;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
@@ -22,7 +22,6 @@ public class Count extends Label {
     private boolean large = false;
     private int miss = -1;
     private int max = 30;
-    private GridLayout gridLayout;
 
     public Count(Context context, Task task, String position) {
         super(context, task, position);
@@ -37,14 +36,22 @@ public class Count extends Label {
  
     @Override
     void create(LinearLayout column) {
-        gridLayout = new GridLayout(getContext());
-        gridLayout.setColumnCount(2);
-        column.addView(gridLayout);
+        linearLayout = new LinearLayout(getContext());
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setGravity(Gravity.CENTER);
+        column.addView(linearLayout);
 
         part(task.success);
         if(large) part("+10");
 
         if(miss != -1) {
+            if(large) {
+                linearLayout = new LinearLayout(getContext());
+                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                linearLayout.setGravity(Gravity.CENTER);
+                column.addView(linearLayout);
+            }
+
             part(task.miss);
             if(large) part("+10");
         }
@@ -62,7 +69,7 @@ public class Count extends Label {
         button.setOnLongClickListener(longClickListener);
         button.setGravity(Gravity.CENTER);
         views.add(button);
-        gridLayout.addView(button);
+        linearLayout.addView(button);
         return button;
     }
 

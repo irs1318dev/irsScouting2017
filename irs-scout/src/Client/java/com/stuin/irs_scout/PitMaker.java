@@ -39,7 +39,7 @@ public class PitMaker extends MatchMaker {
                     @Override
                     public void start(String query) {
                         super.start(query);
-                        i = teams.indexOf(query.split("=")[1]);
+                        i = teams.indexOf(query.split("=")[2]);
                     }
 
                     @Override

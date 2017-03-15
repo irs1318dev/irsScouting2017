@@ -19,20 +19,20 @@ class PageManager extends LinearLayout {
     private Activity activity;
     private LabelMaker labelMaker;
 
-    PageManager(Context context, AttributeSet attributeSet) {
+    public PageManager(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
     }
 
-    void start() {
+    void start(Activity activity) {
         //Start Layout
         labelMaker = new LabelMaker(this);
         setVisibility(VISIBLE);
-        findViewById(R.id.Status).setVisibility(VISIBLE);
-        activity = (Activity) getParent();
+        this.activity = activity;
+        activity.findViewById(R.id.Status).setVisibility(VISIBLE);
 
         //Setup centering
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
-        setLayoutParams(lp);
+        //setLayoutParams(lp);
         setGravity(Gravity.CENTER);
 
         //Download layout
