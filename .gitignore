@@ -4,4 +4,5 @@
 *.iml
 Server/Data
 irs-scout/src/Client/out
+irs-scout/src/Client/gen
 irs-scout/src/Client/bin
