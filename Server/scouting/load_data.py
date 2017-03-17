@@ -83,15 +83,18 @@ def insert_MatchResults(event, season, tournamentLevel):
         matchNumber = mch['matchNumber']
         match = "{0:0>3}-q".format(matchNumber)
         for alnce in mch['Alliances']:
-            robot1Auto = alnce['robot1Auto']
-            alliance = alnce['alliance'].lower()
-            match_details = e.EventDal.match_details_station(event, match, alliance, str(1))
-            team1 = match_details['team']
-            success_count = 0
-            attempt_count = 1
-            if robot1Auto == 'Mobility':
-               success_count = 1
-            m.MatchDal.matchteamtask(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
+            load_robot_movebaseline(event, match, alnce, 1)
+            load_robot_movebaseline(event, match, alnce, 2)
+            load_robot_movebaseline(event, match, alnce, 3)
 
-
-
+def load_robot_movebaseline(event, match, alnce, station):
+    robotKey = 'robot' + str(station) + 'Auto'
+    robot1Auto = alnce[robotKey]
+    alliance = alnce['alliance'].lower()
+    match_details = e.EventDal.match_details_station(event, match, alliance, str(station))
+    team1 = match_details['team']
+    success_count = 0
+    attempt_count = 1
+    if robot1Auto == 'Mobility':
+        success_count = 1
+    m.MatchDal.matchteamtask(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
