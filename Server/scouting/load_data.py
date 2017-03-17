@@ -86,6 +86,25 @@ def insert_MatchResults(event, season, tournamentLevel):
             load_robot_movebaseline(event, match, alnce, 1)
             load_robot_movebaseline(event, match, alnce, 2)
             load_robot_movebaseline(event, match, alnce, 3)
+            # load_alliance_measure(event, match, alnce, 'autoFuelLow')
+            # load_alliance_measure(event, match, alnce, 'autoFuelHigh')
+            # load_alliance_measure(event, match, alnce, 'teleopFuelLow')
+            # load_alliance_measure(event, match, alnce, 'teleopFuelHigh')
+            # load_alliance_measure(event, match, alnce, 'foulCount')
+            # load_alliance_measure(event, match, alnce, 'techFoulCount')
+            # load_alliance_measure(event, match, alnce, 'autoPoints')
+            # load_alliance_measure(event, match, alnce, 'autoMobilityPoints')
+            # load_alliance_measure(event, match, alnce, 'autoRotorPoints')
+            # load_alliance_measure(event, match, alnce, 'teleopPoints')
+            # load_alliance_measure(event, match, alnce, 'teleopFuelPoints')
+            # load_alliance_measure(event, match, alnce, 'teleopRotorPoints')
+            # load_alliance_measure(event, match, alnce, 'teleopTakeoffPoints')
+            # load_alliance_measure(event, match, alnce, 'kPaBounsPoints')
+            # load_alliance_measure(event, match, alnce, 'rotorBonusPoints')
+            # load_alliance_measure(event, match, alnce, 'adjustPoints')
+            # load_alliance_measure(event, match, alnce, 'foulPoints')
+
+            # load_alliance_measure(event, match, alnce, 'totalPoints','finalScore', 'final')
 
 def load_robot_movebaseline(event, match, alnce, station):
     robotKey = 'robot' + str(station) + 'Auto'
@@ -98,3 +117,11 @@ def load_robot_movebaseline(event, match, alnce, station):
     if robot1Auto == 'Mobility':
         success_count = 1
     m.MatchDal.matchteamtask(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
+
+
+def load_alliance_measure(event, match, alnce, firstApiTaskName, taskName, phase):
+    Value = alnce[firstApiTaskName]
+    alliance = alnce['alliance'].lower()
+    success_count = Value
+    attempt_count = Value #to do have matchteamtask accept allaince
+    m.MatchDal.matchteamtask('na', taskName, match, phase, 0, attempt_count, success_count)
