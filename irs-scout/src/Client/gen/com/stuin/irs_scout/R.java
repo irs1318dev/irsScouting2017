@@ -15,29 +15,30 @@ public final class R {
         public static final int colorBlue=0x7f040003;
         public static final int colorRed=0x7f040002;
         public static final int colorText=0x7f040000;
+        public static final int colorWhite=0x7f040004;
     }
     public static final class dimen {
         public static final int text_large=0x7f060000;
         public static final int text_norm=0x7f060001;
     }
     public static final class id {
-        public static final int AddressBar=0x7f070001;
-        public static final int BlueScouter1=0x7f070008;
-        public static final int BlueScouter2=0x7f070009;
-        public static final int BlueScouter3=0x7f07000a;
-        public static final int BlueScouter4=0x7f07000e;
-        public static final int Frame=0x7f070005;
-        public static final int Next=0x7f070004;
-        public static final int PageStatus=0x7f070006;
-        public static final int PitScouter=0x7f070010;
-        public static final int Previous=0x7f070003;
-        public static final int RedScouter1=0x7f07000b;
-        public static final int RedScouter2=0x7f07000c;
-        public static final int RedScouter3=0x7f07000d;
-        public static final int RedScouter4=0x7f07000f;
-        public static final int Status=0x7f070002;
-        public static final int activity_main=0x7f070000;
-        public static final int gridLayout=0x7f070007;
+        public static final int AddressBar=0x7f080001;
+        public static final int BlueScouter1=0x7f080007;
+        public static final int BlueScouter2=0x7f080008;
+        public static final int BlueScouter3=0x7f080009;
+        public static final int BlueScouter4=0x7f08000d;
+        public static final int Form=0x7f080010;
+        public static final int Next=0x7f080004;
+        public static final int PageStatus=0x7f080005;
+        public static final int PitScouter=0x7f08000f;
+        public static final int Previous=0x7f080003;
+        public static final int RedScouter1=0x7f08000a;
+        public static final int RedScouter2=0x7f08000b;
+        public static final int RedScouter3=0x7f08000c;
+        public static final int RedScouter4=0x7f08000e;
+        public static final int Status=0x7f080002;
+        public static final int activity_main=0x7f080000;
+        public static final int gridLayout=0x7f080006;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -61,5 +62,10 @@ public final class R {
         public static final int scout_7=0x7f05000b;
         public static final int scout_8=0x7f05000c;
         public static final int scout_9=0x7f05000d;
+    }
+    public static final class style {
+        public static final int style_base=0x7f070000;
+        public static final int style_large=0x7f070001;
+        public static final int style_scout=0x7f070002;
     }
 }
