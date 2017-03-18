@@ -56,7 +56,6 @@ def insert_sched(event, season, level='qual'):
         "VALUES (:event,'na','na','na','na','na','na'); "
     )
     conn.execute(select, event=event)
-    data.add_name("na", "name", 'na')
 
 
     for mch in sched:
@@ -106,7 +105,7 @@ def insert_MatchResults(event, season, tournamentLevel):
             load_alliance_measure(event, match, alnce, 'rotorBonusPoints', 'rotorBonusPoints', 'finish')
             load_alliance_measure(event, match, alnce, 'adjustPoints', 'adjustPoints', 'finish')
             load_alliance_measure(event, match, alnce, 'foulPoints', 'foulPoints', 'finish')
-            load_alliance_measure(event, match, alnce, 'totalPoints','totalScore', 'finish')
+            load_alliance_measure(event, match, alnce, 'totalPoints','totalPoints', 'finish')
 
             load_alliance_flag(event, match, alnce, 'rotor1Auto','rotor1Auto', 'auto')
             load_alliance_flag(event, match, alnce, 'rotor2Auto', 'rotor2Auto', 'auto')
