@@ -56,7 +56,6 @@ def insert_sched(event, season, level='qual'):
         "VALUES (:event,'na','na','na','na','na','na'); "
     )
     conn.execute(select, event=event)
-    data.add_name("na", "name", 'na')
 
 
     for mch in sched:
