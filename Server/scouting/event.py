@@ -35,6 +35,8 @@ class EventDal(object):
         results = conn.execute(sql, event=event, match=match, team=team)
         for row in results:
             match_details = dict(row)
+        if match_details == {}:
+            match_details = {'alliance': 'na', 'level': 'na', 'event': event, 'station': 'na', 'team': team, 'date': 'na', 'match': match}
         return match_details
 
     @staticmethod

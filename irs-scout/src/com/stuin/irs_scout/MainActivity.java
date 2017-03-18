@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -58,10 +57,11 @@ public class MainActivity extends Activity {
         //Hide start screen
         findViewById(R.id.AddressBar).setVisibility(View.GONE);
         findViewById(R.id.gridLayout).setVisibility(View.GONE);
+        findViewById(R.id.PageStatus).setVisibility(View.VISIBLE);
 
         //Start
         form = (PageManager) findViewById(R.id.Form);
-        form.start();
+        form.start(this);
     }
 
     @Override

@@ -33,7 +33,7 @@ class TaskDal(object):
 
     @staticmethod
     def csvtasks():
-        with open("Scouting/gametasks.csv", "r") as text:
+        with open("scouting/gametasks.csv", "r") as text:
             out = ''
             for line in text:
                 if 'actor,task' not in line:

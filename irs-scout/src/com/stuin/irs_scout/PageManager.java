@@ -5,35 +5,32 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.stuin.cleanvisuals.Slider;
 import com.stuin.irs_scout.Views.Page;
 import com.stuin.irs_scout.Views.TeamMenu;
 
 import java.util.List;
 
-class PageManager extends LinearLayout {
+class PageManager extends FrameLayout {
     Updater updater;
 
     private int current = -1;
     private Activity activity;
     private LabelMaker labelMaker;
 
-    PageManager(Context context, AttributeSet attributeSet) {
+    public PageManager(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
     }
 
-    void start() {
+    void start(Activity activity) {
         //Start Layout
         labelMaker = new LabelMaker(this);
         setVisibility(VISIBLE);
-        findViewById(R.id.Status).setVisibility(VISIBLE);
-        activity = (Activity) getParent();
-
-        //Setup centering
-        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
-        setLayoutParams(lp);
-        setGravity(Gravity.CENTER);
+        this.activity = activity;
+        activity.findViewById(R.id.Status).setVisibility(VISIBLE);
 
         //Download layout
         class Layout extends Request {
@@ -81,12 +78,26 @@ class PageManager extends LinearLayout {
 
         page.setVisibility(GONE);
         addView(page);
+
+        if(getChildCount() > 1) page.link((Page) getChildAt(getChildCount() - 2), new Slider.Endings() {
+            @Override
+            public void enter() {
+                //Notify server
+                if(updater != null) updater.setStatus();
+            }
+
+            @Override
+            public void exit() {
+                //Notify server
+                if(updater != null) updater.setStatus();
+            }
+        });
         return page;
     }
 
     void nextPage(View view) {
         //Show next phase
-        getChildAt(current).setVisibility(GONE);
+        ((Page) getChildAt(current + 1)).sliderSync.showPrimary();
 
         //Set shown buttons
         activity.findViewById(R.id.Previous).setVisibility(VISIBLE);
@@ -98,7 +109,7 @@ class PageManager extends LinearLayout {
 
     void lastPage(View view) {
         //Hide old phase
-        getChildAt(current).setVisibility(GONE);
+        ((Page) getChildAt(current)).sliderSync.showSecondary();
 
         //Set shown buttons
         activity.findViewById(R.id.Next).setVisibility(VISIBLE);
@@ -117,8 +128,5 @@ class PageManager extends LinearLayout {
         String name =  ((Page) getChildAt(current)).name;
         name = name.substring(0,1).toUpperCase() + name.substring(1);
         ((TextView) activity.findViewById(R.id.PageStatus)).setText(MainActivity.position + ": " + name);
-
-        //Notify server
-        if(updater != null) updater.setStatus();
     }
 }

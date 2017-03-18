@@ -17,6 +17,7 @@ public class Updater {
     private Queue<Measure> finished = new ArrayDeque<>();
     private RadioButton status;
     private String last = "";
+    private String ip = "";
 
     Updater(MatchMaker matchMaker, View view) {
         this.matchMaker = matchMaker;
@@ -33,7 +34,8 @@ public class Updater {
 
         @Override
         public void onFinish() {
-            String s = "/tablet?status=" + status.getText().toString().replace(" ", "");
+            String s = "/tablet?status=" + status.getText().toString().replace(" ", "") + ip;
+            ip = "";
             class Status extends Request {
                 @Override
                 public void run(List<String> s) {
@@ -46,6 +48,7 @@ public class Updater {
     };
 
     void setStatus() {
+        ip = "&ip=" + MainActivity.address;
         countDownTimer.cancel();
         countDownTimer.onFinish();
     }
