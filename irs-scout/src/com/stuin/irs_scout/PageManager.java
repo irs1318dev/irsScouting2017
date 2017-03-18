@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Views.Page;
@@ -12,7 +13,7 @@ import com.stuin.irs_scout.Views.TeamMenu;
 
 import java.util.List;
 
-class PageManager extends LinearLayout {
+class PageManager extends FrameLayout {
     Updater updater;
 
     private int current = -1;
@@ -29,11 +30,6 @@ class PageManager extends LinearLayout {
         setVisibility(VISIBLE);
         this.activity = activity;
         activity.findViewById(R.id.Status).setVisibility(VISIBLE);
-
-        //Setup centering
-        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
-        //setLayoutParams(lp);
-        setGravity(Gravity.CENTER);
 
         //Download layout
         class Layout extends Request {
@@ -81,12 +77,14 @@ class PageManager extends LinearLayout {
 
         page.setVisibility(GONE);
         addView(page);
+
+        if(getChildCount() > 1) ((Page) getChildAt(getChildCount() - 2)).link(page);
         return page;
     }
 
     void nextPage(View view) {
         //Show next phase
-        getChildAt(current).setVisibility(GONE);
+        ((Page) getChildAt(current)).sliderSync.showPrimary();
 
         //Set shown buttons
         activity.findViewById(R.id.Previous).setVisibility(VISIBLE);
@@ -98,7 +96,7 @@ class PageManager extends LinearLayout {
 
     void lastPage(View view) {
         //Hide old phase
-        getChildAt(current).setVisibility(GONE);
+        ((Page) getChildAt(current - 1)).sliderSync.showSecondary();
 
         //Set shown buttons
         activity.findViewById(R.id.Next).setVisibility(VISIBLE);

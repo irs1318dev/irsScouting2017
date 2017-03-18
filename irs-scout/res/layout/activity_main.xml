@@ -108,6 +108,7 @@
     <com.stuin.irs_scout.PageManager
             style="@style/style_base"
             android:layout_centerInParent="true"
+            android:layout_width="match_parent"
             android:id="@+id/Form">
 
     </com.stuin.irs_scout.PageManager>
