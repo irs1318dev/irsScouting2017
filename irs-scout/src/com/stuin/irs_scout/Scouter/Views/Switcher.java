@@ -9,6 +9,8 @@ import com.stuin.irs_scout.MainActivity;
 import com.stuin.irs_scout.R;
 
 public class Switcher extends Label {
+    private boolean miss;
+
     public Switcher(Context context, Task task, String position) {
         super(context, task, position);
     }
@@ -47,8 +49,9 @@ public class Switcher extends Label {
         checkBox.setChecked(measure.successes == 1);
 
         if(!task.miss.isEmpty()) {
+            miss = measure.attempts == measure.successes + 1;
             checkBox = (CheckBox) views.get(1);
-            checkBox.setChecked(measure.attempts == 1);
+            checkBox.setChecked(miss);
         }
     }
 
@@ -57,11 +60,19 @@ public class Switcher extends Label {
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
             //Update measure by boolean
             if(views.indexOf(compoundButton) == 0) {
-                if(b) measure.successes = 1;
-                else measure.successes = 0;
+                if(b) {
+                    measure.successes = 1;
+                    if(miss) measure.attempts = 2;
+                    else measure.attempts = 1;
+                } else {
+                    measure.successes = 0;
+                    if(miss) measure.attempts = 1;
+                    else measure.attempts = 0;
+                }
             } else {
-                if(b) measure.attempts = 1;
-                else measure.attempts = 0;
+                if(b) measure.attempts = measure.successes + 1;
+                else measure.attempts = measure.successes;
+                miss = b;
             }
 
             update(measure, true);

@@ -20,6 +20,7 @@ public class PageManager extends FrameLayout {
     private int current = -1;
     private Activity activity;
     private LabelMaker labelMaker;
+    private boolean moving;
 
     public PageManager(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -84,40 +85,48 @@ public class PageManager extends FrameLayout {
             public void enter() {
                 //Notify server
                 if(updater != null) updater.setStatus();
+                moving = false;
             }
 
             @Override
             public void exit() {
                 //Notify server
                 if(updater != null) updater.setStatus();
+                moving = false;
             }
         });
         return page;
     }
 
     public void nextPage(View view) {
-        //Show next phase
-        ((Page) getChildAt(current + 1)).sliderSync.showPrimary();
+        if(!moving) {
+            //Show next phase
+            moving = true;
+            ((Page) getChildAt(current + 1)).sliderSync.showPrimary();
 
-        //Set shown buttons
-        activity.findViewById(R.id.Previous).setVisibility(VISIBLE);
-        if(current + 2 == getChildCount()) view.setVisibility(GONE);
+            //Set shown buttons
+            activity.findViewById(R.id.Previous).setVisibility(VISIBLE);
+            if(current + 2 == getChildCount()) view.setVisibility(GONE);
 
-        current++;
-        setPage();
+            current++;
+            setPage();
+        }
     }
 
     public void lastPage(View view) {
-        //Hide old phase
-        ((Page) getChildAt(current)).sliderSync.showSecondary();
+        if(!moving) {
+            //Hide old phase
+            moving = true;
+            ((Page) getChildAt(current)).sliderSync.showSecondary();
 
-        //Set shown buttons
-        activity.findViewById(R.id.Next).setVisibility(VISIBLE);
-        if(current == 1) view.setVisibility(GONE);
+            //Set shown buttons
+            activity.findViewById(R.id.Next).setVisibility(VISIBLE);
+            if(current == 1) view.setVisibility(GONE);
 
-        //Set new phase
-        current--;
-        setPage();
+            //Set new phase
+            current--;
+            setPage();
+        }
     }
 
     private void setPage() {
