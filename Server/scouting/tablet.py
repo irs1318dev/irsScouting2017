@@ -47,6 +47,9 @@ class TabletList(object):
             if self.checknext(i):
                 nextmatch = False
 
+        if nextmatch and newtablet.position == "Pit":
+            nextmatch = False
+
         if nextmatch:
             self.alltablets[0].page = "Reset"
         else:

@@ -51,10 +51,10 @@ public class PitMaker extends MatchMaker {
                     }
                 }
 
-                for(String team : pitMatch.teams) if(!team.equals("na")) {
+                for(String team : pitMatch.teams) {
                     allData.add(new ArrayList<>());
                     teams.add(team);
-                    nextTeams.add("/matchteamtasks?match=na&team=" + team);
+                    if(!team.equals("na")) nextTeams.add("/matchteamtasks?match=na&team=" + team);
                 }
 
                 new Set().start(nextTeams.poll());

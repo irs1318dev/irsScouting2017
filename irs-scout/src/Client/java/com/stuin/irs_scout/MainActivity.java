@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.List;
