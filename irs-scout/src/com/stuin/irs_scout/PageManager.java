@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.stuin.cleanvisuals.Slider;
 import com.stuin.irs_scout.Views.Page;
 import com.stuin.irs_scout.Views.TeamMenu;
 
@@ -78,13 +79,25 @@ class PageManager extends FrameLayout {
         page.setVisibility(GONE);
         addView(page);
 
-        if(getChildCount() > 1) ((Page) getChildAt(getChildCount() - 2)).link(page);
+        if(getChildCount() > 1) page.link((Page) getChildAt(getChildCount() - 2), new Slider.Endings() {
+            @Override
+            public void enter() {
+                //Notify server
+                if(updater != null) updater.setStatus();
+            }
+
+            @Override
+            public void exit() {
+                //Notify server
+                if(updater != null) updater.setStatus();
+            }
+        });
         return page;
     }
 
     void nextPage(View view) {
         //Show next phase
-        ((Page) getChildAt(current)).sliderSync.showPrimary();
+        ((Page) getChildAt(current + 1)).sliderSync.showPrimary();
 
         //Set shown buttons
         activity.findViewById(R.id.Previous).setVisibility(VISIBLE);
@@ -96,7 +109,7 @@ class PageManager extends FrameLayout {
 
     void lastPage(View view) {
         //Hide old phase
-        ((Page) getChildAt(current - 1)).sliderSync.showSecondary();
+        ((Page) getChildAt(current)).sliderSync.showSecondary();
 
         //Set shown buttons
         activity.findViewById(R.id.Next).setVisibility(VISIBLE);
@@ -115,8 +128,5 @@ class PageManager extends FrameLayout {
         String name =  ((Page) getChildAt(current)).name;
         name = name.substring(0,1).toUpperCase() + name.substring(1);
         ((TextView) activity.findViewById(R.id.PageStatus)).setText(MainActivity.position + ": " + name);
-
-        //Notify server
-        if(updater != null) updater.setStatus();
     }
 }

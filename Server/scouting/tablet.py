@@ -3,17 +3,17 @@ from datetime import datetime
 
 
 class TabletDAL(object):
-    def __init__(self, position, page, id):
+    def __init__(self, position, page, ip):
         self.position = position
         self.page = page
         self.last = datetime.now().second
-        self.id = id
+        self.ip = ip
 
     def write(self):
         s = self.position + ":" + self.page
-        if self.id > -1:
-            s += ":" + str(id)
-        s += ", "
+        if self.ip > -1:
+            s += ":" + str(self.ip)
+        s += "\n"
         return s
 
     def checkfail(self):
@@ -33,8 +33,8 @@ class TabletList(object):
         while i < len(self.alltablets):
             if self.alltablets[i].position in newtablet.position:
                 self.alltablets[i].page = newtablet.page
-                if newtablet.id > -1:
-                    self.alltablets[i].id = newtablet.id
+                if newtablet.ip > -1:
+                    self.alltablets[i].ip = newtablet.ip
 
                 found = True
             if self.checknext(i):

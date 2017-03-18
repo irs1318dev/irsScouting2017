@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
         //Hide start screen
         findViewById(R.id.AddressBar).setVisibility(View.GONE);
         findViewById(R.id.gridLayout).setVisibility(View.GONE);
+        findViewById(R.id.PageStatus).setVisibility(View.VISIBLE);
 
         //Start
         form = (PageManager) findViewById(R.id.Form);

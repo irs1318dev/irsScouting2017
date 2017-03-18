@@ -5,9 +5,11 @@ import android.graphics.Color;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.stuin.cleanvisuals.Slider;
 import com.stuin.cleanvisuals.SliderSync;
 import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
+import com.stuin.irs_scout.Updater;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +32,12 @@ public class Page extends LinearLayout {
         newCol();
     }
 
-    public void link(Page page) {
-        sliderSync = new SliderSync(page, this);
+    public void link(Page page, Slider.Endings endings) {
+        sliderSync = new SliderSync(this, page);
         sliderSync.setup(true, 2000, -2000, 500);
+        sliderSync.endings(endings);
     }
+
     public void add(Label objectView) {
         //Add object to column
         labels.add(objectView);
