@@ -199,7 +199,7 @@ class MatchDal(object):
 
     @staticmethod
     def matchalliancetask(alliance, task, phase, match='na', capability=0, attempt_count=0, success_count=0,
-                      cycle_time=0): #not working yet
+                      cycle_time=0):
         event_name = event.EventDal.get_current_event()
         event_id = MatchDal.events[event_name]
 
