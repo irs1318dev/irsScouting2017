@@ -198,28 +198,26 @@ class MatchDal(object):
                      cycle_times=cycle_time)
 
     @staticmethod
-    def matchalliancetask(alliance, task, phase, team='na', station='na', match='na', capability=0, attempt_count=0, success_count=0,
+    def matchalliancetask(alliance, task, phase, match='na', capability=0, attempt_count=0, success_count=0,
                       cycle_time=0): #not working yet
         event_name = event.EventDal.get_current_event()
         event_id = MatchDal.events[event_name]
 
         match_id = MatchDal.matches[match]
 
-        alliance_id = MatchDal.alliances[alliance]
-        team_id = MatchDal.teams[team]
+        team_id = MatchDal.teams['na']
         phase_id = MatchDal.phases[phase]
         task_id = MatchDal.tasks[task]
         actor_measure = game.GameDal.get_actor_measure(task, phase)
         actor_id = MatchDal.actors[actor_measure["actor"]]
         measure = actor_measure[phase]
         measuretype_id = MatchDal.measuretypes[measure]
-        station_id = MatchDal.stations[station]
+        alliance_id = MatchDal.alliances[alliance]
+        station_id = MatchDal.stations['na']
 
-        match_details = event.EventDal.match_details(event_name, match, team)
+        match_details = event.EventDal.match_alliance_details(event_name, match)
         date_id = MatchDal.dates[match_details['date']]
         level_id = MatchDal.levels[match_details['level']]
-        #alliance_id = MatchDal.alliances[match_details['alliance']]
-        # station_id = MatchDal.stations[match_details['station']]
 
         reason_id = MatchDal.reasons['na']
 
@@ -335,3 +333,7 @@ class PitMatch(object):
     def __init__(self, teams):
         self.match = 'na'
         self.teams = teams
+
+
+
+# helpful SELECT * FROM measures m, alliances a, teams t, tasks s WHERE a.name = 'red' and t.name = 'na' and s.name = 'finalScore' and m.alliance_id = a.id and m.team_id = t.id and m.task_id = s.id;
