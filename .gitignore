@@ -3,6 +3,6 @@
 .idea
 *.iml
 Server/Data
-irs-scout/src/Client/out
-irs-scout/src/Client/gen
-irs-scout/src/Client/bin
+irs-scout/out
+irs-scout/gen
+irs-scout/bin

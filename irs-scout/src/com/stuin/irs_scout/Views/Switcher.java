@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.widget.*;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
+import com.stuin.irs_scout.MainActivity;
 import com.stuin.irs_scout.R;
 
 public class Switcher extends Label {
@@ -19,7 +20,10 @@ public class Switcher extends Label {
         column.addView(linearLayout);
 
         part(task.success);
-        if(!task.miss.isEmpty()) part(task.miss);
+        if(!task.miss.isEmpty()) {
+            part(task.miss);
+            if(MainActivity.position.contains("Pit")) views.get(1).setVisibility(GONE);
+        }
     }
 
     @Override
