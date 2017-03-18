@@ -1,4 +1,4 @@
-package com.stuin.irs_scout.Views;
+package com.stuin.irs_scout.Scouter.Views;
 
 import android.content.Context;
 import android.text.InputFilter;

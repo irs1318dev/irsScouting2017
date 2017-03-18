@@ -1,7 +1,8 @@
-package com.stuin.irs_scout;
+package com.stuin.irs_scout.Scouter;
 
 import android.os.AsyncTask;
 import android.widget.RadioButton;
+import com.stuin.irs_scout.MainActivity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

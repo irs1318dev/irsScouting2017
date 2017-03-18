@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import com.stuin.irs_scout.Scouter.PageManager;
+import com.stuin.irs_scout.Scouter.Request;
 
 import java.util.List;
 
@@ -13,9 +15,9 @@ import java.util.List;
 public class MainActivity extends Activity {
     private PageManager form;
 
-    static String address;
+    public static String address;
     public static String position;
-    static boolean error;
+    public static boolean error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,9 +1,10 @@
-package com.stuin.irs_scout;
+package com.stuin.irs_scout.Scouter;
 
 import android.view.View;
 import com.google.gson.Gson;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.PitMatch;
+import com.stuin.irs_scout.MainActivity;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

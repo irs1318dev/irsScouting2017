@@ -1,21 +1,21 @@
-package com.stuin.irs_scout;
+package com.stuin.irs_scout.Scouter;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.cleanvisuals.Slider;
-import com.stuin.irs_scout.Views.Page;
-import com.stuin.irs_scout.Views.TeamMenu;
+import com.stuin.irs_scout.MainActivity;
+import com.stuin.irs_scout.R;
+import com.stuin.irs_scout.Scouter.Views.Page;
+import com.stuin.irs_scout.Scouter.Views.TeamMenu;
 
 import java.util.List;
 
-class PageManager extends FrameLayout {
-    Updater updater;
+public class PageManager extends FrameLayout {
+    public Updater updater;
 
     private int current = -1;
     private Activity activity;
@@ -25,7 +25,7 @@ class PageManager extends FrameLayout {
         super(context, attributeSet);
     }
 
-    void start(Activity activity) {
+    public void start(Activity activity) {
         //Start Layout
         labelMaker = new LabelMaker(this);
         setVisibility(VISIBLE);
@@ -95,7 +95,7 @@ class PageManager extends FrameLayout {
         return page;
     }
 
-    void nextPage(View view) {
+    public void nextPage(View view) {
         //Show next phase
         ((Page) getChildAt(current + 1)).sliderSync.showPrimary();
 
@@ -107,7 +107,7 @@ class PageManager extends FrameLayout {
         setPage();
     }
 
-    void lastPage(View view) {
+    public void lastPage(View view) {
         //Hide old phase
         ((Page) getChildAt(current)).sliderSync.showSecondary();
 

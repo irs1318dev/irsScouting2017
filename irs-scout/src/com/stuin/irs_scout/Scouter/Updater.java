@@ -1,9 +1,10 @@
-package com.stuin.irs_scout;
+package com.stuin.irs_scout.Scouter;
 
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.RadioButton;
 import com.stuin.irs_scout.Data.Measure;
+import com.stuin.irs_scout.MainActivity;
 
 import java.util.*;
 
@@ -47,7 +48,7 @@ public class Updater {
         }
     };
 
-    void setStatus() {
+    public void setStatus() {
         ip = "&ip=" + MainActivity.address;
         countDownTimer.cancel();
         countDownTimer.onFinish();

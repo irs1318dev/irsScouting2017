@@ -1,10 +1,11 @@
-package com.stuin.irs_scout;
+package com.stuin.irs_scout.Scouter;
 
 import android.content.Context;
 import com.google.gson.Gson;
 import com.stuin.irs_scout.Data.Section;
 import com.stuin.irs_scout.Data.Task;
-import com.stuin.irs_scout.Views.*;
+import com.stuin.irs_scout.MainActivity;
+import com.stuin.irs_scout.Scouter.Views.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

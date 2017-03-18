@@ -1,11 +1,12 @@
-package com.stuin.irs_scout;
+package com.stuin.irs_scout.Scouter;
 
 import android.view.View;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
-import com.stuin.irs_scout.Views.Page;
+import com.stuin.irs_scout.MainActivity;
+import com.stuin.irs_scout.Scouter.Views.Page;
 
 import java.util.*;
 
