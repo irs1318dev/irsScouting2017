@@ -92,11 +92,15 @@ def insert_data():
     add_name("dates", "name", "na")
 
     # teams imported from schedule
+    add_name("teams", "name", 'na')
+
+
 
     add_name("stations", "name", "na")
     add_name("stations", "name", "1")
     add_name("stations", "name", "2")
     add_name("stations", "name", "3")
+
 
     add_name("actors", "name", "na")
     add_name("actors", "name", "drive_team")
@@ -107,6 +111,7 @@ def insert_data():
     add_name("actors", "name", "team")
 
     # tasks imported from game
+    add_name("tasks", "name", 'na')
 
     add_name("measuretypes", "name", "na")
     add_name("measuretypes", "name", "count")

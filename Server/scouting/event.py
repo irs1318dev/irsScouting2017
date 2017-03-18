@@ -122,3 +122,15 @@ class EventDal(object):
             match = "001-q"
             EventDal.set_current_match(match)
         return match
+
+
+    @staticmethod
+    def match_alliance_details(event, match):
+        match_details = {}
+        sql = text("SELECT * FROM schedules WHERE "
+                   "match = :match "
+                   " AND event = :event ")
+        results = conn.execute(sql, event=event, match=match)
+        for row in results:
+            match_details = dict(row)
+        return match_details
