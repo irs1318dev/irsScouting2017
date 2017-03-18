@@ -56,7 +56,6 @@ def insert_sched(event, season, level='qual'):
         "VALUES (:event,'na','na','na','na','na','na'); "
     )
     conn.execute(select, event=event)
-    data.add_name("na", "name", 'na')
 
 
     for mch in sched:
@@ -106,8 +105,8 @@ def insert_MatchResults(event, season, tournamentLevel):
             load_alliance_measure(event, match, alnce, 'rotorBonusPoints', 'rotorBonusPoints', 'finish')
             load_alliance_measure(event, match, alnce, 'adjustPoints', 'adjustPoints', 'finish')
             load_alliance_measure(event, match, alnce, 'foulPoints', 'foulPoints', 'finish')
+            load_alliance_measure(event, match, alnce, 'totalPoints','totalPoints', 'finish')
 
-            load_alliance_measure(event, match, alnce, 'totalPoints','finalScore', 'finish')
             load_alliance_flag(event, match, alnce, 'rotor1Auto','rotor1Auto', 'auto')
             load_alliance_flag(event, match, alnce, 'rotor2Auto', 'rotor2Auto', 'auto')
             load_alliance_flag(event, match, alnce, 'rotor1Engaged', 'rotor1Engaged', 'finish')
@@ -118,7 +117,7 @@ def insert_MatchResults(event, season, tournamentLevel):
             load_alliance_flag(event, match, alnce, 'rotorRankingPointAchieved', 'rotorRankingPointAchieved', 'finish')
             load_alliance_flag(event, match, alnce, 'touchpadNear', 'touchpadNear', 'finish')
             load_alliance_flag(event, match, alnce, 'touchpadMiddle', 'touchpadMiddle', 'finish')
-
+            load_alliance_rotors(event, match, alnce, 'rotorCount', 'finish')
 
 
 def load_robot_movebaseline(event, match, alnce, station):
@@ -132,6 +131,26 @@ def load_robot_movebaseline(event, match, alnce, station):
     if robot1Auto == 'Mobility':
         success_count = 1
     m.MatchDal.matchteamtask(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
+
+
+def load_alliance_rotors(event, match, alnce, task, phase):
+    alliance = alnce['alliance'].lower()
+    r1 = alnce['rotor1Engaged']
+    r2 = alnce['rotor2Engaged']
+    r3 = alnce['rotor3Engaged']
+    r4 = alnce['rotor4Engaged']
+    attempt_count = 4
+    success_count = 0
+    if r4:
+        success_count = 4
+    elif r3:
+        success_count = 3
+    elif r2:
+        success_count = 2
+    elif r1:
+        success_count = 1
+
+    m.MatchDal.matchalliancetask(alliance, task, phase, match, 0, attempt_count, success_count, 0)
 
 
 def load_alliance_flag(event, match, alnce, firstApiTaskName, taskName, phase):
