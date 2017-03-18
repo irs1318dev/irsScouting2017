@@ -1,4 +1,4 @@
-package com.stuin.irs_scout.Views;
+package com.stuin.irs_scout.Scouter.Views;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,7 +9,6 @@ import com.stuin.cleanvisuals.Slider;
 import com.stuin.cleanvisuals.SliderSync;
 import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
-import com.stuin.irs_scout.Updater;
 
 import java.util.ArrayList;
 import java.util.List;

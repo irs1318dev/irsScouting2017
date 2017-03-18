@@ -1,4 +1,4 @@
-package com.stuin.irs_scout.Views;
+package com.stuin.irs_scout.Scouter.Views;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.R;
-import com.stuin.irs_scout.Updater;
+import com.stuin.irs_scout.Scouter.Updater;
 
 import java.util.ArrayList;
 import java.util.List;

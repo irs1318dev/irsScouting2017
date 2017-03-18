@@ -1,8 +1,7 @@
-package com.stuin.irs_scout.Views;
+package com.stuin.irs_scout.Scouter.Views;
 
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;

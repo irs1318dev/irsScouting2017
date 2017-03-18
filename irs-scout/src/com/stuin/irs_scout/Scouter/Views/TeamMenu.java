@@ -1,16 +1,13 @@
-package com.stuin.irs_scout.Views;
+package com.stuin.irs_scout.Scouter.Views;
 
 import android.content.Context;
-import android.view.Gravity;
-import android.view.View;
 import android.widget.*;
 import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.PitMatch;
-import com.stuin.irs_scout.PitMaker;
+import com.stuin.irs_scout.Scouter.PitMaker;
 import com.stuin.irs_scout.R;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;

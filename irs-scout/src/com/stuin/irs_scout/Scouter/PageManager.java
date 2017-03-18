@@ -1,31 +1,32 @@
-package com.stuin.irs_scout;
+package com.stuin.irs_scout.Scouter;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.cleanvisuals.Slider;
-import com.stuin.irs_scout.Views.Page;
-import com.stuin.irs_scout.Views.TeamMenu;
+import com.stuin.irs_scout.MainActivity;
+import com.stuin.irs_scout.R;
+import com.stuin.irs_scout.Scouter.Views.Page;
+import com.stuin.irs_scout.Scouter.Views.TeamMenu;
 
 import java.util.List;
 
-class PageManager extends FrameLayout {
-    Updater updater;
+public class PageManager extends FrameLayout {
+    public Updater updater;
 
     private int current = -1;
     private Activity activity;
     private LabelMaker labelMaker;
+    private boolean moving;
 
     public PageManager(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
     }
 
-    void start(Activity activity) {
+    public void start(Activity activity) {
         //Start Layout
         labelMaker = new LabelMaker(this);
         setVisibility(VISIBLE);
@@ -84,40 +85,48 @@ class PageManager extends FrameLayout {
             public void enter() {
                 //Notify server
                 if(updater != null) updater.setStatus();
+                moving = false;
             }
 
             @Override
             public void exit() {
                 //Notify server
                 if(updater != null) updater.setStatus();
+                moving = false;
             }
         });
         return page;
     }
 
-    void nextPage(View view) {
-        //Show next phase
-        ((Page) getChildAt(current + 1)).sliderSync.showPrimary();
+    public void nextPage(View view) {
+        if(!moving) {
+            //Show next phase
+            moving = true;
+            ((Page) getChildAt(current + 1)).sliderSync.showPrimary();
 
-        //Set shown buttons
-        activity.findViewById(R.id.Previous).setVisibility(VISIBLE);
-        if(current + 2 == getChildCount()) view.setVisibility(GONE);
+            //Set shown buttons
+            activity.findViewById(R.id.Previous).setVisibility(VISIBLE);
+            if(current + 2 == getChildCount()) view.setVisibility(GONE);
 
-        current++;
-        setPage();
+            current++;
+            setPage();
+        }
     }
 
-    void lastPage(View view) {
-        //Hide old phase
-        ((Page) getChildAt(current)).sliderSync.showSecondary();
+    public void lastPage(View view) {
+        if(!moving) {
+            //Hide old phase
+            moving = true;
+            ((Page) getChildAt(current)).sliderSync.showSecondary();
 
-        //Set shown buttons
-        activity.findViewById(R.id.Next).setVisibility(VISIBLE);
-        if(current == 1) view.setVisibility(GONE);
+            //Set shown buttons
+            activity.findViewById(R.id.Next).setVisibility(VISIBLE);
+            if(current == 1) view.setVisibility(GONE);
 
-        //Set new phase
-        current--;
-        setPage();
+            //Set new phase
+            current--;
+            setPage();
+        }
     }
 
     private void setPage() {
