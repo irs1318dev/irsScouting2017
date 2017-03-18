@@ -56,6 +56,8 @@ def insert_sched(event, season, level='qual'):
         "VALUES (:event,'na','na','na','na','na','na'); "
     )
     conn.execute(select, event=event)
+    data.add_name("na", "name", 'na')
+
 
     for mch in sched:
         match = "{0:0>3}-q".format(mch['matchNumber'])
@@ -75,6 +77,7 @@ def insert_sched(event, season, level='qual'):
             data.add_name("dates", "name", date)
 
 
+
 def insert_MatchResults(event, season, tournamentLevel):
     event = event.lower()
     score_json = api.getMatchScores(event, season, tournamentLevel)
@@ -83,15 +86,45 @@ def insert_MatchResults(event, season, tournamentLevel):
         matchNumber = mch['matchNumber']
         match = "{0:0>3}-q".format(matchNumber)
         for alnce in mch['Alliances']:
-            robot1Auto = alnce['robot1Auto']
-            alliance = alnce['alliance'].lower()
-            match_details = e.EventDal.match_details_station(event, match, alliance, str(1))
-            team1 = match_details['team']
-            success_count = 0
-            attempt_count = 1
-            if robot1Auto == 'Mobility':
-               success_count = 1
-            m.MatchDal.matchteamtask(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
+            load_robot_movebaseline(event, match, alnce, 1)
+            load_robot_movebaseline(event, match, alnce, 2)
+            load_robot_movebaseline(event, match, alnce, 3)
+            load_alliance_measure(event, match, alnce, 'autoFuelLow', 'autoFuelLow', 'finish')
+            load_alliance_measure(event, match, alnce, 'autoFuelHigh', 'autoFuelHigh', 'finish')
+            load_alliance_measure(event, match, alnce, 'teleopFuelLow', 'teleopFuelHigh', 'finish')
+            load_alliance_measure(event, match, alnce, 'teleopFuelHigh', 'teleopFuelHigh', 'finish')
+            load_alliance_measure(event, match, alnce, 'foulCount', 'foulCount', 'finish')
+            load_alliance_measure(event, match, alnce, 'techFoulCount', 'techFoulCount', 'finish')
+            load_alliance_measure(event, match, alnce, 'autoPoints', 'autoPoints', 'finish')
+            load_alliance_measure(event, match, alnce, 'autoMobilityPoints', 'autoMobilityPoints', 'finish')
+            load_alliance_measure(event, match, alnce, 'autoRotorPoints', 'autoRotorPoints', 'finish')
+            load_alliance_measure(event, match, alnce, 'teleopPoints', 'teleopPoints', 'finish')
+            load_alliance_measure(event, match, alnce, 'teleopFuelPoints', 'teleopFuelPoints', 'finish')
+            load_alliance_measure(event, match, alnce, 'teleopRotorPoints', 'teleopRotorPoints', 'finish')
+            load_alliance_measure(event, match, alnce, 'teleopTakeoffPoints', 'teleopTakeoffPoints', 'finish')
+            load_alliance_measure(event, match, alnce, 'kPaBonusPoints', 'kPaBonusPoints', 'finish')
+            load_alliance_measure(event, match, alnce, 'rotorBonusPoints', 'rotorBonusPoints', 'finish')
+            load_alliance_measure(event, match, alnce, 'adjustPoints', 'adjustPoints', 'finish')
+            load_alliance_measure(event, match, alnce, 'foulPoints', 'foulPoints', 'finish')
+
+            load_alliance_measure(event, match, alnce, 'totalPoints','finalScore', 'finish')
+
+def load_robot_movebaseline(event, match, alnce, station):
+    robotKey = 'robot' + str(station) + 'Auto'
+    robot1Auto = alnce[robotKey]
+    alliance = alnce['alliance'].lower()
+    match_details = e.EventDal.match_details_station(event, match, alliance, str(station))
+    team1 = match_details['team']
+    success_count = 0
+    attempt_count = 1
+    if robot1Auto == 'Mobility':
+        success_count = 1
+    m.MatchDal.matchteamtask(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
 
 
-
+def load_alliance_measure(event, match, alnce, firstApiTaskName, taskName, phase):
+    Value = alnce[firstApiTaskName]
+    alliance = alnce['alliance'].lower()
+    success_count = Value
+    attempt_count = Value
+    m.MatchDal.matchalliancetask(alliance, taskName, phase, match, 0, attempt_count, success_count)
