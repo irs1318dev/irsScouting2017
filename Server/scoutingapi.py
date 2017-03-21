@@ -124,7 +124,7 @@ class Scouting(object):
 
     @cherrypy.expose
     def backup(self):
-
+        scouting.export
         return open("web/reset.html").read()
 
     @cherrypy.expose
