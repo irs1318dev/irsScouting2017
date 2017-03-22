@@ -24,15 +24,13 @@ def get_rankings(tasks = None, excel_file = 'Rankings'):
         "LEFT JOIN phases ON phases.id = measures.phase_id) "
         "LEFT JOIN events ON events.id = measures.event_id) "
         "LEFT JOIN actors ON actors.id = measures.actor_id "
-        "WHERE events.name = '" + evt + "' "
+        "WHERE events.name = '" + evt + "' AND actors.name<> 'alliance' "
         "GROUP BY teams.name, tasks.name, phases.name, actors.name "
         "ORDER BY teams.name, phases.name, tasks.name, actors.name;")
     df = pd.read_sql(select_sum, conn)
 
-    # Filter tasks based on tasks argument. If tasks omitted, return all tasks.
     if tasks is not None:
         df = df[df['task'].isin(tasks)]
-    df = df[~df['actor'].isin(['alliance'])]
 
     # Extract each task into it's own column and sort
     df_indexed = df.set_index(['team', 'phase', 'actor', 'task'])
@@ -53,21 +51,27 @@ def get_rankings(tasks = None, excel_file = 'Rankings'):
 
     # Average select statement
     select_avg = text(
-        "SELECT teams.name AS team, phases.name AS phase, tasks.name AS task, actors.name AS actor, "
-        "AVG(successes) AS avg_successes, AVG(attempts) AS avg_attempts "
-        "FROM (((teams FULL OUTER JOIN measures ON teams.id=measures.team_id) "
-        "LEFT JOIN tasks ON tasks.id = measures.task_id) "
-        "LEFT JOIN phases ON phases.id = measures.phase_id) "
-        "LEFT JOIN events ON events.id = measures.event_id "
-        "LEFT JOIN actors ON actors.id = measures.actor_id "
-        "WHERE events.name = '" + evt + "' "
-            "GROUP BY teams.name, tasks.name, phases.name, actors.name "
-            "ORDER BY teams.name, phases.name, tasks.name, actors.name;")
+            "SELECT schedules.team AS team, phases.name AS phase, "
+            "tasks.name AS task, actors.name AS actor, "
+            "AVG(measures.successes) AS avg_successes, "
+            "AVG(measures.attempts) AS avg_attempts "
+            "FROM measures LEFT JOIN matches ON measures.match_id=matches.id "
+            "LEFT JOIN alliances ON measures.alliance_id=alliances.id "
+            "LEFT JOIN schedules ON matches.name=schedules.match AND "
+            "alliances.name=schedules.alliance "
+            "LEFT JOIN stations ON measures.station_id=stations.id "
+            "LEFT JOIN tasks ON measures.task_id=tasks.id "
+            "LEFT JOIN events ON measures.event_id=events.id "
+            "LEFT JOIN actors ON measures.actor_id=actors.id "
+            "LEFT JOIN phases ON measures.phase_id=phases.id "
+            "WHERE events.name = '" + evt + "' AND actors.name='alliance' "
+            "GROUP BY schedules.team, phases.name, tasks.name, actors.name "
+            "ORDER BY tasks.name, schedules.team;")
+
     df_avg = pd.read_sql(select_avg, conn)
 
     if tasks is not None:
         df_avg = df_avg[df_avg['task'].isin(tasks)]
-    df_avg = df_avg[df_avg['actor'].isin(['alliance'])]
 
     print df_avg.head()  # debug
     df_avg_index = df_avg.set_index(['team', 'phase', 'actor', 'task'])
@@ -77,7 +81,8 @@ def get_rankings(tasks = None, excel_file = 'Rankings'):
     print df_avg_unstacked # debug
 
     # merging summary and average dataframes
-    df_all = pd.concat([df_unstacked, df_avg_unstacked], axis= 1)
+    df_joined = pd.concat([df_unstacked, df_avg_unstacked], axis=1)
+    df_joined = df_joined.sort_index(axis=1, level=[0, 1, 2])
 
     # Save to Excel
     if excel_file is not None:
@@ -90,7 +95,7 @@ def get_rankings(tasks = None, excel_file = 'Rankings'):
         file_path =  tkFileDialog.asksaveasfilename(defaultextension = 'xlsx',
                 title = "Save Rankings File", initialfile = fname,
                                                     parent = root)
-        df_all.to_excel(file_path, sheet_name='Rankings')
+        df_joined.to_excel(file_path, "All")
         root.destroy() # Necessary for closing tkinter window.
 
     #return df_all
