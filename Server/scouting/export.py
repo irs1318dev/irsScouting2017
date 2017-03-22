@@ -1,5 +1,7 @@
 import db
 import os
+import time
+import datetime
 
 engine = db.getdbengine()
 conn = engine.connect()
@@ -37,4 +39,16 @@ class ExportCSV(object):
         ExportCSV.single('games')
         ExportCSV.single('task_options')
         ExportCSV.single('status')
+
+class ExportBackup(object):
+
+    @staticmethod
+    def getTimeStamp():
+        ts = time.time()
+        time = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m%d-%H%M')
+        return time
+
+    @staticmethod
+    def runBackup(event):
+
 

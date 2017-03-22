@@ -1,0 +1,41 @@
+body {
+	text-align: center;
+}
+
+table, th, td {
+    border: 1px solid silver;
+	color: #f9b234;
+}
+
+body, submit, input {
+	background-color: #662382;
+}
+
+h1, h3, a, submit, input {
+	color: #f9b234;
+}
+
+fieldset {
+	display: inline-block;
+}
+
+.Red {
+	background-color: red;
+	color: white;
+}
+
+.Blue {
+	background-color: blue;
+	color: white;
+}
+
+.table {
+	margin-left: auto;
+	margin-right: auto;
+	border-collapse: collapse;
+	border-width: 2px;
+}
+
+th, td {
+	padding: 10px 15px;
+}
