@@ -5,6 +5,7 @@ import scouting.sections
 import scouting.match
 import scouting.event
 import scouting.export
+import scouting.output
 
 
 class Scouting(object):
@@ -83,7 +84,10 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchteamtask(self, match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
-        scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
+        try:
+            scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
+        except KeyError:
+            return 'Error'
         return 'hi'
 
     @cherrypy.expose
@@ -105,7 +109,7 @@ class Scouting(object):
 
     @cherrypy.expose
     def tablets(self):
-        return scouting.tablet.TabletList.gettablets(self.alltablets)
+        return self.alltablets.gettablets()
 
     @cherrypy.expose
     def matchcurrent(self, match):
@@ -119,13 +123,11 @@ class Scouting(object):
         return open("web/reset.html").read()
 
     @cherrypy.expose
-    def backup(self):
-        scouting.export
-        return open("web/reset.html").read()
-
-    @cherrypy.expose
-    def restore(self, path):
-
+    def output(self, tasks=''):
+        if tasks == '':
+            scouting.output.get_rankings()
+        else:
+            scouting.output.get_rankings(tasks)
         return open("web/reset.html").read()
 
 if __name__ == '__main__':

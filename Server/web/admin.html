@@ -2,7 +2,51 @@
 <html>
 	<head>
 		<meta http-equiv="refresh" content="20;"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="styles/styles.css">
+		<style>
+			body {
+				text-align: center;
+			}
+
+			table, th, td {
+				border: 1px solid silver;
+				color: #f9b234;
+			}
+
+			body, submit, input {
+				background-color: #662382;
+			}
+
+			h1, h3, a, submit, input {
+				color: #f9b234;
+			}	
+
+			fieldset {
+				display: inline-block;
+			}
+
+			.Red {
+				background-color: red;
+				color: white;
+			}
+
+			.Blue {
+				background-color: blue;
+				color: white;
+			}
+			
+			.table {
+				margin-left: auto;
+				margin-right: auto;
+				border-collapse: collapse;
+				border-width: 2px;
+			}
+
+			th, td {
+				padding: 10px 15px;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -34,17 +78,15 @@
 			<input type="submit" value="Set Match" onclick="setMatch();"/>
 		</fieldset>
 
-		<h3>Tablets: </h3>
+		<h3><a href="/tablets" color="#f9b234">Tablets: </a></h3>
 		<table class="table">
 			<tr class="Red">
-				<th class="Red">Red</th>
 				<td class="Red">{Red1}</td>
 				<td class="Red">{Red2}</td>
 				<td class="Red">{Red3}</td>
 				<td class="Red">{RFuel}</td>
 			</tr>
 			<tr class="Blue">
-				<th class="Blue">Blue</th>
 				<td class="Blue">{Blue1}</td>
 				<td class="Blue">{Blue2}</td>
 				<td class="Blue">{Blue3}</td>
@@ -52,8 +94,6 @@
 			</tr>
 		</table>
 
-		<h3><a href="/backup" color="#f9b234">Output Data</a></h3>
-		<label for="file">Backup File</label>
-		<input id="file" name="file" type="file">
+		<h3><a href="/output" color="#f9b234">Output Data</a></h3>
 	</body>
 </html>

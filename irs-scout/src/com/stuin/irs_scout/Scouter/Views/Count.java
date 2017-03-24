@@ -18,7 +18,7 @@ import com.stuin.irs_scout.R;
 public class Count extends Label {
     private boolean drop;
     private boolean missing;
-    private boolean large = false;
+    private int large = 0;
     private int miss = -1;
     private int max = 30;
 
@@ -26,8 +26,10 @@ public class Count extends Label {
         super(context, task, position);
         if(!task.miss.isEmpty()) miss = 1;
 
-        if(MainActivity.position.contains("Fuel")) large = true;
-        if(large) {
+        if(MainActivity.position.contains("Fuel")) large = 10;
+        if(MainActivity.position.contains("Pit")) large = 5;
+
+        if(large > 0) {
             max = 300;
             if(miss != -1) miss = 2;
         }
@@ -41,10 +43,10 @@ public class Count extends Label {
         column.addView(linearLayout);
 
         part(task.success);
-        if(large) part("+10");
+        if(large > 0) part("+" + large);
 
         if(miss != -1) {
-            if(large) {
+            if(large > 0) {
                 linearLayout = new LinearLayout(getContext());
                 linearLayout.setOrientation(LinearLayout.HORIZONTAL);
                 linearLayout.setGravity(Gravity.CENTER);
@@ -52,7 +54,7 @@ public class Count extends Label {
             }
 
             part(task.miss);
-            if(large) part("+10");
+            if(large > 0) part("+" + large);
         }
 
     }
@@ -93,13 +95,13 @@ public class Count extends Label {
                     }
                 } else if(miss != -1 && view == views.get(miss)) {
                     if(measure.attempts - measure.successes < max) measure.attempts++;
-                } else if(large && view == views.get(1)) {
-                    if(measure.successes + 9 < max) {
-                        measure.successes += 10;
-                        measure.attempts += 10;
+                } else if(large > 0 && view == views.get(1)) {
+                    if(measure.successes + large - 1 < max) {
+                        measure.successes += large;
+                        measure.attempts += large;
                     }
-                } else if(miss != -1 && large && view == views.get(3)) {
-                    if(measure.attempts - measure.successes + 9 < max) measure.attempts += 10;
+                } else if(miss != -1 && large > 0 && view == views.get(3)) {
+                    if(measure.attempts - measure.successes + large - 1 < max) measure.attempts += large;
                 }
             } else {
                 countDownTimer.cancel();
@@ -121,17 +123,17 @@ public class Count extends Label {
                     measure.successes--;
                     measure.attempts--;
                 }
-            } else if(large && view == views.get(1)) {
+            } else if(large > 0 && view == views.get(1)) {
                 int old = measure.successes;
-                measure.successes -= 10;
+                measure.successes -= large;
                 if(measure.successes < 0) measure.successes = 0;
                 measure.attempts -= (old - measure.successes);
                 start = false;
             } else if(miss != -1 && view == views.get(miss)) {
                 missing = true;
                 if(measure.attempts > 0) measure.attempts--;
-            } else if(miss != -1 && large && view == views.get(3)) {
-                measure.attempts -= 10;
+            } else if(miss != -1 && large > 0 && view == views.get(3)) {
+                measure.attempts -= large;
                 if(measure.attempts < 0) measure.attempts = 0;
                 start = false;
             }

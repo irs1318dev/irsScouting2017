@@ -13,7 +13,7 @@ class TabletDAL(object):
         s = self.position + ":" + self.page
         if self.ip > -1:
             s += ":" + str(self.ip)
-        s += "\n"
+        s += "    <br>   "
         return s
 
     def checkfail(self):
@@ -37,14 +37,13 @@ class TabletList(object):
                     self.alltablets[i].ip = newtablet.ip
 
                 found = True
-            if self.checknext(i):
+            if self.findnext(self.alltablets[i]):
                 nextmatch = False
             i += 1
 
         if not found:
-            i = len(self.alltablets)
             self.alltablets.append(newtablet)
-            if self.checknext(i):
+            if self.findnext(newtablet):
                 nextmatch = False
 
         if nextmatch and newtablet.position == "Pit":
@@ -52,7 +51,7 @@ class TabletList(object):
 
         if nextmatch:
             self.alltablets[0].page = "Reset"
-        else:
+        if not nextmatch and newtablet.position == "Auto":
             self.alltablets[0].page = "Waiting"
 
         return nextmatch
@@ -72,10 +71,9 @@ class TabletList(object):
 
         return table
 
-    def checknext(self, i):
-        tablet = self.alltablets[i]
-
-        tablet.check = datetime.now().second
+    @staticmethod
+    def findnext(tablet):
+        tablet.last = datetime.now().second
         threading.Timer(21, tablet.checkfail).start()
 
         if "Waiting" in tablet.page:

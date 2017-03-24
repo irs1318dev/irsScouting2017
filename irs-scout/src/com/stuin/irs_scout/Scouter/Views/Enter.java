@@ -54,8 +54,9 @@ public class Enter extends Label{
     @Override
     protected void update(Measure measure, boolean send) {
         super.update(measure, send);
+        measure.attempts = 100;
 
-        String s = measure.capability + "%";
+        String s = measure.successes + "%";
 
         EditText editText = (EditText) views.get(0);
         editText.setText(s);
@@ -64,9 +65,10 @@ public class Enter extends Label{
     private EditText.OnEditorActionListener actionListener = new OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-            measure.capability = textView.getText().toString().replace("%", "");
-            if(Integer.valueOf(measure.capability) > 100) measure.capability = "100";
-            update(measure, !measure.capability.isEmpty());
+            measure.successes = Integer.valueOf(textView.getText().toString().replace("%", ""));
+            if(measure.successes > 100) measure.successes = 100;
+
+            update(measure, true);
             return false;
         }
     };

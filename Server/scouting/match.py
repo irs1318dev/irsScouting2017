@@ -99,7 +99,7 @@ class MatchDal(object):
             successes = row['successes']
             cycle_times = row['cycle_times']
 
-            if capability > 0:
+            if capability > 0 and not capability == 100:
                 capability = MatchDal.task_option_ids[capability].split('-')[1]
 
             out += json.dumps(OrderedDict([('match', match), ('team', team), ('task', task), ('phase', phase),
