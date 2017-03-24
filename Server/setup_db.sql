@@ -20,3 +20,11 @@ CREATE USER irs1318 WITH
     CREATEDB
     CREATEROLE
 	REPLICATION;
+
+
+-- backup command for windows
+-- if you are logged in
+--"C:\Program Files\PostgreSQL\9.6\bin\pg_dump.exe" --file "C:/Users/james/PycharmProjects/irsScouting2017/Server/dbbackup/waamv_2017_with_results.backup" --host "localhost" --port "5432" --username "postgres" --no-password --verbose --role "irs1318" --format=t --blobs --encoding "UTF8" "scouting"
+
+-- if you have not yet logged in
+--"C:\Program Files\PostgreSQL\9.6\bin\pg_dump.exe" --file "C:/Users/james/PycharmProjects/irsScouting2017/Server/dbbackup/waamv_2017_with_results.backup" --host "localhost" --port "5432" --username "postgres" --verbose --role "irs1318" --format=t --blobs --encoding "UTF8" "scouting"
