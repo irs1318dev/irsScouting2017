@@ -123,11 +123,8 @@ class Scouting(object):
         return open("web/reset.html").read()
 
     @cherrypy.expose
-    def output(self, tasks=''):
-        if tasks == '':
-            scouting.output.get_rankings()
-        else:
-            scouting.output.get_rankings(tasks)
+    def output(self):
+        scouting.output.get_report()
         return open("web/reset.html").read()
 
     @cherrypy.expose
