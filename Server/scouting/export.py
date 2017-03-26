@@ -43,10 +43,6 @@ class ExportCSV(object):
 class ExportBackup(object):
 
     @staticmethod
-    def getTimeStamp():
-        time = datetime.datetime.now().strftime('%Y-%m%d-%H%M')
-        return time
-
-    @staticmethod
     def runBackup(event):
-        return None
+        name = event + datetime.datetime.now().strftime('_%Y_%m%d_%H%M')
+        return '"C:/Program Files/PostgreSQL/9.6/bin/pg_dump" -U irs1318 scouting > Desktop/' + name
