@@ -130,6 +130,11 @@ class Scouting(object):
             scouting.output.get_rankings(tasks)
         return open("web/reset.html").read()
 
+    @cherrypy.expose
+    def backup(self):
+        # return open("web/reset.html").read()
+        return scouting.export.ExportBackup.runBackup(self.eventDal.get_current_event())
+
 if __name__ == '__main__':
     cherrypy.config.update(
         {'server.socket_host': '0.0.0.0'})

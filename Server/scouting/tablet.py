@@ -51,7 +51,7 @@ class TabletList(object):
 
         if nextmatch:
             self.alltablets[0].page = "Reset"
-        if not nextmatch and newtablet.position == "Auto":
+        if newtablet.page == "Auto":
             self.alltablets[0].page = "Waiting"
 
         return nextmatch
