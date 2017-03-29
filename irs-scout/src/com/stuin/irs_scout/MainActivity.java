@@ -2,7 +2,9 @@ package com.stuin.irs_scout;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -83,5 +85,11 @@ public class MainActivity extends Activity {
     public void lastPage(View view) {
         //Previous phase button
         form.lastPage(view);
+    }
+
+    public void site(View view) {
+        Uri url = Uri.parse("http://" + MainActivity.address + ":8080/");
+        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, url);
+        startActivity(launchBrowser);
     }
 }

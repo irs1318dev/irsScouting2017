@@ -133,11 +133,11 @@ public class PageManager extends FrameLayout {
         //Show new phase
         getChildAt(current).setVisibility(VISIBLE);
 
-        updater.setStatus();
-
         //Set phase title
         String name =  ((Page) getChildAt(current)).name;
         name = name.substring(0,1).toUpperCase() + name.substring(1);
         ((TextView) activity.findViewById(R.id.PageStatus)).setText(MainActivity.position + ": " + name);
+
+        updater.setStatus();
     }
 }

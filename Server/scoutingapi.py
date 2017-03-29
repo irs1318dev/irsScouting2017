@@ -1,4 +1,6 @@
 import cherrypy
+import os
+import viewerapi
 import scouting.tasks
 import scouting.tablet
 import scouting.sections
@@ -13,7 +15,6 @@ class Scouting(object):
         self.matchDal = scouting.match.MatchDal()
         self.eventDal = scouting.event.EventDal()
         self.alltablets = scouting.tablet.TabletList()
-        return
 
     @cherrypy.expose
     def index(self):
@@ -122,17 +123,11 @@ class Scouting(object):
         scouting.event.EventDal.set_current_event(event)
         return open("web/reset.html").read()
 
-    @cherrypy.expose
-    def output(self):
-        scouting.output.get_report()
-        return open("web/reset.html").read()
-
-    @cherrypy.expose
-    def backup(self):
-        # return open("web/reset.html").read()
-        return scouting.export.ExportBackup.runBackup(self.eventDal.get_current_event())
-
 if __name__ == '__main__':
     cherrypy.config.update(
         {'server.socket_host': '0.0.0.0'})
-    cherrypy.quickstart(Scouting())
+
+    conf = {"/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': os.path.abspath('web')}}
+
+    cherrypy.tree.mount(viewerapi.Viewer(False), '/view', config=conf)
+    cherrypy.quickstart(Scouting(), '/', config=conf)

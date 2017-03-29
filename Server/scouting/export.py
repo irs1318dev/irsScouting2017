@@ -1,6 +1,7 @@
 import db
 import os
 import datetime
+import subprocess
 
 engine = db.getdbengine()
 conn = engine.connect()
@@ -41,8 +42,16 @@ class ExportCSV(object):
 
 
 class ExportBackup(object):
-
     @staticmethod
     def runBackup(event):
         name = event + datetime.datetime.now().strftime('_%Y_%m%d_%H%M')
-        return '"C:/Program Files/PostgreSQL/9.6/bin/pg_dump" -U irs1318 scouting > Desktop/' + name
+        command = ['pg_dump', '-U', 'irs1318', 'scouting']
+
+        subprocess.call(command, stdout=open('web/data/' + name, 'w'))
+        return name
+
+    @staticmethod
+    def runRestore(path):
+        command = ['pgsql', '-U', 'irs1318', 'scouting']
+
+        subprocess.call(command, stdin=open(path))

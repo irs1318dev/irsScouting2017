@@ -1,4 +1,5 @@
 import db
+import os
 import event
 from sqlalchemy.sql import text
 import pandas as pd
@@ -7,7 +8,8 @@ import datetime
 import tkFileDialog
 from collections import OrderedDict
 
-def get_rankings(tasks = None, num_matches = 12, excel_file = 'Rankings'):
+
+def get_rankings(name=None, tasks=None, num_matches=12):
     # Connect to database
     engine = db.getdbengine()
     conn = engine.connect()
@@ -136,32 +138,29 @@ def get_rankings(tasks = None, num_matches = 12, excel_file = 'Rankings'):
     df_joined = df_joined.sort_index(axis=1, level=[0, 1, 2])
 
     # Save to Excel
-    if excel_file is not None:
-        # Create timestamp for filename
-        ts = datetime.datetime.now().strftime("%Y%b%d_%H%M%S")
-        fname = excel_file + '_' + evt + ts + '.xlsx'
-
-        # Display save-as file dialog.
-        root = Tkinter.Tk()
-        file_path =  tkFileDialog.asksaveasfilename(defaultextension = 'xlsx',
-                title = "Save Rankings File", initialfile = fname,
-                                                    parent = root)
-        df_joined.to_excel(file_path, "All")
-        root.destroy() # Necessary for closing tkinter window.
+    if name is not None:
+        df_joined.to_excel(name, "All")
 
     return df_joined
 
-def get_Basic_Ranking(excel_file = None):
-    get_rankings(['moveBaseline', 'placeGear','shootHighBoiler',
-                  'shootLowBoiler'])
 
-def get_report():
-    tasks = ['placeGear','shootHighBoiler','shootLowBoiler','pushTouchPad',
-             'climbRope','defendMovement','moveBaseline']
-    raw_df = get_rankings(tasks, excel_file=None)
+def get_Basic_Ranking(name):
+    return get_rankings(name, ['moveBaseline', 'placeGear', 'shootHighBoiler', 'shootLowBoiler'])
+
+
+def get_Path(start):
+    ts = datetime.datetime.now().strftime("%Y%b%d_%H%M%S")
+    excel = start + '_' + event.EventDal.get_current_event() + ts + '.xlsx'
+    return os.path.abspath('web/data/' + excel)
+
+
+def get_report(name):
+    tasks = ['placeGear', 'shootHighBoiler', 'shootLowBoiler', 'pushTouchPad',
+             'climbRope', 'defendMovement', 'moveBaseline']
+    raw_df = get_rankings(None, tasks)
     final_df = pd.DataFrame()
     final_df['AutoGearMatches'] = raw_df['auto']['robot']['placeGear']['matches']
-    final_df['AutoGearMatches'] = raw_df['auto']['robot']['placeGear']['sum_attempts']
+    final_df['AutoGearAttempts'] = raw_df['auto']['robot']['placeGear']['sum_attempts']
     final_df['placeGearAutoAvg'] = raw_df['auto']['robot']['placeGear']['sum_successes'] / raw_df['auto']['robot']['placeGear']['matches']
     final_df['placeGearAuto%'] = raw_df['auto']['robot']['placeGear']['sum_successes'] / raw_df['auto']['robot']['placeGear']['sum_attempts']
 
@@ -179,20 +178,8 @@ def get_report():
     final_df['defendMovement'] = raw_df['teleop']['robot']['defendMovement']['sum_successes'] / raw_df['teleop']['robot']['defendMovement']['matches']
     final_df['moveBaseline'] = raw_df['auto']['robot']['moveBaseline']['sum_successes'] / raw_df['auto']['robot']['moveBaseline']['matches']
 
-    ts = datetime.datetime.now().strftime("%Y%b%d_%H%M%S")
-    fname = 'Report' + '_' + 'wasno' + ts + '.xlsx'
-
-    # Display save-as file dialog.
-    root = Tkinter.Tk()
-    file_path = tkFileDialog.asksaveasfilename(defaultextension='xlsx',
-                                               title="Save Rankings File",
-                                               initialfile=fname,
-                                               parent=root)
-
-    print file_path #DEBUG:
-    writer = pd.ExcelWriter(file_path, engine='xlsxwriter')
+    writer = pd.ExcelWriter(name, engine='xlsxwriter')
     final_df.to_excel(writer, sheet_name="All")
-    root.destroy()  # Necessary for closing tkinter window.
 
     # Format workbook
 
@@ -213,10 +200,11 @@ def get_report():
 
     int_format_grey = wkbk.add_format({'num_format': '0'})
 
+    wksheet.set_column('B:B', width, int_format_grey)
     wksheet.set_column('C:C', width, dec_format)
-    wksheet.set_column('D:D', width, per_format)
-    wksheet.set_column('E:E', width, dec_format)
-    wksheet.set_column('F:F', width, per_format)
+    wksheet.set_column('D:D', width, dec_format)
+    wksheet.set_column('E:E', width, per_format)
+    wksheet.set_column('F:F', width, dec_format)
     wksheet.set_column('G:G', width, per_format)
     wksheet.set_column('H:H', width, per_format)
     wksheet.set_column('I:I', width, per_format)
