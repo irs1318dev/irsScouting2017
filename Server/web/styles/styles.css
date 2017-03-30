@@ -9,6 +9,7 @@ table, th, td {
 
 body, submit, input {
 	background-color: #662382;
+	margin: 5px;
 }
 
 h1, h3, a, submit, input {
@@ -38,4 +39,15 @@ fieldset {
 
 th, td {
 	padding: 10px 15px;
+}
+
+.flex-container {
+    display: -webkit-flex;
+    display: flex;
+	margin: 10px;
+}
+
+.flex-item {
+    margin: 10px;
+	background-color: gray;
 }
