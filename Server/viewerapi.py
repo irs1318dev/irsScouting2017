@@ -4,12 +4,14 @@ import os
 import scouting.export
 import scouting.output
 import scouting.event
+import scouting.alliance
 
 
 class Viewer:
     def __init__(self, alone=True):
         self.alone = alone
         self.export = scouting.export.ExportBackup
+        self.alliances = scouting.alliance.AlliancePage()
 
     @cherrypy.expose
     def index(self):
@@ -21,7 +23,7 @@ class Viewer:
             out = out.replace('{Back}', '')
         else:
             out = out.replace('{Backup}', '<h3><a href="/view/backup">Backup Database</a></h3>')
-            out = out.replace('{Back}', '<h5><a href="/">Scouting Director</a></h5>')
+            out = out.replace('{Back}', '<h3><a href="/">Scouting Director</a></h3>')
 
         return out
 
@@ -62,6 +64,21 @@ class Viewer:
     @cherrypy.expose
     def sync(self):
         return 'WIP'
+
+    @cherrypy.expose
+    def selection(self, team='', index=-1, out=False):
+        self.alliances.start()
+        if team != '':
+            self.alliances.alliances.set(team)
+        if index != -1:
+            self.alliances.alliances.choose(index)
+        if out:
+            self.alliances.alliances.output()
+
+        out = open("web/selection.html").read()
+        out = out.replace("{Unset}", self.alliances.unset())
+        out = self.alliances.selections(out)
+        return out
 
 if __name__ == '__main__':
     conf = {

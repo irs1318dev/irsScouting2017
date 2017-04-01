@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import com.stuin.irs_scout.Scouter.PageManager;
-import com.stuin.irs_scout.Scouter.Request;
+import com.stuin.cleanvisuals.Request;
 
 import java.util.List;
 
@@ -17,9 +17,7 @@ import java.util.List;
 public class MainActivity extends Activity {
     private PageManager form;
 
-    public static String address;
     public static String position;
-    public static boolean error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +27,9 @@ public class MainActivity extends Activity {
         getActionBar().hide();
 
         //Retrieve last ip
-        address = getPreferences(Context.MODE_PRIVATE).getString("Address", getResources().getString(R.string.form_ip));
+        Request.address = getPreferences(Context.MODE_PRIVATE).getString("Address", getResources().getString(R.string.form_ip));
         TextView textView = (TextView) findViewById(R.id.AddressBar);
-        textView.setText(address);
+        textView.setText(Request.address);
     }
 
     public void position(View view) {
@@ -41,7 +39,7 @@ public class MainActivity extends Activity {
 
         //Get server address
         textView = (TextView) findViewById(R.id.AddressBar);
-        address = textView.getText().toString();
+        Request.address = textView.getText().toString();
 
         //Check connection
         class Connected extends Request {
@@ -55,7 +53,7 @@ public class MainActivity extends Activity {
     private void connected() {
         //Save correct address
         SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
-        editor.putString("Address", address);
+        editor.putString("Address", Request.address);
         editor.apply();
 
         //Hide start screen
@@ -88,7 +86,7 @@ public class MainActivity extends Activity {
     }
 
     public void site(View view) {
-        Uri url = Uri.parse("http://" + MainActivity.address + ":8080/");
+        Uri url = Uri.parse("http://" + Request.address + ":8080/");
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, url);
         startActivity(launchBrowser);
     }

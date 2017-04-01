@@ -7,6 +7,7 @@ import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.MainActivity;
 import com.stuin.irs_scout.Scouter.Views.Page;
+import com.stuin.cleanvisuals.Request;
 
 import java.util.*;
 

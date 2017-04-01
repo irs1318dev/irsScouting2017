@@ -3,8 +3,8 @@ package com.stuin.irs_scout.Scouter;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.RadioButton;
+import com.stuin.cleanvisuals.Request;
 import com.stuin.irs_scout.Data.Measure;
-import com.stuin.irs_scout.MainActivity;
 
 import java.util.*;
 
@@ -28,8 +28,8 @@ public class Updater {
     private CountDownTimer countDownTimer = new CountDownTimer(10000,100) {
         @Override
         public void onTick(long l) {
-            status.setChecked(MainActivity.error);
-            if(MainActivity.error) last = "";
+            status.setChecked(Request.error);
+            if(Request.error) last = "";
             send();
         }
 
@@ -49,7 +49,7 @@ public class Updater {
     };
 
     public void setStatus() {
-        ip = "&ip=" + MainActivity.address;
+        ip = "&ip=" + Request.address;
         countDownTimer.cancel();
         countDownTimer.onFinish();
     }
