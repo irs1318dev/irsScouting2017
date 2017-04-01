@@ -159,24 +159,27 @@ def get_report(name):
              'climbRope', 'defendMovement', 'moveBaseline']
     raw_df = get_rankings(None, tasks)
     final_df = pd.DataFrame()
-    final_df['AutoGearMatches'] = raw_df['auto']['robot']['placeGear']['matches']
-    final_df['AutoGearAttempts'] = raw_df['auto']['robot']['placeGear']['sum_attempts']
-    final_df['placeGearAutoAvg'] = raw_df['auto']['robot']['placeGear']['sum_successes'] / raw_df['auto']['robot']['placeGear']['matches']
-    final_df['placeGearAuto%'] = raw_df['auto']['robot']['placeGear']['sum_successes'] / raw_df['auto']['robot']['placeGear']['sum_attempts']
+    final_df['AutoGearMatch'] = raw_df['auto']['robot']['placeGear']['matches']
+    #final_df['AutoGearAttp'] = raw_df['auto']['robot']['placeGear']['sum_attempts']
+    final_df['pGearAutoAvg'] = raw_df['auto']['robot']['placeGear']['sum_successes'] / raw_df['auto']['robot']['placeGear']['matches']
+    final_df['pGearAuto%'] = raw_df['auto']['robot']['placeGear']['sum_successes'] / raw_df['auto']['robot']['placeGear']['sum_attempts']
 
-    final_df['placeGearTeleopAvg'] = raw_df['teleop']['robot']['placeGear']['sum_successes'] / raw_df['teleop']['robot']['placeGear']['matches']
-    final_df['placeGearTeleop%'] = raw_df['teleop']['robot']['placeGear']['sum_successes'] / raw_df['teleop']['robot']['placeGear']['sum_attempts']
+    final_df['pGearTeleAvg'] = raw_df['teleop']['robot']['placeGear']['sum_successes'] / raw_df['teleop']['robot']['placeGear']['matches']
+    final_df['pGearTele%'] = raw_df['teleop']['robot']['placeGear']['sum_successes'] / raw_df['teleop']['robot']['placeGear']['sum_attempts']
 
-    final_df['shootHighBoilerAuto%'] = raw_df['auto']['robot']['shootHighBoiler']['sum_successes'] / raw_df['auto']['robot']['shootHighBoiler']['sum_attempts']
-    final_df['shootHighBoilerTeleop%'] = raw_df['teleop']['robot']['shootHighBoiler']['sum_successes'] / raw_df['auto']['robot']['shootHighBoiler']['sum_attempts']
-
-    final_df['shootLowBoilerAuto%'] = raw_df['auto']['robot']['shootLowBoiler']['sum_successes'] / raw_df['teleop']['robot']['shootLowBoiler']['sum_attempts']
-    final_df['shootLowBOilerTeleop%'] = raw_df['teleop']['robot']['shootLowBoiler']['sum_successes'] / raw_df['teleop']['robot']['shootLowBoiler']['sum_attempts']
+    final_df['HighBoilerAutoAvg'] = raw_df['auto']['robot']['shootHighBoiler']['sum_successes'] / raw_df['auto']['robot']['shootHighBoiler']['matches']
+    final_df['HighBoilerTeleAvg'] = raw_df['teleop']['robot']['shootHighBoiler']['sum_successes'] / raw_df['auto']['robot']['shootHighBoiler']['matches']
 
     final_df['pushTouchPad'] = raw_df['finish']['robot']['pushTouchPad']['sum_successes'] / raw_df['finish']['robot']['pushTouchPad']['matches']
     #final_df['climbRope'] = raw_df['finish']['robot']['climbRope']['sum_successes'] / raw_df['finish']['robot']['climbRope']['matches']
     final_df['defendMovement'] = raw_df['teleop']['robot']['defendMovement']['sum_successes'] / raw_df['teleop']['robot']['defendMovement']['matches']
     final_df['moveBaseline'] = raw_df['auto']['robot']['moveBaseline']['sum_successes'] / raw_df['auto']['robot']['moveBaseline']['matches']
+
+    final_df['HighBoilerAuto%'] = raw_df['auto']['robot']['shootHighBoiler']['sum_successes'] / raw_df['auto']['robot']['shootHighBoiler']['sum_attempts']
+    final_df['HighBoilerTele%'] = raw_df['teleop']['robot']['shootHighBoiler']['sum_successes'] / raw_df['auto']['robot']['shootHighBoiler']['sum_attempts']
+
+    final_df['LowBoilerAuto%'] = raw_df['auto']['robot']['shootLowBoiler']['sum_successes'] / raw_df['teleop']['robot']['shootLowBoiler']['sum_attempts']
+    final_df['LowBoilerTele%'] = raw_df['teleop']['robot']['shootLowBoiler']['sum_successes'] / raw_df['teleop']['robot']['shootLowBoiler']['sum_attempts']
 
     writer = pd.ExcelWriter(name, engine='xlsxwriter')
     final_df.to_excel(writer, sheet_name="All")
@@ -186,7 +189,7 @@ def get_report(name):
     wkbk = writer.book
     wksheet = writer.sheets['All']
 
-    width = 20
+    width = 8
 
     dec_format = wkbk.add_format({'num_format': '0.00'})
 
@@ -200,19 +203,32 @@ def get_report(name):
 
     int_format_grey = wkbk.add_format({'num_format': '0'})
 
-    wksheet.set_column('B:B', width, int_format_grey)
-    wksheet.set_column('C:C', width, dec_format)
-    wksheet.set_column('D:D', width, dec_format)
-    wksheet.set_column('E:E', width, per_format)
-    wksheet.set_column('F:F', width, dec_format)
-    wksheet.set_column('G:G', width, per_format)
-    wksheet.set_column('H:H', width, per_format)
-    wksheet.set_column('I:I', width, per_format)
-    wksheet.set_column('J:J', width, per_format)
-    wksheet.set_column('K:K', width, dec_format)
-    wksheet.set_column('L:L', width, dec_format)
-    wksheet.set_column('M:M', width, dec_format)
+    # wksheet.set_column('B1:B1', width, text_60)
+    # wksheet.set_column('C1:C1', width, text_60)
+    format = wkbk.add_format()
+    format.set_rotation(70)
 
+    name = ['AutoGearMatch','pGearAutoAvg','pGearAuto%','pGearTeleAvg','pGearTele%','HighBoilerAutoAvg',
+            'HighBoilerTeleAvg','pushTouchPad','defendMovement','moveBaseline','HighBoilerAuto%','HighBoilerTele%',
+             'LowBoilerAuto%','LowBoilerTele%']
+    val = 1
+    for i in name:
+        wksheet.write(0, val,i, format)
+        val = val + 1
+    wksheet.set_column('B2:B100', width, int_format_grey)
+    wksheet.set_column('C:C', width, dec_format)
+    wksheet.set_column('D:D', width, per_format)
+    wksheet.set_column('E:E', width, dec_format)
+    wksheet.set_column('F:F', width, per_format)
+    wksheet.set_column('G:G', width, dec_format)
+    wksheet.set_column('H:H', width, dec_format)
+    wksheet.set_column('I:I', width, dec_format)
+    wksheet.set_column('J:J', width, dec_format)
+    wksheet.set_column('K:K', width, dec_format)
+    wksheet.set_column('L:L', width, per_format)
+    wksheet.set_column('M:M', width, per_format)
+    wksheet.set_column('N:N', width, per_format)
+    wksheet.set_column('O:O', width, per_format)
 
     # for row in range(0, 100):
     #     if (row % 2 == 1):
