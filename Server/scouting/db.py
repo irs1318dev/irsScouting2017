@@ -6,10 +6,10 @@ from sqlalchemy import UniqueConstraint
 
 # ========== Database Connection ==============================================
 connection_string = 'postgresql://irs1318:irs1318@localhost:5432/scouting'
-
+engine = create_engine(connection_string)
 
 def getdbengine():
-    return create_engine(connection_string)
+    return engine
 
 
 # ========== Table Definitions ================================================
