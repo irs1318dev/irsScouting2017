@@ -1,6 +1,6 @@
 import cherrypy
 from cherrypy.lib.static import serve_file
-import os
+import os.path
 import scouting.export
 import scouting.output
 import scouting.event
@@ -42,7 +42,10 @@ class Viewer:
 
     @cherrypy.expose
     def data(self, name):
-        return serve_file(name, "application/x-download", "attachment")
+        name = os.path.abspath('web/data/') + '/' + name
+        if os.path.exists(name):
+            return serve_file(name, "application/x-download", "attachment")
+        return 'No File Found'
 
     @cherrypy.expose
     def output(self):
@@ -54,7 +57,7 @@ class Viewer:
     @cherrypy.expose
     def backup(self):
         script = self.export.runBackup(scouting.event.EventDal.get_current_event())
-        return '<a href="/view/data?name="' + script + '">Download File</a>'
+        return '<a href="/view/data?name=' + script + '">Download File</a>'
         # return open("web/resetView.html").read()
 
     @cherrypy.expose
@@ -67,12 +70,14 @@ class Viewer:
         return 'WIP'
 
     @cherrypy.expose
-    def selection(self, team='', index=-1, out=False):
+    def selection(self, team='', index=-1, shift=-1, out=False):
         self.alliances.start()
         if team != '':
             self.alliances.alliances.set(team)
         if index != -1:
             self.alliances.alliances.choose(index)
+        if shift != -1:
+            self.alliances.shift(shift)
         if out:
             self.alliances.alliances.output()
 

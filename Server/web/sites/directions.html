@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>IRS Scouting Documentation</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+		<h3>Server Running</h3>
+		<ul>
+			<h3>Server setup</h3>
+			<ol>
+				<li>Run server.bat in irsScouting2017</li>
+				<li>Open Scout Director at "localhost:8080" in browser</li>
+				<li>Setup usb connection</li>
+			</ol>
+		
+			<h3>Match not set</h3>
+			<ol>
+				<li>Check Director table to find tablet that is not waiting</li>
+				<li>Consult scouter for completion</li>
+				<li>If match must be set manually, click current match to go to match select page</li>
+				<li>Enter proper match in box and click set match</li>
+			</ol>
+			
+			<h3>Tablet not connecting</h3>
+			<ol>
+				<li>Make sure most other tablets connected</li>
+				<li>If most not working, check server and hub cable</li>
+				<li>If single tablet, make sure it is tethered, replace cable if needed</li>
+				<li>If tethered, open command promt by right clicking on start menu button</li>
+				<li>Run command "ipconfig"</li>
+				<li>Scroll up to find ethernet ipv4 address of tablet</li>
+				<li>Click Tablets on Scout Director page for list of existing ips</li>
+				<li>Make sure tablet ip matches ip not in list</li>
+				<li>Wait for up to a minute</li>
+			</ol>
+		</ul>
+			
+		<h3>Data Output</h3>
+		<ul>
+			<h3>Output Tableau Page</h3>
+			<ol>
+				<li>Open Tableau on laptop</li>
+				<li>Go to main with password "irs1318" if needed</li>
+				<li>Go to relevant page at bottom left</li>
+				<li>Right click scouting near upper left and select refresh</li>
+				<li>Make sure match near upper right is correct</li>
+				<li>Go to worksheet at top right</li>
+				<li>Select export/image and then save, save, and yes</li>
+			</ol>
+			
+			<h3>Match data output</h3>
+			<ol>
+				<li>Connect and tether tablet</li>
+				<li>Output Six teams Tableau page</li>
+				<li>Open Scout Viewer on tablet at "{tablet ip}:8080/view"</li>
+				<li>On tablet, select six team under images</li>
+				<li>Unplug and go</li>
+			</ol>
+			
+			<h3>Full Data output</h3>
+			<ol>
+				<li>Connect USB</li>
+				<li>Go to Scout Viewer and select Output data</li>
+				<li>Download file and move to USB</li>
+				<li>Output Fuel, Gears, and Climbing pages in Tableau</li>
+				<li>On usb go to images shortcut, or go to irsScouting2017/Server/web/images</li>
+				<li>Copy Fuel.png, Gears.png, and Climbing.png to USB</li>
+				<li>Unplug and go</li>
+			</ol>
+		</ul>
+		
+		<h3>Backup Database</h3>
+		<ol>
+			<li>In Scout Viewer, click Backup Database</li>
+		</ol>
+	</body>
+</html>

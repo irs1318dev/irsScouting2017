@@ -1,5 +1,5 @@
 import cherrypy
-import os
+import os.path
 import viewerapi
 import scouting.tasks
 import scouting.tablet
