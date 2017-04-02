@@ -15,7 +15,7 @@ class Viewer:
 
     @cherrypy.expose
     def index(self):
-        out = open('web/view.html').read()
+        out = open('web/sites/view.html').read()
         out = out.replace('{Images}', self.images())
 
         if self.alone:
@@ -42,24 +42,25 @@ class Viewer:
 
     @cherrypy.expose
     def data(self, name):
-        return serve_file(os.path.abspath('web/data/' + name), "application/x-download", "attachment")
+        return serve_file(name, "application/x-download", "attachment")
 
     @cherrypy.expose
     def output(self):
         excel = scouting.output.get_Path('Report')
         scouting.output.get_report(excel)
-        return serve_file(excel, "application/x-download", "attachment")
+        return '<a href="/view/data?name=' + excel + '">Download File</a>'
         # return open("web/resetView.html").read()
 
     @cherrypy.expose
     def backup(self):
-        return self.export.runBackup(scouting.event.EventDal.get_current_event())
+        script = self.export.runBackup(scouting.event.EventDal.get_current_event())
+        return '<a href="/view/data?name="' + script + '">Download File</a>'
         # return open("web/resetView.html").read()
 
     @cherrypy.expose
     def restore(self, path):
         self.export.runRestore(path)
-        return open("web/resetView.html").read()
+        return open("web/sites/resetView.html").read()
 
     @cherrypy.expose
     def sync(self):
@@ -75,7 +76,7 @@ class Viewer:
         if out:
             self.alliances.alliances.output()
 
-        out = open("web/selection.html").read()
+        out = open("web/sites/selection.html").read()
         out = out.replace("{Unset}", self.alliances.unset())
         out = self.alliances.selections(out)
         return out

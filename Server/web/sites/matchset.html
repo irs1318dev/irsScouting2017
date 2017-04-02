@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>IRS Scouting Director</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="web/scripts/styles.css">
+	</head>
+
+	<body>
+		<h1>IRS Match Set</h1>
+		<h3><a href="/">Scouting Director</a></h3>
+
+		<h3 class = "title">Current Event: {Event}</h3>
+		
+		<fieldset>
+			<script type="text/javascript" src="web/scripts/setmatch.js"></script>
+			<input type="text" id="event" name="Event Number" value="{Event}"/>
+			<input type="submit" value="Set Event" onclick="setEvent();"/>
+		</fieldset>
+		
+		<h3 class = "title">Current Match: {Match}</h3>
+
+		<fieldset>
+			<script type="text/javascript" src="web/scripts/setmatch.js"></script>
+			<input type="text" id="match" name="Match Number" value="{Match}"/>
+			<input type="submit" value="Set Match" onclick="setMatch();"/>
+		</fieldset>
+
+		
+	</body>
+</html>
