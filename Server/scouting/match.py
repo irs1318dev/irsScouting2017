@@ -8,7 +8,6 @@ from sqlalchemy import text
 import game
 
 engine = db.getdbengine()
-conn = engine.connect()
 
 
 class MatchDal(object):
@@ -36,7 +35,9 @@ class MatchDal(object):
         sql = text("SELECT * FROM schedules WHERE "
                    "match = :match "
                    " AND event = :event ")
+        conn = engine.connect()
         results = conn.execute(sql, event=event.EventDal.get_current_event(), match=match)
+        conn.close()
 
         for row in results:
             match_teams.append(dict(row))
@@ -60,7 +61,9 @@ class MatchDal(object):
         sql = text("SELECT DISTINCT team FROM schedules WHERE "
                    "event = :event ORDER BY team;")
 
+        conn = engine.connect()
         results = conn.execute(sql, event=event.EventDal.get_current_event())
+        conn.close()
 
         first = True
         for row in results:
@@ -85,8 +88,10 @@ class MatchDal(object):
                     "AND match_id = :match_id "
                     "AND team_id = :team_id;")
 
+        conn = engine.connect()
         results = conn.execute(sql, event_id=event_id, match_id=match_id,
                                team_id=team_id).fetchall()
+        conn.close()
 
         out = ''
         for row in results:
@@ -178,6 +183,7 @@ class MatchDal(object):
             " ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
             "SET capability=:capability, attempts=:attempts, "
             "successes=:successes, cycle_times=:cycle_times;")
+        conn = engine.connect()
         conn.execute(sql,
                      date_id=date_id,
                      event_id=event_id,
@@ -196,6 +202,7 @@ class MatchDal(object):
                      attempts=attempt_count,
                      successes=success_count,
                      cycle_times=cycle_time)
+        conn.close()
 
     @staticmethod
     def matchalliancetask(alliance, task, phase, match='na', capability=0, attempt_count=0, success_count=0,
@@ -267,6 +274,7 @@ class MatchDal(object):
             " ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
             "SET capability=:capability, attempts=:attempts, "
             "successes=:successes, cycle_times=:cycle_times;")
+        conn = engine.connect()
         conn.execute(sql,
                      date_id=date_id,
                      event_id=event_id,
@@ -285,7 +293,7 @@ class MatchDal(object):
                      attempts=attempt_count,
                      successes=success_count,
                      cycle_times=cycle_time)
-
+        conn.close()
 
     @staticmethod
     def transform_measure(measure, capability, attempt_count, success_count, cycle_time, task_name):

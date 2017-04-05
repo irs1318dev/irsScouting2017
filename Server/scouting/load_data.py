@@ -10,6 +10,9 @@ import scouting.match as m
 import scouting.event as e
 
 
+engine = db.getdbengine()
+
+
 def load_game_sheet():
     fpath = os.path.dirname(os.path.abspath(__file__))
     os.chdir(fpath)
@@ -25,15 +28,15 @@ def load_game_sheet():
 
 
 def insert_game(actor, task, claim, auto, teleop, finish, optionString):
-    engine = db.getdbengine()
-    conn = engine.connect()
     select = text(
         "INSERT INTO games (actor, task, claim, auto, teleop, finish) "
         "VALUES (:actor,:task,:claim,:auto,:teleop,:finish) "
         "ON CONFLICT (task) "
         "DO UPDATE "
         "SET actor=:actor, task=:task, claim=:claim, auto=:auto, teleop=:teleop, finish=:finish;")
+    conn = engine.connect()
     conn.execute(select, actor=actor, task=task, claim=claim, auto=auto, teleop=teleop, finish=finish)
+    conn.close()
     data.add_name("tasks", "name", task)
 
     if not optionString.strip():
@@ -44,19 +47,31 @@ def insert_game(actor, task, claim, auto, teleop, finish, optionString):
                                            'option_name': optionName})
 
 
-def insert_sched(event, season, level='qual'):
-    engine = db.getdbengine()
-    conn = engine.connect()
+def insert_sched(event, season, level='qual', fileName = '-1'):
     event = event.lower()
-    sched_json = api.getSched(event.upper(), season, level)
+
+    if fileName == '-1':
+        sched_json = api.getSched(event.upper(), season, level)
+    else:
+        fpath = os.path.dirname(os.path.abspath(__file__))
+        os.chdir(fpath)
+        testJsonPath = '../TestJson'
+        os.chdir(testJsonPath)
+        sched_json = open(fileName).read()
+
+    process_sched(event, season, sched_json, level)
+
+
+def process_sched(event, season, sched_json, level='qual'):
     sched = json.loads(sched_json)['Schedule']
 
     select = text(
         "INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
         "VALUES (:event,'na','na','na','na','na','na'); "
     )
+    conn = engine.connect()
     conn.execute(select, event=event)
-
+    conn.close()
 
     for mch in sched:
         match = "{0:0>3}-q".format(mch['matchNumber'])
@@ -70,16 +85,33 @@ def insert_sched(event, season, level='qual'):
                 "VALUES (:event,:match,:team,:level,:date,:alliance,:station); "
 
             )
-            conn.execute(select, event=event, match=match, team=team, level=level, date=date, alliance=alliance, station=station)
+            conn = engine.connect()
+            conn.execute(select, event=event, match=match, team=team, level=level, date=date, alliance=alliance,
+                         station=station)
+            conn.close()
             data.add_name("events", "name", event)
             data.add_name("teams", "name", team)
             data.add_name("dates", "name", date)
 
 
-
-def insert_MatchResults(event, season, tournamentLevel):
+def insert_MatchResults(event, season, tournamentLevel, fileName = '-1'):
     event = event.lower()
-    score_json = api.getMatchScores(event, season, tournamentLevel)
+    if fileName == '-1':
+        score_json = api.getMatchScores(event, season, tournamentLevel)
+
+    else:
+        fpath = os.path.dirname(os.path.abspath(__file__))
+        os.chdir(fpath)
+        testJsonPath = '../TestJson'
+        os.chdir(testJsonPath)
+        score_json = open(fileName).read()
+        process_match_results(event, season, tournamentLevel, score_json)
+
+    process_match_results(event, season, tournamentLevel, score_json)
+
+
+
+def process_match_results(event, season, tournamentLevel, score_json):
     matchScores = json.loads(score_json)['MatchScores']
     for mch in matchScores:
         matchNumber = mch['matchNumber']
@@ -105,9 +137,9 @@ def insert_MatchResults(event, season, tournamentLevel):
             load_alliance_measure(event, match, alnce, 'rotorBonusPoints', 'rotorBonusPoints', 'finish')
             load_alliance_measure(event, match, alnce, 'adjustPoints', 'adjustPoints', 'finish')
             load_alliance_measure(event, match, alnce, 'foulPoints', 'foulPoints', 'finish')
-            load_alliance_measure(event, match, alnce, 'totalPoints','totalPoints', 'finish')
+            load_alliance_measure(event, match, alnce, 'totalPoints', 'totalPoints', 'finish')
 
-            load_alliance_flag(event, match, alnce, 'rotor1Auto','rotor1Auto', 'auto')
+            load_alliance_flag(event, match, alnce, 'rotor1Auto', 'rotor1Auto', 'auto')
             load_alliance_flag(event, match, alnce, 'rotor2Auto', 'rotor2Auto', 'auto')
             load_alliance_flag(event, match, alnce, 'rotor1Engaged', 'rotor1Engaged', 'finish')
             load_alliance_flag(event, match, alnce, 'rotor2Engaged', 'rotor2Engaged', 'finish')
@@ -118,7 +150,6 @@ def insert_MatchResults(event, season, tournamentLevel):
             load_alliance_flag(event, match, alnce, 'touchpadNear', 'touchpadNear', 'finish')
             load_alliance_flag(event, match, alnce, 'touchpadMiddle', 'touchpadMiddle', 'finish')
             load_alliance_rotors(event, match, alnce, 'rotorCount', 'finish')
-
 
 def load_robot_movebaseline(event, match, alnce, station):
     robotKey = 'robot' + str(station) + 'Auto'

@@ -3,7 +3,6 @@ from sqlalchemy import text
 import json
 
 engine = db.getdbengine()
-conn = engine.connect()
 
 class EventDal(object):
 
@@ -11,7 +10,9 @@ class EventDal(object):
     def list_events():
         events = []
         sql = text("SELECT distinct event FROM schedules ORDER BY event ")
+        conn = engine.connect()
         results = conn.execute(sql)
+        conn.close()
         for row in results:
             events.append(dict(row))
         return json.dumps(events)
@@ -20,7 +21,9 @@ class EventDal(object):
     def list_matches(event):
         matches = []
         sql = text("SELECT distinct(match), event FROM schedules where event = :event ORDER BY match ")
+        conn = engine.connect()
         results = conn.execute(sql, event=event)
+        conn.close()
         for row in results:
             matches.append(dict(row))
         return json.dumps(matches)
@@ -32,7 +35,9 @@ class EventDal(object):
                    "match = :match "
                    " AND team = :team "
                    " AND event = :event ")
+        conn = engine.connect()
         results = conn.execute(sql, event=event, match=match, team=team)
+        conn.close()
         for row in results:
             match_details = dict(row)
         if match_details == {}:
@@ -47,7 +52,9 @@ class EventDal(object):
                    " AND event = :event "
                    " AND alliance = :alliance "
                    " AND station = :station ")
+        conn = engine.connect()
         results = conn.execute(sql, event=event, match=match, station=station, alliance=alliance)
+        conn.close()
         for row in results:
             match_details = dict(row)
         return match_details
@@ -57,6 +64,7 @@ class EventDal(object):
         event = event.lower()
 
         sql_sel = text("SELECT * FROM status;")
+        conn = engine.connect()
         results = conn.execute(sql_sel).fetchall()
         if len(results) == 1:
             sql_upd = text("UPDATE status SET event = :event WHERE id = :id;")
@@ -65,28 +73,33 @@ class EventDal(object):
             default_match = "001-q"
             sql_ins = text("INSERT INTO status (event, match) VALUES (:event, :match);")
             conn.execute(sql_ins, event=event, match=default_match)
-
+        conn.close()
 
     @staticmethod
     def get_current_status():
         status = {}
         sql = text("SELECT * FROM status")
+        conn = engine.connect()
         results = conn.execute(sql)
+        conn.close()
         for row in results:
             status = dict(row)
         return json.dumps(status)
 
     @staticmethod
     def get_current_event():
+        conn = engine.connect()
         event = conn.execute("SELECT event FROM status;").scalar()
         if event is None:
             event = conn.execute("SELECT name FROM events LIMIT 1")
             EventDal.set_current_event(event)
+        conn.close()
         return event
 
     @staticmethod
     def set_current_match(match):
         sql_sel = text("SELECT * FROM status;")
+        conn = engine.connect()
         results = conn.execute(sql_sel).fetchall()
         if len(results) == 1:
             sql_upd = text("UPDATE status SET match = :match WHERE id = :id;")
@@ -94,6 +107,7 @@ class EventDal(object):
         elif len(results) == 0:
             sql_ins = text("INSERT INTO status (match) VALUES (:match);")
             conn.execute(sql_ins, match=match)
+        conn.close()
         return 'current match '  + match
 
     @staticmethod
@@ -107,6 +121,7 @@ class EventDal(object):
         nextMatch = "{0:0>3}-q".format(nextMatchNumber)
 
         sql_sel = text("SELECT * FROM status;")
+        conn = engine.connect()
         results = conn.execute(sql_sel).fetchall()
         if len(results) == 1:
             sql_upd = text("UPDATE status SET match = :match WHERE id = :id;")
@@ -114,10 +129,13 @@ class EventDal(object):
         elif len(results) == 0:
             sql_ins = text("INSERT INTO status (match) VALUES (:match);")
             conn.execute(sql_ins, match=nextMatch)
+        conn.close()
 
     @staticmethod
     def get_current_match():
+        conn = engine.connect()
         match = conn.execute("SELECT match FROM status;").scalar()
+        conn.close()
         if match is None:
             match = "001-q"
             EventDal.set_current_match(match)
@@ -130,7 +148,10 @@ class EventDal(object):
         sql = text("SELECT * FROM schedules WHERE "
                    "match = :match "
                    " AND event = :event ")
+
+        conn = engine.connect()
         results = conn.execute(sql, event=event, match=match)
+        conn.close()
         for row in results:
             match_details = dict(row)
         return match_details
