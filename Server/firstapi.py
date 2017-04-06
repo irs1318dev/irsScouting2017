@@ -24,6 +24,10 @@ def getSched(event, season, level="qual"):
     return sched.read()
 
 
+def getEvents(event, season, tournamentLevel):
+    pass
+
+
 def getMatchResults(event, season, matchNumber, tournamentLevel):
     raw_token = auth.username + ":" + auth.key
     token = "Basic " + b64encode(raw_token)

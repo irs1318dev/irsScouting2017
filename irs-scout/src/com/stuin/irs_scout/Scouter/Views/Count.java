@@ -20,7 +20,7 @@ public class Count extends Label {
     private boolean missing;
     private int large = 0;
     private int miss = -1;
-    private int max = 30;
+    private int max = 200;
 
     public Count(Context context, Task task, String position) {
         super(context, task, position);

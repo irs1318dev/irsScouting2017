@@ -1,5 +1,5 @@
 import cherrypy
-import os
+import os.path
 import viewerapi
 import scouting.tasks
 import scouting.tablet
@@ -18,10 +18,18 @@ class Scouting(object):
 
     @cherrypy.expose
     def index(self):
-        out = open("web/admin.html").read()
+        out = open("web/sites/admin.html").read()
         out = out.replace('{Match}', self.eventDal.get_current_match())
         out = out.replace('{Event}', self.eventDal.get_current_event())
+        out = out.replace('{Style}', open("web/scripts/styles.css").read())
         out = self.alltablets.inserttablets(out)
+        return out
+
+    @cherrypy.expose
+    def matchset(self):
+        out = open("web/sites/matchset.html").read()
+        out = out.replace('{Match}', self.eventDal.get_current_match())
+        out = out.replace('{Event}', self.eventDal.get_current_event())
         return out
 
     @cherrypy.expose
@@ -116,12 +124,12 @@ class Scouting(object):
     def matchcurrent(self, match):
         self.tablet('TestSystem:Reset')
         self.eventDal.set_current_match(match)
-        return open("web/reset.html").read()
+        return open("web/sites/reset.html").read()
 
     @cherrypy.expose
     def eventcurrent(self, event):
         scouting.event.EventDal.set_current_event(event)
-        return open("web/reset.html").read()
+        return open("web/sites/reset.html").read()
 
 if __name__ == '__main__':
     cherrypy.config.update(

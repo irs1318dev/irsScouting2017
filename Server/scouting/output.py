@@ -1,12 +1,9 @@
 import db
-import os
+import os.path
 import event
 from sqlalchemy.sql import text
 import pandas as pd
-import Tkinter
 import datetime
-import tkFileDialog
-from collections import OrderedDict
 
 
 def get_rankings(name=None, tasks=None, num_matches=12):
@@ -139,6 +136,7 @@ def get_rankings(name=None, tasks=None, num_matches=12):
 
     # Save to Excel
     if name is not None:
+        name = os.path.abspath(name)
         df_joined.to_excel(name, "All")
 
     return df_joined
@@ -151,10 +149,12 @@ def get_Basic_Ranking(name):
 def get_Path(start):
     ts = datetime.datetime.now().strftime("%Y%b%d_%H%M%S")
     excel = start + '_' + event.EventDal.get_current_event() + ts + '.xlsx'
-    return os.path.abspath('web/data/' + excel)
+    return 'web/data/' + excel
 
 
 def get_report(name):
+    name = os.path.abspath(name)
+
     tasks = ['placeGear', 'shootHighBoiler', 'shootLowBoiler', 'pushTouchPad',
              'climbRope', 'defendMovement', 'moveBaseline']
     raw_df = get_rankings(None, tasks)
