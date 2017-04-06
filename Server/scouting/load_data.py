@@ -118,6 +118,9 @@ def process_all_events(season, event_json, tournamentLevel):
         e.EventDal.set_current_event(loading_event)
         print "insert sched for " + loading_event
         insert_sched(event['code'], season, tournamentLevel)
+    for event in eve:
+        loading_event = event['code']
+        print 'Setting current event to ' + loading_event
         print "load match results for " + loading_event
         insert_MatchResults(loading_event, season, tournamentLevel)
 
