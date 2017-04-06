@@ -13,6 +13,7 @@ def add_name(table, col, val):
         "SET " + col + " = :val RETURNING id; "
     )
     conn.execute(select, val=val)
+    conn.close()
 
 
 def add_many_names(table, col, n, template):
@@ -29,6 +30,7 @@ def add_many_names(table, col, n, template):
 
         )
         conn.execute(sql, name=name)
+    conn.close()
 
 
 def add_many_cols(table, data) :
@@ -57,6 +59,7 @@ def add_many_cols(table, data) :
         "SET " + set_data + " ; "
     )
     conn.execute(sql, **data)
+    conn.close()
 
 
 def insert_data():
