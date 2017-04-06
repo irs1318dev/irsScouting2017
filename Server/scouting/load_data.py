@@ -94,6 +94,38 @@ def process_sched(event, season, sched_json, level='qual'):
             data.add_name("dates", "name", date)
 
 
+def insert_all_events(season, tournamentLevel, fileName = '-1'):
+    if fileName == '-1':
+        event_json = api.getEvents(season, tournamentLevel)
+
+    else:
+        fpath = os.path.dirname(os.path.abspath(__file__))
+        os.chdir(fpath)
+        testJsonPath = '../TestJson'
+        os.chdir(testJsonPath)
+        event_json = open(fileName).read()
+
+    process_all_events(season, event_json, tournamentLevel)
+
+
+def process_all_events(season, event_json, tournamentLevel):
+    eve = json.loads(event_json)['Events']
+    initial_event = e.EventDal.get_current_event()
+    print 'Initial event is ' + initial_event
+    for event in eve:
+        loading_event = event['code']
+        print 'Setting current event to ' + loading_event
+        e.EventDal.set_current_event(loading_event)
+        print "insert sched for " + loading_event
+        insert_sched(event['code'], season, tournamentLevel)
+        print "load match results for " + loading_event
+        insert_MatchResults(loading_event, season, tournamentLevel)
+
+    print 'Resetting current event to ' + initial_event
+    e.EventDal.set_current_event(initial_event)
+
+
+
 def insert_MatchResults(event, season, tournamentLevel, fileName = '-1'):
     event = event.lower()
     if fileName == '-1':
