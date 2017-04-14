@@ -19,7 +19,7 @@ class Viewer:
         out = out.replace('{Images}', self.images())
 
         if self.alone:
-            out = out.replace('{Backup}', '<h3><a href="/view/sync">Remote Sync</a></h3>')
+            out = out.replace('{Backup}', '')
             out = out.replace('{Back}', '')
         else:
             out = out.replace('{Backup}', '<h3><a href="/view/backup">Backup Database</a></h3>')
@@ -86,8 +86,14 @@ class Viewer:
         out = self.alliances.selections(out)
         return out
 
-if __name__ == '__main__':
-    conf = {
-        "/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': os.path.abspath('web')}}
 
-    cherrypy.quickstart(Viewer(), '/view', config=conf)
+class Start:
+    @cherrypy.expose
+    def index(self):
+        return open("web/sites/resetView.html")
+
+if __name__ == '__main__':
+    conf = {"/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': os.path.abspath('web')}}
+
+    cherrypy.tree.mount(Viewer(), '/view')
+    cherrypy.quickstart(Start(), '/', config=conf)

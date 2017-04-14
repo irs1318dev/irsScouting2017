@@ -8,6 +8,7 @@ import scouting.match
 import scouting.event
 import scouting.export
 import scouting.output
+import scouting.load_data
 
 
 class Scouting(object):
@@ -128,7 +129,14 @@ class Scouting(object):
 
     @cherrypy.expose
     def eventcurrent(self, event):
-        scouting.event.EventDal.set_current_event(event)
+        self.eventDal.set_current_event(event)
+        return open("web/sites/reset.html").read()
+
+    @cherrypy.expose
+    def eventfind(self, event, year='2017'):
+        self.eventDal.set_current_event(event)
+        self.eventDal.set_current_match('001-q')
+        scouting.load_data.insert_sched(event, year, 'qual')
         return open("web/sites/reset.html").read()
 
 if __name__ == '__main__':

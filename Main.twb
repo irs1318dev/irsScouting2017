@@ -1032,14 +1032,21 @@
       <drill-paths>
         <drill-path name='state, city' />
       </drill-paths>
-      <extract count='-1' enabled='false' units='records'>
-        <connection class='dataengine' dbname='C:/Users/Stuart/Documents/My Tableau Repository/Datasources/scouting.tde' schema='Extract' tablename='Extract' update-time='03/26/2017 03:49:13 PM'>
+      <extract count='-1' enabled='true' units='records'>
+        <connection class='dataengine' dbname='D:/scouting.tde' schema='Extract' tablename='Extract' update-time='04/08/2017 08:06:26 PM'>
           <relation name='Extract' table='[Extract].[Extract]' type='table' />
           <cols>
+            <map key='[Alliance]' value='[Extract].[Alliance]' />
             <map key='[Calculation_480759310473043968]' value='[Extract].[Calculation_480759310473043968]' />
+            <map key='[Calculation_566609189950681088]' value='[Extract].[Calculation_566609189950681088]' />
+            <map key='[Calculation_691584076482334720]' value='[Extract].[Calculation_691584076482334720]' />
             <map key='[Number of Records]' value='[Extract].[Number of Records]' />
+            <map key='[Station]' value='[Extract].[Station]' />
+            <map key='[Success(Climb) (copy)]' value='[Extract].[Success(Climb) (copy)]' />
+            <map key='[Table Name]' value='[Extract].[Table Name]' />
+            <map key='[Team]' value='[Extract].[Team]' />
             <map key='[actor_id]' value='[Extract].[actor_id]' />
-            <map key='[alliance]' value='[Extract].[alliance]' />
+            <map key='[alliance]' value='[Extract].[alliance1]' />
             <map key='[alliance_id]' value='[Extract].[alliance_id]' />
             <map key='[attempt_id]' value='[Extract].[attempt_id]' />
             <map key='[attempts]' value='[Extract].[attempts]' />
@@ -1053,9 +1060,10 @@
             <map key='[event]' value='[Extract].[event]' />
             <map key='[event_id]' value='[Extract].[event_id]' />
             <map key='[id (dates)]' value='[Extract].[id]' />
-            <map key='[id (tasks)]' value='[Extract].[id1]' />
-            <map key='[id (teams)]' value='[Extract].[id2]' />
-            <map key='[id]' value='[Extract].[id3]' />
+            <map key='[id (events)]' value='[Extract].[id1]' />
+            <map key='[id (tasks)]' value='[Extract].[id2]' />
+            <map key='[id (teams+)]' value='[Extract].[id3]' />
+            <map key='[id]' value='[Extract].[id4]' />
             <map key='[level]' value='[Extract].[level]' />
             <map key='[level_id]' value='[Extract].[level_id]' />
             <map key='[long_name]' value='[Extract].[long_name]' />
@@ -1063,48 +1071,125 @@
             <map key='[match_id]' value='[Extract].[match_id]' />
             <map key='[measuretype_id]' value='[Extract].[measuretype_id]' />
             <map key='[name (dates)]' value='[Extract].[name]' />
-            <map key='[name (tasks)]' value='[Extract].[name1]' />
-            <map key='[name]' value='[Extract].[name2]' />
+            <map key='[name (events)]' value='[Extract].[name1]' />
+            <map key='[name (tasks)]' value='[Extract].[name2]' />
+            <map key='[name]' value='[Extract].[name3]' />
             <map key='[phase_id]' value='[Extract].[phase_id]' />
             <map key='[reason_id]' value='[Extract].[reason_id]' />
             <map key='[region]' value='[Extract].[region]' />
-            <map key='[state]' value='[Extract].[state]' />
-            <map key='[station]' value='[Extract].[station]' />
+            <map key='[state (events)]' value='[Extract].[state]' />
+            <map key='[state]' value='[Extract].[state1]' />
+            <map key='[station]' value='[Extract].[station1]' />
             <map key='[station_id]' value='[Extract].[station_id]' />
             <map key='[successes]' value='[Extract].[successes]' />
             <map key='[task_id]' value='[Extract].[task_id]' />
-            <map key='[team]' value='[Extract].[team]' />
+            <map key='[team]' value='[Extract].[team1]' />
             <map key='[team_id]' value='[Extract].[team_id]' />
-            <map key='[type]' value='[Extract].[type]' />
+            <map key='[type (events)]' value='[Extract].[type]' />
+            <map key='[type]' value='[Extract].[type1]' />
             <map key='[year_founded]' value='[Extract].[year_founded]' />
           </cols>
           <calculations>
             <calculation column='[Calculation_480759310473043968]' formula='[attempts] - [successes]' />
+            <calculation column='[Calculation_566609189950681088]' formula='IF CONTAINS([name (tasks)], &quot;Rope&quot;)&#13;&#10;THEN [successes]&#13;&#10;ELSE NULL&#13;&#10;END' />
+            <calculation column='[Calculation_691584076482334720]' formula='IF CONTAINS([name (tasks)], &quot;shoot&quot;) OR [successes] &gt; 5&#13;&#10;THEN [successes] / 10&#13;&#10;ELSE [successes]&#13;&#10;END' />
             <calculation column='[Number of Records]' formula='1' />
+            <calculation column='[Success(Climb) (copy)]' formula='IF CONTAINS([name (tasks)], &quot;push&quot;)&#13;&#10;THEN [successes]&#13;&#10;ELSE NULL&#13;&#10;END' />
           </calculations>
           <refresh increment-key='' incremental-updates='false'>
-            <refresh-event add-from-file-path='' increment-value='%null%' refresh-type='create' rows-inserted='67284' timestamp-start='2017-03-26 15:49:13.747' />
+            <refresh-event add-from-file-path='' increment-value='%null%' refresh-type='create' rows-inserted='1048836' timestamp-start='2017-04-08 20:06:26.321' />
           </refresh>
           <metadata-records>
+            <metadata-record class='column'>
+              <remote-name>Alliance</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[Alliance]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Alliance</remote-alias>
+              <ordinal>0</ordinal>
+              <family>alliances.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>1</approx-count>
+              <contains-null>true</contains-null>
+              <statistics>
+                <statistic aggregation='Count' datatype='integer'>0</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;array&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (ordered)'>&quot;asc&quot;</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>8</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;sint64&quot;</attribute>
+              </attributes>
+            </metadata-record>
             <metadata-record class='column'>
               <remote-name>Calculation_480759310473043968</remote-name>
               <remote-type>16</remote-type>
               <local-name>[Calculation_480759310473043968]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>Calculation_480759310473043968</remote-alias>
-              <ordinal>0</ordinal>
+              <ordinal>1</ordinal>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>29</approx-count>
+              <approx-count>46</approx-count>
               <contains-null>false</contains-null>
               <statistics>
-                <statistic aggregation='Min' datatype='integer'>-1</statistic>
-                <statistic aggregation='Max' datatype='integer'>50</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Min' datatype='integer'>0</statistic>
+                <statistic aggregation='Max' datatype='integer'>84</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint8&quot;</attribute>
+              </attributes>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Calculation_566609189950681088</remote-name>
+              <remote-type>16</remote-type>
+              <local-name>[Calculation_566609189950681088]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Calculation_566609189950681088</remote-alias>
+              <ordinal>2</ordinal>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>19</approx-count>
+              <contains-null>true</contains-null>
+              <statistics>
+                <statistic aggregation='Min' datatype='integer'>0</statistic>
+                <statistic aggregation='Max' datatype='integer'>25</statistic>
+                <statistic aggregation='Count' datatype='integer'>75960</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;sint8&quot;</attribute>
+              </attributes>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Calculation_691584076482334720</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[Calculation_691584076482334720]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Calculation_691584076482334720</remote-alias>
+              <ordinal>3</ordinal>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>70</approx-count>
+              <contains-null>false</contains-null>
+              <statistics>
+                <statistic aggregation='Min' datatype='real'>0.0</statistic>
+                <statistic aggregation='Max' datatype='real'>13.5</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;array&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>8</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;double&quot;</attribute>
               </attributes>
             </metadata-record>
             <metadata-record class='column'>
@@ -1113,7 +1198,7 @@
               <local-name>[Number of Records]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>Number of Records</remote-alias>
-              <ordinal>1</ordinal>
+              <ordinal>4</ordinal>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
               <approx-count>1</approx-count>
@@ -1121,7 +1206,7 @@
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>1</statistic>
                 <statistic aggregation='Max' datatype='integer'>1</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
                 <statistic aggregation='Median' datatype='integer'>1</statistic>
               </statistics>
               <attributes>
@@ -1131,40 +1216,153 @@
               </attributes>
             </metadata-record>
             <metadata-record class='column'>
-              <remote-name>actor_id</remote-name>
-              <remote-type>16</remote-type>
-              <local-name>[actor_id]</local-name>
+              <remote-name>Station</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Station]</local-name>
               <parent-name>[Extract]</parent-name>
-              <remote-alias>actor_id</remote-alias>
-              <ordinal>2</ordinal>
-              <family>measures</family>
+              <remote-alias>Station</remote-alias>
+              <ordinal>5</ordinal>
+              <family>alliances.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>1</approx-count>
+              <scale>1</scale>
+              <width>1073741823</width>
+              <contains-null>false</contains-null>
+              <collation flag='0' name='LEN_RUS' />
+              <statistics>
+                <statistic aggregation='Min' datatype='string'>&quot;na&quot;</statistic>
+                <statistic aggregation='Max' datatype='string'>&quot;na&quot;</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
+                <statistic aggregation='Median' datatype='string'>&quot;na&quot;</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (ordered)'>&quot;asc&quot;</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>4294967292</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
+              </attributes>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Success(Climb) (copy)</remote-name>
+              <remote-type>16</remote-type>
+              <local-name>[Success(Climb) (copy)]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Success(Climb) (copy)</remote-alias>
+              <ordinal>6</ordinal>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
               <approx-count>3</approx-count>
-              <contains-null>false</contains-null>
+              <contains-null>true</contains-null>
               <statistics>
-                <statistic aggregation='Min' datatype='integer'>3</statistic>
-                <statistic aggregation='Max' datatype='integer'>6</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Min' datatype='integer'>0</statistic>
+                <statistic aggregation='Max' datatype='integer'>1</statistic>
+                <statistic aggregation='Count' datatype='integer'>87660</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>3</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>24</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint8&quot;</attribute>
               </attributes>
             </metadata-record>
             <metadata-record class='column'>
-              <remote-name>alliance</remote-name>
+              <remote-name>Table Name</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Table Name]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Table Name</remote-alias>
+              <ordinal>7</ordinal>
+              <family>teams+</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>1</approx-count>
+              <scale>1</scale>
+              <width>1073741823</width>
+              <contains-null>false</contains-null>
+              <collation flag='0' name='LEN_RUS' />
+              <statistics>
+                <statistic aggregation='Min' datatype='string'>&quot;teams&quot;</statistic>
+                <statistic aggregation='Max' datatype='string'>&quot;teams&quot;</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
+                <statistic aggregation='Median' datatype='string'>&quot;teams&quot;</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (ordered)'>&quot;asc&quot;</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>4294967292</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
+              </attributes>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Team</remote-name>
+              <remote-type>2</remote-type>
+              <local-name>[Team]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Team</remote-alias>
+              <ordinal>8</ordinal>
+              <family>alliances.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>64</approx-count>
+              <contains-null>false</contains-null>
+              <statistics>
+                <statistic aggregation='Min' datatype='integer'>488</statistic>
+                <statistic aggregation='Max' datatype='integer'>6445</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;array&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>2</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;sint16&quot;</attribute>
+              </attributes>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>actor_id</remote-name>
+              <remote-type>16</remote-type>
+              <local-name>[actor_id]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>actor_id</remote-alias>
+              <ordinal>9</ordinal>
+              <family>measures</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>1</approx-count>
+              <contains-null>false</contains-null>
+              <statistics>
+                <statistic aggregation='Min' datatype='integer'>3</statistic>
+                <statistic aggregation='Max' datatype='integer'>3</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
+                <statistic aggregation='Median' datatype='integer'>3</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='string' name='DebugRemoteMetadata (ordered)'>&quot;asc&quot;</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;sint8&quot;</attribute>
+              </attributes>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>alliance1</remote-name>
               <remote-type>129</remote-type>
               <local-name>[alliance]</local-name>
               <parent-name>[Extract]</parent-name>
-              <remote-alias>alliance</remote-alias>
-              <ordinal>3</ordinal>
+              <remote-alias>alliance1</remote-alias>
+              <ordinal>10</ordinal>
               <family>schedules</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
-              <approx-count>3</approx-count>
+              <approx-count>2</approx-count>
               <scale>1</scale>
               <width>255</width>
               <contains-null>false</contains-null>
@@ -1172,15 +1370,17 @@
               <statistics>
                 <statistic aggregation='Min' datatype='string'>&quot;blue&quot;</statistic>
                 <statistic aggregation='Max' datatype='string'>&quot;red&quot;</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
+                <statistic aggregation='Median' datatype='string'>&quot;red&quot;</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (ordered)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>4</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>0</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
@@ -1192,7 +1392,7 @@
               <local-name>[alliance_id]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>alliance_id</remote-alias>
-              <ordinal>4</ordinal>
+              <ordinal>11</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
@@ -1201,11 +1401,11 @@
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>1</statistic>
                 <statistic aggregation='Max' datatype='integer'>3</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>5</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>2</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint8&quot;</attribute>
               </attributes>
@@ -1216,7 +1416,7 @@
               <local-name>[attempt_id]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>attempt_id</remote-alias>
-              <ordinal>5</ordinal>
+              <ordinal>12</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
@@ -1225,7 +1425,7 @@
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>1</statistic>
                 <statistic aggregation='Max' datatype='integer'>1</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
                 <statistic aggregation='Median' datatype='integer'>1</statistic>
               </statistics>
               <attributes>
@@ -1240,16 +1440,16 @@
               <local-name>[attempts]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>attempts</remote-alias>
-              <ordinal>6</ordinal>
+              <ordinal>13</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>193</approx-count>
+              <approx-count>87</approx-count>
               <contains-null>false</contains-null>
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>0</statistic>
-                <statistic aggregation='Max' datatype='integer'>379</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Max' datatype='integer'>219</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
@@ -1266,16 +1466,16 @@
               <local-name>[capability]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>capability</remote-alias>
-              <ordinal>7</ordinal>
+              <ordinal>14</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>7</approx-count>
+              <approx-count>3</approx-count>
               <contains-null>false</contains-null>
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>0</statistic>
-                <statistic aggregation='Max' datatype='integer'>100</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Max' datatype='integer'>3</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1</attribute>
@@ -1288,8 +1488,8 @@
               <local-name>[city]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>city</remote-alias>
-              <ordinal>8</ordinal>
-              <family>teams</family>
+              <ordinal>15</ordinal>
+              <family>teams+</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
               <approx-count>1</approx-count>
@@ -1317,7 +1517,7 @@
               <local-name>[cycle_times]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>cycle_times</remote-alias>
-              <ordinal>9</ordinal>
+              <ordinal>16</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
@@ -1326,7 +1526,7 @@
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>0</statistic>
                 <statistic aggregation='Max' datatype='integer'>0</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
                 <statistic aggregation='Median' datatype='integer'>0</statistic>
               </statistics>
               <attributes>
@@ -1341,7 +1541,7 @@
               <local-name>[date (dates)]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>date</remote-alias>
-              <ordinal>10</ordinal>
+              <ordinal>17</ordinal>
               <family>dates</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
@@ -1370,19 +1570,19 @@
               <local-name>[date]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>date1</remote-alias>
-              <ordinal>11</ordinal>
+              <ordinal>18</ordinal>
               <family>schedules</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
-              <approx-count>81</approx-count>
+              <approx-count>742</approx-count>
               <scale>1</scale>
               <width>255</width>
               <contains-null>false</contains-null>
               <collation flag='0' name='LEN_RUS' />
               <statistics>
-                <statistic aggregation='Min' datatype='string'>&quot;2017-03-25T11:00:00&quot;</statistic>
-                <statistic aggregation='Max' datatype='string'>&quot;na&quot;</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Min' datatype='string'>&quot;2017-03-03T11:30:00&quot;</statistic>
+                <statistic aggregation='Max' datatype='string'>&quot;2017-04-08T11:41:00&quot;</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
@@ -1390,7 +1590,7 @@
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>17</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>22</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>2</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
@@ -1402,25 +1602,21 @@
               <local-name>[date_id]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>date_id</remote-alias>
-              <ordinal>12</ordinal>
+              <ordinal>19</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>213</approx-count>
+              <approx-count>355</approx-count>
               <contains-null>false</contains-null>
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>937</statistic>
-                <statistic aggregation='Max' datatype='integer'>3174</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Max' datatype='integer'>5858</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
-                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
-                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;array&quot;</attribute>
-                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>2</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>20</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>19</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint16&quot;</attribute>
               </attributes>
             </metadata-record>
@@ -1430,7 +1626,7 @@
               <local-name>[display_name]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>display_name</remote-alias>
-              <ordinal>13</ordinal>
+              <ordinal>20</ordinal>
               <family>tasks</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
@@ -1459,28 +1655,28 @@
               <local-name>[event]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>event</remote-alias>
-              <ordinal>14</ordinal>
+              <ordinal>21</ordinal>
               <family>schedules</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
-              <approx-count>1</approx-count>
+              <approx-count>10</approx-count>
               <scale>1</scale>
               <width>255</width>
               <contains-null>false</contains-null>
               <collation flag='0' name='LEN_RUS' />
               <statistics>
-                <statistic aggregation='Min' datatype='string'>&quot;wasno&quot;</statistic>
-                <statistic aggregation='Max' datatype='string'>&quot;wasno&quot;</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
-                <statistic aggregation='Median' datatype='string'>&quot;wasno&quot;</statistic>
+                <statistic aggregation='Min' datatype='string'>&quot;orlak&quot;</statistic>
+                <statistic aggregation='Max' datatype='string'>&quot;waspo&quot;</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
-                <attribute datatype='string' name='DebugRemoteMetadata (ordered)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>10</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
               </attributes>
@@ -1491,25 +1687,23 @@
               <local-name>[event_id]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>event_id</remote-alias>
-              <ordinal>15</ordinal>
+              <ordinal>22</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>2</approx-count>
+              <approx-count>4</approx-count>
               <contains-null>false</contains-null>
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>1</statistic>
-                <statistic aggregation='Max' datatype='integer'>1417</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
-                <statistic aggregation='Median' datatype='integer'>1417</statistic>
+                <statistic aggregation='Max' datatype='integer'>5089</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;array&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
-                <attribute datatype='string' name='DebugRemoteMetadata (ordered)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>2</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>0</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>6</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint16&quot;</attribute>
@@ -1521,51 +1715,47 @@
               <local-name>[id (dates)]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>id</remote-alias>
-              <ordinal>16</ordinal>
+              <ordinal>23</ordinal>
               <family>dates</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>213</approx-count>
+              <approx-count>355</approx-count>
               <contains-null>false</contains-null>
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>937</statistic>
-                <statistic aggregation='Max' datatype='integer'>3174</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Max' datatype='integer'>5858</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
-                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
-                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;array&quot;</attribute>
-                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>2</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>21</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>20</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint16&quot;</attribute>
               </attributes>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>id1</remote-name>
               <remote-type>2</remote-type>
-              <local-name>[id (tasks)]</local-name>
+              <local-name>[id (events)]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>id1</remote-alias>
-              <ordinal>17</ordinal>
-              <family>tasks</family>
+              <ordinal>24</ordinal>
+              <family>events</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>52</approx-count>
+              <approx-count>4</approx-count>
               <contains-null>false</contains-null>
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>1</statistic>
-                <statistic aggregation='Max' datatype='integer'>514</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Max' datatype='integer'>5089</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;array&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>2</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>14</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>7</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint16&quot;</attribute>
@@ -1574,26 +1764,26 @@
             <metadata-record class='column'>
               <remote-name>id2</remote-name>
               <remote-type>2</remote-type>
-              <local-name>[id (teams)]</local-name>
+              <local-name>[id (tasks)]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>id2</remote-alias>
-              <ordinal>18</ordinal>
-              <family>teams</family>
+              <ordinal>25</ordinal>
+              <family>tasks</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>41</approx-count>
+              <approx-count>17</approx-count>
               <contains-null>false</contains-null>
               <statistics>
-                <statistic aggregation='Min' datatype='integer'>5</statistic>
-                <statistic aggregation='Max' datatype='integer'>2818</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Min' datatype='integer'>1</statistic>
+                <statistic aggregation='Max' datatype='integer'>454</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;array&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>2</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>10</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>11</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint16&quot;</attribute>
@@ -1602,29 +1792,50 @@
             <metadata-record class='column'>
               <remote-name>id3</remote-name>
               <remote-type>2</remote-type>
-              <local-name>[id]</local-name>
+              <local-name>[id (teams+)]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>id3</remote-alias>
-              <ordinal>19</ordinal>
+              <ordinal>26</ordinal>
+              <family>teams+</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>64</approx-count>
+              <contains-null>false</contains-null>
+              <statistics>
+                <statistic aggregation='Min' datatype='integer'>1</statistic>
+                <statistic aggregation='Max' datatype='integer'>5157</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;array&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>2</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;sint16&quot;</attribute>
+              </attributes>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>id4</remote-name>
+              <remote-type>2</remote-type>
+              <local-name>[id]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>id4</remote-alias>
+              <ordinal>27</ordinal>
               <family>schedules</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>481</approx-count>
+              <approx-count>6084</approx-count>
               <contains-null>false</contains-null>
               <statistics>
-                <statistic aggregation='Sum' datatype='real'>268254612.0</statistic>
-                <statistic aggregation='Avg' datatype='real'>3986.9004815409312</statistic>
-                <statistic aggregation='Min' datatype='integer'>3773</statistic>
-                <statistic aggregation='Max' datatype='integer'>4253</statistic>
-                <statistic aggregation='Stdev' datatype='real'>151.30912511052281</statistic>
-                <statistic aggregation='StdevP' datatype='real'>151.3080006999102</statistic>
-                <statistic aggregation='Var' datatype='real'>22894.451341711847</statistic>
-                <statistic aggregation='VarP' datatype='real'>22894.111075804027</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
-                <statistic aggregation='SumXSqr' datatype='real'>1071044849128.0</statistic>
+                <statistic aggregation='Min' datatype='integer'>4676</statistic>
+                <statistic aggregation='Max' datatype='integer'>16977</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>2</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>23</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint16&quot;</attribute>
               </attributes>
             </metadata-record>
@@ -1634,28 +1845,28 @@
               <local-name>[level]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>level</remote-alias>
-              <ordinal>20</ordinal>
+              <ordinal>28</ordinal>
               <family>schedules</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
-              <approx-count>2</approx-count>
+              <approx-count>1</approx-count>
               <scale>1</scale>
               <width>255</width>
               <contains-null>false</contains-null>
               <collation flag='0' name='LEN_RUS' />
               <statistics>
-                <statistic aggregation='Min' datatype='string'>&quot;na&quot;</statistic>
+                <statistic aggregation='Min' datatype='string'>&quot;qual&quot;</statistic>
                 <statistic aggregation='Max' datatype='string'>&quot;qual&quot;</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
+                <statistic aggregation='Median' datatype='string'>&quot;qual&quot;</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (ordered)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>1</attribute>
-                <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
               </attributes>
@@ -1666,7 +1877,7 @@
               <local-name>[level_id]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>level_id</remote-alias>
-              <ordinal>21</ordinal>
+              <ordinal>29</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
@@ -1675,11 +1886,11 @@
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>1</statistic>
                 <statistic aggregation='Max' datatype='integer'>5</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>2</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint8&quot;</attribute>
               </attributes>
@@ -1690,8 +1901,8 @@
               <local-name>[long_name]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>long_name</remote-alias>
-              <ordinal>22</ordinal>
-              <family>teams</family>
+              <ordinal>30</ordinal>
+              <family>teams+</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
               <approx-count>1</approx-count>
@@ -1719,19 +1930,19 @@
               <local-name>[match]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>match</remote-alias>
-              <ordinal>23</ordinal>
+              <ordinal>31</ordinal>
               <family>schedules</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
-              <approx-count>81</approx-count>
+              <approx-count>128</approx-count>
               <scale>1</scale>
               <width>255</width>
               <contains-null>false</contains-null>
               <collation flag='0' name='LEN_RUS' />
               <statistics>
                 <statistic aggregation='Min' datatype='string'>&quot;001-q&quot;</statistic>
-                <statistic aggregation='Max' datatype='string'>&quot;na&quot;</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Max' datatype='string'>&quot;128-q&quot;</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
@@ -1739,7 +1950,7 @@
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>18</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>17</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>2</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
@@ -1751,23 +1962,23 @@
               <local-name>[match_id]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>match_id</remote-alias>
-              <ordinal>24</ordinal>
+              <ordinal>32</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>81</approx-count>
+              <approx-count>128</approx-count>
               <contains-null>false</contains-null>
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>1</statistic>
-                <statistic aggregation='Max' datatype='integer'>336</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Max' datatype='integer'>128</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;array&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>2</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>19</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>18</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint16&quot;</attribute>
@@ -1779,20 +1990,20 @@
               <local-name>[measuretype_id]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>measuretype_id</remote-alias>
-              <ordinal>25</ordinal>
+              <ordinal>33</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>5</approx-count>
+              <approx-count>3</approx-count>
               <contains-null>false</contains-null>
               <statistics>
-                <statistic aggregation='Min' datatype='integer'>1</statistic>
+                <statistic aggregation='Min' datatype='integer'>2</statistic>
                 <statistic aggregation='Max' datatype='integer'>5</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>9</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>3</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint8&quot;</attribute>
               </attributes>
@@ -1803,19 +2014,19 @@
               <local-name>[name (dates)]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>name</remote-alias>
-              <ordinal>26</ordinal>
+              <ordinal>34</ordinal>
               <family>dates</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
-              <approx-count>213</approx-count>
+              <approx-count>355</approx-count>
               <scale>1</scale>
               <width>255</width>
               <contains-null>false</contains-null>
               <collation flag='0' name='LEN_RUS' />
               <statistics>
-                <statistic aggregation='Min' datatype='string'>&quot;2016-03-12T11:00:00&quot;</statistic>
+                <statistic aggregation='Min' datatype='string'>&quot;2017-03-04T11:00:00&quot;</statistic>
                 <statistic aggregation='Max' datatype='string'>&quot;na&quot;</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
@@ -1823,6 +2034,8 @@
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>21</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>2</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
               </attributes>
@@ -1830,22 +2043,22 @@
             <metadata-record class='column'>
               <remote-name>name1</remote-name>
               <remote-type>129</remote-type>
-              <local-name>[name (tasks)]</local-name>
+              <local-name>[name (events)]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>name1</remote-alias>
-              <ordinal>27</ordinal>
-              <family>tasks</family>
+              <ordinal>35</ordinal>
+              <family>events</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
-              <approx-count>52</approx-count>
+              <approx-count>4</approx-count>
               <scale>1</scale>
               <width>255</width>
               <contains-null>false</contains-null>
               <collation flag='0' name='LEN_RUS' />
               <statistics>
-                <statistic aggregation='Min' datatype='string'>&quot;adjustPoints&quot;</statistic>
-                <statistic aggregation='Max' datatype='string'>&quot;touchpadNear&quot;</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Min' datatype='string'>&quot;pncmp&quot;</statistic>
+                <statistic aggregation='Max' datatype='string'>&quot;wasno&quot;</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
@@ -1853,31 +2066,31 @@
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>15</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>8</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>2</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
               </attributes>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>name2</remote-name>
               <remote-type>129</remote-type>
-              <local-name>[name]</local-name>
+              <local-name>[name (tasks)]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>name2</remote-alias>
-              <ordinal>28</ordinal>
-              <family>teams</family>
+              <ordinal>36</ordinal>
+              <family>tasks</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
-              <approx-count>41</approx-count>
+              <approx-count>17</approx-count>
               <scale>1</scale>
               <width>255</width>
               <contains-null>false</contains-null>
               <collation flag='0' name='LEN_RUS' />
               <statistics>
-                <statistic aggregation='Min' datatype='string'>&quot;1294&quot;</statistic>
-                <statistic aggregation='Max' datatype='string'>&quot;na&quot;</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Min' datatype='string'>&quot;climbRope&quot;</statistic>
+                <statistic aggregation='Max' datatype='string'>&quot;startingLocation&quot;</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
@@ -1885,9 +2098,41 @@
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>11</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>12</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>2</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
+              </attributes>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>name3</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[name]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>name3</remote-alias>
+              <ordinal>37</ordinal>
+              <family>teams+</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>64</approx-count>
+              <scale>1</scale>
+              <width>255</width>
+              <contains-null>false</contains-null>
+              <collation flag='0' name='LEN_RUS' />
+              <statistics>
+                <statistic aggregation='Min' datatype='string'>&quot;1294&quot;</statistic>
+                <statistic aggregation='Max' datatype='string'>&quot;997&quot;</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>14</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>2</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
               </attributes>
             </metadata-record>
@@ -1897,27 +2142,20 @@
               <local-name>[phase_id]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>phase_id</remote-alias>
-              <ordinal>29</ordinal>
+              <ordinal>38</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>4</approx-count>
+              <approx-count>3</approx-count>
               <contains-null>false</contains-null>
               <statistics>
-                <statistic aggregation='Sum' datatype='real'>259672.0</statistic>
-                <statistic aggregation='Avg' datatype='real'>3.8593424885559715</statistic>
-                <statistic aggregation='Min' datatype='integer'>2</statistic>
+                <statistic aggregation='Min' datatype='integer'>3</statistic>
                 <statistic aggregation='Max' datatype='integer'>5</statistic>
-                <statistic aggregation='Stdev' datatype='real'>0.85314896982742217</statistic>
-                <statistic aggregation='StdevP' datatype='real'>0.85314262989415557</statistic>
-                <statistic aggregation='Var' datatype='real'>0.7278631647175916</statistic>
-                <statistic aggregation='VarP' datatype='real'>0.72785234694271617</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
-                <statistic aggregation='SumXSqr' datatype='real'>1051136.0</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>6</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>4</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint8&quot;</attribute>
               </attributes>
@@ -1928,7 +2166,7 @@
               <local-name>[reason_id]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>reason_id</remote-alias>
-              <ordinal>30</ordinal>
+              <ordinal>39</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
@@ -1937,7 +2175,7 @@
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>1</statistic>
                 <statistic aggregation='Max' datatype='integer'>1</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
                 <statistic aggregation='Median' datatype='integer'>1</statistic>
               </statistics>
               <attributes>
@@ -1952,8 +2190,8 @@
               <local-name>[region]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>region</remote-alias>
-              <ordinal>31</ordinal>
-              <family>teams</family>
+              <ordinal>40</ordinal>
+              <family>teams+</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
               <approx-count>1</approx-count>
@@ -1978,11 +2216,11 @@
             <metadata-record class='column'>
               <remote-name>state</remote-name>
               <remote-type>129</remote-type>
-              <local-name>[state]</local-name>
+              <local-name>[state (events)]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>state</remote-alias>
-              <ordinal>32</ordinal>
-              <family>teams</family>
+              <ordinal>41</ordinal>
+              <family>events</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
               <approx-count>1</approx-count>
@@ -2005,24 +2243,53 @@
               </attributes>
             </metadata-record>
             <metadata-record class='column'>
-              <remote-name>station</remote-name>
+              <remote-name>state1</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[state]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>state1</remote-alias>
+              <ordinal>42</ordinal>
+              <family>teams+</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>1</approx-count>
+              <scale>1</scale>
+              <width>255</width>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RUS' />
+              <statistics>
+                <statistic aggregation='Count' datatype='integer'>0</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (ordered)'>&quot;asc&quot;</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
+              </attributes>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>station1</remote-name>
               <remote-type>129</remote-type>
               <local-name>[station]</local-name>
               <parent-name>[Extract]</parent-name>
-              <remote-alias>station</remote-alias>
-              <ordinal>33</ordinal>
+              <remote-alias>station1</remote-alias>
+              <ordinal>43</ordinal>
               <family>schedules</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
-              <approx-count>4</approx-count>
+              <approx-count>3</approx-count>
               <scale>1</scale>
               <width>255</width>
               <contains-null>false</contains-null>
               <collation flag='0' name='LEN_RUS' />
               <statistics>
                 <statistic aggregation='Min' datatype='string'>&quot;1&quot;</statistic>
-                <statistic aggregation='Max' datatype='string'>&quot;na&quot;</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Max' datatype='string'>&quot;3&quot;</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
@@ -2030,7 +2297,7 @@
                 <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>7</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>5</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
@@ -2042,7 +2309,7 @@
               <local-name>[station_id]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>station_id</remote-alias>
-              <ordinal>34</ordinal>
+              <ordinal>44</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
@@ -2051,11 +2318,11 @@
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>1</statistic>
                 <statistic aggregation='Max' datatype='integer'>4</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>8</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>9</attribute>
                 <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
                 <attribute datatype='string' name='DebugRemoteType'>&quot;sint8&quot;</attribute>
               </attributes>
@@ -2066,16 +2333,16 @@
               <local-name>[successes]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>successes</remote-alias>
-              <ordinal>35</ordinal>
+              <ordinal>45</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>188</approx-count>
+              <approx-count>70</approx-count>
               <contains-null>false</contains-null>
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>0</statistic>
-                <statistic aggregation='Max' datatype='integer'>379</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Max' datatype='integer'>135</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
@@ -2092,76 +2359,16 @@
               <local-name>[task_id]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>task_id</remote-alias>
-              <ordinal>36</ordinal>
+              <ordinal>46</ordinal>
               <family>measures</family>
               <local-type>integer</local-type>
               <aggregation>Sum</aggregation>
-              <approx-count>52</approx-count>
+              <approx-count>17</approx-count>
               <contains-null>false</contains-null>
               <statistics>
                 <statistic aggregation='Min' datatype='integer'>1</statistic>
-                <statistic aggregation='Max' datatype='integer'>514</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
-              </statistics>
-              <attributes>
-                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
-                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;array&quot;</attribute>
-                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>2</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>16</attribute>
-                <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
-                <attribute datatype='string' name='DebugRemoteType'>&quot;sint16&quot;</attribute>
-              </attributes>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>team</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[team]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>team</remote-alias>
-              <ordinal>37</ordinal>
-              <family>schedules</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>41</approx-count>
-              <scale>1</scale>
-              <width>255</width>
-              <contains-null>false</contains-null>
-              <collation flag='0' name='LEN_RUS' />
-              <statistics>
-                <statistic aggregation='Min' datatype='string'>&quot;1294&quot;</statistic>
-                <statistic aggregation='Max' datatype='string'>&quot;na&quot;</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
-              </statistics>
-              <attributes>
-                <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
-                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
-                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
-                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>12</attribute>
-                <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
-                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
-                <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
-              </attributes>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>team_id</remote-name>
-              <remote-type>2</remote-type>
-              <local-name>[team_id]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>team_id</remote-alias>
-              <ordinal>38</ordinal>
-              <family>measures</family>
-              <local-type>integer</local-type>
-              <aggregation>Sum</aggregation>
-              <approx-count>41</approx-count>
-              <contains-null>false</contains-null>
-              <statistics>
-                <statistic aggregation='Min' datatype='integer'>5</statistic>
-                <statistic aggregation='Max' datatype='integer'>2818</statistic>
-                <statistic aggregation='Count' datatype='integer'>67284</statistic>
+                <statistic aggregation='Max' datatype='integer'>454</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
               </statistics>
               <attributes>
                 <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
@@ -2175,12 +2382,101 @@
               </attributes>
             </metadata-record>
             <metadata-record class='column'>
+              <remote-name>team1</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[team]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>team1</remote-alias>
+              <ordinal>47</ordinal>
+              <family>schedules</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>64</approx-count>
+              <scale>1</scale>
+              <width>255</width>
+              <contains-null>false</contains-null>
+              <collation flag='0' name='LEN_RUS' />
+              <statistics>
+                <statistic aggregation='Min' datatype='string'>&quot;1294&quot;</statistic>
+                <statistic aggregation='Max' datatype='string'>&quot;997&quot;</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>15</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>2</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
+              </attributes>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>team_id</remote-name>
+              <remote-type>2</remote-type>
+              <local-name>[team_id]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>team_id</remote-alias>
+              <ordinal>48</ordinal>
+              <family>measures</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>64</approx-count>
+              <contains-null>false</contains-null>
+              <statistics>
+                <statistic aggregation='Min' datatype='integer'>1</statistic>
+                <statistic aggregation='Max' datatype='integer'>5157</statistic>
+                <statistic aggregation='Count' datatype='integer'>1048836</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;array&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>2</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (sort-position)'>16</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (sort-sense)'>&quot;asc&quot;</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;sint16&quot;</attribute>
+              </attributes>
+            </metadata-record>
+            <metadata-record class='column'>
               <remote-name>type</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[type (events)]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>type</remote-alias>
+              <ordinal>49</ordinal>
+              <family>events</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>1</approx-count>
+              <scale>1</scale>
+              <width>255</width>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RUS' />
+              <statistics>
+                <statistic aggregation='Count' datatype='integer'>0</statistic>
+              </statistics>
+              <attributes>
+                <attribute datatype='string' name='DebugRemoteCollation'>&quot;en_US&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (comparable)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (compression)'>&quot;heap&quot;</attribute>
+                <attribute datatype='boolean' name='DebugRemoteMetadata (distinct)'>true</attribute>
+                <attribute datatype='string' name='DebugRemoteMetadata (ordered)'>&quot;asc&quot;</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (size)'>1020</attribute>
+                <attribute datatype='integer' name='DebugRemoteMetadata (storagewidth)'>1</attribute>
+                <attribute datatype='string' name='DebugRemoteType'>&quot;str&quot;</attribute>
+              </attributes>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>type1</remote-name>
               <remote-type>129</remote-type>
               <local-name>[type]</local-name>
               <parent-name>[Extract]</parent-name>
-              <remote-alias>type</remote-alias>
-              <ordinal>39</ordinal>
+              <remote-alias>type1</remote-alias>
+              <ordinal>50</ordinal>
               <family>tasks</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
@@ -2209,8 +2505,8 @@
               <local-name>[year_founded]</local-name>
               <parent-name>[Extract]</parent-name>
               <remote-alias>year_founded</remote-alias>
-              <ordinal>40</ordinal>
-              <family>teams</family>
+              <ordinal>51</ordinal>
+              <family>teams+</family>
               <local-type>string</local-type>
               <aggregation>Count</aggregation>
               <approx-count>1</approx-count>
@@ -2235,7 +2531,7 @@
           </metadata-records>
         </connection>
       </extract>
-      <layout dim-ordering='alphabetic' dim-percentage='0.325874' measure-ordering='alphabetic' measure-percentage='0.674126' show-structure='true' user-set-layout='true' />
+      <layout dim-ordering='alphabetic' dim-percentage='0.324476' measure-ordering='alphabetic' measure-percentage='0.675524' show-structure='true' user-set-layout='true' />
       <style>
         <style-rule element='mark'>
           <encoding attr='color' field='[none:name (tasks):nk]' type='palette'>
