@@ -26,8 +26,7 @@ public class Count extends Label {
         super(context, task, position);
         if(!task.miss.isEmpty()) miss = 1;
 
-        if(MainActivity.position.contains("Fuel")) large = 10;
-        if(MainActivity.position.contains("Pit")) large = 5;
+        if(task.success.contains("+")) large = 10;
 
         if(large > 0) {
             max = 300;
@@ -42,7 +41,7 @@ public class Count extends Label {
         linearLayout.setGravity(Gravity.CENTER);
         column.addView(linearLayout);
 
-        part(task.success);
+        part(task.success.replace("+",""));
         if(large > 0) part("+" + large);
 
         if(miss != -1) {

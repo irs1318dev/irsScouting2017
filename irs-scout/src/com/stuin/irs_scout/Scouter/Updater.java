@@ -1,5 +1,6 @@
 package com.stuin.irs_scout.Scouter;
 
+import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.RadioButton;
@@ -30,7 +31,7 @@ public class Updater {
         public void onTick(long l) {
             status.setChecked(Request.error);
             if(Request.error) last = "";
-            send();
+            send.execute();
         }
 
         @Override
@@ -54,36 +55,40 @@ public class Updater {
         countDownTimer.onFinish();
     }
 
-    private void send() {
-        try {
-            for(Measure measure : measures) {
-                String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.phase;
-                if(!measure.capability.isEmpty() && !measure.capability.equals("0")) s += "&capability=" + measure.capability;
-                if(measure.successes != 0) s += "&success=" + measure.successes;
-                if(measure.attempts != 0) s += "&attempt=" + measure.attempts;
+    private AsyncTask send = new AsyncTask() {
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            try {
+                for(Measure measure : measures) {
+                    String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.phase;
+                    if(!measure.capability.isEmpty() && !measure.capability.equals("0")) s += "&capability=" + measure.capability;
+                    if(measure.successes != 0) s += "&success=" + measure.successes;
+                    if(measure.attempts != 0) s += "&attempt=" + measure.attempts;
 
-                matchMaker.update(measure);
+                    matchMaker.update(measure);
 
-                if(!s.equals(last)) {
-                    class Remove extends Request {
-                        private Measure measure;
+                    if(!s.equals(last)) {
+                        class Remove extends Request {
+                            private Measure measure;
 
-                        private Remove(Measure measure) {
-                            this.measure = measure;
+                            private Remove(Measure measure) {
+                                this.measure = measure;
+                            }
+
+                            @Override
+                            public void run(List<String> s) {
+                                finished.add(measure);
+                            }
                         }
-
-                        @Override
-                        public void run(List<String> s) {
-                            finished.add(measure);
-                        }
-                    }
-                    new Remove(measure).start(s);
-                } else measures.remove(measure);
-                last = s;
+                        new Remove(measure).start(s);
+                    } else measures.remove(measure);
+                    last = s;
+                }
+                while(!finished.isEmpty()) measures.remove(finished.poll());
+            } catch(ConcurrentModificationException e) {
+                //just keep moving
             }
-            while(!finished.isEmpty()) measures.remove(finished.poll());
-        } catch(ConcurrentModificationException e) {
-            //just keep moving
+            return null;
         }
-    }
+    };
 }
