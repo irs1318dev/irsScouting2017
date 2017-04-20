@@ -41,7 +41,7 @@ public class Count extends Label {
         linearLayout.setGravity(Gravity.CENTER);
         column.addView(linearLayout);
 
-        part(task.success.replace("+",""));
+        part(task.success);
         if(large > 0) part("+" + large);
 
         if(miss != -1) {

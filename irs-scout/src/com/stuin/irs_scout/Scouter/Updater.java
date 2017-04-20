@@ -20,6 +20,7 @@ public class Updater {
     private RadioButton status;
     private String last = "";
     private String ip = "";
+    private int cutoff = 0;
 
     Updater(MatchMaker matchMaker, View view) {
         this.matchMaker = matchMaker;
@@ -31,7 +32,8 @@ public class Updater {
         public void onTick(long l) {
             status.setChecked(Request.error);
             if(Request.error) last = "";
-            send.execute();
+            if(cutoff < 30) AsyncTask.execute(send);
+            cutoff--;
         }
 
         @Override
@@ -55,9 +57,9 @@ public class Updater {
         countDownTimer.onFinish();
     }
 
-    private AsyncTask send = new AsyncTask() {
+    private Runnable send = new Runnable() {
         @Override
-        protected Object doInBackground(Object[] objects) {
+        public void run() {
             try {
                 for(Measure measure : measures) {
                     String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.phase;
@@ -83,12 +85,12 @@ public class Updater {
                         new Remove(measure).start(s);
                     } else measures.remove(measure);
                     last = s;
+                    cutoff += 2;
                 }
                 while(!finished.isEmpty()) measures.remove(finished.poll());
             } catch(ConcurrentModificationException e) {
                 //just keep moving
             }
-            return null;
         }
     };
 }
