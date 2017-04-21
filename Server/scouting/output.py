@@ -28,13 +28,13 @@ def get_rankings(name=None, tasks=None, num_matches=12):
     #     "ORDER BY teams.name, phases.name, tasks.name, actors.name;")
     # df = pd.read_sql(select_sum, conn)
     select_sum = text(
-        "with current AS (SELECT s.match, date from schedules sched, "
+        "with current AS (SELECT s.event as event, s.match, date from schedules sched, "
         "status s WHERE sched.event = s.event "
         "AND sched.match = s.match limit 1 ), "
 
         "recent_matches as ( SELECT * FROM ( "
         "SELECT row_number() over (partition by team order by sched.date desc) as r, "
-        " sched.* from schedules sched, current c WHERE sched.date <= c.date )"
+        " sched.* from schedules sched, current c WHERE sched.event = c.event and sched.date <= c.date )"
         " row_schedule WHERE row_schedule.r <= " + str(
             num_matches) + " ORDER by team, date desc), "
 
@@ -176,7 +176,7 @@ def get_report(name):
     final_df['moveBaseline'] = raw_df['auto']['robot']['moveBaseline']['sum_successes'] / raw_df['auto']['robot']['moveBaseline']['matches']
 
     final_df['HighBoilerAuto%'] = raw_df['auto']['robot']['shootHighBoiler']['sum_successes'] / raw_df['auto']['robot']['shootHighBoiler']['sum_attempts']
-    final_df['HighBoilerTele%'] = raw_df['teleop']['robot']['shootHighBoiler']['sum_successes'] / raw_df['auto']['robot']['shootHighBoiler']['sum_attempts']
+    final_df['HighBoilerTele%'] = raw_df['teleop']['robot']['shootHighBoiler']['sum_successes'] / raw_df['teleop']['robot']['shootHighBoiler']['sum_attempts']
 
     final_df['LowBoilerAuto%'] = raw_df['auto']['robot']['shootLowBoiler']['sum_successes'] / raw_df['teleop']['robot']['shootLowBoiler']['sum_attempts']
     final_df['LowBoilerTele%'] = raw_df['teleop']['robot']['shootLowBoiler']['sum_successes'] / raw_df['teleop']['robot']['shootLowBoiler']['sum_attempts']

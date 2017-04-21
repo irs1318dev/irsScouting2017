@@ -4,6 +4,7 @@
         <title>IRS Scouting Viewer</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="web/scripts/styles.css">
+		<script type="text/javascript" src="web/scripts/showteam.js"></script>
     </head>
     <body>
         <h1>IRS Scouting Viewer</h1>
@@ -19,5 +20,12 @@
         <h3><a href="/view/output">Output Data</a></h3>
 
 		{Backup}
+		
+		<h3>Team Schedule</h3>
+		
+		<fieldset>
+			<input type="text" id="team" name="Team Number" value=""/>
+			<input type="submit" value="Show Team" onclick="showTeam();"/>
+		</fieldset>
     </body>
 </html>

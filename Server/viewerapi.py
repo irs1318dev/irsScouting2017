@@ -5,6 +5,7 @@ import scouting.export
 import scouting.output
 import scouting.event
 import scouting.alliance
+import scouting.match
 
 
 class Viewer:
@@ -86,6 +87,45 @@ class Viewer:
         out = self.alliances.selections(out)
         return out
 
+    @cherrypy.expose
+    def teamplan(self, team='1318'):
+        match = '001-q'
+        matches = list()
+
+        while '""' not in scouting.match.MatchDal.matchteams(match) and '115' not in match:
+            if team in scouting.match.MatchDal.matchteams(match):
+                matches.append(match)
+
+            nextMatchNumber = int(match.split('-')[0]) + 1
+            match = "{0:0>3}-q".format(nextMatchNumber)
+
+        out = ''
+        for match in matches:
+            out += '<a href="matchplan?match={M}">{M}</a><br>'
+            out = out.replace('{M}', match)
+        return out
+
+    @cherrypy.expose
+    def matchplan(self, match):
+        nextMatch = self.teamsList(match)
+        setMatch = match
+
+        while True:
+            nextMatchNumber = int(match.split('-')[0]) - 1
+            if nextMatchNumber > 0:
+                match = "{0:0>3}-q".format(nextMatchNumber)
+
+                for team in nextMatch:
+                    if team in self.teamsList(match):
+                        return setMatch + ' : ' + str(self.teamsList(setMatch)) + ' After ' + match
+
+    def teamsList(self, match):
+        teams = list()
+        for data in scouting.match.MatchDal.matchteams(match).split(','):
+            if 'team' in data:
+                teams.append(data.split(':')[1].split('"')[1])
+        return teams
+
 
 class Start:
     @cherrypy.expose
@@ -93,7 +133,8 @@ class Start:
         return open("web/sites/resetView.html")
 
 if __name__ == '__main__':
+    cherrypy.config.update({'server.socket_port': 1318})
     conf = {"/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': os.path.abspath('web')}}
 
-    cherrypy.tree.mount(Viewer(), '/view')
-    cherrypy.quickstart(Start(), '/', config=conf)
+    cherrypy.tree.mount(Viewer(), '/view', config=conf)
+    cherrypy.quickstart(Start(), '/')
