@@ -13,19 +13,17 @@
 		<h3><a href="/view/selection">Alliance Selection</a></h3>
 
         <fieldset>
-            <h3>Images</h3>
-            {Images}
+            <h3>Data</h3>
+            <a href="/web/images/Six team.png">Six Team</a><br>
+			<a href="/view/output">Output Excel</a><br>
         </fieldset>
-
-        <h3><a href="/view/output">Output Data</a></h3>
-
-		{Backup}
 		
 		<h3>Team Schedule</h3>
 		
 		<fieldset>
 			<input type="text" id="team" name="Team Number" value=""/>
-			<input type="submit" value="Show Team" onclick="showTeam();"/>
+			<input type="submit" value="Show Team" onclick="loadTeam();"/>
+			<h5 id="matches"></h5>
 		</fieldset>
     </body>
 </html>

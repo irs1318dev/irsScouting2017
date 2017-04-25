@@ -11,33 +11,17 @@ import scouting.match
 class Viewer:
     def __init__(self, alone=True):
         self.alone = alone
-        self.export = scouting.export.ExportBackup
         self.alliances = scouting.alliance.AlliancePage()
+        self.export = scouting.export.ExportBackup
 
     @cherrypy.expose
     def index(self):
         out = open('web/sites/view.html').read()
-        out = out.replace('{Images}', self.images())
 
         if self.alone:
-            out = out.replace('{Backup}', '')
             out = out.replace('{Back}', '')
         else:
-            out = out.replace('{Backup}', '<h3><a href="/view/backup">Backup Database</a></h3>')
             out = out.replace('{Back}', '<h3><a href="/">Scouting Director</a></h3>')
-
-        return out
-
-    @staticmethod
-    def images():
-        images = []
-        for row in os.walk('web/images'):
-            images = str(row).split('[')[2].replace('])', '').split(', ')
-
-        out = ''
-        for image in images:
-            image = image.replace("'", '')
-            out += '<a href="/web/images/' + image + '">' + image.replace('.png', '') + '</a><br>'
 
         return out
 
@@ -54,21 +38,6 @@ class Viewer:
         scouting.output.get_report(excel)
         return '<a href="/view/data?name=' + excel + '">Download File</a>'
         # return open("web/resetView.html").read()
-
-    @cherrypy.expose
-    def backup(self):
-        script = self.export.runBackup(scouting.event.EventDal.get_current_event())
-        return '<a href="/view/data?name=' + script + '">Download File</a>'
-        # return open("web/resetView.html").read()
-
-    @cherrypy.expose
-    def restore(self, path):
-        self.export.runRestore(path)
-        return open("web/sites/resetView.html").read()
-
-    @cherrypy.expose
-    def sync(self):
-        return 'WIP'
 
     @cherrypy.expose
     def selection(self, team='', index=-1, shift=-1, out=False):
@@ -88,6 +57,16 @@ class Viewer:
         return out
 
     @cherrypy.expose
+    def backup(self):
+        script = self.export.runBackup(scouting.event.EventDal.get_current_event())
+        return '<a href="/view/data?name=' + script + '">Download File</a>'
+
+    @cherrypy.expose
+    def restore(self, path):
+        self.export.runRestore(path)
+        return open("web/sites/reset.html").read()
+
+    @cherrypy.expose
     def teamplan(self, team='1318'):
         match = '001-q'
         matches = list()
@@ -101,7 +80,7 @@ class Viewer:
 
         out = ''
         for match in matches:
-            out += '<a href="matchplan?match={M}">{M}</a><br>'
+            out += '<a href="matchplan?match={M}">{M}</a> '
             out = out.replace('{M}', match)
         return out
 

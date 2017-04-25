@@ -1,0 +1,11 @@
+<!--{Match=""}-->
+<tr class="Red">
+	<td class="Red">{Red1}</td>
+	<td class="Red">{Red2}</td>
+	<td class="Red">{Red3}</td>
+</tr>
+<tr class="Blue">
+	<td class="Blue">{Blue1}</td>
+	<td class="Blue">{Blue2}</td>
+	<td class="Blue">{Blue3}</td>
+</tr>
