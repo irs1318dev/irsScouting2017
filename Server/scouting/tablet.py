@@ -1,12 +1,11 @@
-import threading
-from datetime import datetime
+import socket
+import psutil
 
 
 class TabletDAL(object):
     def __init__(self, position, page, ip):
         self.position = position
         self.page = page
-        self.last = datetime.now().second
         self.ip = ip
 
     def write(self):
@@ -15,11 +14,6 @@ class TabletDAL(object):
             s += ":" + str(self.ip)
         s += "    <br>   "
         return s
-
-    def checkfail(self):
-        time = datetime.now().second
-        if time - self.last > 20:
-            self.page = "Off"
 
 
 class TabletList(object):
@@ -73,13 +67,28 @@ class TabletList(object):
 
     @staticmethod
     def findnext(tablet):
-        tablet.last = datetime.now().second
-        threading.Timer(21, tablet.checkfail).start()
-
         if "Waiting" in tablet.page:
             return False
         if "Pit" in tablet.position:
             return False
-        if "Off" in tablet.page:
-            return False
         return True
+
+    def setaddress(self):
+        def get_ip_addresses(family):
+            for interface, snics in psutil.net_if_addrs().items():
+                for snic in snics:
+                    if snic.family == family:
+                        yield (interface, snic.address)
+
+        ipv4s = list(get_ip_addresses(socket.AF_INET))
+        unlinked = list()
+
+        for ip in ipv4s:
+            linked = False
+            for tablet in self.alltablets:
+                if ip is tablet.ip:
+                    linked = True
+            if not linked:
+                unlinked.append(ip)
+
+        return unlinked

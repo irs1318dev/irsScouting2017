@@ -32,6 +32,7 @@ public class Page extends LinearLayout {
     }
 
     public void link(Page page, Slider.Endings endings) {
+        //Sets up animation
         sliderSync = new SliderSync(this, page);
         sliderSync.setup(true, 2000, -2000, 500);
         sliderSync.endings(endings);
@@ -44,6 +45,7 @@ public class Page extends LinearLayout {
     }
 
     public void setMeasures(Map<String, Measure> measures, Match match) {
+        //Set data values
         for(Label l : labels) {
             if(l.sectionLabel && l.task.success.contains("Team")) l.setText(match.getTeam(l.position));
 

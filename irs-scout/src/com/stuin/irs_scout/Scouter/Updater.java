@@ -27,22 +27,28 @@ public class Updater {
         status = (RadioButton) view;
     }
 
+    //Main timer
     private CountDownTimer countDownTimer = new CountDownTimer(10000,100) {
         @Override
         public void onTick(long l) {
+            //Check for error
             status.setChecked(Request.error);
             if(Request.error) last = "";
+
+            //Data slowdown
             if(cutoff < 30) AsyncTask.execute(send);
             cutoff--;
         }
 
         @Override
         public void onFinish() {
+            //Get current page and match
             String s = "/tablet?status=" + status.getText().toString().replace(" ", "") + ip;
             ip = "";
             class Status extends Request {
                 @Override
                 public void run(List<String> s) {
+                    //Check if match changed
                     if(!s.get(0).equals(matchMaker.match.match) && !matchMaker.match.match.equals("na")) matchMaker.newMatch();
                 }
             }
@@ -52,6 +58,7 @@ public class Updater {
     };
 
     public void setStatus() {
+        //Manually send status update
         ip = "&ip=" + Request.address;
         countDownTimer.cancel();
         countDownTimer.onFinish();
@@ -62,6 +69,7 @@ public class Updater {
         public void run() {
             try {
                 for(Measure measure : measures) {
+                    //Make string of data
                     String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.phase;
                     if(!measure.capability.isEmpty() && !measure.capability.equals("0")) s += "&capability=" + measure.capability;
                     if(measure.successes != 0) s += "&success=" + measure.successes;
@@ -69,6 +77,7 @@ public class Updater {
 
                     matchMaker.update(measure);
 
+                    //Check sending and start next
                     if(!s.equals(last)) {
                         class Remove extends Request {
                             private Measure measure;
@@ -77,6 +86,7 @@ public class Updater {
                                 this.measure = measure;
                             }
 
+                            //List measure as done and confirmed
                             @Override
                             public void run(List<String> s) {
                                 finished.add(measure);

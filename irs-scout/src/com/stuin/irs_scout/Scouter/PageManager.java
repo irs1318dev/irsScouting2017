@@ -69,6 +69,7 @@ public class PageManager extends FrameLayout {
         current = 0;
         setPage();
 
+        //Show correct page buttons
         activity.findViewById(R.id.Previous).setVisibility(GONE);
         if(getChildCount() > 1) activity.findViewById(R.id.Next).setVisibility(VISIBLE);
     }

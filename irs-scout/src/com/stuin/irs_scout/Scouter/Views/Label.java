@@ -28,6 +28,7 @@ public class Label extends TextView {
     }
 
     void create(LinearLayout linearLayout) {
+        //Place in column
         setTextSize(getResources().getDimension(R.dimen.text_norm));
         setText(task.success);
         setTextColor(getResources().getColor(R.color.colorText));

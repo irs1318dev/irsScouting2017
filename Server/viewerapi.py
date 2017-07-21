@@ -71,7 +71,7 @@ class Viewer:
         match = '001-q'
         matches = list()
 
-        while '""' not in scouting.match.MatchDal.matchteams(match) and '115' not in match:
+        while '""' not in scouting.match.MatchDal.matchteams(match) and '130' not in match:
             if team in scouting.match.MatchDal.matchteams(match):
                 matches.append(match)
 
