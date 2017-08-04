@@ -1,61 +1,59 @@
-package com.stuin.irs_scout.Scouter.Views;
+package com.stuin.irs_scout.Scouter.Inputs;
 
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.*;
+import com.stuin.irs_scout.Data.InputData;
 import com.stuin.irs_scout.Data.Measure;
-import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.R;
 
 /**
- * Created by Stuart on 2/16/2017.
+ * Created by Stuart on 8/3/2017.
  */
-public class Choice extends Label {
-    private RadioGroup radioGroup;
+public class Choice extends RadioGroup implements Input {
+    private InputData id;
+
     private String[] choices;
     private boolean locked = true;
 
-    public Choice(Context context, Task task, String position) {
-        super(context, task, position);
+    public Choice(Context context, InputData inputData) {
+        super(context);
 
-        choices = task.enums.replace('|','>').split(">");
+        id = inputData;
+        choices = id.task.enums.replace('|','>').split(">");
     }
 
     @Override
-    void create(LinearLayout column) {
-        radioGroup = new RadioGroup(getContext());
-        radioGroup.setOrientation(LinearLayout.HORIZONTAL);
-        radioGroup.setGravity(Gravity.CENTER);
-        column.addView(radioGroup);
+    public void create(LinearLayout column) {
+        setOrientation(LinearLayout.HORIZONTAL);
+        setGravity(Gravity.CENTER);
+        column.addView(this);
 
         for(String s : choices) part(s);
     }
 
     @Override
-    protected TextView part(String name) {
+    public TextView part(String name) {
         RadioButton radioButton = new RadioButton(getContext());
         radioButton.setText(name);
         radioButton.setTextSize(getResources().getDimension(R.dimen.text_norm));
         radioButton.setOnCheckedChangeListener(successListener);
         radioButton.setOnLongClickListener(longClickListener);
-        radioGroup.addView(radioButton);
-        views.add(radioButton);
+        addView(radioButton);
         return radioButton;
     }
 
     @Override
-    protected void update(Measure measure, boolean send) {
-        super.update(measure, send);
-
+    public void update(Measure measure, boolean send) {
         CompoundButton radioButton;
-        locked = true;
+        id.update(measure, send);
 
+        locked = true;
         for(int i = 0; i < choices.length; i++) {
-            radioButton = (CompoundButton) views.get(i);
+            radioButton = (CompoundButton) getChildAt(i);
             radioButton.setChecked(choices[i].toLowerCase().equals(measure.capability));
         }
-
         locked = false;
     }
 
@@ -63,9 +61,9 @@ public class Choice extends Label {
         @Override
         public void onCheckedChanged(CompoundButton radioButton, boolean b) {
             if(b && !locked) {
-                measure.capability = radioButton.getText().toString().toLowerCase();
+                id.measure.capability = radioButton.getText().toString().toLowerCase();
 
-                update(measure, true);
+                update(id.measure, true);
             }
         }
     };
@@ -73,13 +71,18 @@ public class Choice extends Label {
     private View.OnLongClickListener longClickListener = new OnLongClickListener() {
         @Override
         public boolean onLongClick(View view) {
-            measure.capability = "";
+            id.measure.capability = "";
 
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(false);
 
-            update(measure, true);
+            update(id.measure, true);
             return true;
         }
     };
+
+    @Override
+    public InputData getData() {
+        return id;
+    }
 }

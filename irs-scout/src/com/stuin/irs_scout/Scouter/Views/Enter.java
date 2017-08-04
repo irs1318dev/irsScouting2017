@@ -30,7 +30,7 @@ public class Enter extends Label{
     @Override
     protected TextView part(String name) {
         TextView textView = new TextView(getContext());
-        textView.setText(task.success);
+        textView.setText(name);
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(getResources().getDimension(R.dimen.text_norm));
         linearLayout.addView(textView);

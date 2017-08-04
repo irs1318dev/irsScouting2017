@@ -18,7 +18,6 @@ public class Label extends TextView {
     LinearLayout linearLayout;
     List<TextView> views = new ArrayList<>();
     Measure measure = new Measure();
-    boolean defaults = true;
     public boolean sectionLabel = false;
 
     public Label(Context context, Task task, String position) {
@@ -32,7 +31,8 @@ public class Label extends TextView {
         setTextSize(getResources().getDimension(R.dimen.text_norm));
         setText(task.success);
         setTextColor(getResources().getColor(R.color.colorText));
-        setGravity(Gravity.CENTER);        linearLayout.addView(this);
+        setGravity(Gravity.CENTER);
+        linearLayout.addView(this);
     }
 
     protected TextView part(String name) {
