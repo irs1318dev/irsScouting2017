@@ -1,11 +1,11 @@
 import csv
 import os
-import db
-import db_dimensiondata as ddd
+import scouting.db as db
+import scouting.db_dimensiondata as ddd
 import firstapi as api
 import json
 from sqlalchemy.sql import text
-import db_dimensiondata as data
+import scouting.db_dimensiondata as data
 import scouting.match as m
 import scouting.event as e
 
@@ -111,20 +111,20 @@ def insert_all_events(season, tournamentLevel, fileName = '-1'):
 def process_all_events(season, event_json, tournamentLevel):
     eve = json.loads(event_json)['Events']
     initial_event = e.EventDal.get_current_event()
-    print 'Initial event is ' + initial_event
+    print('Initial event is ' + initial_event)
     for event in eve:
         loading_event = event['code']
-        print 'Setting current event to ' + loading_event
+        print('Setting current event to ' + loading_event)
         e.EventDal.set_current_event(loading_event)
-        print "insert sched for " + loading_event
+        print("insert sched for " + loading_event)
         insert_sched(event['code'], season, tournamentLevel)
     for event in eve:
         loading_event = event['code']
-        print 'Setting current event to ' + loading_event
-        print "load match results for " + loading_event
+        print('Setting current event to ' + loading_event)
+        print("load match results for " + loading_event)
         insert_MatchResults(loading_event, season, tournamentLevel)
 
-    print 'Resetting current event to ' + initial_event
+    print('Resetting current event to ' + initial_event)
     e.EventDal.set_current_event(initial_event)
 
 
@@ -143,7 +143,6 @@ def insert_MatchResults(event, season, tournamentLevel, fileName = '-1'):
         process_match_results(event, season, tournamentLevel, score_json)
 
     process_match_results(event, season, tournamentLevel, score_json)
-
 
 
 def process_match_results(event, season, tournamentLevel, score_json):
@@ -185,6 +184,7 @@ def process_match_results(event, season, tournamentLevel, score_json):
             load_alliance_flag(event, match, alnce, 'touchpadNear', 'touchpadNear', 'finish')
             load_alliance_flag(event, match, alnce, 'touchpadMiddle', 'touchpadMiddle', 'finish')
             load_alliance_rotors(event, match, alnce, 'rotorCount', 'finish')
+
 
 def load_robot_movebaseline(event, match, alnce, station):
     robotKey = 'robot' + str(station) + 'Auto'

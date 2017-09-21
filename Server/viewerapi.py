@@ -58,12 +58,12 @@ class Viewer:
 
     @cherrypy.expose
     def backup(self):
-        script = self.export.runBackup(scouting.event.EventDal.get_current_event())
+        script = self.export.run_backup(scouting.event.EventDal.get_current_event())
         return '<a href="/view/data?name=' + script + '">Download File</a>'
 
     @cherrypy.expose
     def restore(self, path):
-        self.export.runRestore(path)
+        self.export.run_restore(path)
         return open("web/sites/reset.html").read()
 
     @cherrypy.expose
@@ -71,7 +71,7 @@ class Viewer:
         match = '001-q'
         matches = list()
 
-        while '""' not in scouting.match.MatchDal.matchteams(match) and '115' not in match:
+        while '""' not in scouting.match.MatchDal.matchteams(match) and '130' not in match:
             if team in scouting.match.MatchDal.matchteams(match):
                 matches.append(match)
 

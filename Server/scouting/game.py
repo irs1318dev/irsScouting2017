@@ -1,6 +1,6 @@
 import psycopg2.extras
 from sqlalchemy import text
-import db as db
+import scouting.db as db
 
 # conn = psycopg2.connect("dbname=scouting host=localhost user=postgres password=irs1318")
 # cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)

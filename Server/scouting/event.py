@@ -1,8 +1,9 @@
-import db
+import scouting.db as db
 from sqlalchemy import text
 import json
 
 engine = db.getdbengine()
+
 
 class EventDal(object):
 

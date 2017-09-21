@@ -18,7 +18,7 @@ class Scouting(object):
     @cherrypy.expose
     def index(self):
         out = open("web/sites/admin.html").read()
-        # out = out.replace('{Match}', self.eventDal.get_current_match())
+        out = out.replace('{Match}', self.eventDal.get_current_match())
         out = out.replace('{Event}', self.eventDal.get_current_event())
         return out
 
