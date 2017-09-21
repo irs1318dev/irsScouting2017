@@ -2,10 +2,12 @@ package com.stuin.irs_scout.Scouter;
 
 import android.content.Context;
 import com.google.gson.Gson;
+import com.stuin.irs_scout.Data.InputData;
 import com.stuin.irs_scout.Data.Section;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.MainActivity;
-import com.stuin.irs_scout.Scouter.Views.*;
+import com.stuin.irs_scout.Scouter.Inputs.*;
+import com.stuin.irs_scout.Scouter.Views.Page;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,9 +61,8 @@ class LabelMaker {
             if(s.newpart.equals("true")) pageList.get(s.phase).newCol();
             if(s.position.isEmpty()) s.position = MainActivity.position;
 
-            Label label = new Label(context, new Task(s.category), s.position);
-            label.sectionLabel = true;
-            pageList.get(s.phase).add(label);
+            Input input = new Label(context, new InputData(new Task(s.category), s.position));
+            pageList.get(s.phase).add(input);
 
             for(String t : s.tasks) if(tasks.containsKey(t)) {
                 pageList.get(s.phase).add(makeLabel(tasks.get(t), context, s.phase, s.position));
@@ -77,23 +78,24 @@ class LabelMaker {
         return false;
     }
 
-    private Label makeLabel(Task task, Context context, String phase, String position) {
+    private Input makeLabel(Task task, Context context, String phase, String position) {
         String format = task.getFormat(phase);
+        InputData id = new InputData(task, position);
 
         //Choose format to create
 
         switch(format.charAt(0)) {
             case 'b':
-                return new Switcher(context, task, position);
+                return new Switcher(context, id);
             case 'c':
-                return new Count(context, task, position);
+                return new Count(context, id);
             case 'e':
-                return new Choice(context, task, position);
+                return new Choice(context, id);
             case 'p':
-                return new Enter(context, task, position);
+                return new Enter(context, id);
             case 'l':
-                return new Label(context, task, position);
+                return new Label(context, id);
         }
-        return new Label(context, new Task(), position);
+        return new Label(context, id);
     }
 }

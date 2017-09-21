@@ -5,10 +5,11 @@ import android.graphics.Color;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.stuin.cleanvisuals.Slider;
-import com.stuin.cleanvisuals.SliderSync;
+import com.stuin.cleanvisuals.Slide.*;
+import com.stuin.irs_scout.Data.InputData;
 import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
+import com.stuin.irs_scout.Scouter.Inputs.Input;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class Page extends LinearLayout {
     public SliderSync sliderSync;
 
     private LinearLayout column;
-    private List<Label> labels = new ArrayList<>();
+    private List<Input> inputs = new ArrayList<>();
 
     public Page(Context context, String name) {
         //Create phase
@@ -31,27 +32,28 @@ public class Page extends LinearLayout {
         newCol();
     }
 
-    public void link(Page page, Slider.Endings endings) {
+    public void link(Page page, Endings endings) {
         //Sets up animation
         sliderSync = new SliderSync(this, page);
         sliderSync.setup(true, 2000, -2000, 500);
-        sliderSync.endings(endings);
+        sliderSync.endings = endings;
     }
 
-    public void add(Label objectView) {
+    public void add(Input objectView) {
         //Add object to column
-        labels.add(objectView);
+        inputs.add(objectView);
         objectView.create(column);
     }
 
     public void setMeasures(Map<String, Measure> measures, Match match) {
         //Set data values
-        for(Label l : labels) {
-            if(l.sectionLabel && l.task.success.contains("Team")) l.setText(match.getTeam(l.position));
+        for(Input i : inputs) {
+            InputData id = i.getData();
+            //if(i.getClass() == Label.class && i.task.success.contains("Team")) i.setText(match.getTeam(i.position));
 
-            String key = l.task.task + ':' + match.getTeam(l.position);
-            if(measures.get(key) != null) l.update(measures.get(key), false);
-            else l.update(new Measure(l.task, match, l.position, name), false);
+            String key = id.task.task + ':' + match.getTeam(id.position);
+            if(measures.get(key) != null) i.update(measures.get(key), false);
+            else i.update(new Measure(id.task, match, id.position, name), false);
         }
     }
 

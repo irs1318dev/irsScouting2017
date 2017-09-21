@@ -1,4 +1,4 @@
-package com.stuin.irs_scout.Scouter.Views;
+package com.stuin.irs_scout.Scouter.OldViews;
 
 import android.content.Context;
 import android.text.InputFilter;
@@ -15,7 +15,7 @@ import com.stuin.irs_scout.R;
 /**
  * Created by Stuart on 2/17/2017.
  */
-public class Enter extends Label{
+public class Enter extends Label {
     public Enter(Context context, Task task, String position) {
         super(context, task, position);
     }

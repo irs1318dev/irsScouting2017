@@ -24,7 +24,7 @@ public class Label extends TextView implements Input {
         //Place in column
         setTextSize(getResources().getDimension(R.dimen.text_norm));
         setText(id.task.success);
-        setTextColor(getResources().getColor(R.color.colorText));
+        //setTextColor(getResources().getColor(R.color.colorText));
         setGravity(Gravity.CENTER);
         column.addView(this);
     }
@@ -36,7 +36,7 @@ public class Label extends TextView implements Input {
 
     @Override
     public void update(Measure measure, boolean send) {
-
+        id.update(measure, send);
     }
 
     @Override

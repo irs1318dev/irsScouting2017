@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import com.stuin.cleanvisuals.Slider;
+import com.stuin.cleanvisuals.Slide.Endings;
 import com.stuin.irs_scout.MainActivity;
 import com.stuin.irs_scout.R;
 import com.stuin.irs_scout.Scouter.Views.Page;
@@ -82,7 +82,7 @@ public class PageManager extends FrameLayout {
         page.setVisibility(GONE);
         addView(page);
 
-        if(getChildCount() > 1) page.link((Page) getChildAt(getChildCount() - 2), new Slider.Endings() {
+        if(getChildCount() > 1) page.link((Page) getChildAt(getChildCount() - 2), new Endings() {
             @Override
             public void enter() {
                 //Notify server
