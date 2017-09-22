@@ -99,6 +99,13 @@ class Scouting(object):
         scouting.load_data.insert_sched(event, year, 'qual')
         return open("web/sites/reset.html").read()
 
+    @cherrypy.expose
+    def databaseset(self):
+        scouting.db.create_tables()
+        scouting.db_dimensiondata.insert_data()
+        scouting.load_data.load_game_sheet()
+        return open("web/sites/reset.html").read()
+
 if __name__ == '__main__':
     cherrypy.config.update(
         {'server.socket_host': '0.0.0.0'})
