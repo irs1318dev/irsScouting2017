@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by Stuart on 2/12/2017.
  */
 class LabelMaker {
-    private List<Section> sections = new ArrayList<>();
+    private ArrayList<Section> sections = new ArrayList<>();
     PageManager pageManager;
     private Map<String, Page> pageList = new HashMap<>();
 
@@ -26,7 +26,7 @@ class LabelMaker {
         this.pageManager = pageManager;
     }
 
-    void pages(List<String> layout) {
+    void pagesMake(List<String> layout) {
         //Prepare variables
         String current = "";
         Gson gson = new Gson();
@@ -37,7 +37,7 @@ class LabelMaker {
             if(usePage(section.observer, MainActivity.position)) sections.add(section);
         }
 
-        //Build pages
+        //Build pagesMake
         for(Section section : sections)  {
             //Create each phase
             if(current.isEmpty() || !pageList.get(current).name.equals(section.phase)) {
@@ -58,11 +58,13 @@ class LabelMaker {
         }
 
         for(Section s : sections) {
-            if(s.newpart.equals("true")) pageList.get(s.phase).newCol();
-            if(s.position.isEmpty()) s.position = MainActivity.position;
+            if(s.newpart.equals("true"))
+                pageList.get(s.phase).newCol();
+            if(s.position.isEmpty())
+                s.position = MainActivity.position;
 
-            Input input = new Label(context, new InputData(new Task(s.category), s.position));
-            pageList.get(s.phase).add(input);
+            Input label = new Label(context, new InputData(new Task(s.category), s.position));
+            pageList.get(s.phase).add(label);
 
             for(String t : s.tasks) if(tasks.containsKey(t)) {
                 pageList.get(s.phase).add(makeLabel(tasks.get(t), context, s.phase, s.position));
@@ -93,9 +95,11 @@ class LabelMaker {
                 return new Choice(context, id);
             case 'p':
                 return new Enter(context, id);
+            case 'r':
+                return new Switcher(context, id);
             case 'l':
                 return new Label(context, id);
         }
-        return new Label(context, id);
+        return new Label(context, new InputData(new Task(), position));
     }
 }

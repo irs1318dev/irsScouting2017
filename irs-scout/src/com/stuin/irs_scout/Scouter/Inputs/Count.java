@@ -1,6 +1,7 @@
 package com.stuin.irs_scout.Scouter.Inputs;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +17,8 @@ public class Count extends GridLayout implements Input {
     public Count(Context context, InputData inputData) {
         super(context);
         id = inputData;
+
+        setColumnCount(2);
     }
 
     @Override
@@ -32,6 +35,21 @@ public class Count extends GridLayout implements Input {
     public void update(Measure measure, boolean send) {
         id.update(measure, send);
     }
+
+    OnClickListener clickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
+    OnLongClickListener longClickListener = new OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+
+            return false;
+        }
+    };
 
     @Override
     public InputData getData() {

@@ -17,10 +17,10 @@ import java.util.List;
 
 public class PageManager extends FrameLayout {
     public Updater updater;
+    public LabelMaker labelMaker;
 
     private int current = -1;
     private Activity activity;
-    private LabelMaker labelMaker;
     private boolean moving;
 
     public PageManager(Context context, AttributeSet attributeSet) {
@@ -38,7 +38,7 @@ public class PageManager extends FrameLayout {
         class Layout extends Request {
             @Override
             public void run(List<String> s) {
-                labelMaker.pages(s);
+                labelMaker.pagesMake(s);
 
                 class Tasks extends Request {
                     @Override
@@ -67,9 +67,8 @@ public class PageManager extends FrameLayout {
         if(current != -1) getChildAt(current).setVisibility(GONE);
 
         current = 0;
-        setPage();
+        confirmPage();
 
-        //Show correct page buttons
         activity.findViewById(R.id.Previous).setVisibility(GONE);
         if(getChildCount() > 1) activity.findViewById(R.id.Next).setVisibility(VISIBLE);
     }
@@ -111,7 +110,7 @@ public class PageManager extends FrameLayout {
             if(current + 2 == getChildCount()) view.setVisibility(GONE);
 
             current++;
-            setPage();
+            confirmPage();
         }
     }
 
@@ -127,11 +126,11 @@ public class PageManager extends FrameLayout {
 
             //Set new phase
             current--;
-            setPage();
+            confirmPage();
         }
     }
 
-    private void setPage() {
+    private void confirmPage() {
         //Show new phase
         getChildAt(current).setVisibility(VISIBLE);
 

@@ -44,17 +44,19 @@ public class MainActivity extends Activity {
         //Check connection
         class Connected extends Request {
             public void run(List<String> s) {
-                connected();
+                connected(true);
             }
         }
         new Connected().start("");
     }
 
-    private void connected() {
-        //Save correct address
-        SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
-        editor.putString("Address", Request.address);
-        editor.apply();
+    private void connected(boolean save) {
+        if(save) {
+            //Save correct address
+            SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
+            editor.putString("Address", Request.address);
+            editor.apply();
+        }
 
         //Hide start screen
         findViewById(R.id.AddressBar).setVisibility(View.GONE);
@@ -89,5 +91,9 @@ public class MainActivity extends Activity {
         Uri url = Uri.parse("http://" + Request.address + ":8080/");
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, url);
         startActivity(launchBrowser);
+    }
+
+    public void test(View view) {
+        //connected(false);
     }
 }
