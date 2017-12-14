@@ -38,8 +38,8 @@ public class MainActivity extends Activity {
         position = textView.getText().toString();
 
         //Get server address
-        textView = (TextView) findViewById(R.id.AddressBar);
-        Request.address = textView.getText().toString();
+        textView = findViewById(R.id.AddressBar);
+        Request.address = textView.getText().toString() + ":8080";
 
         //Check connection
         class Connected extends Request {
@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
                 connected(true);
             }
         }
-        new Connected().start("");
+        new Connected().start("/");
     }
 
     private void connected(boolean save) {
