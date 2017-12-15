@@ -1,5 +1,5 @@
 import json
-import db
+import scouting.db as db
 
 engine = db.getdbengine()
 conn = engine.connect()

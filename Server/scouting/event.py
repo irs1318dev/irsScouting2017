@@ -4,6 +4,7 @@ import json
 
 engine = db.getdbengine()
 
+
 class EventDal(object):
 
     @staticmethod

@@ -1,4 +1,4 @@
-import db
+import scouting.db as db
 from sqlalchemy.sql import text
 
 

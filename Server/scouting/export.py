@@ -1,4 +1,4 @@
-import db
+import scouting.db as db
 import os
 import datetime
 import subprocess
@@ -20,7 +20,7 @@ class ExportCSV(object):
         conn.execute(sql)
 
     @staticmethod
-    def alltables():
+    def all_tables():
         ExportCSV.single('measures')
         ExportCSV.single('tasks')
         ExportCSV.single('schedules')
@@ -43,7 +43,7 @@ class ExportCSV(object):
 
 class ExportBackup(object):
     @staticmethod
-    def runBackup(event):
+    def run_backup(event):
         name = event + datetime.datetime.now().strftime('_%Y_%m%d_%H%M')
         command = ['pg_dump', '-U', 'irs1318', 'scouting']
 
@@ -51,7 +51,7 @@ class ExportBackup(object):
         return name
 
     @staticmethod
-    def runRestore(path):
+    def run_restore(path):
         command = ['pgsql', '-U', 'irs1318', 'scouting']
 
         subprocess.call(command, stdin=open(path))
