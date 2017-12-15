@@ -1,5 +1,5 @@
 from base64 import b64encode
-from urllib2 import Request, urlopen
+from urllib import request
 
 import auth
 
@@ -17,10 +17,10 @@ def getSched(event, season, level="qual"):
     # build headers
 
     hdrs = {"Accept": "application/json", 'Authorization': token}
-    req = Request(url, headers=hdrs)
+    req = request.Request(url, headers=hdrs)
 
     # send url request
-    sched = urlopen(req)
+    sched = request.urlopen(req)
     return sched.read()
 
 
@@ -35,13 +35,13 @@ def getMatchResults(event, season, matchNumber, tournamentLevel):
 
     url = ("https://frc-api.firstinspires.org/v2.0/" + season + "/matches/" +
            event + "?matchNumber=" + matchNumber + "&tournamentLevel=" + tournamentLevel)
-    print url
+    print(url)
 
 
     hdrs = {"Accept": "application/json", 'Authorization': token}
-    req = Request(url, headers=hdrs)
+    req = request.Request(url, headers=hdrs)
 
-    results = urlopen(req)
+    results = request.urlopen(req)
     return results.read()
 
 
@@ -51,10 +51,10 @@ def getMatchScores(event, season, tournamentLevel):
 
 
     url = ("https://frc-api.firstinspires.org/v2.0/" + season + "/scores/" + event + "/" + tournamentLevel)
-    print url
+    print(url)
 
     hdrs = {"Accept": "application/json", 'Authorization': token}
-    req = Request(url, headers=hdrs)
+    req = request.Request(url, headers=hdrs)
 
-    results = urlopen(req)
+    results = request.urlopen(req)
     return results.read()

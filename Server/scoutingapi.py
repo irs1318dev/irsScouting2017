@@ -18,7 +18,7 @@ class Scouting(object):
     @cherrypy.expose
     def index(self):
         out = open("web/sites/admin.html").read()
-        # out = out.replace('{Match}', self.eventDal.get_current_match())
+        out = out.replace('{Match}', self.eventDal.get_current_match())
         out = out.replace('{Event}', self.eventDal.get_current_event())
         return out
 
@@ -97,6 +97,13 @@ class Scouting(object):
         self.eventDal.set_current_event(event)
         self.eventDal.set_current_match('001-q')
         scouting.load_data.insert_sched(event, year, 'qual')
+        return open("web/sites/reset.html").read()
+
+    @cherrypy.expose
+    def databaseset(self):
+        scouting.db.create_tables()
+        scouting.db_dimensiondata.insert_data()
+        scouting.load_data.load_game_sheet()
         return open("web/sites/reset.html").read()
 
 if __name__ == '__main__':
