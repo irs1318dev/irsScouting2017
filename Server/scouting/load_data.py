@@ -1,12 +1,12 @@
 import csv
 import os
-import scouting.db as db
-import scouting.db_dimensiondata as ddd
-import firstapi as api
+import Server.scouting.db as db
+import Server.scouting.db_dimensiondata as ddd
+import Server.firstapi as api
 import json
 from sqlalchemy.sql import text
-import scouting.match as m
-import scouting.event as e
+import Server.scouting.match as m
+import Server.scouting.event as e
 
 
 engine = db.getdbengine()

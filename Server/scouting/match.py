@@ -1,11 +1,11 @@
 from collections import OrderedDict
 
-import scouting.event as event
-import scouting.dimension as dimension
+import Server.scouting.event as event
+import Server.scouting.dimension as dimension
 import json
-import scouting.db as db
+import Server.scouting.db as db
 from sqlalchemy import text
-import scouting.game as game
+import Server.scouting.game as game
 
 engine = db.getdbengine()
 

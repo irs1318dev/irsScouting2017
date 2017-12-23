@@ -1,6 +1,6 @@
-import scouting.db as db
+import Server.scouting.db as db
 import os.path
-import scouting.event as event
+import Server.scouting.event as event
 from sqlalchemy.sql import text
 import pandas as pd
 import datetime

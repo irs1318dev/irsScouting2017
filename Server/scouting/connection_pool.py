@@ -2,7 +2,6 @@ import psycopg2
 import psycopg2.pool
 
 
-
 class ConnectionPool(object):
 
     pool = psycopg2.pool.SimpleConnectionPool(minconn=1, maxconn=2,
@@ -11,8 +10,8 @@ class ConnectionPool(object):
 
     @staticmethod
     def get_conn(self):
-        return pool.getconn()
+        return psycopg2.pool.getconn()
 
     @staticmethod
     def put_conn(conn):
-        return pool.putconn(conn)
+        return psycopg2.pool.putconn(conn)

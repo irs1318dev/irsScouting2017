@@ -1,18 +1,18 @@
 import cherrypy
 from cherrypy.lib.static import serve_file
 import os.path
-import scouting.export
-import scouting.output
-import scouting.event
-import scouting.alliance
-import scouting.match
+import Server.scouting.export
+import Server.scouting.output
+import Server.scouting.event
+import Server.scouting.alliance
+import Server.scouting.match
 
 
 class Viewer:
     def __init__(self, alone=True):
         self.alone = alone
-        self.alliances = scouting.alliance.AlliancePage()
-        self.export = scouting.export.ExportBackup
+        self.alliances = Server.scouting.alliance.AlliancePage()
+        self.export = Server.scouting.export.ExportBackup
 
     @cherrypy.expose
     def index(self):
@@ -34,8 +34,8 @@ class Viewer:
 
     @cherrypy.expose
     def output(self):
-        excel = scouting.output.get_Path('Report')
-        scouting.output.get_report(excel)
+        excel = Server.scouting.output.get_Path('Report')
+        Server.scouting.output.get_report(excel)
         return '<a href="/view/data?name=' + excel + '">Download File</a>'
         # return open("web/resetView.html").read()
 
@@ -58,7 +58,7 @@ class Viewer:
 
     @cherrypy.expose
     def backup(self):
-        script = self.export.run_backup(scouting.event.EventDal.get_current_event())
+        script = self.export.run_backup(Server.scouting.event.EventDal.get_current_event())
         return '<a href="/view/data?name=' + script + '">Download File</a>'
 
     @cherrypy.expose
@@ -71,8 +71,8 @@ class Viewer:
         match = '001-q'
         matches = list()
 
-        while '""' not in scouting.match.MatchDal.matchteams(match) and '130' not in match:
-            if team in scouting.match.MatchDal.matchteams(match):
+        while '""' not in Server.scouting.match.MatchDal.matchteams(match) and '130' not in match:
+            if team in Server.scouting.match.MatchDal.matchteams(match):
                 matches.append(match)
 
             nextMatchNumber = int(match.split('-')[0]) + 1
@@ -100,7 +100,7 @@ class Viewer:
 
     def teamsList(self, match):
         teams = list()
-        for data in scouting.match.MatchDal.matchteams(match).split(','):
+        for data in Server.scouting.match.MatchDal.matchteams(match).split(','):
             if 'team' in data:
                 teams.append(data.split(':')[1].split('"')[1])
         return teams

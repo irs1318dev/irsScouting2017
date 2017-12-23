@@ -1,4 +1,4 @@
-import scouting.db as db
+import Server.scouting.db as db
 from sqlalchemy import text
 import json
 
