@@ -1,5 +1,4 @@
-from __future__ import print_function
-import httplib2
+import http.client as hc
 import os
 
 from apiclient import discovery
@@ -56,7 +55,7 @@ def main():
     https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
     """
     credentials = get_credentials()
-    http = credentials.authorize(httplib2.Http())
+    http = credentials.authorize(hc.Http())
     discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
                     'version=v4')
     service = discovery.build('sheets', 'v4', http=http,
@@ -64,7 +63,7 @@ def main():
 
     spreadsheetId = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
     rangeName = 'Class Data!A2:E'
-    result = service.spreadsheets().values().get(
+    result = list(service.spreadsheets().values()).get(
         spreadsheetId=spreadsheetId, range=rangeName).execute()
     values = result.get('values', [])
 

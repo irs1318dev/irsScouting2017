@@ -1,5 +1,5 @@
 from base64 import b64encode
-from urllib import request
+from urllib.request import Request, urlopen
 
 import auth
 
@@ -24,6 +24,7 @@ def getSched(event, season, level="qual"):
     return sched.read()
 
 
+#TODO: Get rid of empty function
 def getEvents(event, season, tournamentLevel):
     pass
 

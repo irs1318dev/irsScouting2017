@@ -5,7 +5,6 @@ import scouting.db_dimensiondata as ddd
 import firstapi as api
 import json
 from sqlalchemy.sql import text
-import scouting.db_dimensiondata as data
 import scouting.match as m
 import scouting.event as e
 
@@ -37,7 +36,7 @@ def insert_game(actor, task, claim, auto, teleop, finish, optionString):
     conn = engine.connect()
     conn.execute(select, actor=actor, task=task, claim=claim, auto=auto, teleop=teleop, finish=finish)
     conn.close()
-    data.add_name("tasks", "name", task)
+    ddd.add_name("tasks", "name", task)
 
     if not optionString.strip():
         optionNames = optionString.split('|')
@@ -89,9 +88,9 @@ def process_sched(event, season, sched_json, level='qual'):
             conn.execute(select, event=event, match=match, team=team, level=level, date=date, alliance=alliance,
                          station=station)
             conn.close()
-            data.add_name("events", "name", event)
-            data.add_name("teams", "name", team)
-            data.add_name("dates", "name", date)
+            ddd.add_name("events", "name", event)
+            ddd.add_name("teams", "name", team)
+            ddd.add_name("dates", "name", date)
 
 
 def insert_all_events(season, tournamentLevel, fileName = '-1'):

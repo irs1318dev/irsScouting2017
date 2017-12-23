@@ -41,7 +41,7 @@ def add_many_cols(table, data) :
     col_names = ""
     val_data = ""
     set_data = ""
-    for col, _ in data.iteritems():
+    for col, _ in data.items():
         if col_names == "":
             col_names = col
             val_data = ':' + col
