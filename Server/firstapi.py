@@ -1,12 +1,12 @@
 from base64 import b64encode
 from urllib.request import Request, urlopen
 
-import auth
+import Server.auth
 
 
 def getSched(event, season, level="qual"):
     # build authorization token
-    raw_token = auth.username + ":" + auth.key
+    raw_token = Server.auth.username + ":" + Server.auth.key
     token =  "Basic " + b64encode(raw_token)
 
     # build url
@@ -17,10 +17,10 @@ def getSched(event, season, level="qual"):
     # build headers
 
     hdrs = {"Accept": "application/json", 'Authorization': token}
-    req = request.Request(url, headers=hdrs)
+    req = Request(url, headers=hdrs)
 
     # send url request
-    sched = request.urlopen(req)
+    sched = urlopen(req)
     return sched.read()
 
 
@@ -30,7 +30,7 @@ def getEvents(event, season, tournamentLevel):
 
 
 def getMatchResults(event, season, matchNumber, tournamentLevel):
-    raw_token = auth.username + ":" + auth.key
+    raw_token = Server.auth.username + ":" + Server.auth.key
     token = "Basic " + b64encode(raw_token)
 
 
@@ -40,14 +40,14 @@ def getMatchResults(event, season, matchNumber, tournamentLevel):
 
 
     hdrs = {"Accept": "application/json", 'Authorization': token}
-    req = request.Request(url, headers=hdrs)
+    req = Request(url, headers=hdrs)
 
-    results = request.urlopen(req)
+    results = urlopen(req)
     return results.read()
 
 
 def getMatchScores(event, season, tournamentLevel):
-    raw_token = auth.username + ":" + auth.key
+    raw_token = Server.auth.username + ":" + auth.key
     token = "Basic " + b64encode(raw_token)
 
 
@@ -55,7 +55,7 @@ def getMatchScores(event, season, tournamentLevel):
     print(url)
 
     hdrs = {"Accept": "application/json", 'Authorization': token}
-    req = request.Request(url, headers=hdrs)
+    req = Request(url, headers=hdrs)
 
-    results = request.urlopen(req)
+    results = urlopen(req)
     return results.read()
