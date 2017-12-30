@@ -1,9 +1,9 @@
-import Server.scouting.db as db
+import Server.model.connection
 import os
 import datetime
 import subprocess
 
-engine = db.getdbengine()
+engine = Server.model.connection.engine
 conn = engine.connect()
 
 

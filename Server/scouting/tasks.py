@@ -1,7 +1,8 @@
 import json
-import Server.scouting.db as db
 
-engine = db.getdbengine()
+import Server.model.connection
+
+engine = Server.model.connection.engine
 conn = engine.connect()
 
 

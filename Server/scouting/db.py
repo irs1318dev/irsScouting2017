@@ -1,16 +1,9 @@
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import ForeignKey
 from sqlalchemy import UniqueConstraint
 
-
-# ========== Database Connection ==============================================
-connection_string = 'postgresql://irs1318:irs1318@localhost:5432/scouting'
-engine = create_engine(connection_string)
-
-def getdbengine():
-    return engine
-
+import Server.model.connection
 
 # ========== Table Definitions ================================================
 Base = declarative_base()
@@ -193,5 +186,5 @@ class Match_Result(Base):
 
 
 def create_tables():
-    engine = getdbengine()
+    engine = Server.model.connection.engine
     Base.metadata.create_all(engine)

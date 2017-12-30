@@ -1,9 +1,9 @@
-import Server.scouting.db as db
+import Server.model.connection
 from sqlalchemy.sql import text
 
 
 def add_name(table, col, val):
-    engine = db.getdbengine()
+    engine = Server.model.connection.engine
     conn = engine.connect()
     select = text(
         "INSERT INTO " + table + " (" + col + ") " +
@@ -17,7 +17,7 @@ def add_name(table, col, val):
 
 
 def add_many_names(table, col, n, template):
-    engine = db.getdbengine()
+    engine = Server.model.connection.engine
     conn = engine.connect()
     for i in range(1, n):
         name = template.format(i)
@@ -34,7 +34,7 @@ def add_many_names(table, col, n, template):
 
 
 def add_many_cols(table, data) :
-    engine = db.getdbengine()
+    engine = Server.model.connection.engine
     conn = engine.connect()
 
     # Buld string containing column names

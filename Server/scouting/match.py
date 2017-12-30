@@ -1,13 +1,13 @@
 from collections import OrderedDict
 
+import Server.model.connection
 import Server.scouting.event as event
 import Server.scouting.dimension as dimension
 import json
-import Server.scouting.db as db
 from sqlalchemy import text
 import Server.scouting.game as game
 
-engine = db.getdbengine()
+engine = Server.model.connection.engine
 
 
 class MatchDal(object):

@@ -1,6 +1,7 @@
 import csv
 import os
-import Server.scouting.db as db
+
+import Server.model.connection
 import Server.scouting.db_dimensiondata as ddd
 import Server.firstapi as api
 import json
@@ -9,7 +10,7 @@ import Server.scouting.match as m
 import Server.scouting.event as e
 
 
-engine = db.getdbengine()
+engine = Server.model.connection.engine
 
 
 def load_game_sheet():

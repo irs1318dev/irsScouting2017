@@ -1,8 +1,8 @@
-import Server.scouting.db as db
+import Server.model.connection
 from sqlalchemy import text
 import json
 
-engine = db.getdbengine()
+engine = Server.model.connection.engine
 
 
 class EventDal(object):
