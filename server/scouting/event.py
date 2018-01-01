@@ -1,8 +1,8 @@
-import Server.model.connection
+import server.model.connection
 from sqlalchemy import text
 import json
 
-engine = Server.model.connection.engine
+engine = server.model.connection.engine
 
 
 class EventDal(object):

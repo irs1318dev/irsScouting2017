@@ -1,16 +1,17 @@
 import csv
 import os
 
-import Server.model.connection
-import Server.scouting.db_dimensiondata as ddd
-import Server.firstapi as api
+import server.model.connection
+import server.model.update
+import server.scouting.db_dimensiondata as ddd
+import server.firstapi as api
 import json
 from sqlalchemy.sql import text
-import Server.scouting.match as m
-import Server.scouting.event as e
+import server.scouting.match as m
+import server.scouting.event as e
 
 
-engine = Server.model.connection.engine
+engine = server.model.connection.engine
 
 
 def load_game_sheet():
@@ -19,7 +20,7 @@ def load_game_sheet():
     file = open('gametasks.csv')
     sheet = csv.reader(file)
 
-    ddd.add_many_cols("task_options", {'task_name': 'na',
+    server.model.update.add_many_cols("task_options", {'task_name': 'na',
                                        'type': 'capability',
                                        'option_name': 'na'})
     for row in sheet:
@@ -37,12 +38,12 @@ def insert_game(actor, task, claim, auto, teleop, finish, optionString):
     conn = engine.connect()
     conn.execute(select, actor=actor, task=task, claim=claim, auto=auto, teleop=teleop, finish=finish)
     conn.close()
-    ddd.add_name("tasks", "name", task)
+    server.model.update.upsert("tasks", "name", task)
 
     if not optionString.strip():
         optionNames = optionString.split('|')
         for optionName in optionNames:
-            ddd.add_many_cols("task_options", {'task_name': task,
+            server.model.update.add_many_cols("task_options", {'task_name': task,
                                            'type': 'capability',
                                            'option_name': optionName})
 
@@ -89,9 +90,9 @@ def process_sched(event, season, sched_json, level='qual'):
             conn.execute(select, event=event, match=match, team=team, level=level, date=date, alliance=alliance,
                          station=station)
             conn.close()
-            ddd.add_name("events", "name", event)
-            ddd.add_name("teams", "name", team)
-            ddd.add_name("dates", "name", date)
+            server.model.update.upsert("events", "name", event)
+            server.model.update.upsert("teams", "name", team)
+            server.model.update.upsert("dates", "name", date)
 
 
 def insert_all_events(season, tournamentLevel, fileName = '-1'):

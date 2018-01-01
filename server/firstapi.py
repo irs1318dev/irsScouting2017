@@ -1,12 +1,12 @@
 from base64 import b64encode
 from urllib.request import Request, urlopen
 
-import Server.auth
+import server.auth
 
 
 def getSched(event, season, level="qual"):
     # build authorization token
-    raw_token = Server.auth.username + ":" + Server.auth.key
+    raw_token = server.auth.username + ":" + server.auth.key
     token =  "Basic " + b64encode(raw_token)
 
     # build url
@@ -30,7 +30,7 @@ def getEvents(event, season, tournamentLevel):
 
 
 def getMatchResults(event, season, matchNumber, tournamentLevel):
-    raw_token = Server.auth.username + ":" + Server.auth.key
+    raw_token = server.auth.username + ":" + server.auth.key
     token = "Basic " + b64encode(raw_token)
 
 
@@ -47,7 +47,7 @@ def getMatchResults(event, season, matchNumber, tournamentLevel):
 
 
 def getMatchScores(event, season, tournamentLevel):
-    raw_token = Server.auth.username + ":" + auth.key
+    raw_token = server.auth.username + ":" + auth.key
     token = "Basic " + b64encode(raw_token)
 
 

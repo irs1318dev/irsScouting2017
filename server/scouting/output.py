@@ -1,6 +1,6 @@
-import Server.model.connection
+import server.model.connection
 import os.path
-import Server.scouting.event as event
+import server.scouting.event as event
 from sqlalchemy.sql import text
 import pandas as pd
 import datetime
@@ -8,7 +8,7 @@ import datetime
 
 def get_rankings(name=None, tasks=None, num_matches=12):
     # Connect to database
-    engine = Server.model.connection.engine
+    engine = server.model.connection.engine
     conn = engine.connect()
 
     # Get current event

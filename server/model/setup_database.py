@@ -23,14 +23,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import ForeignKey
 from sqlalchemy import UniqueConstraint
 
-import Server.model.connection
+import server.model.connection
 
 # region Code required to create the tables in the database.============
 Base = declarative_base()
 
 
-def create_tables():
-    engine = Server.model.connection.engine
+def create_tables(engine=server.model.connection.engine):
     Base.metadata.create_all(engine)
 
 # endregion
@@ -306,7 +305,6 @@ class Game(Base):
     finish = Column(String)
 
 # endregion
-
 
 # region Other Tables (perhaps unused) =================================
 

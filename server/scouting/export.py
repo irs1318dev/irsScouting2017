@@ -1,9 +1,9 @@
-import Server.model.connection
+import server.model.connection
 import os
 import datetime
 import subprocess
 
-engine = Server.model.connection.engine
+engine = server.model.connection.engine
 conn = engine.connect()
 
 

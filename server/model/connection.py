@@ -53,13 +53,32 @@ db_params = {"minconn": 1,
              "host": "localhost",
              "port": "5432"}
 
-# Create sqlalchemy engine object
-connection_string = ("postgresql" + "://" + db_params["user"] +
-                     ":" + db_params["password"] + "@" +
-                     db_params["host"] + ":" + db_params["port"]
-                     + "/" + db_params["dbname"])
-# Example string: 'postgresql://irs1318:irs1318@localhost:5432/scouting'
-engine = sqlalchemy.create_engine(connection_string)
+
+def create_conn_string(user=db_params["user"],
+                       password=db_params["password"],
+                       dbname=db_params["dbname"],
+                       host=db_params["host"],
+                       port=db_params["port"]):
+    """Creates a sqlalchemy connection string.
+
+    Args:
+        user: Database account username
+        password: Database account password
+        dbname: Database name
+        host: Hostname of computer running database server.
+        port: port number on which database server is running.
+
+    Returns: Connection string in the format of
+        {db_name}://{user}:{password}@{host}:{port}/{dbname}
+
+    Example string:
+        'postgresql://irs1318:irs1318@localhost:5432/scouting'
+    """
+    return ("postgresql" + "://" + user + ":" + password +
+            "@" + host + ":" + port + "/" + dbname)
+
+
+engine = sqlalchemy.create_engine(create_conn_string())
 
 # Create psycopg2 connection pool
 pool = None

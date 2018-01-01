@@ -1,8 +1,8 @@
 import json
 
-import Server.model.connection
+import server.model.connection
 
-engine = Server.model.connection.engine
+engine = server.model.connection.engine
 conn = engine.connect()
 
 

@@ -1,19 +1,19 @@
 import cherrypy
 import os.path
-import Server.viewerapi
-import Server.scouting.tasks
-import Server.scouting.tablet
-import Server.scouting.sections
-import Server.scouting.match
-import Server.scouting.event
-import Server.scouting.load_data
+import server.viewerapi
+import server.scouting.tasks
+import server.scouting.tablet
+import server.scouting.sections
+import server.scouting.match
+import server.scouting.event
+import server.scouting.load_data
 
 
 class Scouting(object):
     def __init__(self):
-        self.matchDal = Server.scouting.match.MatchDal()
-        self.eventDal = Server.scouting.event.EventDal()
-        self.alltablets = Server.scouting.tablet.TabletList()
+        self.matchDal = server.scouting.match.MatchDal()
+        self.eventDal = server.scouting.event.EventDal()
+        self.alltablets = server.scouting.tablet.TabletList()
 
     @cherrypy.expose
     def index(self):
@@ -30,47 +30,47 @@ class Scouting(object):
 
     @cherrypy.expose
     def gamelayout(self):
-        return Server.scouting.sections.Observers().load()
+        return server.scouting.sections.Observers().load()
 
     @cherrypy.expose
     def gametasks(self):
-        return Server.scouting.tasks.TaskDal.csvtasks()
+        return server.scouting.tasks.TaskDal.csvtasks()
 
     @cherrypy.expose
     def matches(self, event='na'):
         if event == 'na':
-            event = Server.scouting.event.EventDal.get_current_event()
+            event = server.scouting.event.EventDal.get_current_event()
 
-        return Server.scouting.event.EventDal.list_matches(event)
+        return server.scouting.event.EventDal.list_matches(event)
 
     @cherrypy.expose
     def matchteams(self, match=-1):
         if match == -1:
             match = self.eventDal.get_current_match()
         if match == 'na':
-            return Server.scouting.match.MatchDal.pitteams()
-        return Server.scouting.match.MatchDal.matchteams(match)
+            return server.scouting.match.MatchDal.pitteams()
+        return server.scouting.match.MatchDal.matchteams(match)
 
     @cherrypy.expose
     def matchteamtasks(self, team='error', match=-1):
         if match == -1:
             match = self.eventDal.get_current_match()
-        return Server.scouting.match.MatchDal.matchteamtasks(match, team) + '{end}'
+        return server.scouting.match.MatchDal.matchteamtasks(match, team) + '{end}'
 
     @cherrypy.expose
     def matchteamtask(self, match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
         try:
-            Server.scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
+            server.scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
         except KeyError:
             return 'Error'
         return 'hi'
 
     @cherrypy.expose
     def tablet(self, status, ip=-1):
-        newtablet = Server.scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1], ip)
+        newtablet = server.scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1], ip)
 
-        if Server.scouting.tablet.TabletList.settablet(self.alltablets, newtablet):
-            Server.scouting.event.EventDal.set_next_match(self.eventDal.get_current_match())
+        if server.scouting.tablet.TabletList.settablet(self.alltablets, newtablet):
+            server.scouting.event.EventDal.set_next_match(self.eventDal.get_current_match())
 
         return self.eventDal.get_current_match()
 
@@ -96,14 +96,14 @@ class Scouting(object):
     def eventfind(self, event, year='2017'):
         self.eventDal.set_current_event(event)
         self.eventDal.set_current_match('001-q')
-        Server.scouting.load_data.insert_sched(event, year, 'qual')
+        server.scouting.load_data.insert_sched(event, year, 'qual')
         return open("web/sites/reset.html").read()
 
     @cherrypy.expose
     def databaseset(self):
-        Server.scouting.db.create_tables()
-        Server.scouting.db_dimensiondata.insert_data()
-        Server.scouting.load_data.load_game_sheet()
+        server.scouting.db.create_tables()
+        server.scouting.db_dimensiondata.insert_data()
+        server.scouting.load_data.load_game_sheet()
         return open("web/sites/reset.html").read()
 
 if __name__ == '__main__':
@@ -112,5 +112,5 @@ if __name__ == '__main__':
 
     conf = {"/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': os.path.abspath('web')}}
 
-    cherrypy.tree.mount(Server.viewerapi.Viewer(False), '/view', config=conf)
+    cherrypy.tree.mount(server.viewerapi.Viewer(False), '/view', config=conf)
     cherrypy.quickstart(Scouting(), '/', config=conf)
