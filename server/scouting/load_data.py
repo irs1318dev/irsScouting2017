@@ -3,7 +3,6 @@ import os
 
 import server.model.connection
 import server.model.update
-import server.scouting.db_dimensiondata as ddd
 import server.firstapi as api
 import json
 from sqlalchemy.sql import text
@@ -20,7 +19,7 @@ def load_game_sheet():
     file = open('gametasks.csv')
     sheet = csv.reader(file)
 
-    server.model.update.add_many_cols("task_options", {'task_name': 'na',
+    server.model.update.upsert_cols("task_options", {'task_name': 'na',
                                        'type': 'capability',
                                        'option_name': 'na'})
     for row in sheet:
@@ -43,7 +42,7 @@ def insert_game(actor, task, claim, auto, teleop, finish, optionString):
     if not optionString.strip():
         optionNames = optionString.split('|')
         for optionName in optionNames:
-            server.model.update.add_many_cols("task_options", {'task_name': task,
+            server.model.update.upsert_cols("task_options", {'task_name': task,
                                            'type': 'capability',
                                            'option_name': optionName})
 

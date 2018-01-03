@@ -1,3 +1,5 @@
+"""Tests code in server.model.connection.py
+"""
 import pytest
 import psycopg2
 import psycopg2.pool

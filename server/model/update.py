@@ -3,7 +3,7 @@ import sqlalchemy
 import server.model.connection
 
 
-def upsert(table, col, val):
+def upsert(table, col, val, engine=server.model.connection.engine):
     """ Inserts value into database table, or updates if already exists.
 
     This function is intended for inertering values into dimension
@@ -18,12 +18,17 @@ def upsert(table, col, val):
     dimension tables without having to determine if some or all of the
     data already exists.
 
+    Note that upsert only works if there are unique contstraints on
+    affected fields.
+
     Args:
         table: Database table into which value should be inserted.
         col: Column into which value should be inserted
         val: Value to be inserted.
+        engine: database engine. Optional. Default is production
+            scouting database.
     """
-    conn = server.model.connection.engine.connect()
+    conn = engine.connect()
     select = sqlalchemy.text(
         "INSERT INTO " + table + " (" + col + ") " +
         "VALUES (:val) "
@@ -35,7 +40,8 @@ def upsert(table, col, val):
     conn.close()
 
 
-def upsert_range(table, col, n, template):
+def upsert_rows(table, col, n, template,
+                engine=server.model.connection.engine):
     """Insert a range of values containing integers from 1 to n.
 
     Inserts n rows into the database table, each containing the string
@@ -44,6 +50,9 @@ def upsert_range(table, col, n, template):
     `str.format()` function. The template string can contain up to one
     field. The upsert_Range functionw will insert an integer into the
     location specified by the field.
+
+    Note that upsert only works if there are unique contstraints on
+    affected fields.
 
     For example, calling
     `upsert_range("matches", "name", 150, "{0:0>3}-q")` will insert
@@ -55,8 +64,10 @@ def upsert_range(table, col, n, template):
         col: Column into which value should be inserted
         n: Positive integer.
         template: Python format string that accepts up to one parameter.
+        engine: database engine. Optional. Default is production
+            scouting database.
     """
-    conn = server.model.connection.engine.connect()
+    conn = engine.connect()
     for i in range(1, n):
         name = template.format(i)
         sql = sqlalchemy.text(
@@ -71,8 +82,28 @@ def upsert_range(table, col, n, template):
     conn.close()
 
 
-def add_many_cols(table, data) :
-    conn = server.model.connection.engine.connect()
+def upsert_cols(table, data, engine=server.model.connection.engine):
+    """Adds a row to a table, simultaneously updating several columns.
+
+    The data argument is a Python dictionary that specifies what will
+    be inserted into the database table. The dictionary is of the form:
+    {"column1 name": "column1 value", "column2 name": "column2 value"}
+
+    If the row already exists in the database, this funciton will
+    update the row (instead of throwing an error).
+
+    Note that upsert only works if there are unique contstraints on
+    affected fields.
+
+    Args:
+        table: The name of the table into which data will be inserted.
+        data: A Python dictionary where the key is the column nama and
+            the dictionary value is the value that will be inserted into
+            the database column.
+        engine: database engine. Optional. Default is production
+            scouting database.
+    """
+    conn = engine.connect()
 
     # Buld string containing column names
     col_names = ""

@@ -1,14 +1,22 @@
 """Creates tables in Scouting PostgreSQL database.
 
 This module is used only for initially setting up a new PostgreSQL
-database. It is not used during actual scouting. Each class in this
-module represents a table in the scouting system database.
+database. It is not used during actual scouting. It contains several
+functions that initially setup the database:
+* `create_tables()` creates empty tables in the Postgresql server
+database, using the classes defined in this module. Each class in this
+module corresponds to one database table.
+* `insert_dimension_data()` loads data that is essential for the
+scouting system to function.
+* `setup()` is a convenience function that runs both `create_tables()`
+and `insert_dimension_data()`. Run `setup()` once, after creating the
+database but before loading any FRC competition data.
 
 To use this module:
 1. create a new empty database.
 2. Ensure the parameters in Model.connection.db_params correspond to
 the database created in step #1.
-3. Run `Server.model.setup_database.create_tables() in a Python console.
+3. Run `Server.model.setup_database.setup() in a Python console.
 
 This database uses a star schema. The main table that contains the
 scouting data is the *measures* table (it's the *fact* table per
@@ -18,22 +26,18 @@ Per star schema terminology, these tables are dimension tables.
 
 Further reading: https://en.wikipedia.org/wiki/Star_schema
 """
+
+#todo(stacy.irwin) Add season dimension table
+
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import ForeignKey
 from sqlalchemy import UniqueConstraint
 
 import server.model.connection
+from server.model.update import upsert, upsert_rows
 
-# region Code required to create the tables in the database.============
 Base = declarative_base()
-
-
-def create_tables(engine=server.model.connection.engine):
-    Base.metadata.create_all(engine)
-
-# endregion
-
 
 # region Main Fact table (star schema)==================================
 class Measure(Base):
@@ -61,7 +65,6 @@ class Measure(Base):
     cycle_times = Column(Integer)
 
 # endregion
-
 
 # region Dimension Tables (star schema) ================================
 class Date(Base):
@@ -251,7 +254,6 @@ class Reason(Base):
 
 # endregion
 
-
 # region Tables for managing user interface ============================
 
 
@@ -283,7 +285,6 @@ class TaskOptions(Base):
     __table_args__ = (UniqueConstraint('task_name', 'type', 'option_name'),)
 
 # endregion
-
 
 # region Tables that customize system for different seasons ============
 
@@ -335,5 +336,104 @@ class MatchResult(Base):
     __tablename__ = "match_results"
 
     id = Column(Integer, primary_key=True)
+
+# endregion
+
+# region Functions for initializing database ===========================
+
+def create_tables(engine=server.model.connection.engine):
+    Base.metadata.create_all(engine)
+
+
+def initialize_dimension_data(engine=server.model.connection.engine):
+    """Loads initial dimension data into database.
+
+    The dimension data loaded by this function is essential for the
+    scouting system to operate and must be loaded before recording
+    any competition data (but after creating the tables with
+    `create_tables()`.
+    """
+    upsert("levels", "name", "na", engine)
+    upsert("levels", "name", "qual", engine)
+    upsert("levels", "name", "playoff", engine)
+
+    upsert_rows("matches", "name", 150, "{0:0>3}-q", engine)
+    upsert("matches", "name", "na", engine)
+    upsert("matches", "name", "q1.1", engine)
+    upsert("matches", "name", "q1.2", engine)
+    upsert("matches", "name", "q1.3", engine)
+    upsert("matches", "name", "q2.1", engine)
+    upsert("matches", "name", "q2.2", engine)
+    upsert("matches", "name", "q2.3", engine)
+    upsert("matches", "name", "q3.1", engine)
+    upsert("matches", "name", "q3.2", engine)
+    upsert("matches", "name", "q3.3", engine)
+    upsert("matches", "name", "s1.1", engine)
+    upsert("matches", "name", "s1.2", engine)
+    upsert("matches", "name", "s1.3", engine)
+    upsert("matches", "name", "s2.1", engine)
+    upsert("matches", "name", "s2.2", engine)
+    upsert("matches", "name", "s2.3", engine)
+    upsert("matches", "name", "f1", engine)
+    upsert("matches", "name", "f2", engine)
+    upsert("matches", "name", "f3", engine)
+
+    upsert("alliances", "name", "na", engine)
+    upsert("alliances", "name", "blue", engine)
+    upsert("alliances", "name", "red", engine)
+
+    upsert("dates", "name", "na", engine)
+
+    # teams imported from schedule
+    upsert("teams", "name", 'na', engine)
+
+    upsert("stations", "name", "na", engine)
+    upsert("stations", "name", "1", engine)
+    upsert("stations", "name", "2", engine)
+    upsert("stations", "name", "3", engine)
+
+    upsert("actors", "name", "na", engine)
+    upsert("actors", "name", "drive_team", engine)
+    upsert("actors", "name", "robot", engine)
+    upsert("actors", "name", "pilot", engine)
+    upsert("actors", "name", "human_player", engine)
+    upsert("actors", "name", "alliance", engine)
+    upsert("actors", "name", "team", engine)
+
+    # tasks imported from game
+    upsert("tasks", "name", 'na', engine)
+
+    upsert("measuretypes", "name", "na", engine)
+    upsert("measuretypes", "name", "count", engine)
+    upsert("measuretypes", "name", "percentage", engine)
+    upsert("measuretypes", "name", "boolean", engine)
+    upsert("measuretypes", "name", "enum", engine)
+    upsert("measuretypes", "name", "attempt", engine)
+    upsert("measuretypes", "name", "cycletime", engine)
+
+    upsert("phases", "name", "na", engine)
+    upsert("phases", "name", "claim", engine)
+    upsert("phases", "name", "auto", engine)
+    upsert("phases", "name", "teleop", engine)
+    upsert("phases", "name", "finish", engine)
+
+    upsert("attempts", "name", "summary", engine)
+    upsert_rows("attempts", "name", 31, "{0:0>2}", engine)
+
+    upsert("reasons", "name", "na", engine)
+    upsert("reasons", "name", "dropped", engine)
+    upsert("reasons", "name", "blocked", engine)
+    upsert("reasons", "name", "defended", engine)
+
+
+def setup(engine=server.model.connection.engine):
+    """Creates tables and inserts initial dimension data.
+
+    Args:
+        engine: database engine. Optional. Default is production
+            scouting database.
+    """
+    create_tables(engine)
+    initialize_dimension_data(engine)
 
 # endregion
