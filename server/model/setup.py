@@ -8,9 +8,10 @@ database, using the classes defined in this module. Each class in this
 module corresponds to one database table.
 * `insert_dimension_data()` loads data that is essential for the
 scouting system to function.
-* `setup()` is a convenience function that runs both `create_tables()`
-and `insert_dimension_data()`. Run `setup()` once, after creating the
-database but before loading any FRC competition data.
+* `load_game_sheet() loads season-speific game data from a csv file.
+* `setup()` is a convenience function that runs both `create_tables()`,
+`insert_dimension_data()`, and `load_game_data()`. Run `setup()` once,
+after creating the database but before loading any FRC competition data.
 
 To use this module:
 1. create a new empty database.
@@ -28,14 +29,17 @@ Further reading: https://en.wikipedia.org/wiki/Star_schema
 """
 
 #todo(stacy.irwin) Add season dimension table
-
+import csv
+import os
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import ForeignKey
 from sqlalchemy import UniqueConstraint
 
+import server.model
 import server.model.connection
 from server.model.update import upsert, upsert_rows
+from server.scouting.load_data import insert_game
 
 Base = declarative_base()
 
@@ -341,11 +345,11 @@ class MatchResult(Base):
 
 # region Functions for initializing database ===========================
 
-def create_tables(engine=server.model.connection.engine):
-    Base.metadata.create_all(engine)
+def create_tables():
+    Base.metadata.create_all(server.model.connection.engine)
 
 
-def initialize_dimension_data(engine=server.model.connection.engine):
+def initialize_dimension_data():
     """Loads initial dimension data into database.
 
     The dimension data loaded by this function is essential for the
@@ -353,87 +357,103 @@ def initialize_dimension_data(engine=server.model.connection.engine):
     any competition data (but after creating the tables with
     `create_tables()`.
     """
-    upsert("levels", "name", "na", engine)
-    upsert("levels", "name", "qual", engine)
-    upsert("levels", "name", "playoff", engine)
+    upsert("levels", "name", "na")
+    upsert("levels", "name", "qual")
+    upsert("levels", "name", "playoff")
 
-    upsert_rows("matches", "name", 150, "{0:0>3}-q", engine)
-    upsert("matches", "name", "na", engine)
-    upsert("matches", "name", "q1.1", engine)
-    upsert("matches", "name", "q1.2", engine)
-    upsert("matches", "name", "q1.3", engine)
-    upsert("matches", "name", "q2.1", engine)
-    upsert("matches", "name", "q2.2", engine)
-    upsert("matches", "name", "q2.3", engine)
-    upsert("matches", "name", "q3.1", engine)
-    upsert("matches", "name", "q3.2", engine)
-    upsert("matches", "name", "q3.3", engine)
-    upsert("matches", "name", "s1.1", engine)
-    upsert("matches", "name", "s1.2", engine)
-    upsert("matches", "name", "s1.3", engine)
-    upsert("matches", "name", "s2.1", engine)
-    upsert("matches", "name", "s2.2", engine)
-    upsert("matches", "name", "s2.3", engine)
-    upsert("matches", "name", "f1", engine)
-    upsert("matches", "name", "f2", engine)
-    upsert("matches", "name", "f3", engine)
+    upsert_rows("matches", "name", 150, "{0:0>3}-q")
+    upsert("matches", "name", "na")
+    upsert("matches", "name", "q1.1")
+    upsert("matches", "name", "q1.2")
+    upsert("matches", "name", "q1.3")
+    upsert("matches", "name", "q2.1")
+    upsert("matches", "name", "q2.2")
+    upsert("matches", "name", "q2.3")
+    upsert("matches", "name", "q3.1")
+    upsert("matches", "name", "q3.2")
+    upsert("matches", "name", "q3.3")
+    upsert("matches", "name", "s1.1")
+    upsert("matches", "name", "s1.2")
+    upsert("matches", "name", "s1.3")
+    upsert("matches", "name", "s2.1")
+    upsert("matches", "name", "s2.2")
+    upsert("matches", "name", "s2.3")
+    upsert("matches", "name", "f1")
+    upsert("matches", "name", "f2")
+    upsert("matches", "name", "f3")
 
-    upsert("alliances", "name", "na", engine)
-    upsert("alliances", "name", "blue", engine)
-    upsert("alliances", "name", "red", engine)
+    upsert("alliances", "name", "na")
+    upsert("alliances", "name", "blue")
+    upsert("alliances", "name", "red")
 
-    upsert("dates", "name", "na", engine)
+    upsert("dates", "name", "na")
 
     # teams imported from schedule
-    upsert("teams", "name", 'na', engine)
+    upsert("teams", "name", 'na')
 
-    upsert("stations", "name", "na", engine)
-    upsert("stations", "name", "1", engine)
-    upsert("stations", "name", "2", engine)
-    upsert("stations", "name", "3", engine)
+    upsert("stations", "name", "na")
+    upsert("stations", "name", "1")
+    upsert("stations", "name", "2")
+    upsert("stations", "name", "3")
 
-    upsert("actors", "name", "na", engine)
-    upsert("actors", "name", "drive_team", engine)
-    upsert("actors", "name", "robot", engine)
-    upsert("actors", "name", "pilot", engine)
-    upsert("actors", "name", "human_player", engine)
-    upsert("actors", "name", "alliance", engine)
-    upsert("actors", "name", "team", engine)
+    upsert("actors", "name", "na")
+    upsert("actors", "name", "drive_team")
+    upsert("actors", "name", "robot")
+    upsert("actors", "name", "pilot")
+    upsert("actors", "name", "human_player")
+    upsert("actors", "name", "alliance")
+    upsert("actors", "name", "team")
 
     # tasks imported from game
-    upsert("tasks", "name", 'na', engine)
+    upsert("tasks", "name", 'na')
 
-    upsert("measuretypes", "name", "na", engine)
-    upsert("measuretypes", "name", "count", engine)
-    upsert("measuretypes", "name", "percentage", engine)
-    upsert("measuretypes", "name", "boolean", engine)
-    upsert("measuretypes", "name", "enum", engine)
-    upsert("measuretypes", "name", "attempt", engine)
-    upsert("measuretypes", "name", "cycletime", engine)
+    upsert("measuretypes", "name", "na")
+    upsert("measuretypes", "name", "count")
+    upsert("measuretypes", "name", "percentage")
+    upsert("measuretypes", "name", "boolean")
+    upsert("measuretypes", "name", "enum")
+    upsert("measuretypes", "name", "attempt")
+    upsert("measuretypes", "name", "cycletime")
 
-    upsert("phases", "name", "na", engine)
-    upsert("phases", "name", "claim", engine)
-    upsert("phases", "name", "auto", engine)
-    upsert("phases", "name", "teleop", engine)
-    upsert("phases", "name", "finish", engine)
+    upsert("phases", "name", "na")
+    upsert("phases", "name", "claim")
+    upsert("phases", "name", "auto")
+    upsert("phases", "name", "teleop")
+    upsert("phases", "name", "finish")
 
-    upsert("attempts", "name", "summary", engine)
-    upsert_rows("attempts", "name", 31, "{0:0>2}", engine)
+    upsert("attempts", "name", "summary")
+    upsert_rows("attempts", "name", 31, "{0:0>2}")
 
-    upsert("reasons", "name", "na", engine)
-    upsert("reasons", "name", "dropped", engine)
-    upsert("reasons", "name", "blocked", engine)
-    upsert("reasons", "name", "defended", engine)
+    upsert("reasons", "name", "na")
+    upsert("reasons", "name", "dropped")
+    upsert("reasons", "name", "blocked")
+    upsert("reasons", "name", "defended")
 
 
-def setup(engine=server.model.connection.engine):
-    """Creates tables and inserts initial dimension data.
+def load_game_sheet(engine=server.model.connection.engine):
+    """Loads game-specific data into task_options table in database.
 
-    Args:
-        engine: database engine. Optional. Default is production
-            scouting database.
+
     """
-    create_tables(engine)
-    initialize_dimension_data(engine)
+    # Change Python path location to server/game folder.
+    server_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    os.chdir(os.path.join(server_path, "game"))
+
+    file = open("gametasks.csv")
+    sheet = csv.reader(file)
+
+    server.model.update.upsert_cols("task_options", {"task_name": "na",
+                                    "type": "capability", "option_name": "na"})
+    for row in sheet:
+        if row[0] != "actor":
+            insert_game(row[0], row[1], row[2], row[3], row[4], row[5], row[8])
+
+
+def setup():
+    """Creates tables and inserts initial dimension data.
+    """
+    create_tables()
+    initialize_dimension_data()
+    load_game_sheet()
 
 # endregion

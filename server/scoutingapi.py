@@ -1,5 +1,7 @@
 import cherrypy
 import os.path
+
+import server.model.setup
 import server.viewerapi
 import server.scouting.tasks
 import server.scouting.tablet
@@ -103,7 +105,7 @@ class Scouting(object):
     def databaseset(self):
         server.scouting.db.create_tables()
         server.scouting.db_dimensiondata.insert_data()
-        server.scouting.load_data.load_game_sheet()
+        server.model.setup.load_game_sheet()
         return open("web/sites/reset.html").read()
 
 if __name__ == '__main__':

@@ -1,4 +1,3 @@
-import csv
 import os
 
 import server.model.connection
@@ -11,20 +10,6 @@ import server.scouting.event as e
 
 
 engine = server.model.connection.engine
-
-
-def load_game_sheet():
-    fpath = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(fpath)
-    file = open('gametasks.csv')
-    sheet = csv.reader(file)
-
-    server.model.update.upsert_cols("task_options", {'task_name': 'na',
-                                       'type': 'capability',
-                                       'option_name': 'na'})
-    for row in sheet:
-        if row[0] != 'actor':
-            insert_game(row[0], row[1], row[2], row[3], row[4], row[5], row[8])
 
 
 def insert_game(actor, task, claim, auto, teleop, finish, optionString):

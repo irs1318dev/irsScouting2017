@@ -3,7 +3,7 @@ import sqlalchemy
 import server.model.connection
 
 
-def upsert(table, col, val, engine=server.model.connection.engine):
+def upsert(table, col, val):
     """ Inserts value into database table, or updates if already exists.
 
     This function is intended for inertering values into dimension
@@ -25,10 +25,8 @@ def upsert(table, col, val, engine=server.model.connection.engine):
         table: Database table into which value should be inserted.
         col: Column into which value should be inserted
         val: Value to be inserted.
-        engine: database engine. Optional. Default is production
-            scouting database.
     """
-    conn = engine.connect()
+    conn = server.model.connection.engine.connect()
     select = sqlalchemy.text(
         "INSERT INTO " + table + " (" + col + ") " +
         "VALUES (:val) "
@@ -40,8 +38,7 @@ def upsert(table, col, val, engine=server.model.connection.engine):
     conn.close()
 
 
-def upsert_rows(table, col, n, template,
-                engine=server.model.connection.engine):
+def upsert_rows(table, col, n, template):
     """Insert a range of values containing integers from 1 to n.
 
     Inserts n rows into the database table, each containing the string
@@ -64,10 +61,8 @@ def upsert_rows(table, col, n, template,
         col: Column into which value should be inserted
         n: Positive integer.
         template: Python format string that accepts up to one parameter.
-        engine: database engine. Optional. Default is production
-            scouting database.
     """
-    conn = engine.connect()
+    conn = server.model.connection.engine.connect()
     for i in range(1, n):
         name = template.format(i)
         sql = sqlalchemy.text(
@@ -82,7 +77,7 @@ def upsert_rows(table, col, n, template,
     conn.close()
 
 
-def upsert_cols(table, data, engine=server.model.connection.engine):
+def upsert_cols(table, data):
     """Adds a row to a table, simultaneously updating several columns.
 
     The data argument is a Python dictionary that specifies what will
@@ -100,10 +95,8 @@ def upsert_cols(table, data, engine=server.model.connection.engine):
         data: A Python dictionary where the key is the column nama and
             the dictionary value is the value that will be inserted into
             the database column.
-        engine: database engine. Optional. Default is production
-            scouting database.
     """
-    conn = engine.connect()
+    conn = server.model.connection.engine.connect()
 
     # Buld string containing column names
     col_names = ""

@@ -80,6 +80,15 @@ def create_conn_string(user=db_params["user"],
 
 engine = sqlalchemy.create_engine(create_conn_string())
 
+
+def reset_engine(conn_string):
+    global engine
+    if engine is not None:
+        engine.dispose()
+    engine = sqlalchemy.create_engine(conn_string)
+    return engine
+
+
 # Create psycopg2 connection pool
 pool = None
 

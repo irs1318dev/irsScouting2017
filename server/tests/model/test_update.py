@@ -1,14 +1,8 @@
-"""Tests database update and setup code.
-
-Tests code in following modules:
-    * server.model.update.py
-    * server.model.setup.py
-"""
-
+import pandas
 import pytest
 import sqlalchemy
-import pandas
 
+import server.model.update as smu
 import server.model.connection as smc
 import server.model.setup as sms
 
@@ -68,42 +62,60 @@ def db_test_conn(db_test_engine):
 
 
 @pytest.fixture
-def tables(db_test_conn):
-    print(type(db_test_conn))
-    sms.setup()
+def tables(db_test_engine):
+    assert isinstance(db_test_engine, sqlalchemy.engine.base.Engine)
+    sms.create_tables()
     return True
 
 
-def test_tables(tables, db_test_engine):
+def test_upsert(tables, db_test_conn):
     assert tables
-    sql = ("SELECT * FROM information_schema.tables "
-           "WHERE table_schema = 'public';")
-    tables = pandas.read_sql_query(sql, db_test_engine)
-    assert tables.shape == (19, 12)
 
-    def test_table(table, shape):
-        sql = "SELECT * FROM " + table + ";"
-        dframe = pandas.read_sql_query(sql, db_test_engine)
-        assert dframe.shape == shape
+    smu.upsert("events", "name", "wairs1")
+    smu.upsert("events", "name", "wairs2")
 
-    test_table("levels", (3, 2))
-    test_table("matches", (168, 2))
-    test_table("alliances", (3, 2))
-    test_table("dates", (1, 3))
-    test_table("teams", (1, 7))
-    test_table("stations", (4, 2))
-    test_table("actors", (7, 2))
-    test_table("tasks", (92, 4))
-    test_table("measuretypes", (7, 2))
-    test_table("phases", (5, 2))
-    test_table("attempts", (31, 2))
-    test_table("reasons", (4, 2))
-    test_table("task_options", (88, 4))
+    sql_count = sqlalchemy.text("SELECT COUNT(*) FROM events;")
+    count = db_test_conn.execute(sql_count).scalar()
+    assert count == 2
+
+    sql_sel = sqlalchemy.text("SELECT * FROM events;")
+    teams = pandas.read_sql_query(sql_sel, db_test_conn)
+    assert teams.shape == (2, 4)
+    assert teams.name[0] == "wairs1"
+
+    # Teardown
+    delete_all_rows("events", db_test_conn)
 
 
+def test_upsert_rows(tables, db_test_conn):
+    assert tables
+
+    smu.upsert_rows("events", "name", 25, "{0:0>3}-q")
+    sql = "SELECT * FROM events;"
+    matches = pandas.read_sql_query(sql, db_test_conn)
+    assert matches.shape == (24, 4)
+    assert matches.name[0] == "001-q"
+
+    # Teardown
+    delete_all_rows("events", db_test_conn)
 
 
+def test_upsert_cols(tables, db_test_conn):
+    assert tables
+    smu.upsert_cols("task_options", {"task_name": "na",
+                                     "type": "capability",
+                                     "option_name": "na"})
+    sql = "SELECT * FROM task_options;"
+    tasks = pandas. read_sql_query(sql, db_test_conn)
+    assert tasks.task_name[0] == "na"
+    assert tasks.type[0] == "capability"
+    assert tasks.option_name[0] == "na"
+    assert tasks.shape == (1, 4)
+
+    # Teardown
+    delete_all_rows("events", db_test_conn)
 
 
-
-
+def delete_all_rows(table, db_test_conn):
+    sql_drop = "DELETE FROM " + table + ";"
+    db_test_conn.execute(sql_drop)
