@@ -31,7 +31,7 @@ Further reading: https://en.wikipedia.org/wiki/Star_schema
 #todo(stacy.irwin) Add season dimension table
 import csv
 import os
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import ForeignKey
 from sqlalchemy import UniqueConstraint
@@ -39,7 +39,6 @@ from sqlalchemy import UniqueConstraint
 import server.model
 import server.model.connection
 from server.model.update import upsert, upsert_rows
-from server.scouting.load_data import insert_game
 
 Base = declarative_base()
 
@@ -444,9 +443,32 @@ def load_game_sheet(engine=server.model.connection.engine):
 
     server.model.update.upsert_cols("task_options", {"task_name": "na",
                                     "type": "capability", "option_name": "na"})
+
+    def _insert_into_db(actor, task, claim, auto, teleop, finish, optionString):
+        select = text(
+            "INSERT INTO games (actor, task, claim, auto, teleop, finish) "
+            "VALUES (:actor,:task,:claim,:auto,:teleop,:finish) "
+            "ON CONFLICT (task) "
+            "DO UPDATE "
+            "SET actor=:actor, task=:task, claim=:claim, auto=:auto, "
+            "teleop=:teleop, finish=:finish;")
+        conn = server.model.connection.engine.connect()
+        conn.execute(select, actor=actor, task=task, claim=claim, auto=auto,
+                     teleop=teleop, finish=finish)
+        conn.close()
+        server.model.update.upsert("tasks", "name", task)
+
+        if not optionString.strip():
+            optionNames = optionString.split('|')
+            for optionName in optionNames:
+                server.model.update.upsert_cols("task_options",
+                                                {'task_name': task,
+                                                 'type': 'capability',
+                                                 'option_name': optionName})
+
     for row in sheet:
         if row[0] != "actor":
-            insert_game(row[0], row[1], row[2], row[3], row[4], row[5], row[8])
+            _insert_into_db(row[0], row[1], row[2], row[3], row[4], row[5], row[8])
 
 
 def setup():
