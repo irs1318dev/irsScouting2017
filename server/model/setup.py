@@ -38,7 +38,7 @@ from sqlalchemy import UniqueConstraint
 
 import server.model
 import server.model.connection
-from server.model.update import upsert, upsert_rows
+from server.model.upsert import upsert, upsert_rows
 
 Base = declarative_base()
 
@@ -441,7 +441,7 @@ def load_game_sheet(engine=server.model.connection.engine):
     file = open("gametasks.csv")
     sheet = csv.reader(file)
 
-    server.model.update.upsert_cols("task_options", {"task_name": "na",
+    server.model.upsert.upsert_cols("task_options", {"task_name": "na",
                                     "type": "capability", "option_name": "na"})
 
     def _insert_into_db(actor, task, claim, auto, teleop, finish, optionString):
@@ -456,12 +456,12 @@ def load_game_sheet(engine=server.model.connection.engine):
         conn.execute(select, actor=actor, task=task, claim=claim, auto=auto,
                      teleop=teleop, finish=finish)
         conn.close()
-        server.model.update.upsert("tasks", "name", task)
+        server.model.upsert.upsert("tasks", "name", task)
 
         if not optionString.strip():
             optionNames = optionString.split('|')
             for optionName in optionNames:
-                server.model.update.upsert_cols("task_options",
+                server.model.upsert.upsert_cols("task_options",
                                                 {'task_name': task,
                                                  'type': 'capability',
                                                  'option_name': optionName})

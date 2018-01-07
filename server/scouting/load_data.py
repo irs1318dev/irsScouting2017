@@ -1,7 +1,7 @@
 import os
 
 import server.model.connection
-import server.model.update
+import server.model.upsert
 import server.firstapi as api
 import json
 from sqlalchemy.sql import text
@@ -65,9 +65,9 @@ def process_sched(event, season, sched_json, level='qual'):
             conn.execute(select, event=event, match=match, team=team, level=level, date=date, alliance=alliance,
                          station=station)
             conn.close()
-            server.model.update.upsert("events", "name", event)
-            server.model.update.upsert("teams", "name", team)
-            server.model.update.upsert("dates", "name", date)
+            server.model.upsert.upsert("events", "name", event)
+            server.model.upsert.upsert("teams", "name", team)
+            server.model.upsert.upsert("dates", "name", date)
 
 
 #todo(stacy) insert_all_events to server.model.schedule.py

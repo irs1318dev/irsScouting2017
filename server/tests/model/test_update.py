@@ -1,7 +1,7 @@
 import pandas
 import sqlalchemy
 
-import server.model.update as smu
+import server.model.upsert as smu
 
 
 def test_upsert(tables, db_conn):

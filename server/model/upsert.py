@@ -1,3 +1,25 @@
+"""Provides utility functions for inserting data into scouting database.
+
+The functions in this module take advantage of a relatively new feature
+in Structured Query Language (SQL) known as "Upsert". Upsert statements
+are a compination of a SQL UPDATE statement in INSERT statement. With
+an UPDATE statement, if the data we're trying to write to the database
+is already in the database, the databaase server will often throw  an
+error due to uniqueness constraints on the data. By using the upsert
+feature, the function will update the existing data instead of throwing
+an error. Note that the word "UPSERT" does not actually appear in the
+SQL statement -- the upserte functionality comes from the "ON CONFLICT"
+portion of the SQL statement.
+
+Module Functions
+----------------
+`server.module.upsert.upsert`: Inserts or updates a single field in a
+single row of a database table.
+`server.module.upsert.upsert_rows`: Inserts or updates a single field in
+multiple rows of a database table.
+`server.module.upsert.upsert_cols`: Inserts or updates multiple fields
+(i.e., columns) in a single row of a database table.
+"""
 import sqlalchemy
 
 import server.model.connection
@@ -98,7 +120,7 @@ def upsert_cols(table, data):
     """
     conn = server.model.connection.engine.connect()
 
-    # Buld string containing column names
+    # Build string containing column names
     col_names = ""
     val_data = ""
     set_data = ""
