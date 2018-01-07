@@ -4,8 +4,6 @@ import sqlalchemy
 import server.model.update as smu
 
 
-
-
 def test_upsert(tables, db_conn):
     assert tables
 

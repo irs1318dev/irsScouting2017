@@ -90,53 +90,16 @@ def reset_engine(conn_string):
 
 
 # Create psycopg2 connection pool
-pool = None
-
-
-def _set_pool(minconn=db_params["minconn"], maxconn=db_params["maxconn"],
+def set_pool(minconn=db_params["minconn"], maxconn=db_params["maxconn"],
               dbname=db_params["dbname"], host=db_params["host"],
               user=db_params["user"], password=db_params["password"]):
     """Internal function for creating a connection pool.
 
     Args: Same as connection.reset_pool
     """
-    global pool
-    pool = psycopg2.pool.SimpleConnectionPool(minconn, maxconn, dbname=dbname,
+    return psycopg2.pool.SimpleConnectionPool(minconn, maxconn, dbname=dbname,
                                               host=host, user=user,
                                               password=password)
 
 
-_set_pool()
-
-
-def reset_pool(minconn=db_params["minconn"], maxconn=db_params["maxconn"],
-               dbname=db_params["dbname"], host=db_params["host"],
-               user=db_params["user"], password=db_params["password"]):
-    """Closes all existing pool connections and creates a new pool.
-
-    The reset_pool function allows users to create a new connection pool
-    with parameters other than the default parameters specified in
-    connection.db_params.
-
-    WARNING: This function will close all existing database connections!
-
-    Args:
-        minconn:
-            Number of database connections when connection.pool is
-            first initialized.
-        maxconn:
-            Maximum number of database connections that will be
-            available in connection.pool.
-        user:
-            Database account username
-        password:
-            Databvase account password
-        dbname:
-            Database name
-        host:
-            Hostname of computer running database server.
-    """
-    if pool is not None:
-        pool.closeall()
-    del pool
-    _set_pool(minconn, maxconn, dbname, host, user, password)
+pool = set_pool()
