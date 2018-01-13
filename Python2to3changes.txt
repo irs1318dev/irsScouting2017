@@ -1,0 +1,213 @@
+--- Server\firstapi.py	(original)
++++ Server\firstapi.py	(refactored)
+@@ -1,7 +1,7 @@
+ from base64 import b64encode
+-from urllib2 import Request, urlopen
++from urllib.request import Request, urlopen
+ 
+-import auth
++from . import auth
+ 
+ 
+ def getSched(event, season, level="qual"):
+@@ -35,7 +35,7 @@
+ 
+     url = ("https://frc-api.firstinspires.org/v2.0/" + season + "/matches/" +
+            event + "?matchNumber=" + matchNumber + "&tournamentLevel=" + tournamentLevel)
+-    print url
++    print(url)
+ 
+ 
+     hdrs = {"Accept": "application/json", 'Authorization': token}
+@@ -51,7 +51,7 @@
+ 
+ 
+     url = ("https://frc-api.firstinspires.org/v2.0/" + season + "/scores/" + event + "/" + tournamentLevel)
+-    print url
++    print(url)
+ 
+     hdrs = {"Accept": "application/json", 'Authorization': token}
+     req = Request(url, headers=hdrs)
+--- Server\googledoc.py	(original)
++++ Server\googledoc.py	(refactored)
+@@ -1,4 +1,4 @@
+-from __future__ import print_function
++
+ import httplib2
+ import os
+ 
+@@ -64,7 +64,7 @@
+ 
+     spreadsheetId = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
+     rangeName = 'Class Data!A2:E'
+-    result = service.spreadsheets().values().get(
++    result = list(service.spreadsheets().values()).get(
+         spreadsheetId=spreadsheetId, range=rangeName).execute()
+     values = result.get('values', [])
+ 
+--- Server\scoutingapi.py	(original)
++++ Server\scoutingapi.py	(refactored)
+@@ -1,12 +1,12 @@
+ import cherrypy
+ import os.path
+-import viewerapi
+-import scouting.tasks
+-import scouting.tablet
+-import scouting.sections
+-import scouting.match
+-import scouting.event
+-import scouting.load_data
++from . import viewerapi
++from . import scouting.tasks
++from . import scouting.tablet
++from . import scouting.sections
++from . import scouting.match
++from . import scouting.event
++from . import scouting.load_data
+ 
+ 
+ class Scouting(object):
+--- Server\viewerapi.py	(original)
++++ Server\viewerapi.py	(refactored)
+@@ -1,11 +1,11 @@
+ import cherrypy
+ from cherrypy.lib.static import serve_file
+ import os.path
+-import scouting.export
+-import scouting.output
+-import scouting.event
+-import scouting.alliance
+-import scouting.match
++from . import scouting.export
++from . import scouting.output
++from . import scouting.event
++from . import scouting.alliance
++from . import scouting.match
+ 
+ 
+ class Viewer:
+--- Server\scouting\db_dimensiondata.py	(original)
++++ Server\scouting\db_dimensiondata.py	(refactored)
+@@ -1,4 +1,4 @@
+-import db
++from . import db
+ from sqlalchemy.sql import text
+ 
+ 
+@@ -41,7 +41,7 @@
+     col_names = ""
+     val_data = ""
+     set_data = ""
+-    for col, _ in data.iteritems():
++    for col, _ in data.items():
+         if col_names == "":
+             col_names = col
+             val_data = ':' + col
+--- Server\scouting\event.py	(original)
++++ Server\scouting\event.py	(refactored)
+@@ -1,4 +1,4 @@
+-import db
++from . import db
+ from sqlalchemy import text
+ import json
+ 
+--- Server\scouting\export.py	(original)
++++ Server\scouting\export.py	(refactored)
+@@ -1,4 +1,4 @@
+-import db
++from . import db
+ import os
+ import datetime
+ import subprocess
+--- Server\scouting\game.py	(original)
++++ Server\scouting\game.py	(refactored)
+@@ -1,6 +1,6 @@
+ import psycopg2.extras
+ from sqlalchemy import text
+-import db as db
++from . import db as db
+ 
+ # conn = psycopg2.connect("dbname=scouting host=localhost user=postgres password=irs1318")
+ # cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+--- Server\scouting\load_data.py	(original)
++++ Server\scouting\load_data.py	(refactored)
+@@ -1,11 +1,11 @@
+ import csv
+ import os
+-import db
+-import db_dimensiondata as ddd
++from . import db
++from . import db_dimensiondata as ddd
+ import firstapi as api
+ import json
+ from sqlalchemy.sql import text
+-import db_dimensiondata as data
++from . import db_dimensiondata as data
+ import scouting.match as m
+ import scouting.event as e
+ 
+@@ -111,20 +111,20 @@
+ def process_all_events(season, event_json, tournamentLevel):
+     eve = json.loads(event_json)['Events']
+     initial_event = e.EventDal.get_current_event()
+-    print 'Initial event is ' + initial_event
++    print('Initial event is ' + initial_event)
+     for event in eve:
+         loading_event = event['code']
+-        print 'Setting current event to ' + loading_event
++        print('Setting current event to ' + loading_event)
+         e.EventDal.set_current_event(loading_event)
+-        print "insert sched for " + loading_event
++        print("insert sched for " + loading_event)
+         insert_sched(event['code'], season, tournamentLevel)
+     for event in eve:
+         loading_event = event['code']
+-        print 'Setting current event to ' + loading_event
+-        print "load match results for " + loading_event
++        print('Setting current event to ' + loading_event)
++        print("load match results for " + loading_event)
+         insert_MatchResults(loading_event, season, tournamentLevel)
+ 
+-    print 'Resetting current event to ' + initial_event
++    print('Resetting current event to ' + initial_event)
+     e.EventDal.set_current_event(initial_event)
+ 
+ 
+--- Server\scouting\match.py	(original)
++++ Server\scouting\match.py	(refactored)
+@@ -1,11 +1,11 @@
+ from collections import OrderedDict
+ 
+-import event
+-import dimension
++from . import event
++from . import dimension
+ import json
+-import db
++from . import db
+ from sqlalchemy import text
+-import game
++from . import game
+ 
+ engine = db.getdbengine()
+ 
+--- Server\scouting\output.py	(original)
++++ Server\scouting\output.py	(refactored)
+@@ -1,6 +1,6 @@
+-import db
++from . import db
+ import os.path
+-import event
++from . import event
+ from sqlalchemy.sql import text
+ import pandas as pd
+ import datetime
+--- Server\scouting\tasks.py	(original)
++++ Server\scouting\tasks.py	(refactored)
+@@ -1,5 +1,5 @@
+ import json
+-import db
++from . import db
+ 
+ engine = db.getdbengine()
+ conn = engine.connect()
