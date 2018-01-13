@@ -28,8 +28,8 @@ public class MainActivity extends Activity {
 
         //Retrieve last ip
         Request.address = getPreferences(Context.MODE_PRIVATE).getString("Address", getResources().getString(R.string.form_ip));
-        TextView textView = (TextView) findViewById(R.id.AddressBar);
-        textView.setText(Request.address);
+        TextView textView = findViewById(R.id.AddressBar);
+        textView.setText(Request.address.split(":")[0]);
     }
 
     public void position(View view) {
@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
     }
 
     public void site(View view) {
-        Uri url = Uri.parse("http://" + Request.address + ":8080/");
+        Uri url = Uri.parse("http://" + Request.address + "/");
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, url);
         startActivity(launchBrowser);
     }
