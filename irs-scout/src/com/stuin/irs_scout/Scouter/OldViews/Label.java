@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.R;
-import com.stuin.irs_scout.Scouter.Updater;
+import com.stuin.irs_scout.Updater;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +42,6 @@ public class Label extends TextView {
     protected void update(Measure measure, boolean send) {
         this.measure = measure;
 
-        if(send) Updater.measures.add(measure);
+        if(send) Updater.addMeasure(measure);
     }
 }

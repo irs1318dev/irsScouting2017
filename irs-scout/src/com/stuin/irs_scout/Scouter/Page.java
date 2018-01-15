@@ -1,4 +1,4 @@
-package com.stuin.irs_scout.Scouter.Views;
+package com.stuin.irs_scout.Scouter;
 
 import android.content.Context;
 import android.graphics.Color;

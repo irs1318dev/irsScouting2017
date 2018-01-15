@@ -28,8 +28,8 @@ public class Rating extends RatingBar implements Input {
     public void create(LinearLayout column) {
         column.addView(part(id.task.success));
 
-        setOnRatingBarChangeListener(actionListener);
         setMax(5);
+        setOnRatingBarChangeListener(actionListener);
         column.addView(this);
     }
 
@@ -46,14 +46,14 @@ public class Rating extends RatingBar implements Input {
     public void update(Measure measure, boolean send) {
         setProgress(measure.successes);
 
-        measure.attempts = 10;
+        measure.attempts = 5;
         id.update(measure, send);
     }
 
     private OnRatingBarChangeListener actionListener = new OnRatingBarChangeListener() {
         @Override
         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-            id.measure.successes = (int)(rating * 2);
+            id.measure.successes = (int)(rating);
 
             update(id.measure, fromUser);
         }

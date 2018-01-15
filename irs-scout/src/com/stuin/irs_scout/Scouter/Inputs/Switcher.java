@@ -2,9 +2,8 @@ package com.stuin.irs_scout.Scouter.Inputs;
 
 import android.content.Context;
 import android.view.Gravity;
-import android.widget.LinearLayout;
-import android.widget.Switch;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.*;
 import com.stuin.irs_scout.Data.InputData;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.R;
@@ -23,32 +22,49 @@ public class Switcher extends LinearLayout implements Input {
         if(!id.task.miss.isEmpty()) part(id.task.miss);
 
         setOrientation(HORIZONTAL);
+        setGravity(Gravity.CENTER);
         column.addView(this);
     }
 
     @Override
     public TextView part(String name) {
-        Switch sw = new Switch(getContext());
-        sw.setTextSize(getResources().getDimension(R.dimen.text_norm));
-        sw.setText(id.task.success);
-        //sw.setTextColor(getResources().getColor(R.color.colorText));
-        sw.setGravity(Gravity.CENTER);
-        addView(sw);
-        return sw;
+        CompoundButton button = new CheckBox(getContext());
+        button.setTextSize(getResources().getDimension(R.dimen.text_norm));
+        button.setText(name);
+        //button.setTextColor(getResources().getColor(R.color.colorText));
+        button.setGravity(Gravity.CENTER);
+        button.setOnCheckedChangeListener(changeListener);
+        addView(button);
+        return button;
     }
 
     @Override
     public void update(Measure measure, boolean send) {
-        Switch sw = (Switch) getChildAt(0);
+        CompoundButton sw = (CompoundButton) getChildAt(0);
         sw.setChecked(measure.successes > 0);
 
         if(!id.task.miss.isEmpty()) {
-            sw = (Switch) getChildAt(1);
+            sw = (CompoundButton) getChildAt(1);
             sw.setChecked(measure.attempts - measure.successes > 0);
         }
 
         id.update(measure, send);
     }
+
+    private CompoundButton.OnCheckedChangeListener changeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            CompoundButton sw = (CompoundButton) getChildAt(0);
+            id.measure.successes = (sw.isChecked()) ? 1 : 0;
+
+            if(!id.task.miss.isEmpty()) {
+                sw = (CompoundButton) getChildAt(1);
+                id.measure.attempts = ((sw.isChecked()) ? 1 : 0) + id.measure.successes;
+            }
+
+            update(id.measure, true);
+        }
+    };
 
     @Override
     public InputData getData() {

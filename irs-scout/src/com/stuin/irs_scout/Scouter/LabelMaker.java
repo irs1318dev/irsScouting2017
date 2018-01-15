@@ -7,7 +7,8 @@ import com.stuin.irs_scout.Data.Section;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.MainActivity;
 import com.stuin.irs_scout.Scouter.Inputs.*;
-import com.stuin.irs_scout.Scouter.Views.Page;
+import com.stuin.irs_scout.Scouter.Page;
+import com.stuin.irs_scout.Scouter.PageManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,24 +49,30 @@ class LabelMaker {
     }
 
     void taskMake(List<String> strings) {
+        //Prepare variables for generation
         Map<String, Task> tasks = new HashMap<>();
         Gson gson = new Gson();
         Context context = pageManager.getContext();
 
+        //Make list of tasks
         for(String s : strings) {
             Task task = gson.fromJson(s, Task.class);
             tasks.put(task.task, task);
         }
 
+        //Check each section
         for(Section s : sections) {
+            //Set column and position
             if(s.newpart.equals("true"))
                 pageList.get(s.phase).newCol();
             if(s.position.isEmpty())
                 s.position = MainActivity.position;
 
+            //Create label for section
             Input label = new Label(context, new InputData(new Task(s.category), s.position));
             pageList.get(s.phase).add(label);
 
+            //Create inputs for section
             for(String t : s.tasks) if(tasks.containsKey(t)) {
                 pageList.get(s.phase).add(makeLabel(tasks.get(t), context, s.phase, s.position));
             }
@@ -74,18 +81,16 @@ class LabelMaker {
 
     private boolean usePage(String observer, String position) {
         //Check if phase is to be used
-        if(observer.equals("match") && !position.contains("Fuel") && !position.contains("Pit")) return true;
-        if(observer.equals("boiler") && position.contains("Fuel")) return true;
-        if(observer.equals("pit") && position.contains("Pit")) return true;
-        return false;
+        if(position.toLowerCase().contains(observer)) return true;
+        return observer.equals("match") && position.contains("Red") || position.contains("Blue");
     }
 
     private Input makeLabel(Task task, Context context, String phase, String position) {
+        //Get special variables
         String format = task.getFormat(phase);
         InputData id = new InputData(task, position);
 
         //Choose format to create
-
         switch(format.charAt(0)) {
             case 'b':
                 return new Switcher(context, id);
@@ -96,10 +101,10 @@ class LabelMaker {
             case 'p':
                 return new Enter(context, id);
             case 'r':
-                return new Switcher(context, id);
+                return new Rating(context, id);
             case 'l':
                 return new Label(context, id);
         }
-        return new Label(context, new InputData(new Task(), position));
+        return new Label(context, id);
     }
 }

@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
     }
 
     public void status(View view) {
-        form.updater.setStatus();
+        form.setStatus();
     }
 
     public void nextPage(View view) {
@@ -91,9 +91,5 @@ public class MainActivity extends Activity {
         Uri url = Uri.parse("http://" + Request.address + "/");
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, url);
         startActivity(launchBrowser);
-    }
-
-    public void test(View view) {
-        //connected(false);
     }
 }

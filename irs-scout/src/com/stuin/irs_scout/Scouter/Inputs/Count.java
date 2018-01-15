@@ -36,14 +36,14 @@ public class Count extends GridLayout implements Input {
         id.update(measure, send);
     }
 
-    OnClickListener clickListener = new OnClickListener() {
+    private OnClickListener clickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
 
         }
     };
 
-    OnLongClickListener longClickListener = new OnLongClickListener() {
+    private OnLongClickListener longClickListener = new OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
 

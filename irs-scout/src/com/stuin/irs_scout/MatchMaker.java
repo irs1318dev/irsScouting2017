@@ -1,4 +1,4 @@
-package com.stuin.irs_scout.Scouter;
+package com.stuin.irs_scout;
 
 import android.view.View;
 import android.widget.TextView;
@@ -6,24 +6,24 @@ import com.google.gson.Gson;
 import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.MainActivity;
-import com.stuin.irs_scout.Scouter.Views.Page;
 import com.stuin.cleanvisuals.Request;
+import com.stuin.irs_scout.Scouter.Page;
+import com.stuin.irs_scout.Scouter.PageManager;
 
 import java.util.*;
 
 /**
  * Created by Stuart on 2/14/2017.
  */
-class MatchMaker {
+public class MatchMaker {
     Match match = new Match();
 
     private PageManager pageManager;
-    Queue<String> nextTeams;
-    TextView status;
-    protected List<Measure> data;
+    protected static List<Measure> data;
+    protected Queue<String> nextTeams;
+    protected TextView status;
 
-
-    MatchMaker(PageManager pageManager, View view) {
+    public MatchMaker(PageManager pageManager, View view) {
         //Set variables
         this.pageManager = pageManager;
         status = (TextView) view;
@@ -89,10 +89,12 @@ class MatchMaker {
         }
     }
 
-    void update(Measure measure) {
+    static void update(Measure measure) {
+        //Add measure to offline backup
         for(int i = 0; i < data.size(); i++) {
             Measure m = data.get(i);
-            if(measure.task.equals(m.task) && measure.team.equals(m.team) && measure.phase.equals(m.phase)) {
+            //Check for previous entry
+            if(measure.equals(m)) {
                 data.set(i, measure);
                 return;
             }

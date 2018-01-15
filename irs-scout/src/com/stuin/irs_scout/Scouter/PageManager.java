@@ -7,18 +7,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import com.stuin.cleanvisuals.Slide.Endings;
-import com.stuin.irs_scout.MainActivity;
-import com.stuin.irs_scout.R;
-import com.stuin.irs_scout.Scouter.Views.Page;
-import com.stuin.irs_scout.Scouter.Views.TeamMenu;
+import com.stuin.irs_scout.*;
 import com.stuin.cleanvisuals.Request;
 
 import java.util.List;
 
 public class PageManager extends FrameLayout {
-    public Updater updater;
-    public LabelMaker labelMaker;
-
+    private Updater updater;
+    private LabelMaker labelMaker;
     private int current = -1;
     private Activity activity;
     private boolean moving;
@@ -38,19 +34,21 @@ public class PageManager extends FrameLayout {
         class Layout extends Request {
             @Override
             public void run(List<String> s) {
+                //Create list of pages
                 labelMaker.pagesMake(s);
 
                 class Tasks extends Request {
                     @Override
                     public void run(List<String> s) {
+                        //Create all buttons
                         labelMaker.taskMake(s);
 
                         //Get Match
                         MatchMaker matchMaker;
-                        if(MainActivity.position.contains("it")) {
-                            matchMaker = new PitMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
+                        if(MainActivity.position.contains("Pit")) {
+                            matchMaker = new PitMatchMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
                             TeamMenu teamMenu = (TeamMenu) getChildAt(0);
-                            teamMenu.pitMaker = (PitMaker) matchMaker;
+                            teamMenu.pitMaker = (PitMatchMaker) matchMaker;
                         } else matchMaker = new MatchMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
 
                         updater = new Updater(matchMaker, activity.findViewById(R.id.PageStatus));
@@ -62,15 +60,21 @@ public class PageManager extends FrameLayout {
         new Layout().start("/gamelayout");
     }
 
-    void reset() {
+    public void reset() {
         //Set default phase
         if(current != -1) getChildAt(current).setVisibility(GONE);
 
+        //Set page variables
         current = 0;
         confirmPage();
 
+        //Set button visibility
         activity.findViewById(R.id.Previous).setVisibility(GONE);
         if(getChildCount() > 1) activity.findViewById(R.id.Next).setVisibility(VISIBLE);
+    }
+
+    public void setStatus() {
+        updater.setStatus();
     }
 
     Page makePage(String name) {
@@ -78,9 +82,11 @@ public class PageManager extends FrameLayout {
         Page page = new Page(getContext(), name);
         if(name.equals("pit")) page = new TeamMenu(getContext());
 
+        //Hide created page
         page.setVisibility(GONE);
         addView(page);
 
+        //Set animation endings
         if(getChildCount() > 1) page.link((Page) getChildAt(getChildCount() - 2), new Endings() {
             @Override
             public void enter() {
@@ -109,6 +115,7 @@ public class PageManager extends FrameLayout {
             activity.findViewById(R.id.Previous).setVisibility(VISIBLE);
             if(current + 2 == getChildCount()) view.setVisibility(GONE);
 
+            //Set new phase
             current++;
             confirmPage();
         }
@@ -138,7 +145,5 @@ public class PageManager extends FrameLayout {
         String name =  ((Page) getChildAt(current)).name;
         name = name.substring(0,1).toUpperCase() + name.substring(1);
         ((TextView) activity.findViewById(R.id.PageStatus)).setText(MainActivity.position + ": " + name);
-
-        updater.setStatus();
     }
 }

@@ -1,4 +1,4 @@
-package com.stuin.irs_scout.Scouter;
+package com.stuin.irs_scout;
 
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.RadioButton;
 import com.stuin.cleanvisuals.Request;
 import com.stuin.irs_scout.Data.Measure;
+import com.stuin.irs_scout.MatchMaker;
 
 import java.util.*;
 
@@ -13,8 +14,7 @@ import java.util.*;
  * Created by Stuart on 2/16/2017.
  */
 public class Updater {
-    public static List<Measure> measures = new ArrayList<>();
-
+    private static List<Measure> measures = new ArrayList<>();
     private MatchMaker matchMaker;
     private Queue<Measure> finished = new ArrayDeque<>();
     private RadioButton status;
@@ -22,9 +22,14 @@ public class Updater {
     private String ip = "";
     private int cutoff = 0;
 
-    Updater(MatchMaker matchMaker, View view) {
+    public Updater(MatchMaker matchMaker, View view) {
         this.matchMaker = matchMaker;
         status = (RadioButton) view;
+    }
+
+    public static void addMeasure(Measure measure) {
+        measures.add(measure);
+        MatchMaker.update(measure);
     }
 
     //Main timer
@@ -67,39 +72,38 @@ public class Updater {
     private Runnable send = new Runnable() {
         @Override
         public void run() {
-            try {
-                for(Measure measure : measures) {
-                    //Make string of data
-                    String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.phase;
-                    if(!measure.capability.isEmpty() && !measure.capability.equals("0")) s += "&capability=" + measure.capability;
-                    if(measure.successes != 0) s += "&success=" + measure.successes;
-                    if(measure.attempts != 0) s += "&attempt=" + measure.attempts;
+            //Get first measure
+            if(measures.size() > 0) {
+                Measure measure = measures.get(0);
 
-                    matchMaker.update(measure);
+                //Make string of data
+                String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.phase;
+                if(!measure.capability.isEmpty() && !measure.capability.equals("0")) s += "&capability=" + measure.capability;
+                if(measure.successes != 0) s += "&success=" + measure.successes;
+                if(measure.attempts != 0) s += "&attempt=" + measure.attempts;
 
-                    //Check sending and start next
-                    if(!s.equals(last)) {
-                        class Remove extends Request {
-                            private Measure measure;
+                //Check sending and start next
+                if(!s.equals(last)) {
+                    class Remove extends Request {
+                        private Measure measure;
 
-                            private Remove(Measure measure) {
-                                this.measure = measure;
-                            }
-
-                            //List measure as done and confirmed
-                            @Override
-                            public void run(List<String> s) {
-                                finished.add(measure);
-                            }
+                        private Remove(Measure measure) {
+                            this.measure = measure;
                         }
-                        new Remove(measure).start(s);
-                    } else measures.remove(measure);
-                    last = s;
-                    cutoff += 2;
-                }
+
+                        //List measure as done and confirmed
+                        @Override
+                        public void run(List<String> s) {
+                            finished.add(measure);
+                        }
+                    }
+                    new Remove(measure).start(s);
+                } else measures.remove(measure);
+
+                last = s;
+                cutoff += 2;
+
                 while(!finished.isEmpty()) measures.remove(finished.poll());
-            } catch(ConcurrentModificationException e) {
-                //just keep moving
             }
         }
     };
