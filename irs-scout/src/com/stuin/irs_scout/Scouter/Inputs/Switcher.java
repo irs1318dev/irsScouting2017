@@ -33,7 +33,7 @@ public class Switcher extends LinearLayout implements Input {
         button.setText(name);
         //button.setTextColor(getResources().getColor(R.color.colorText));
         button.setGravity(Gravity.CENTER);
-        button.setOnCheckedChangeListener(changeListener);
+        button.setOnClickListener(clickListener);
         addView(button);
         return button;
     }
@@ -51,9 +51,9 @@ public class Switcher extends LinearLayout implements Input {
         id.update(measure, send);
     }
 
-    private CompoundButton.OnCheckedChangeListener changeListener = new CompoundButton.OnCheckedChangeListener() {
+    private OnClickListener clickListener = new OnClickListener() {
         @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        public void onClick(View v) {
             CompoundButton sw = (CompoundButton) getChildAt(0);
             id.measure.successes = (sw.isChecked()) ? 1 : 0;
 
