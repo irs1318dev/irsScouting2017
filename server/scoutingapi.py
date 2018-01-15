@@ -1,6 +1,7 @@
 import cherrypy
 import os.path
 
+import server.model.schedule
 import server.model.setup
 import server.viewerapi
 import server.scouting.tasks
@@ -57,22 +58,30 @@ class Scouting(object):
     def matchteamtasks(self, team='error', match=-1):
         if match == -1:
             match = self.eventDal.get_current_match()
-        return server.scouting.match.MatchDal.matchteamtasks(match, team) + '{end}'
+        return (server.scouting.match.MatchDal.matchteamtasks(match, team) +
+                '{end}')
 
     @cherrypy.expose
-    def matchteamtask(self, match, team, task, phase, capability=0, attempt=0, success=0, cycle_time=0):
+    def matchteamtask(self, match, team, task, phase, capability=0, attempt=0,
+                      success=0, cycle_time=0):
         try:
-            server.scouting.match.MatchDal.matchteamtask(team, task, match, phase, capability, attempt, success, cycle_time)
+            server.scouting.match.MatchDal.matchteamtask(team, task, match,
+                                                         phase, capability,
+                                                         attempt, success,
+                                                         cycle_time)
         except KeyError:
             return 'Error'
         return 'hi'
 
     @cherrypy.expose
     def tablet(self, status, ip=-1):
-        newtablet = server.scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1], ip)
+        newtablet = server.scouting.tablet.TabletDAL(status.split(':')[0],
+                                                     status.split(':')[1], ip)
 
-        if server.scouting.tablet.TabletList.settablet(self.alltablets, newtablet):
-            server.scouting.event.EventDal.set_next_match(self.eventDal.get_current_match())
+        if server.scouting.tablet.TabletList.settablet(self.alltablets,
+                                                       newtablet):
+            server.scouting.event.EventDal.set_next_match(
+                self.eventDal.get_current_match())
 
         return self.eventDal.get_current_match()
 
@@ -80,7 +89,8 @@ class Scouting(object):
     def tablets(self):
         out = open("web/scripts/tablets.txt").read()
         out = self.alltablets.inserttablets(out)
-        out = out.replace('{Match=""}', '{Match="' + self.eventDal.get_current_match() + '"}')
+        out = out.replace('{Match=""}',
+                          '{Match="' + self.eventDal.get_current_match() + '"}')
         return out
 
     @cherrypy.expose
@@ -98,13 +108,13 @@ class Scouting(object):
     def eventfind(self, event, year='2017'):
         self.eventDal.set_current_event(event)
         self.eventDal.set_current_match('001-q')
-        server.scouting.load_data.insert_sched(event, year, 'qual')
+        server.model.schedule.insert_sched(event, year, 'qual')
         return open("web/sites/reset.html").read()
 
     @cherrypy.expose
     def databaseset(self):
-        server.scouting.db.create_tables()
-        server.scouting.db_dimensiondata.insert_data()
+        server.model.setup.create_tables()
+        server.model.setup.initialize_dimension_data()
         server.model.setup.load_game_sheet()
         return open("web/sites/reset.html").read()
 
@@ -112,7 +122,8 @@ if __name__ == '__main__':
     cherrypy.config.update(
         {'server.socket_host': '0.0.0.0'})
 
-    conf = {"/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': os.path.abspath('web')}}
+    conf = {"/web": {'tools.staticdir.on': True,
+                     'tools.staticdir.dir': os.path.abspath('web')}}
 
     cherrypy.tree.mount(server.viewerapi.Viewer(False), '/view', config=conf)
     cherrypy.quickstart(Scouting(), '/', config=conf)

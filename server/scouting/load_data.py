@@ -2,12 +2,11 @@ import os
 
 import server.model.connection
 import server.model.upsert
-import server.firstapi as api
+import server.model.firstapi as api
 import json
-from sqlalchemy.sql import text
 import server.scouting.match as m
 import server.scouting.event as e
-
+from server.model.schedule import insert_sched
 
 engine = server.model.connection.engine
 
@@ -21,59 +20,10 @@ engine = server.model.connection.engine
 # facilitate system testing.
 
 
-#todo(stacy) Move insert_schedto server.model.schedule.py
-def insert_sched(event, season, level='qual', fileName = '-1'):
-    event = event.lower()
-
-    if fileName == '-1':
-        sched_json = api.getSched(event.upper(), season, level)
-    else:
-        fpath = os.path.dirname(os.path.abspath(__file__))
-        os.chdir(fpath)
-        testJsonPath = '../TestJson'
-        os.chdir(testJsonPath)
-        sched_json = open(fileName).read()
-
-    process_sched(event, season, sched_json, level)
-
-
-#todo(stacy) Move process_sched to server.model.schedule.py
-def process_sched(event, season, sched_json, level='qual'):
-    sched = json.loads(sched_json)['Schedule']
-
-    select = text(
-        "INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
-        "VALUES (:event,'na','na','na','na','na','na'); "
-    )
-    conn = engine.connect()
-    conn.execute(select, event=event)
-    conn.close()
-
-    for mch in sched:
-        match = "{0:0>3}-q".format(mch['matchNumber'])
-        date = mch['startTime']
-        for tm in mch['Teams']:
-            team = tm['teamNumber']
-            station = tm['station'][-1:]
-            alliance = tm['station'][0:-1].lower()
-            select = text(
-                "INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
-                "VALUES (:event,:match,:team,:level,:date,:alliance,:station); "
-
-            )
-            conn = engine.connect()
-            conn.execute(select, event=event, match=match, team=team, level=level, date=date, alliance=alliance,
-                         station=station)
-            conn.close()
-            server.model.upsert.upsert("events", "name", event)
-            server.model.upsert.upsert("teams", "name", team)
-            server.model.upsert.upsert("dates", "name", date)
-
-
 #todo(stacy) insert_all_events to server.model.schedule.py
 def insert_all_events(season, tournamentLevel, fileName = '-1'):
     if fileName == '-1':
-        event_json = api.getEvents(season, tournamentLevel)
+        event_json = api.events(season, tournamentLevel)
 
     else:
         fpath = os.path.dirname(os.path.abspath(__file__))
@@ -110,7 +60,7 @@ def process_all_events(season, event_json, tournamentLevel):
 def insert_MatchResults(event, season, tournamentLevel, fileName = '-1'):
     event = event.lower()
     if fileName == '-1':
-        score_json = api.getMatchScores(event, season, tournamentLevel)
+        score_json = api.match_scores(event, season, tournamentLevel)
 
     else:
         fpath = os.path.dirname(os.path.abspath(__file__))
