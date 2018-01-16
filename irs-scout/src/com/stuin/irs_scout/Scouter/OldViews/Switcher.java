@@ -1,4 +1,4 @@
-package com.stuin.irs_scout.Scouter.Views;
+package com.stuin.irs_scout.Scouter.OldViews;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -7,6 +7,7 @@ import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.MainActivity;
 import com.stuin.irs_scout.R;
+import com.stuin.irs_scout.Scouter.OldViews.Label;
 
 public class Switcher extends Label {
     public Switcher(Context context, Task task, String position) {

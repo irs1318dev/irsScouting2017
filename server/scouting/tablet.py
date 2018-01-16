@@ -10,7 +10,7 @@ class TabletDAL(object):
 
     def write(self):
         s = self.position + ":" + self.page
-        if self.ip > -1:
+        if self.ip != -1:
             s += ":" + str(self.ip)
         s += "    <br>   "
         return s
@@ -27,7 +27,7 @@ class TabletList(object):
         while i < len(self.alltablets):
             if self.alltablets[i].position in newtablet.position:
                 self.alltablets[i].page = newtablet.page
-                if newtablet.ip > -1:
+                if newtablet.ip != -1:
                     self.alltablets[i].ip = newtablet.ip
 
                 found = True

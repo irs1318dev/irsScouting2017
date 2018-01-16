@@ -1,4 +1,4 @@
-package com.stuin.irs_scout.Scouter.Views;
+package com.stuin.irs_scout.Scouter.OldViews;
 
 import android.content.Context;
 import android.os.CountDownTimer;
@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
-import com.stuin.irs_scout.MainActivity;
 import com.stuin.irs_scout.R;
 
 /**

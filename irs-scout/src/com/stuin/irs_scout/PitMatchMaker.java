@@ -1,4 +1,4 @@
-package com.stuin.irs_scout.Scouter;
+package com.stuin.irs_scout;
 
 import android.view.View;
 import com.google.gson.Gson;
@@ -6,6 +6,8 @@ import com.stuin.cleanvisuals.Request;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.PitMatch;
 import com.stuin.irs_scout.MainActivity;
+import com.stuin.irs_scout.MatchMaker;
+import com.stuin.irs_scout.Scouter.PageManager;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -14,12 +16,12 @@ import java.util.List;
 /**
  * Created by Stuart on 3/3/2017.
  */
-public class PitMaker extends MatchMaker {
+public class PitMatchMaker extends MatchMaker {
     private PitMatch pitMatch;
     private List<String> teams;
-    private List<List<Measure>> allData;
+    private static List<List<Measure>> allData;
 
-    PitMaker(PageManager pageManager, View view) {
+    public PitMatchMaker(PageManager pageManager, View view) {
         super(pageManager, view);
     }
 
