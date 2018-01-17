@@ -1,11 +1,11 @@
-package com.stuin.irs_scout.Scouter.Views;
+package com.stuin.irs_scout.Scouter;
 
 import android.content.Context;
 import android.widget.*;
 import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.PitMatch;
-import com.stuin.irs_scout.Scouter.PitMaker;
+import com.stuin.irs_scout.PitMatchMaker;
 import com.stuin.irs_scout.R;
 
 import java.util.Arrays;
@@ -19,7 +19,8 @@ public class TeamMenu extends Page {
     private RadioGroup list;
     private List<String> teams;
     private boolean set = false;
-    public PitMaker pitMaker;
+
+    public PitMatchMaker pitMaker;
 
     public TeamMenu(Context context) {
         super(context, "pit");

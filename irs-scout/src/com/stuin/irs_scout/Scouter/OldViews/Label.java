@@ -1,4 +1,4 @@
-package com.stuin.irs_scout.Scouter.Views;
+package com.stuin.irs_scout.Scouter.OldViews;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.R;
-import com.stuin.irs_scout.Scouter.Updater;
+import com.stuin.irs_scout.Updater;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,6 @@ public class Label extends TextView {
     LinearLayout linearLayout;
     List<TextView> views = new ArrayList<>();
     Measure measure = new Measure();
-    boolean defaults = true;
     public boolean sectionLabel = false;
 
     public Label(Context context, Task task, String position) {
@@ -28,10 +27,12 @@ public class Label extends TextView {
     }
 
     void create(LinearLayout linearLayout) {
+        //Place in column
         setTextSize(getResources().getDimension(R.dimen.text_norm));
         setText(task.success);
         setTextColor(getResources().getColor(R.color.colorText));
-        setGravity(Gravity.CENTER);        linearLayout.addView(this);
+        setGravity(Gravity.CENTER);
+        linearLayout.addView(this);
     }
 
     protected TextView part(String name) {
@@ -41,6 +42,6 @@ public class Label extends TextView {
     protected void update(Measure measure, boolean send) {
         this.measure = measure;
 
-        if(send) Updater.measures.add(measure);
+        if(send) Updater.addMeasure(measure);
     }
 }

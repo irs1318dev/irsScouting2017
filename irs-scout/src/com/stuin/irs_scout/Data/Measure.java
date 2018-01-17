@@ -34,4 +34,9 @@ public class Measure {
         this.attempts = 0;
         this.cycle_times = 0;
     }
+
+    public boolean equals(Measure m) {
+        //Find if measures represent same task
+        return task.equals(m.task) && team.equals(m.team) && phase.equals(m.phase);
+    }
 }

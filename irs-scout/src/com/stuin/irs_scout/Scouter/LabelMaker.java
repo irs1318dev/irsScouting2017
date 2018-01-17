@@ -2,10 +2,13 @@ package com.stuin.irs_scout.Scouter;
 
 import android.content.Context;
 import com.google.gson.Gson;
+import com.stuin.irs_scout.Data.InputData;
 import com.stuin.irs_scout.Data.Section;
 import com.stuin.irs_scout.Data.Task;
 import com.stuin.irs_scout.MainActivity;
-import com.stuin.irs_scout.Scouter.Views.*;
+import com.stuin.irs_scout.Scouter.Inputs.*;
+import com.stuin.irs_scout.Scouter.Page;
+import com.stuin.irs_scout.Scouter.PageManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +19,7 @@ import java.util.Map;
  * Created by Stuart on 2/12/2017.
  */
 class LabelMaker {
-    private List<Section> sections = new ArrayList<>();
+    private ArrayList<Section> sections = new ArrayList<>();
     PageManager pageManager;
     private Map<String, Page> pageList = new HashMap<>();
 
@@ -24,7 +27,7 @@ class LabelMaker {
         this.pageManager = pageManager;
     }
 
-    void pages(List<String> layout) {
+    void pagesMake(List<String> layout) {
         //Prepare variables
         String current = "";
         Gson gson = new Gson();
@@ -35,7 +38,7 @@ class LabelMaker {
             if(usePage(section.observer, MainActivity.position)) sections.add(section);
         }
 
-        //Build pages
+        //Build pagesMake
         for(Section section : sections)  {
             //Create each phase
             if(current.isEmpty() || !pageList.get(current).name.equals(section.phase)) {
@@ -46,23 +49,30 @@ class LabelMaker {
     }
 
     void taskMake(List<String> strings) {
+        //Prepare variables for generation
         Map<String, Task> tasks = new HashMap<>();
         Gson gson = new Gson();
         Context context = pageManager.getContext();
 
+        //Make list of tasks
         for(String s : strings) {
             Task task = gson.fromJson(s, Task.class);
             tasks.put(task.task, task);
         }
 
+        //Check each section
         for(Section s : sections) {
-            if(s.newpart.equals("true")) pageList.get(s.phase).newCol();
-            if(s.position.isEmpty()) s.position = MainActivity.position;
+            //Set column and position
+            if(s.newpart.equals("true"))
+                pageList.get(s.phase).newCol();
+            if(s.position.isEmpty())
+                s.position = MainActivity.position;
 
-            Label label = new Label(context, new Task(s.category), s.position);
-            label.sectionLabel = true;
+            //Create label for section
+            Input label = new Label(context, new InputData(new Task(s.category), s.position));
             pageList.get(s.phase).add(label);
 
+            //Create inputs for section
             for(String t : s.tasks) if(tasks.containsKey(t)) {
                 pageList.get(s.phase).add(makeLabel(tasks.get(t), context, s.phase, s.position));
             }
@@ -71,29 +81,30 @@ class LabelMaker {
 
     private boolean usePage(String observer, String position) {
         //Check if phase is to be used
-        if(observer.equals("match") && !position.contains("Fuel") && !position.contains("Pit")) return true;
-        if(observer.equals("boiler") && position.contains("Fuel")) return true;
-        if(observer.equals("pit") && position.contains("Pit")) return true;
-        return false;
+        if(position.toLowerCase().contains(observer)) return true;
+        return observer.equals("match") && position.contains("Red") || position.contains("Blue");
     }
 
-    private Label makeLabel(Task task, Context context, String phase, String position) {
+    private Input makeLabel(Task task, Context context, String phase, String position) {
+        //Get special variables
         String format = task.getFormat(phase);
+        InputData id = new InputData(task, position);
 
         //Choose format to create
-
         switch(format.charAt(0)) {
             case 'b':
-                return new Switcher(context, task, position);
+                return new Switcher(context, id);
             case 'c':
-                return new Count(context, task, position);
+                return new Count(context, id);
             case 'e':
-                return new Choice(context, task, position);
+                return new Choice(context, id);
             case 'p':
-                return new Enter(context, task, position);
+                return new Enter(context, id);
+            case 'r':
+                return new Rating(context, id);
             case 'l':
-                return new Label(context, task, position);
+                return new Label(context, id);
         }
-        return new Label(context, new Task(), position);
+        return new Label(context, id);
     }
 }
