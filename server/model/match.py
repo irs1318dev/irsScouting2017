@@ -1,8 +1,10 @@
 from collections import OrderedDict
 
+import sqlalchemy
+
+import server.model
 import server.model.connection
 import server.scouting.event as event
-import server.model.dimension as dimension
 import json
 from sqlalchemy import text
 import server.scouting.game as game
@@ -10,21 +12,53 @@ import server.scouting.game as game
 engine = server.model.connection.engine
 
 
+def build_dicts(dim_table):
+    """Returns dictionaries for cross-referencing ID fields to values.
+
+    Args:
+        dim_table: (str) Name of dimension table in scouting database.
+
+    Returns: A tuple containing two dictionaries. The keys of the first
+    dictionary are the values in the table's *name* column and the
+    values are the integer from the ID column for the same row. The
+    second dictionary has ID values for keys and the values are from
+    the *name* column.
+    """
+    name_to_id = {}
+    id_to_name = {}
+    conn = server.model.connection.engine.connect()
+
+    if dim_table.lower() == "task_options":
+        sql = sqlalchemy.text("SELECT id, task_name||'-'||option_name "
+                              "as name FROM task_options")
+    else:
+         sql = sqlalchemy.text("SELECT id, name FROM " + dim_table)
+
+    dim_res = conn.execute(sql)
+    for row in dim_res:
+        name_to_id[row["name"]] = row["id"]
+        id_to_name[row["id"]] = row["name"]
+
+    dim_res.close()
+    conn.close()
+    return name_to_id, id_to_name
+
+
 class MatchDal(object):
-    dates, date_ids = dimension.build_dicts("dates")
-    events, event_ids = dimension.build_dicts("events")
-    levels, level_ids = dimension.build_dicts("levels")
-    matches, match_ids = dimension.build_dicts("matches")
-    alliances, alliance_ids = dimension.build_dicts("alliances")
-    teams, team_ids = dimension.build_dicts("teams")
-    stations, stations_ids = dimension.build_dicts("stations")
-    actors, actor_ids = dimension.build_dicts("actors")
-    tasks, task_ids = dimension.build_dicts("tasks")
-    measuretypes, measturetype_ids = dimension.build_dicts("measuretypes")
-    phases, phase_ids = dimension.build_dicts("phases")
-    attempts, attempt_ids = dimension.build_dicts("attempts")
-    reasons, reasons_ids = dimension.build_dicts("reasons")
-    task_options, task_option_ids = dimension.build_dicts("task_options")
+    dates, date_ids = build_dicts("dates")
+    events, event_ids = build_dicts("events")
+    levels, level_ids = build_dicts("levels")
+    matches, match_ids = build_dicts("matches")
+    alliances, alliance_ids = build_dicts("alliances")
+    teams, team_ids = build_dicts("teams")
+    stations, stations_ids = build_dicts("stations")
+    actors, actor_ids = build_dicts("actors")
+    tasks, task_ids = build_dicts("tasks")
+    measuretypes, measturetype_ids = build_dicts("measuretypes")
+    phases, phase_ids = build_dicts("phases")
+    attempts, attempt_ids = build_dicts("attempts")
+    reasons, reasons_ids = build_dicts("reasons")
+    task_options, task_option_ids = build_dicts("task_options")
 
     def __init__(self):
         pass

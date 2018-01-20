@@ -5,7 +5,7 @@ import server.scouting.export
 import server.scouting.output
 import server.scouting.event
 import server.scouting.alliance
-import server.scouting.match
+import server.model.match
 
 
 class Viewer:
@@ -71,8 +71,8 @@ class Viewer:
         match = '001-q'
         matches = list()
 
-        while '""' not in server.scouting.match.MatchDal.matchteams(match) and '130' not in match:
-            if team in server.scouting.match.MatchDal.matchteams(match):
+        while '""' not in server.model.match.MatchDal.matchteams(match) and '130' not in match:
+            if team in server.model.match.MatchDal.matchteams(match):
                 matches.append(match)
 
             nextMatchNumber = int(match.split('-')[0]) + 1
@@ -100,7 +100,7 @@ class Viewer:
 
     def teamsList(self, match):
         teams = list()
-        for data in server.scouting.match.MatchDal.matchteams(match).split(','):
+        for data in server.model.match.MatchDal.matchteams(match).split(','):
             if 'team' in data:
                 teams.append(data.split(':')[1].split('"')[1])
         return teams

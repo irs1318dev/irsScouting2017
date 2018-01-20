@@ -1,4 +1,4 @@
-import server.scouting.match
+import server.model.match
 import os.path
 
 
@@ -27,7 +27,7 @@ class AllianceSet:
     last = ''
 
     def __init__(self):
-        self.matchDal = server.scouting.match.MatchDal
+        self.matchDal = server.model.match.MatchDal
         i = 1
         while i < 8:
             i += 1

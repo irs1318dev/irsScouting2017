@@ -4,7 +4,7 @@ import server.model.connection
 import server.model.upsert
 import server.model.firstapi as api
 import json
-import server.scouting.match as m
+import server.model.match as m
 import server.scouting.event as e
 from server.model.schedule import insert_sched
 

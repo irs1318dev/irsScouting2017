@@ -7,14 +7,14 @@ import server.viewerapi
 import server.scouting.tasks
 import server.scouting.tablet
 import server.scouting.sections
-import server.scouting.match
+import server.model.match
 import server.scouting.event
 import server.scouting.load_data
 
 
 class Scouting(object):
     def __init__(self):
-        self.matchDal = server.scouting.match.MatchDal()
+        self.matchDal = server.model.match.MatchDal()
         self.eventDal = server.scouting.event.EventDal()
         self.alltablets = server.scouting.tablet.TabletList()
 
@@ -51,24 +51,24 @@ class Scouting(object):
         if match == -1:
             match = self.eventDal.get_current_match()
         if match == 'na':
-            return server.scouting.match.MatchDal.pitteams()
-        return server.scouting.match.MatchDal.matchteams(match)
+            return server.model.match.MatchDal.pitteams()
+        return server.model.match.MatchDal.matchteams(match)
 
     @cherrypy.expose
     def matchteamtasks(self, team='error', match=-1):
         if match == -1:
             match = self.eventDal.get_current_match()
-        return (server.scouting.match.MatchDal.matchteamtasks(match, team) +
+        return (server.model.match.MatchDal.matchteamtasks(match, team) +
                 '{end}')
 
     @cherrypy.expose
     def matchteamtask(self, match, team, task, phase, capability=0, attempt=0,
                       success=0, cycle_time=0):
         try:
-            server.scouting.match.MatchDal.matchteamtask(team, task, match,
-                                                         phase, capability,
-                                                         attempt, success,
-                                                         cycle_time)
+            server.model.match.MatchDal.matchteamtask(team, task, match,
+                                                      phase, capability,
+                                                      attempt, success,
+                                                      cycle_time)
         except KeyError:
             return 'Error'
         return 'hi'
