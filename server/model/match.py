@@ -64,13 +64,29 @@ class MatchDal(object):
         pass
 
     @staticmethod
-    def matchteams(match):
+    def match_teams(match):
+        """Retrieves teams assigned to match passed in `match` argument.
+
+        Args:
+            match: (str) Match number formatted as "nnn-p|q" (the
+            vertical bar means either 'p' or 'q' is acceptable). For
+            example, 001-q, 034-q, 103-q, or 003-p. "q" denotes a
+            qualificaiton match and "p" denotes a playoff match.
+
+        Returns:
+            JSON string in following format:
+            {"alliance": "red", "match": "nnn-p|q",
+                "team1": nnnn, "team2", nnnn, "team3": nnnn}\n
+            {"alliance": "blue", "match": "nnn-p|q",
+                "team1": nnnn, "team2", nnnn, "team3": nnnn}
+        """
         match_teams = []
         sql = text("SELECT * FROM schedules WHERE "
                    "match = :match "
                    " AND event = :event ")
         conn = engine.connect()
-        results = conn.execute(sql, event=event.EventDal.get_current_event(), match=match)
+        results = conn.execute(sql, event=event.EventDal.get_current_event(),
+                               match=match)
         conn.close()
 
         for row in results:
@@ -85,12 +101,19 @@ class MatchDal(object):
             if line['alliance'] == 'blue':
                 blue.teamadd(line['team'], line['match'])
 
-        out = json.dumps(red, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True) + '\n'
-        out += json.dumps(blue, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True) + '\n'
+        out = json.dumps(red, default=lambda o: o.__dict__,
+                         separators=(', ', ':'), sort_keys=True) + '\n'
+        out += json.dumps(blue, default=lambda o: o.__dict__,
+                          separators=(', ', ':'), sort_keys=True) + '\n'
         return out
 
     @staticmethod
-    def pitteams():
+    def pit_teams():
+        """Returns JSON list of teams sheduled to compete.
+
+        Returns: (str) JSON string with following format:
+        {"match":"na", "teams":["nnnn", "nnnn", ...,  "na"]}
+        """
         pit_teams = ''
         sql = text("SELECT DISTINCT team FROM schedules WHERE "
                    "event = :event ORDER BY team;")

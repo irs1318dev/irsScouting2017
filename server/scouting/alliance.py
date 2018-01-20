@@ -37,7 +37,7 @@ class AllianceSet:
         self.csv = ''
 
     def start(self):
-        self.teams = self.matchDal.pitteams().split('[')[1].replace(']}', '').split(',')
+        self.teams = self.matchDal.pit_teams().split('[')[1].replace(']}', '').split(',')
         self.unset = self.teams
 
         if os.path.exists("web/data/alliances.csv"):

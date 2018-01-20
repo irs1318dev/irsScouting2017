@@ -51,8 +51,8 @@ class Scouting(object):
         if match == -1:
             match = self.eventDal.get_current_match()
         if match == 'na':
-            return server.model.match.MatchDal.pitteams()
-        return server.model.match.MatchDal.matchteams(match)
+            return server.model.match.MatchDal.pit_teams()
+        return server.model.match.MatchDal.match_teams(match)
 
     @cherrypy.expose
     def matchteamtasks(self, team='error', match=-1):

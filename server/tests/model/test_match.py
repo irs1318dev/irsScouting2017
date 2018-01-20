@@ -1,3 +1,6 @@
+import json
+import re
+
 import server.model.match as smm
 
 
@@ -22,4 +25,23 @@ def test_build_dicts():
     assert len(tasks_options) == 103
     assert "startingLocation-boiler" in task_option_ids.values()
     assert isinstance(tasks_options["robotTechFoul-"], int)
+
+
+def test_match_teams():
+    matches = re.split("\n", smm.MatchDal.match_teams("001-q"))
+    # Verify JSON strings have correct format.
+    for alliance in matches[0:2]:
+        ptn = (r'{"alliance":"(red|blue)", "match":"\d{3}-(p|q)", '
+            r'"team1":"\d{1,4}", "team2":"\d{1,4}", "team3":"\d{1,4}"}')
+        assert re.match(ptn, alliance)
+    # Verify function returns both a red and blue alliance.
+    assert (json.loads(matches[0])["alliance"] !=
+           json.loads(matches[1])["alliance"])
+
+
+def test_pit_teams():
+    pit_teams = smm.MatchDal.pit_teams()
+    ptn = r'{"match":"na", "teams":\["\d{1,4}"(,"\d{1,4}")*,"na"\]}'
+    assert re.match(ptn, pit_teams)
+
 
