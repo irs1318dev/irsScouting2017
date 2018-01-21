@@ -1,12 +1,12 @@
+import json
 from collections import OrderedDict
 
 import sqlalchemy
+from sqlalchemy import text
 
 import server.model
 import server.model.connection
 import server.scouting.event as event
-import json
-from sqlalchemy import text
 import server.scouting.game as game
 
 engine = server.model.connection.engine
@@ -133,7 +133,28 @@ class MatchDal(object):
         return '''{"match":"na", "teams":[''' + pit_teams + ']}'
 
     @staticmethod
-    def matchteamtasks(match, team):
+    def match_team_tasks(match, team):
+        """Gets JSON string of all measures for specific team and match.
+
+        Returns measures for whichever event is set as the current
+        event. To set the current event, call
+        `server.model.event.EventDal.set_current_event("event_code").
+
+        Args:
+            match: (str) Match number, e.g., "034-q" or "002-p"
+            team: (str) FRC team number, e.g., 1318 or 360.
+
+        Returns: Several JSON strings combined into a single string,
+        with each string separated by a carriage return ('\n').
+        Each individual JSON string is in the following format:
+
+            {"match": "nnn-p|q", "team": "nnnn", "task": "{task_name}",
+            "phase": "{phase}", "actor": "{actor}",
+            "measuretype": "{measuretype}", "capability": 0|1,
+            "attempts": {int}, "successes": {int},
+            "cycle_times": {int}}
+        """
+        # todo(stacy) add optional event argument.
         match_id = MatchDal.matches[match]
         team_id = MatchDal.teams[team]
 
@@ -164,9 +185,15 @@ class MatchDal(object):
             if capability > 0 and not capability == 100:
                 capability = MatchDal.task_option_ids[capability].split('-')[1]
 
-            out += json.dumps(OrderedDict([('match', match), ('team', team), ('task', task), ('phase', phase),
-                           ('actor', actor), ('measuretype', measuretype), ('capability', capability),
-                           ('attempts', attempts), ('successes', successes), ('cycle_times', cycle_times)])) + '\n'
+            out += (json.dumps(OrderedDict([('match', match), ('team', team),
+                                            ('task', task), ('phase', phase),
+                                            ('actor', actor),
+                                            ('measuretype', measuretype),
+                                            ('capability', capability),
+                                            ('attempts', attempts),
+                                            ('successes', successes),
+                                            ('cycle_times', cycle_times)])) +
+                    '\n')
 
         return out
 

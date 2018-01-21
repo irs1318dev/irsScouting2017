@@ -1,10 +1,25 @@
 import json
 import re
 
+import pytest
+
+import server.scouting.event
 import server.model.match as smm
 
 
-def test_build_dicts():
+@pytest.fixture
+def event():
+    server.scouting.event.EventDal.set_current_event("turing")
+    return True
+
+
+def match():
+    server.scouting.event.EventDal.set_current_match("001-q")
+    return True
+
+
+def test_build_dicts(event):
+    assert event
     # Dates
     dates, date_ids = smm.build_dicts("dates")
     assert len(dates) == 1029
@@ -27,7 +42,8 @@ def test_build_dicts():
     assert isinstance(tasks_options["robotTechFoul-"], int)
 
 
-def test_match_teams():
+def test_match_teams(event):
+    assert event
     matches = re.split("\n", smm.MatchDal.match_teams("001-q"))
     # Verify JSON strings have correct format.
     for alliance in matches[0:2]:
@@ -39,9 +55,25 @@ def test_match_teams():
            json.loads(matches[1])["alliance"])
 
 
-def test_pit_teams():
+def test_pit_teams(event):
+    assert event
     pit_teams = smm.MatchDal.pit_teams()
     ptn = r'{"match":"na", "teams":\["\d{1,4}"(,"\d{1,4}")*,"na"\]}'
     assert re.match(ptn, pit_teams)
+
+
+def test_match_team_tasks(event):
+    assert event
+    mt_tasks = re.split("\n", smm.MatchDal.match_team_tasks("001-q", "1983"))
+    assert len(mt_tasks) == 7
+    print("\n ", len(mt_tasks))
+    print(mt_tasks[0])
+    ptn = (r'{"match": "001-q", "team": "1983", "task": "placeGear", '
+           '"phase": "auto", "actor": "robot", "measuretype": "boolean", '
+           '"capability": 0, "attempts": 1, "successes": 0, "cycle_times": 0}')
+    assert re.match(ptn, mt_tasks[0])
+
+
+
 
 

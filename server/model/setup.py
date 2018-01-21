@@ -187,7 +187,7 @@ class Actor(Base):
 class Task(Base):
     """Tasks are the specific items that are measured.
 
-    Tasks are specific to a single game and vary from season to season.
+    Tasks are specific to a single season and vary from season to season.
     For example, Steamworks (2017) had tasks such as "placeGear" and
     "teleopFuelPoints".
 
@@ -293,7 +293,7 @@ class TaskOptions(Base):
 
 
 class Game(Base):
-    """List all tasks applying to a specific game for a single season.
+    """List all tasks applying to a specific season for a single season.
 
     This table is not linked to any other tables in the scouting
     database.
@@ -430,15 +430,15 @@ def initialize_dimension_data():
 
 
 def load_game_sheet(engine=server.model.connection.engine):
-    """Loads game-specific data into task_options table in database.
+    """Loads season-specific data into task_options table in database.
 
 
     """
     # Change Python path location to server/game folder.
     server_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    os.chdir(os.path.join(server_path, "game"))
+    os.chdir(os.path.join(server_path, "season"))
 
-    file = open("gametasks.csv")
+    file = open("../season/s2017/gametasks.csv")
     sheet = csv.reader(file)
 
     server.model.upsert.upsert_cols("task_options", {"task_name": "na",

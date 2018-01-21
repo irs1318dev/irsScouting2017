@@ -12,11 +12,11 @@ engine = server.model.connection.engine
 
 #todo(stacy) Split schedule and match results logic.
 # Loading competition schedules is season-independent. Loading match
-# results is not (depends on game). Put the logic in two different
-# modules with game-dependent logic in server.game package. Also,
+# results is not (depends on season). Put the logic in two different
+# modules with season-dependent logic in server.season package. Also,
 # these two processes should not be started by a single HTTP call -
 # There should be two different cherry-py exposed methods, one
-# for loading schedule and one for loading game results. This will
+# for loading schedule and one for loading season results. This will
 # facilitate system testing.
 
 
@@ -73,7 +73,7 @@ def insert_MatchResults(event, season, tournamentLevel, fileName = '-1'):
     process_match_results(event, season, tournamentLevel, score_json)
 
 
-#todo(stacy) process_match_results to module in server.game
+#todo(stacy) process_match_results to module in server.season
 def process_match_results(event, season, tournamentLevel, score_json):
     matchScores = json.loads(score_json)['MatchScores']
     for mch in matchScores:
@@ -115,7 +115,7 @@ def process_match_results(event, season, tournamentLevel, score_json):
             load_alliance_rotors(event, match, alnce, 'rotorCount', 'finish')
 
 
-#todo(stacy) load_robot_movebaseline to module in server.game
+#todo(stacy) load_robot_movebaseline to module in server.season
 def load_robot_movebaseline(event, match, alnce, station):
     robotKey = 'robot' + str(station) + 'Auto'
     robot1Auto = alnce[robotKey]
@@ -129,7 +129,7 @@ def load_robot_movebaseline(event, match, alnce, station):
     m.MatchDal.matchteamtask(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
 
 
-#todo(stacy) load_alliance_rotors to module in server.game
+#todo(stacy) load_alliance_rotors to module in server.season
 def load_alliance_rotors(event, match, alnce, task, phase):
     alliance = alnce['alliance'].lower()
     r1 = alnce['rotor1Engaged']
@@ -150,7 +150,7 @@ def load_alliance_rotors(event, match, alnce, task, phase):
     m.MatchDal.matchalliancetask(alliance, task, phase, match, 0, attempt_count, success_count, 0)
 
 
-#todo(stacy) load_alliance_flag to module in server.game
+#todo(stacy) load_alliance_flag to module in server.season
 def load_alliance_flag(event, match, alnce, firstApiTaskName, taskName, phase):
     Value = alnce[firstApiTaskName]
     alliance = alnce['alliance'].lower()
@@ -161,7 +161,7 @@ def load_alliance_flag(event, match, alnce, firstApiTaskName, taskName, phase):
     m.MatchDal.matchalliancetask(alliance, taskName, phase, match, 0, attempt_count, success_count)
 
 
-#todo(stacy) load_alliance_measure to module in server.game
+#todo(stacy) load_alliance_measure to module in server.season
 def load_alliance_measure(event, match, alnce, firstApiTaskName, taskName, phase):
     Value = alnce[firstApiTaskName]
     alliance = alnce['alliance'].lower()
