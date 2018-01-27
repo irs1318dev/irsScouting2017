@@ -15,7 +15,7 @@ class Section(object):
 
 class Observers(object):
     def load(self):
-        with open("scouting/observertasks.csv", "r") as text:
+        with open("season/observertasks.csv", "r") as text:
             out = ''
             for line in text:
                 if 'actor,observer' not in line:
