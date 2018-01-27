@@ -60,8 +60,8 @@ class MatchDal(object):
     reasons, reasons_ids = build_dicts("reasons")
     task_options, task_option_ids = build_dicts("task_options")
 
-    def __init__(self):
-        pass
+    # def __init__(self):
+    #     pass
 
     @staticmethod
     def match_teams(match):
@@ -198,27 +198,39 @@ class MatchDal(object):
         return out
 
     @staticmethod
-    def matchteamtask(team, task, match='na', phase='claim', capability=0, attempt_count=0, success_count=0,
-                      cycle_time=0):
+    def match_team_task(team, task, match='na', phase='claim', capability=0,
+                        attempt_count=0, success_count=0, cycle_time=0):
+        """Insert data on a task into the database.
+
+        Args:
+            team: (str) FRC team number
+            task: (str) Name of task
+            match: (str) Match number in nnn-p|q format
+            phase: (str) Name of phase
+            capability: (int) 1 if has capability, 0 if not
+            attempt_count: (int) Number of attempts, successful or not
+            success_count: (int) Number of successes
+            cycle_time: (int) Number of seconds
+        """
+        # Get ID value for current event
         event_name = event.EventDal.get_current_event()
         event_id = MatchDal.events[event_name]
-
-        match_id = MatchDal.matches[match]
-
+        # Get ID values for arguments
         team_id = MatchDal.teams[team]
-        phase_id = MatchDal.phases[phase]
         task_id = MatchDal.tasks[task]
+        match_id = MatchDal.matches[match]
+        phase_id = MatchDal.phases[phase]
+        # Get season-specific data and IDs
         actor_measure = game.GameDal.get_actor_measure(task, phase)
         actor_id = MatchDal.actors[actor_measure["actor"]]
         measure = actor_measure[phase]
         measuretype_id = MatchDal.measuretypes[measure]
-
+        # Get additional match details
         match_details = event.EventDal.match_details(event_name, match, team)
         date_id = MatchDal.dates[match_details['date']]
         level_id = MatchDal.levels[match_details['level']]
         alliance_id = MatchDal.alliances[match_details['alliance']]
         station_id = MatchDal.stations[match_details['station']]
-
         reason_id = MatchDal.reasons['na']
 
         capability, attempt_count, success_count, cycle_time, attempt_id = \
@@ -227,64 +239,28 @@ class MatchDal(object):
 
         sql = text(
             "INSERT INTO measures "
-            "( "
-            "date_id, "
-            "event_id , "
-            "level_id, "
-            "match_id ,"
-            "alliance_id, "
-            "team_id, "
-            "station_id, "
-            "actor_id, "
-            "task_id , "
-            "measuretype_id ,"
-            "phase_id, "
-            "attempt_id , "
-            "reason_id, "
-            "capability, "
-            "attempts, "
-            "successes, "
-            "cycle_times"
-            ") "
-            " VALUES("
-            ":date_id, "
-            ":event_id, "
-            ":level_id, "
-            ":match_id, "
-            ":alliance_id, "
-            ":team_id, "
-            ":station_id, "
-            ":actor_id, "
-            ":task_id, "
-            ":measuretype_id, "
-            ":phase_id, "
-            ":attempt_id, "
-            ":reason_id, "
-            ":capability, "
-            ":attempts, "
-            ":successes, "
-            ":cycle_times )" +
-            " ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
+            "(date_id, event_id, level_id, match_id, alliance_id, "
+            "team_id, station_id, actor_id, task_id, measuretype_id, "
+            "phase_id, attempt_id, reason_id, capability, attempts, "
+            "successes, cycle_times) "
+            
+            "VALUES("
+            ":date_id, :event_id, :level_id, :match_id, :alliance_id, "
+            ":team_id, :station_id, :actor_id, :task_id, :measuretype_id, "
+            ":phase_id, :attempt_id, :reason_id, :capability, :attempts, "
+            ":successes, :cycle_times) "
+            
+            "ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
             "SET capability=:capability, attempts=:attempts, "
             "successes=:successes, cycle_times=:cycle_times;")
         conn = engine.connect()
-        conn.execute(sql,
-                     date_id=date_id,
-                     event_id=event_id,
-                     level_id=level_id,
-                     match_id=match_id,
-                     alliance_id=alliance_id,
-                     team_id=team_id,
-                     station_id=station_id,
-                     actor_id=actor_id,
-                     task_id=task_id,
-                     measuretype_id=measuretype_id,
-                     phase_id=phase_id,
-                     attempt_id=attempt_id,
-                     reason_id=reason_id,
-                     capability=capability,
-                     attempts=attempt_count,
-                     successes=success_count,
+        conn.execute(sql, date_id=date_id, event_id=event_id, level_id=level_id,
+                     match_id=match_id, alliance_id=alliance_id,
+                     team_id=team_id, station_id=station_id, actor_id=actor_id,
+                     task_id=task_id, measuretype_id=measuretype_id,
+                     phase_id=phase_id, attempt_id=attempt_id,
+                     reason_id=reason_id, capability=capability,
+                     attempts=attempt_count, successes=success_count,
                      cycle_times=cycle_time)
         conn.close()
 

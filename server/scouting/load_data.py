@@ -126,7 +126,7 @@ def load_robot_movebaseline(event, match, alnce, station):
     attempt_count = 1
     if robot1Auto == 'Mobility':
         success_count = 1
-    m.MatchDal.matchteamtask(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
+    m.MatchDal.match_team_task(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
 
 
 #todo(stacy) load_alliance_rotors to module in server.season

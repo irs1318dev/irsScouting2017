@@ -8,18 +8,20 @@ import server.model.match as smm
 
 
 @pytest.fixture
-def event():
+def event(restored_testdb):
+    assert restored_testdb
     server.scouting.event.EventDal.set_current_event("turing")
-    return True
+    return server.scouting.event.EventDal.get_current_event()
 
 
-def match():
+def match(restored_testdb):
+    assert restored_testdb
     server.scouting.event.EventDal.set_current_match("001-q")
-    return True
+    return server.scouting.event.EventDal.get_current_match()
 
 
 def test_build_dicts(event):
-    assert event
+    assert event == "turing"
     # Dates
     dates, date_ids = smm.build_dicts("dates")
     assert len(dates) == 1029
@@ -66,12 +68,14 @@ def test_match_team_tasks(event):
     assert event
     mt_tasks = re.split("\n", smm.MatchDal.match_team_tasks("001-q", "1983"))
     assert len(mt_tasks) == 7
-    print("\n ", len(mt_tasks))
-    print(mt_tasks[0])
     ptn = (r'{"match": "001-q", "team": "1983", "task": "placeGear", '
            '"phase": "auto", "actor": "robot", "measuretype": "boolean", '
            '"capability": 0, "attempts": 1, "successes": 0, "cycle_times": 0}')
     assert re.match(ptn, mt_tasks[0])
+
+
+def test_match_team_task(restored_testdb):
+    pass
 
 
 

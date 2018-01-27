@@ -65,10 +65,10 @@ class Scouting(object):
     def matchteamtask(self, match, team, task, phase, capability=0, attempt=0,
                       success=0, cycle_time=0):
         try:
-            server.model.match.MatchDal.matchteamtask(team, task, match,
-                                                      phase, capability,
-                                                      attempt, success,
-                                                      cycle_time)
+            server.model.match.MatchDal.match_team_task(team, task, match,
+                                                        phase, capability,
+                                                        attempt, success,
+                                                        cycle_time)
         except KeyError:
             return 'Error'
         return 'hi'

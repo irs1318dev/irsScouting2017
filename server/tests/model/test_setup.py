@@ -8,16 +8,16 @@ Tests code in following modules:
 import pandas
 
 
-def test_tables(tables_loaded, db_conn):
+def test_tables(tables_loaded, testdb_conn):
     assert tables_loaded
     sql = ("SELECT * FROM information_schema.tables "
            "WHERE table_schema = 'public';")
-    tables = pandas.read_sql_query(sql, db_conn)
+    tables = pandas.read_sql_query(sql, testdb_conn)
     assert tables.shape == (19, 12)
 
     def test_table(table, shape):
         sql = "SELECT * FROM " + table + ";"
-        dframe = pandas.read_sql_query(sql, db_conn)
+        dframe = pandas.read_sql_query(sql, testdb_conn)
         assert dframe.shape == shape
 
     test_table("levels", (3, 2))
