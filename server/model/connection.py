@@ -95,6 +95,9 @@ References
 import psycopg2.pool
 import sqlalchemy
 
+# todo(stacy) Move password and username to auth.py.
+# todo(stacy) Move connection settings to server.conf.py
+
 db_params = {"minconn": 1,
              "maxconn": 2,
              "user": "irs1318",
