@@ -6,7 +6,7 @@ from sqlalchemy import text
 
 import server.model
 import server.model.connection
-import server.scouting.event as event
+import server.model.event as event
 import server.scouting.game as game
 
 engine = server.model.connection.engine
@@ -62,6 +62,18 @@ class MatchDal(object):
 
     # def __init__(self):
     #     pass
+
+    @classmethod
+    def rebuild_dicts(cls, dicts=None):
+        for table in ["dates", "events", "levels", "matches",
+                      "alliances", "teams", "stations", "actors",
+                      "tasks", "measuretypes", "phases", "attempts",
+                      "reasons", "task_options"]:
+            if dicts is None or table in dicts:
+                table_dict, id_dict = build_dicts(table)
+                setattr(cls, table, table_dict)
+                setattr(cls, table + "_id", id_dict)
+
 
     @staticmethod
     def match_teams(match):
@@ -198,8 +210,8 @@ class MatchDal(object):
         return out
 
     @staticmethod
-    def match_team_task(team, task, match='na', phase='claim', capability=0,
-                        attempt_count=0, success_count=0, cycle_time=0):
+    def insert_match_task(team, task, match='na', phase='claim', capability=0,
+                          attempt_count=0, success_count=0, cycle_time=0):
         """Insert data on a task into the database.
 
         Args:

@@ -5,7 +5,7 @@ import server.model.upsert
 import server.model.firstapi as api
 import json
 import server.model.match as m
-import server.scouting.event as e
+import server.model.event as e
 from server.model.schedule import insert_sched
 
 engine = server.model.connection.engine
@@ -126,7 +126,7 @@ def load_robot_movebaseline(event, match, alnce, station):
     attempt_count = 1
     if robot1Auto == 'Mobility':
         success_count = 1
-    m.MatchDal.match_team_task(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
+    m.MatchDal.insert_match_task(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
 
 
 #todo(stacy) load_alliance_rotors to module in server.season

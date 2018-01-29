@@ -1,6 +1,6 @@
 import server.model.connection
 import os.path
-import server.scouting.event as event
+import server.model.event as event
 from sqlalchemy.sql import text
 import pandas as pd
 import datetime

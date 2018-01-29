@@ -58,6 +58,8 @@ function to create the conn_string argument.
 `server.model.connection.set_pool()`: Creates a new psycopg2 connection
 pool and make it available vie the server.model.connection.pool
 attribute.
+`server.model.connection.reset_pool()`: Resets the pgsql connection
+pool with different database parameters.
 
 Examples
 --------
@@ -99,7 +101,7 @@ import sqlalchemy
 # todo(stacy) Move connection settings to server.conf.py
 
 db_params = {"minconn": 1,
-             "maxconn": 2,
+             "maxconn": 8,
              "user": "irs1318",
              "password": "irs1318",
              "dbname": "scouting",
@@ -146,14 +148,11 @@ def reset_engine(conn_string):
         conn_string: A string containing database parameters such as
         username, database name, host, etc. See the documentation for
         server.model.connection.create_conn_string for more detail.
-
-    Returns: A sqlalchemy Engine object.
     """
     global engine
     if engine is not None:
         engine.dispose()
     engine = sqlalchemy.create_engine(conn_string)
-    return engine
 
 
 # Create psycopg2 connection pool
@@ -171,3 +170,14 @@ def set_pool(minconn=db_params["minconn"], maxconn=db_params["maxconn"],
 
 
 pool = set_pool()
+
+
+def reset_pool(minconn=db_params["minconn"], maxconn=db_params["maxconn"],
+             dbname=db_params["dbname"], host=db_params["host"],
+             user=db_params["user"], password=db_params["password"]):
+    global pool
+    pool = psycopg2.pool.SimpleConnectionPool(minconn, maxconn,
+                                              dbname=dbname,
+                                              host=host, user=user,
+                                              password=password)
+

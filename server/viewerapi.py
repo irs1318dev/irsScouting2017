@@ -3,7 +3,7 @@ from cherrypy.lib.static import serve_file
 import os.path
 import server.scouting.export
 import server.scouting.output
-import server.scouting.event
+import server.model.event
 import server.scouting.alliance
 import server.model.match
 
@@ -58,7 +58,8 @@ class Viewer:
 
     @cherrypy.expose
     def backup(self):
-        script = self.export.run_backup(server.scouting.event.EventDal.get_current_event())
+        script = self.export.run_backup(
+            server.model.event.EventDal.get_current_event())
         return '<a href="/view/data?name=' + script + '">Download File</a>'
 
     @cherrypy.expose

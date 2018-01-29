@@ -8,14 +8,14 @@ import server.scouting.tasks
 import server.scouting.tablet
 import server.scouting.sections
 import server.model.match
-import server.scouting.event
+import server.model.event
 import server.scouting.load_data
 
 
 class Scouting(object):
     def __init__(self):
         self.matchDal = server.model.match.MatchDal()
-        self.eventDal = server.scouting.event.EventDal()
+        self.eventDal = server.model.event.EventDal()
         self.alltablets = server.scouting.tablet.TabletList()
 
     @cherrypy.expose
@@ -42,9 +42,9 @@ class Scouting(object):
     @cherrypy.expose
     def matches(self, event='na'):
         if event == 'na':
-            event = server.scouting.event.EventDal.get_current_event()
+            event = server.model.event.EventDal.get_current_event()
 
-        return server.scouting.event.EventDal.list_matches(event)
+        return server.model.event.EventDal.list_matches(event)
 
     @cherrypy.expose
     def matchteams(self, match=-1):
@@ -65,10 +65,10 @@ class Scouting(object):
     def matchteamtask(self, match, team, task, phase, capability=0, attempt=0,
                       success=0, cycle_time=0):
         try:
-            server.model.match.MatchDal.match_team_task(team, task, match,
-                                                        phase, capability,
-                                                        attempt, success,
-                                                        cycle_time)
+            server.model.match.MatchDal.insert_match_task(team, task, match,
+                                                          phase, capability,
+                                                          attempt, success,
+                                                          cycle_time)
         except KeyError:
             return 'Error'
         return 'hi'
@@ -80,7 +80,7 @@ class Scouting(object):
 
         if server.scouting.tablet.TabletList.settablet(self.alltablets,
                                                        newtablet):
-            server.scouting.event.EventDal.set_next_match(
+            server.model.event.EventDal.set_next_match(
                 self.eventDal.get_current_match())
 
         return self.eventDal.get_current_match()

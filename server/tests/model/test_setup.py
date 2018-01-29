@@ -6,18 +6,45 @@ Tests code in following modules:
 """
 
 import pandas
+import pytest
+import sqlalchemy
+
+import server.model.connection as smc
+import server.model.setup as sms
+import server.tests.conf as conf
+import server.tests.model.util as util
 
 
-def test_tables(tables_loaded, testdb_conn):
-    assert tables_loaded
+@pytest.fixture(scope="module")
+def testdb_initialized_tables():
+    util.create_testdb()
+    conn_str = smc.create_conn_string(user=conf.test_user,
+                                      password=conf.test_pw,
+                                      dbname=conf.test_db)
+    smc.engine = sqlalchemy.create_engine(conn_str)
+    smc.pool = smc.set_pool(dbname=conf.test_db, user=conf.test_user,
+                            password=conf.test_pw)
+    util.create_empty_tables()
+    yield True
+    smc.engine.dispose()
+    smc.pool.closeall()
+    util.drop_testdb()
+
+
+def test_tables(testdb_initialized_tables):
+    assert testdb_initialized_tables
+    util.verify_testdb()
+    sms.setup()
+
+    conn = smc.engine.connect()
     sql = ("SELECT * FROM information_schema.tables "
            "WHERE table_schema = 'public';")
-    tables = pandas.read_sql_query(sql, testdb_conn)
+    tables = pandas.read_sql_query(sql, conn)
     assert tables.shape == (19, 12)
 
     def test_table(table, shape):
         sql = "SELECT * FROM " + table + ";"
-        dframe = pandas.read_sql_query(sql, testdb_conn)
+        dframe = pandas.read_sql_query(sql, conn)
         assert dframe.shape == shape
 
     test_table("levels", (3, 2))
@@ -33,11 +60,3 @@ def test_tables(tables_loaded, testdb_conn):
     test_table("attempts", (31, 2))
     test_table("reasons", (4, 2))
     test_table("task_options", (88, 4))
-
-
-
-
-
-
-
-
