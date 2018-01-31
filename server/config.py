@@ -1,0 +1,33 @@
+"""This file contains functions used to calculate the absolute path of files within certain folders
+"""
+import os.path
+
+
+def web_sites(file):
+    path = (os.path.dirname(__file__) + '\\web\\sites\\' + file)
+    return path
+
+
+def web_scripts(file):
+    path = (os.path.dirname(__file__) + '\\web\\scripts\\' + file)
+    return path
+
+
+def web_data(file):
+    path = (os.path.dirname(__file__) + '\\web\\data\\' + file)
+    return path
+
+
+def web_images(file):
+    path = (os.path.dirname(__file__) + '\\web\\images\\' + file)
+    return path
+
+
+def scouting(file):
+    path = (os.path.dirname(__file__) + '\\scouting\\' + file)
+    return path
+
+
+def TestJson(file):
+    path = (os.path.dirname(__file__) + '\\TestJson\\' + file)
+    return path
