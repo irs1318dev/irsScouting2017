@@ -1,6 +1,8 @@
-import server.model.connection
-from sqlalchemy import text
 import json
+
+from sqlalchemy import text
+
+import server.model.connection
 
 engine = server.model.connection.engine
 
@@ -63,9 +65,17 @@ class EventDal(object):
     @staticmethod
     def set_current_event(event):
         event = event.lower()
-
-        sql_sel = text("SELECT * FROM status;")
         conn = engine.connect()
+
+        # Ensure event exists in events table
+        sql_sel = text("SELECT * FROM events WHERE name = :evt;")
+        events = conn.execute(sql_sel, evt=event)
+        if events.rowcount != 1:
+            sql_ins = text("INSERT INTO events (name) VALUES (:evt);")
+            conn.execute(sql_ins, evt=event)
+
+        # Update status table with this event
+        sql_sel = text("SELECT * FROM status;")
         results = conn.execute(sql_sel).fetchall()
         if len(results) == 1:
             sql_upd = text("UPDATE status SET event = :event WHERE id = :id;")
@@ -75,6 +85,7 @@ class EventDal(object):
             sql_ins = text("INSERT INTO status (event, match) VALUES (:event, :match);")
             conn.execute(sql_ins, event=event, match=default_match)
         conn.close()
+
 
     @staticmethod
     def get_current_status():

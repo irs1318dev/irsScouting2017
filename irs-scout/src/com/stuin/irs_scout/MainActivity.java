@@ -28,8 +28,8 @@ public class MainActivity extends Activity {
 
         //Retrieve last ip
         Request.address = getPreferences(Context.MODE_PRIVATE).getString("Address", getResources().getString(R.string.form_ip));
-        TextView textView = (TextView) findViewById(R.id.AddressBar);
-        textView.setText(Request.address);
+        TextView textView = findViewById(R.id.AddressBar);
+        textView.setText(Request.address.split(":")[0]);
     }
 
     public void position(View view) {
@@ -38,23 +38,25 @@ public class MainActivity extends Activity {
         position = textView.getText().toString();
 
         //Get server address
-        textView = (TextView) findViewById(R.id.AddressBar);
-        Request.address = textView.getText().toString();
+        textView = findViewById(R.id.AddressBar);
+        Request.address = textView.getText().toString() + ":8080";
 
         //Check connection
         class Connected extends Request {
             public void run(List<String> s) {
-                connected();
+                connected(true);
             }
         }
-        new Connected().start("");
+        new Connected().start("/");
     }
 
-    private void connected() {
-        //Save correct address
-        SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
-        editor.putString("Address", Request.address);
-        editor.apply();
+    private void connected(boolean save) {
+        if(save) {
+            //Save correct address
+            SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
+            editor.putString("Address", Request.address);
+            editor.apply();
+        }
 
         //Hide start screen
         findViewById(R.id.AddressBar).setVisibility(View.GONE);
@@ -72,7 +74,7 @@ public class MainActivity extends Activity {
     }
 
     public void status(View view) {
-        form.updater.setStatus();
+        form.setStatus();
     }
 
     public void nextPage(View view) {
@@ -86,7 +88,7 @@ public class MainActivity extends Activity {
     }
 
     public void site(View view) {
-        Uri url = Uri.parse("http://" + Request.address + ":8080/");
+        Uri url = Uri.parse("http://" + Request.address + "/");
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, url);
         startActivity(launchBrowser);
     }

@@ -2,78 +2,28 @@ import os
 
 import server.model.connection
 import server.model.upsert
-import server.firstapi as api
+import server.model.firstapi as api
 import json
-from sqlalchemy.sql import text
-import server.scouting.match as m
-import server.scouting.event as e
-
+import server.model.match as m
+import server.model.event as e
+from server.model.schedule import insert_sched
 
 engine = server.model.connection.engine
 
 #todo(stacy) Split schedule and match results logic.
 # Loading competition schedules is season-independent. Loading match
-# results is not (depends on game). Put the logic in two different
-# modules with game-dependent logic in server.game package. Also,
+# results is not (depends on season). Put the logic in two different
+# modules with season-dependent logic in server.season package. Also,
 # these two processes should not be started by a single HTTP call -
 # There should be two different cherry-py exposed methods, one
-# for loading schedule and one for loading game results. This will
+# for loading schedule and one for loading season results. This will
 # facilitate system testing.
-
-
-#todo(stacy) Move insert_schedto server.model.schedule.py
-def insert_sched(event, season, level='qual', fileName = '-1'):
-    event = event.lower()
-
-    if fileName == '-1':
-        sched_json = api.getSched(event.upper(), season, level)
-    else:
-        fpath = os.path.dirname(os.path.abspath(__file__))
-        os.chdir(fpath)
-        testJsonPath = '../TestJson'
-        os.chdir(testJsonPath)
-        sched_json = open(fileName).read()
-
-    process_sched(event, season, sched_json, level)
-
-
-#todo(stacy) Move process_sched to server.model.schedule.py
-def process_sched(event, season, sched_json, level='qual'):
-    sched = json.loads(sched_json)['Schedule']
-
-    select = text(
-        "INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
-        "VALUES (:event,'na','na','na','na','na','na'); "
-    )
-    conn = engine.connect()
-    conn.execute(select, event=event)
-    conn.close()
-
-    for mch in sched:
-        match = "{0:0>3}-q".format(mch['matchNumber'])
-        date = mch['startTime']
-        for tm in mch['Teams']:
-            team = tm['teamNumber']
-            station = tm['station'][-1:]
-            alliance = tm['station'][0:-1].lower()
-            select = text(
-                "INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
-                "VALUES (:event,:match,:team,:level,:date,:alliance,:station); "
-
-            )
-            conn = engine.connect()
-            conn.execute(select, event=event, match=match, team=team, level=level, date=date, alliance=alliance,
-                         station=station)
-            conn.close()
-            server.model.upsert.upsert("events", "name", event)
-            server.model.upsert.upsert("teams", "name", team)
-            server.model.upsert.upsert("dates", "name", date)
 
 
 #todo(stacy) insert_all_events to server.model.schedule.py
 def insert_all_events(season, tournamentLevel, fileName = '-1'):
     if fileName == '-1':
-        event_json = api.getEvents(season, tournamentLevel)
+        event_json = api.events(season, tournamentLevel)
 
     else:
         fpath = os.path.dirname(os.path.abspath(__file__))
@@ -110,7 +60,7 @@ def process_all_events(season, event_json, tournamentLevel):
 def insert_MatchResults(event, season, tournamentLevel, fileName = '-1'):
     event = event.lower()
     if fileName == '-1':
-        score_json = api.getMatchScores(event, season, tournamentLevel)
+        score_json = api.match_scores(event, season, tournamentLevel)
 
     else:
         fpath = os.path.dirname(os.path.abspath(__file__))
@@ -123,7 +73,7 @@ def insert_MatchResults(event, season, tournamentLevel, fileName = '-1'):
     process_match_results(event, season, tournamentLevel, score_json)
 
 
-#todo(stacy) process_match_results to module in server.game
+#todo(stacy) process_match_results to module in server.season
 def process_match_results(event, season, tournamentLevel, score_json):
     matchScores = json.loads(score_json)['MatchScores']
     for mch in matchScores:
@@ -165,7 +115,7 @@ def process_match_results(event, season, tournamentLevel, score_json):
             load_alliance_rotors(event, match, alnce, 'rotorCount', 'finish')
 
 
-#todo(stacy) load_robot_movebaseline to module in server.game
+#todo(stacy) load_robot_movebaseline to module in server.season
 def load_robot_movebaseline(event, match, alnce, station):
     robotKey = 'robot' + str(station) + 'Auto'
     robot1Auto = alnce[robotKey]
@@ -176,10 +126,10 @@ def load_robot_movebaseline(event, match, alnce, station):
     attempt_count = 1
     if robot1Auto == 'Mobility':
         success_count = 1
-    m.MatchDal.matchteamtask(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
+    m.MatchDal.insert_match_task(team1, "moveBaseline", match, "auto", 0, attempt_count, success_count)
 
 
-#todo(stacy) load_alliance_rotors to module in server.game
+#todo(stacy) load_alliance_rotors to module in server.season
 def load_alliance_rotors(event, match, alnce, task, phase):
     alliance = alnce['alliance'].lower()
     r1 = alnce['rotor1Engaged']
@@ -200,7 +150,7 @@ def load_alliance_rotors(event, match, alnce, task, phase):
     m.MatchDal.matchalliancetask(alliance, task, phase, match, 0, attempt_count, success_count, 0)
 
 
-#todo(stacy) load_alliance_flag to module in server.game
+#todo(stacy) load_alliance_flag to module in server.season
 def load_alliance_flag(event, match, alnce, firstApiTaskName, taskName, phase):
     Value = alnce[firstApiTaskName]
     alliance = alnce['alliance'].lower()
@@ -211,7 +161,7 @@ def load_alliance_flag(event, match, alnce, firstApiTaskName, taskName, phase):
     m.MatchDal.matchalliancetask(alliance, taskName, phase, match, 0, attempt_count, success_count)
 
 
-#todo(stacy) load_alliance_measure to module in server.game
+#todo(stacy) load_alliance_measure to module in server.season
 def load_alliance_measure(event, match, alnce, firstApiTaskName, taskName, phase):
     Value = alnce[firstApiTaskName]
     alliance = alnce['alliance'].lower()

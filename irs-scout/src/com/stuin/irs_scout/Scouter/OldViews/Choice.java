@@ -1,4 +1,4 @@
-package com.stuin.irs_scout.Scouter.Views;
+package com.stuin.irs_scout.Scouter.OldViews;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -18,7 +18,6 @@ public class Choice extends Label {
 
     public Choice(Context context, Task task, String position) {
         super(context, task, position);
-        defaults = false;
 
         choices = task.enums.replace('|','>').split(">");
     }

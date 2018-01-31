@@ -1,9 +1,10 @@
-package com.stuin.irs_scout.Scouter.Views;
+package com.stuin.irs_scout.Scouter.OldViews;
 
 import android.content.Context;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import com.stuin.irs_scout.Data.Task;
+import com.stuin.irs_scout.Scouter.OldViews.Label;
 
 /**
  * Created by Stuart on 4/18/2017.
