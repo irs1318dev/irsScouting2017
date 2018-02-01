@@ -1,3 +1,10 @@
+"""
+
+"""
+# helpful SELECT * FROM measures m, alliances a, teams t, tasks s
+#   WHERE a.name = 'red' and t.name = 'na' and s.name = 'finalScore'
+#   and m.alliance_id = a.id and m.team_id = t.id and m.task_id = s.id;
+
 import json
 from collections import OrderedDict
 
@@ -32,7 +39,7 @@ def build_dicts(dim_table):
         sql = sqlalchemy.text("SELECT id, task_name||'-'||option_name "
                               "as name FROM task_options")
     else:
-         sql = sqlalchemy.text("SELECT id, name FROM " + dim_table)
+        sql = sqlalchemy.text("SELECT id, name FROM " + dim_table)
 
     dim_res = conn.execute(sql)
     for row in dim_res:
@@ -73,7 +80,6 @@ class MatchDal(object):
                 table_dict, id_dict = build_dicts(table)
                 setattr(cls, table, table_dict)
                 setattr(cls, table + "_id", id_dict)
-
 
     @staticmethod
     def match_teams(match):
@@ -174,9 +180,9 @@ class MatchDal(object):
         event_id = MatchDal.events[evt]
 
         sql = text("SELECT * FROM measures WHERE "
-                    "event_id = :event_id "
-                    "AND match_id = :match_id "
-                    "AND team_id = :team_id;")
+                   "event_id = :event_id "
+                   "AND match_id = :match_id "
+                   "AND team_id = :team_id;")
 
         conn = engine.connect()
         results = conn.execute(sql, event_id=event_id, match_id=match_id,
@@ -246,8 +252,8 @@ class MatchDal(object):
         reason_id = MatchDal.reasons['na']
 
         capability, attempt_count, success_count, cycle_time, attempt_id = \
-            MatchDal.transform_measure(measure, capability, attempt_count,
-                                       success_count, cycle_time, task)
+            MatchDal._transform_measure(measure, capability, attempt_count,
+                                        success_count, cycle_time, task)
 
         sql = text(
             "INSERT INTO measures "
@@ -277,8 +283,23 @@ class MatchDal(object):
         conn.close()
 
     @staticmethod
-    def matchalliancetask(alliance, task, phase, match='na', capability=0, attempt_count=0, success_count=0,
-                      cycle_time=0):
+    def insert_alliance_task(alliance, task, phase, match, capability=0,
+                             attempt_count=0, success_count=0,
+                             cycle_time=0):
+        """Inserts task for an alliance and match, not linked to team.
+
+        Only works if schedule loaded for event.
+
+        Args:
+            alliance: (str) "red" or "blue"
+            task: (str) Name of task
+            phase: (str) Name of phase
+            match: (str) Match number in nnn-p|q format
+            capability: (int) 1 if has capability, 0 if not
+            attempt_count: (int) Number of attempts, successful or not
+            success_count: (int) Number of successes
+            cycle_time: (int) Number of seconds
+        """
         event_name = event.EventDal.get_current_event()
         event_id = MatchDal.events[event_name]
 
@@ -301,74 +322,39 @@ class MatchDal(object):
         reason_id = MatchDal.reasons['na']
 
         capability, attempt_count, success_count, cycle_time, attempt_id = \
-            MatchDal.transform_measure(measure, capability, attempt_count,
-                                       success_count, cycle_time, task)
+            MatchDal._transform_measure(measure, capability, attempt_count,
+                                        success_count, cycle_time, task)
 
         sql = text(
             "INSERT INTO measures "
-            "( "
-            "date_id, "
-            "event_id , "
-            "level_id, "
-            "match_id ,"
-            "alliance_id, "
-            "team_id, "
-            "station_id, "
-            "actor_id, "
-            "task_id , "
-            "measuretype_id ,"
-            "phase_id, "
-            "attempt_id , "
-            "reason_id, "
-            "capability, "
-            "attempts, "
-            "successes, "
-            "cycle_times"
-            ") "
-            " VALUES("
-            ":date_id, "
-            ":event_id, "
-            ":level_id, "
-            ":match_id, "
-            ":alliance_id, "
-            ":team_id, "
-            ":station_id, "
-            ":actor_id, "
-            ":task_id, "
-            ":measuretype_id, "
-            ":phase_id, "
-            ":attempt_id, "
-            ":reason_id, "
-            ":capability, "
-            ":attempts, "
-            ":successes, "
-            ":cycle_times )" +
-            " ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
+            "(date_id, event_id , level_id, match_id ,alliance_id, team_id, "
+            "station_id, actor_id, task_id , measuretype_id ,phase_id, "
+            "attempt_id , reason_id, capability, attempts, successes, "
+            "cycle_times) "
+            "VALUES"
+            "(:date_id, :event_id, :level_id, :match_id, :alliance_id, "
+            ":team_id, :station_id, :actor_id, :task_id, :measuretype_id, "
+            ":phase_id, :attempt_id, :reason_id, :capability, :attempts, "
+            ":successes, :cycle_times ) " +
+            "ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
             "SET capability=:capability, attempts=:attempts, "
             "successes=:successes, cycle_times=:cycle_times;")
         conn = engine.connect()
         conn.execute(sql,
-                     date_id=date_id,
-                     event_id=event_id,
-                     level_id=level_id,
-                     match_id=match_id,
-                     alliance_id=alliance_id,
-                     team_id=team_id,
-                     station_id=station_id,
-                     actor_id=actor_id,
-                     task_id=task_id,
-                     measuretype_id=measuretype_id,
-                     phase_id=phase_id,
-                     attempt_id=attempt_id,
-                     reason_id=reason_id,
-                     capability=capability,
-                     attempts=attempt_count,
-                     successes=success_count,
-                     cycle_times=cycle_time)
+                     date_id=date_id, event_id=event_id, level_id=level_id,
+                     match_id=match_id, alliance_id=alliance_id,
+                     team_id=team_id, station_id=station_id,
+                     actor_id=actor_id, task_id=task_id,
+                     measuretype_id=measuretype_id, phase_id=phase_id,
+                     attempt_id=attempt_id, reason_id=reason_id,
+                     capability=capability, attempts=attempt_count,
+                     successes=success_count, cycle_times=cycle_time)
         conn.close()
 
+# todo(stacy) Fix unused cycle_time argument
     @staticmethod
-    def transform_measure(measure, capability, attempt_count, success_count, cycle_time, task_name):
+    def _transform_measure(measure, capability, attempt_count, success_count,
+                           cycle_time, task_name):
         attempt_id = MatchDal.attempts['summary']
         if measure == 'na':
             return 0, 0, 0, 0, attempt_id
@@ -416,4 +402,4 @@ class PitMatch(object):
 
 
 
-# helpful SELECT * FROM measures m, alliances a, teams t, tasks s WHERE a.name = 'red' and t.name = 'na' and s.name = 'finalScore' and m.alliance_id = a.id and m.team_id = t.id and m.task_id = s.id;
+

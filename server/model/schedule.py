@@ -38,7 +38,7 @@ def process_sched(event, season, sched_json, level='qual'):
     for mch in sched:
         match = "{0:0>3}-q".format(mch['matchNumber'])
         date = mch['startTime']
-        for tm in mch['Teams']:
+        for tm in mch['teams']:
             team = tm['teamNumber']
             station = tm['station'][-1:]
             alliance = tm['station'][0:-1].lower()

@@ -147,7 +147,7 @@ def load_alliance_rotors(event, match, alnce, task, phase):
     elif r1:
         success_count = 1
 
-    m.MatchDal.matchalliancetask(alliance, task, phase, match, 0, attempt_count, success_count, 0)
+    m.MatchDal.insert_alliance_task(alliance, task, phase, match, 0, attempt_count, success_count, 0)
 
 
 #todo(stacy) load_alliance_flag to module in server.season
@@ -158,7 +158,7 @@ def load_alliance_flag(event, match, alnce, firstApiTaskName, taskName, phase):
     attempt_count = 1
     if Value:
         success_count = 1
-    m.MatchDal.matchalliancetask(alliance, taskName, phase, match, 0, attempt_count, success_count)
+    m.MatchDal.insert_alliance_task(alliance, taskName, phase, match, 0, attempt_count, success_count)
 
 
 #todo(stacy) load_alliance_measure to module in server.season
@@ -167,4 +167,4 @@ def load_alliance_measure(event, match, alnce, firstApiTaskName, taskName, phase
     alliance = alnce['alliance'].lower()
     success_count = Value
     attempt_count = Value
-    m.MatchDal.matchalliancetask(alliance, taskName, phase, match, 0, attempt_count, success_count)
+    m.MatchDal.insert_alliance_task(alliance, taskName, phase, match, 0, attempt_count, success_count)
