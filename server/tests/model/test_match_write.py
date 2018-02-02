@@ -4,6 +4,7 @@ import re
 import sqlalchemy
 
 import server.model.connection as sm_connection
+import server.model.dal as sm_dal
 import server.model.match as sm_match
 import server.model.schedule as sm_schedule
 import server.tests.conf as st_conf
@@ -48,11 +49,11 @@ def test_alliance_task(test_event, schedule):
     sql = sqlalchemy.text("SELECT * FROM measures "
                           "WHERE match_id = :mtch AND alliance_id = :alli "
                           "AND phase_id = :phs AND event_id = :evt;")
-    match_id = sm_match.MatchDal.matches["001-q"]
-    alliance_id = sm_match.MatchDal.alliances["blue"]
-    phase_id = sm_match.MatchDal.phases["claim"]
-    task_id = sm_match.MatchDal.tasks["moveBaseline"]
-    event_id = sm_match.MatchDal.events[st_conf.test_event]
+    match_id = sm_dal.match_ids["001-q"]
+    alliance_id = sm_dal.alliance_ids["blue"]
+    phase_id = sm_dal.phase_ids["claim"]
+    task_id = sm_dal.task_ids["moveBaseline"]
+    event_id = sm_dal.event_ids[st_conf.test_event]
     conn = sm_connection.engine.connect()
     results = conn.execute(sql, mtch=match_id, alli=alliance_id, phs=phase_id,
                            evt=event_id)

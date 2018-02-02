@@ -8,78 +8,17 @@
 import json
 from collections import OrderedDict
 
-import sqlalchemy
 from sqlalchemy import text
 
-import server.model
 import server.model.connection
+import server.model.dal as sm_dal
 import server.model.event as event
 import server.scouting.game as game
 
 engine = server.model.connection.engine
 
 
-def build_dicts(dim_table):
-    """Returns dictionaries for cross-referencing ID fields to values.
-
-    Args:
-        dim_table: (str) Name of dimension table in scouting database.
-
-    Returns: A tuple containing two dictionaries. The keys of the first
-    dictionary are the values in the table's *name* column and the
-    values are the integer from the ID column for the same row. The
-    second dictionary has ID values for keys and the values are from
-    the *name* column.
-    """
-    name_to_id = {}
-    id_to_name = {}
-    conn = server.model.connection.engine.connect()
-
-    if dim_table.lower() == "task_options":
-        sql = sqlalchemy.text("SELECT id, task_name||'-'||option_name "
-                              "as name FROM task_options")
-    else:
-        sql = sqlalchemy.text("SELECT id, name FROM " + dim_table)
-
-    dim_res = conn.execute(sql)
-    for row in dim_res:
-        name_to_id[row["name"]] = row["id"]
-        id_to_name[row["id"]] = row["name"]
-
-    dim_res.close()
-    conn.close()
-    return name_to_id, id_to_name
-
-
 class MatchDal(object):
-    dates, date_ids = build_dicts("dates")
-    events, event_ids = build_dicts("events")
-    levels, level_ids = build_dicts("levels")
-    matches, match_ids = build_dicts("matches")
-    alliances, alliance_ids = build_dicts("alliances")
-    teams, team_ids = build_dicts("teams")
-    stations, stations_ids = build_dicts("stations")
-    actors, actor_ids = build_dicts("actors")
-    tasks, task_ids = build_dicts("tasks")
-    measuretypes, measturetype_ids = build_dicts("measuretypes")
-    phases, phase_ids = build_dicts("phases")
-    attempts, attempt_ids = build_dicts("attempts")
-    reasons, reasons_ids = build_dicts("reasons")
-    task_options, task_option_ids = build_dicts("task_options")
-
-    # def __init__(self):
-    #     pass
-
-    @classmethod
-    def rebuild_dicts(cls, dicts=None):
-        for table in ["dates", "events", "levels", "matches",
-                      "alliances", "teams", "stations", "actors",
-                      "tasks", "measuretypes", "phases", "attempts",
-                      "reasons", "task_options"]:
-            if dicts is None or table in dicts:
-                table_dict, id_dict = build_dicts(table)
-                setattr(cls, table, table_dict)
-                setattr(cls, table + "_id", id_dict)
 
     @staticmethod
     def match_teams(match):
@@ -173,11 +112,11 @@ class MatchDal(object):
             "cycle_times": {int}}
         """
         # todo(stacy) add optional event argument.
-        match_id = MatchDal.matches[match]
-        team_id = MatchDal.teams[team]
+        match_id = sm_dal.match_ids[match]
+        team_id = sm_dal.team_ids[team]
 
         evt = event.EventDal.get_current_event()
-        event_id = MatchDal.events[evt]
+        event_id = sm_dal.event_ids[evt]
 
         sql = text("SELECT * FROM measures WHERE "
                    "event_id = :event_id "
@@ -191,17 +130,17 @@ class MatchDal(object):
 
         out = ''
         for row in results:
-            task = MatchDal.task_ids[row['task_id']]
-            actor = MatchDal.actor_ids[row['actor_id']]
-            phase = MatchDal.phase_ids[row['phase_id']]
-            measuretype = MatchDal.measturetype_ids[row['measuretype_id']]
+            task = sm_dal.task_names[row['task_id']]
+            actor = sm_dal.actor_names[row['actor_id']]
+            phase = sm_dal.phase_names[row['phase_id']]
+            measuretype = sm_dal.measuretype_names[row['measuretype_id']]
             capability = row['capability']
             attempts = row['attempts']
             successes = row['successes']
             cycle_times = row['cycle_times']
 
             if capability > 0 and not capability == 100:
-                capability = MatchDal.task_option_ids[capability].split('-')[1]
+                capability = sm_dal.task_option_names[capability].split('-')[1]
 
             out += (json.dumps(OrderedDict([('match', match), ('team', team),
                                             ('task', task), ('phase', phase),
@@ -232,24 +171,24 @@ class MatchDal(object):
         """
         # Get ID value for current event
         event_name = event.EventDal.get_current_event()
-        event_id = MatchDal.events[event_name]
+        event_id = sm_dal.event_ids[event_name]
         # Get ID values for arguments
-        team_id = MatchDal.teams[team]
-        task_id = MatchDal.tasks[task]
-        match_id = MatchDal.matches[match]
-        phase_id = MatchDal.phases[phase]
+        team_id = sm_dal.team_ids[team]
+        task_id = sm_dal.task_ids[task]
+        match_id = sm_dal.match_ids[match]
+        phase_id = sm_dal.phase_ids[phase]
         # Get season-specific data and IDs
         actor_measure = game.GameDal.get_actor_measure(task, phase)
-        actor_id = MatchDal.actors[actor_measure["actor"]]
+        actor_id = sm_dal.actor_ids[actor_measure["actor"]]
         measure = actor_measure[phase]
-        measuretype_id = MatchDal.measuretypes[measure]
+        measuretype_id = sm_dal.measuretype_ids[measure]
         # Get additional match details
         match_details = event.EventDal.match_details(event_name, match, team)
-        date_id = MatchDal.dates[match_details['date']]
-        level_id = MatchDal.levels[match_details['level']]
-        alliance_id = MatchDal.alliances[match_details['alliance']]
-        station_id = MatchDal.stations[match_details['station']]
-        reason_id = MatchDal.reasons['na']
+        date_id = sm_dal.date_ids[match_details['date']]
+        level_id = sm_dal.level_ids[match_details['level']]
+        alliance_id = sm_dal.alliance_ids[match_details['alliance']]
+        station_id = sm_dal.station_ids[match_details['station']]
+        reason_id = sm_dal.reason_ids['na']
 
         capability, attempt_count, success_count, cycle_time, attempt_id = \
             MatchDal._transform_measure(measure, capability, attempt_count,
@@ -301,25 +240,25 @@ class MatchDal(object):
             cycle_time: (int) Number of seconds
         """
         event_name = event.EventDal.get_current_event()
-        event_id = MatchDal.events[event_name]
+        event_id = sm_dal.event_ids[event_name]
 
-        match_id = MatchDal.matches[match]
+        match_id = sm_dal.match_ids[match]
 
-        team_id = MatchDal.teams['na']
-        phase_id = MatchDal.phases[phase]
-        task_id = MatchDal.tasks[task]
+        team_id = sm_dal.team_ids['na']
+        phase_id = sm_dal.phase_ids[phase]
+        task_id = sm_dal.task_ids[task]
         actor_measure = game.GameDal.get_actor_measure(task, phase)
-        actor_id = MatchDal.actors[actor_measure["actor"]]
+        actor_id = sm_dal.actor_ids[actor_measure["actor"]]
         measure = actor_measure[phase]
-        measuretype_id = MatchDal.measuretypes[measure]
-        alliance_id = MatchDal.alliances[alliance]
-        station_id = MatchDal.stations['na']
+        measuretype_id = sm_dal.measuretype_ids[measure]
+        alliance_id = sm_dal.alliance_ids[alliance]
+        station_id = sm_dal.station_ids['na']
 
         match_details = event.EventDal.match_alliance_details(event_name, match)
-        date_id = MatchDal.dates[match_details['date']]
-        level_id = MatchDal.levels[match_details['level']]
+        date_id = sm_dal.date_ids[match_details['date']]
+        level_id = sm_dal.level_ids[match_details['level']]
 
-        reason_id = MatchDal.reasons['na']
+        reason_id = sm_dal.reason_ids['na']
 
         capability, attempt_count, success_count, cycle_time, attempt_id = \
             MatchDal._transform_measure(measure, capability, attempt_count,
@@ -355,7 +294,7 @@ class MatchDal(object):
     @staticmethod
     def _transform_measure(measure, capability, attempt_count, success_count,
                            cycle_time, task_name):
-        attempt_id = MatchDal.attempts['summary']
+        attempt_id = sm_dal.attempt_ids['summary']
         if measure == 'na':
             return 0, 0, 0, 0, attempt_id
         elif measure == 'count':
@@ -366,7 +305,7 @@ class MatchDal(object):
             return 0, attempt_count, success_count, 0, attempt_id
         elif measure == 'enum':
             task_option = '{}-{}'.format(task_name, capability)
-            option_id = MatchDal.task_options[task_option]
+            option_id = sm_dal.task_option_ids[task_option]
             return option_id, 0, 0, 0, attempt_id
         elif measure == 'attempt':
             return 0
