@@ -3,14 +3,12 @@ import json
 from sqlalchemy import text
 
 import server.model.dal as sm_dal
-import server.model.connection
-
-
-engine = server.model.connection.engine
+from server.model.connection import engine
 
 
 class EventDal(object):
 
+    # todo(stacy) No usages found
     @staticmethod
     def list_events():
         events = []
@@ -20,8 +18,9 @@ class EventDal(object):
         conn.close()
         for row in results:
             events.append(dict(row))
-        return json.dumps(events)
+        return events
 
+    # todo(stacy) Shift conversion of Python dictionaries to JSON from DAL to controller (cherry.py methods)
     @staticmethod
     def list_matches(event):
         matches = []

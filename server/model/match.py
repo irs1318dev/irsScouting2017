@@ -18,6 +18,7 @@ import server.scouting.game as game
 engine = server.model.connection.engine
 
 
+#todo(stacy) Consider doing JSON transformation for tablets in View section.
 class MatchDal(object):
 
     @staticmethod
@@ -58,6 +59,7 @@ class MatchDal(object):
             if line['alliance'] == 'blue':
                 blue.teamadd(line['team'], line['match'])
 
+        # todo(stacy) Is separator ("\n") needed at end?
         out = json.dumps(red, default=lambda o: o.__dict__,
                          separators=(', ', ':'), sort_keys=True) + '\n'
         out += json.dumps(blue, default=lambda o: o.__dict__,
@@ -190,9 +192,11 @@ class MatchDal(object):
         station_id = sm_dal.station_ids[match_details['station']]
         reason_id = sm_dal.reason_ids['na']
 
-        capability, attempt_count, success_count, cycle_time, attempt_id = \
-            MatchDal._transform_measure(measure, capability, attempt_count,
-                                        success_count, cycle_time, task)
+        (capability, attempt_count, success_count, cycle_time,
+         attempt_id) = MatchDal._transform_measure(measure, capability,
+                                                   attempt_count,
+                                                   success_count,
+                                                   cycle_time, task)
 
         sql = text(
             "INSERT INTO measures "
@@ -290,30 +294,51 @@ class MatchDal(object):
                      successes=success_count, cycle_times=cycle_time)
         conn.close()
 
-# todo(stacy) Fix unused cycle_time argument
+# todo(stacy) Talk to Stuart about this function
     @staticmethod
-    def _transform_measure(measure, capability, attempt_count, success_count,
+    def _transform_measure(data_type, capability, attempt_count, success_count,
                            cycle_time, task_name):
+        """
+
+        Args:
+            data_type: (str) Either "na", "count", "percentage", "boolean",
+                "enum", "attempt" or "cycletime".
+            capability:
+            attempt_count:
+            success_count:
+            cycle_time:
+            task_name:
+
+        Returns:
+            A Python tuple: (capability, attempt_count, success_count,
+            cycle_time, attempt_id)
+        """
         attempt_id = sm_dal.attempt_ids['summary']
-        if measure == 'na':
+        if data_type == 'na':
             return 0, 0, 0, 0, attempt_id
-        elif measure == 'count':
+        elif data_type == 'count':
             return 0, attempt_count, success_count, 0, attempt_id
-        elif measure == 'percentage':
+        elif data_type == 'percentage':
             return capability, 0, 0, 0, attempt_id
-        elif measure == 'boolean':
+        elif data_type == 'boolean':
             return 0, attempt_count, success_count, 0, attempt_id
-        elif measure == 'enum':
+        elif data_type == 'enum':
             task_option = '{}-{}'.format(task_name, capability)
             option_id = sm_dal.task_option_ids[task_option]
             return option_id, 0, 0, 0, attempt_id
-        elif measure == 'attempt':
+        elif data_type == 'attempt':
             return 0
-        elif measure == 'cycletime':
+        elif data_type == 'cycletime':
             return 0
 
 
+# todo(Stacy) This could easily be replaced with Python dictionary
 class TabletMatch(object):
+    """Specifies the 3 teams assigned to alliance for a specific match.
+
+    This class is used in match)_teams function to generate JSON text
+    to send to tablets.
+    """
     def __init__(self, alliance):
         self.alliance = alliance
         self.match = ''
@@ -333,7 +358,7 @@ class TabletMatch(object):
                 if self.team3 is '':
                     self.team3 = name
 
-
+# todo(Stacy) Not used anywhere - consider eliminating
 class PitMatch(object):
     def __init__(self, teams):
         self.match = 'na'
