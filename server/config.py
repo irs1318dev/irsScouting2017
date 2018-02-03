@@ -31,3 +31,9 @@ def scouting(file):
 def TestJson(file):
     path = (os.path.dirname(__file__) + '\\TestJson\\' + file)
     return path
+
+
+def season(year, file):
+    path = (os.path.dirname(__file__) + '\\season\\s' + year + '\\' + file)
+    return path
+

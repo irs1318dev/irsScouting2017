@@ -50,3 +50,11 @@ def test_TestJson():
     assert server.config.TestJson("pnw_events.json") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
                                                         r'\irsScouting2017\server\TestJson\pnw_events.json'
 
+def test_season():
+    assert server.config.season("2018", "gametasks.csv") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
+                                                          r'\irsScouting2017\server\season\s2018\gametasks.csv'
+    assert server.config.season("2017", "gametasks.csv") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
+                                                            r'\irsScouting2017\server\season\s2017\gametasks.csv'
+
+
+
