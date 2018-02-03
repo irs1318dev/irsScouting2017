@@ -1,5 +1,6 @@
 import cherrypy
 import os.path
+import json
 
 import server.model.schedule
 import server.model.setup
@@ -117,6 +118,28 @@ class Scouting(object):
         server.model.setup.initialize_dimension_data()
         server.model.setup.load_game_sheet()
         return open("web/sites/reset.html").read()
+
+    @cherrypy.expose
+    def matchcreate(self, match, red1, red2, red3, blue1, blue2, blue3):
+        return "successfully set match"
+
+    @cherrypy.expose
+    def matchenter(self, match=-1):
+        out = open("web/sites/matchenter.html").read()
+        schedule = self.matchteams(match).split('\n')
+        redteams = json.loads(schedule[0])
+        blueteams = json.loads(schedule[1])
+
+        out.replace("{Red1}", redteams['team1'])
+        out.replace("{Red2}", redteams['team2'])
+        out.replace("{Red3}", redteams['team3'])
+        out.replace("{Blue1}", blueteams['team1'])
+        out.replace("{Blue2}", blueteams['team2'])
+        out.replace("{Blue3}", blueteams['team3'])
+
+        return out
+
+
 
 if __name__ == '__main__':
     cherrypy.config.update(
