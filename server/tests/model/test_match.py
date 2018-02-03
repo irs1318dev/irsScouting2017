@@ -4,6 +4,7 @@ import re
 import sqlalchemy
 
 import server.model.connection as sm_connection
+import server.model.dal as sm_dal
 import server.model.event as sm_event
 import server.model.match as sm_match
 import server.tests.conf as st_conf
@@ -17,25 +18,25 @@ def match():
 # noinspection PyShadowingNames
 def test_build_dicts():
     # Dates
-    dates, date_ids = sm_match.build_dicts("dates")
-    assert len(dates) == 1029
-    assert isinstance(dates["2017-03-04T16:12:00"], int)
+    date_names, date_ids = sm_dal.build_dicts("dates")
     assert len(date_ids) == 1029
-    assert "2017-03-04T17:36:00" in date_ids.values()
+    assert isinstance(date_ids["2017-03-04T16:12:00"], int)
+    assert len(date_names) == 1029
+    assert "2017-03-04T17:36:00" in date_names.values()
 
     # Levels
-    levels, level_ids = sm_match.build_dicts("levels")
-    assert isinstance(levels["playoff"], int)
-    assert "qual" in level_ids.values()
-    assert len(levels) == 3
+    level_names, level_ids = sm_dal.build_dicts("levels")
+    assert isinstance(level_ids["playoff"], int)
+    assert "qual" in level_names.values()
+    assert len(level_names) == 3
 
     # WARNING: GAME DEPENDENT
     # Task Options
-    tasks_options, task_option_ids = sm_match.build_dicts("task_options")
+    task_option_names, task_option_ids = sm_dal.build_dicts("task_options")
+    assert len(task_option_names) == 103
     assert len(task_option_ids) == 103
-    assert len(tasks_options) == 103
-    assert "startingLocation-boiler" in task_option_ids.values()
-    assert isinstance(tasks_options["robotTechFoul-"], int)
+    assert "startingLocation-boiler" in task_option_names.values()
+    assert isinstance(task_option_ids["robotTechFoul-"], int)
 
 
 # noinspection PyShadowingNames
@@ -56,6 +57,10 @@ def test_pit_teams():
     pit_teams = sm_match.MatchDal.pit_teams()
     ptn = r'{"match":"na", "teams":\["\d{1,4}"(,"\d{1,4}")*,"na"\]}'
     assert re.match(ptn, pit_teams)
+
+
+def test_globals():
+    print(globals())
 
 
 

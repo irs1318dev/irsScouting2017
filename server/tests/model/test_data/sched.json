@@ -1,0 +1,4996 @@
+{
+  "Schedule": [
+    {
+      "description": "Qualification 1",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T14:00:00",
+      "matchNumber": 1,
+      "teams": [
+        {
+          "teamNumber": 2910,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 753,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 488,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4513,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5295,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4173,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 2",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T14:07:00",
+      "matchNumber": 2,
+      "teams": [
+        {
+          "teamNumber": 5975,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 957,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4911,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3219,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3693,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 3",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T14:14:00",
+      "matchNumber": 3,
+      "teams": [
+        {
+          "teamNumber": 4469,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 948,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2928,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3393,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 4",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T14:21:00",
+      "matchNumber": 4,
+      "teams": [
+        {
+          "teamNumber": 3674,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5198,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2980,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 5",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T14:28:00",
+      "matchNumber": 5,
+      "teams": [
+        {
+          "teamNumber": 4131,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4061,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2147,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2811,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1425,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 997,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 6",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T14:35:00",
+      "matchNumber": 6,
+      "teams": [
+        {
+          "teamNumber": 6445,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3711,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5920,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2550,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6343,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4488,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 7",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T14:42:00",
+      "matchNumber": 7,
+      "teams": [
+        {
+          "teamNumber": 4662,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2990,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4125,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2471,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 8",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T14:49:00",
+      "matchNumber": 8,
+      "teams": [
+        {
+          "teamNumber": 1540,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1595,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3223,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3024,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 9",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T14:56:00",
+      "matchNumber": 9,
+      "teams": [
+        {
+          "teamNumber": 4918,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2374,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4495,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5085,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5468,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2521,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 10",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T15:03:00",
+      "matchNumber": 10,
+      "teams": [
+        {
+          "teamNumber": 3238,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 955,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1778,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3663,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5450,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 11",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T15:10:00",
+      "matchNumber": 11,
+      "teams": [
+        {
+          "teamNumber": 4911,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5970,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2910,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3070,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 492,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 12",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T15:17:00",
+      "matchNumber": 12,
+      "teams": [
+        {
+          "teamNumber": 4450,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2471,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2980,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 957,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2811,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5920,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 13",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T15:24:00",
+      "matchNumber": 13,
+      "teams": [
+        {
+          "teamNumber": 4173,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4662,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 948,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3674,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1540,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5975,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 14",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T15:31:00",
+      "matchNumber": 14,
+      "teams": [
+        {
+          "teamNumber": 3024,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2550,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2928,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3219,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4131,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1595,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 15",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T15:38:00",
+      "matchNumber": 15,
+      "teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4125,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2521,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3711,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4513,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 16",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T15:45:00",
+      "matchNumber": 16,
+      "teams": [
+        {
+          "teamNumber": 6343,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5450,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2374,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 753,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 17",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T15:52:00",
+      "matchNumber": 17,
+      "teams": [
+        {
+          "teamNumber": 6445,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5970,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3693,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5085,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 997,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 18",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T15:59:00",
+      "matchNumber": 18,
+      "teams": [
+        {
+          "teamNumber": 3393,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4495,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 955,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 492,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 19",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T16:06:00",
+      "matchNumber": 19,
+      "teams": [
+        {
+          "teamNumber": 5468,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4488,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3663,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 488,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 20",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T16:13:00",
+      "matchNumber": 20,
+      "teams": [
+        {
+          "teamNumber": 4061,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5198,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3070,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5295,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3238,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 21",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T16:20:00",
+      "matchNumber": 21,
+      "teams": [
+        {
+          "teamNumber": 1778,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4918,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2990,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2147,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 22",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T16:27:00",
+      "matchNumber": 22,
+      "teams": [
+        {
+          "teamNumber": 5827,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4173,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3693,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1425,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2980,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 23",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T16:34:00",
+      "matchNumber": 23,
+      "teams": [
+        {
+          "teamNumber": 5588,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2521,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 957,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4662,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 24",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T16:41:00",
+      "matchNumber": 24,
+      "teams": [
+        {
+          "teamNumber": 3024,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 753,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4125,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 492,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3393,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4488,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 25",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T16:48:00",
+      "matchNumber": 25,
+      "teams": [
+        {
+          "teamNumber": 1294,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5198,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3663,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2910,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5970,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2811,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 26",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T16:55:00",
+      "matchNumber": 26,
+      "teams": [
+        {
+          "teamNumber": 2374,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1540,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4061,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1778,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4131,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2550,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 27",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T17:02:00",
+      "matchNumber": 27,
+      "teams": [
+        {
+          "teamNumber": 5085,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2147,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4513,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1595,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3238,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6343,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 28",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T17:09:00",
+      "matchNumber": 28,
+      "teams": [
+        {
+          "teamNumber": 4915,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 948,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4918,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 29",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T17:16:00",
+      "matchNumber": 29,
+      "teams": [
+        {
+          "teamNumber": 2471,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5975,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2990,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1425,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 488,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 30",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T17:23:00",
+      "matchNumber": 30,
+      "teams": [
+        {
+          "teamNumber": 3070,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5450,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5920,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3223,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5468,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 31",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T17:30:00",
+      "matchNumber": 31,
+      "teams": [
+        {
+          "teamNumber": 3674,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6445,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 997,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4495,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4911,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2928,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 32",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T17:37:00",
+      "matchNumber": 32,
+      "teams": [
+        {
+          "teamNumber": 3711,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5295,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 955,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3219,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 33",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T17:44:00",
+      "matchNumber": 33,
+      "teams": [
+        {
+          "teamNumber": 1294,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4125,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5970,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2147,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4918,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4173,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 34",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-06T17:51:00",
+      "matchNumber": 34,
+      "teams": [
+        {
+          "teamNumber": 1425,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2550,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2521,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2910,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 35",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T09:00:00",
+      "matchNumber": 35,
+      "teams": [
+        {
+          "teamNumber": 4513,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5920,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 492,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 957,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5085,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1540,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 36",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T09:07:00",
+      "matchNumber": 36,
+      "teams": [
+        {
+          "teamNumber": 6343,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3674,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4662,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4488,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3024,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5450,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 37",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T09:14:00",
+      "matchNumber": 37,
+      "teams": [
+        {
+          "teamNumber": 4131,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4495,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3070,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3663,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 38",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T09:21:00",
+      "matchNumber": 38,
+      "teams": [
+        {
+          "teamNumber": 6445,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2471,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 488,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 753,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1778,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5198,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 39",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T09:28:00",
+      "matchNumber": 39,
+      "teams": [
+        {
+          "teamNumber": 1595,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 997,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5295,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5468,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 40",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T09:35:00",
+      "matchNumber": 40,
+      "teams": [
+        {
+          "teamNumber": 5975,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2811,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3711,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2374,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 41",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T09:42:00",
+      "matchNumber": 41,
+      "teams": [
+        {
+          "teamNumber": 6350,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4061,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4911,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3223,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3393,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 948,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 42",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T09:49:00",
+      "matchNumber": 42,
+      "teams": [
+        {
+          "teamNumber": 3219,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2980,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3693,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 43",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T09:56:00",
+      "matchNumber": 43,
+      "teams": [
+        {
+          "teamNumber": 1540,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3238,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2990,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2928,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 955,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 957,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 44",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T10:03:00",
+      "matchNumber": 44,
+      "teams": [
+        {
+          "teamNumber": 4488,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5295,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5970,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2550,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 45",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T10:10:00",
+      "matchNumber": 45,
+      "teams": [
+        {
+          "teamNumber": 492,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5468,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2811,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2147,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 46",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T10:17:00",
+      "matchNumber": 46,
+      "teams": [
+        {
+          "teamNumber": 948,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4911,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3024,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5920,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5198,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 47",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T10:24:00",
+      "matchNumber": 47,
+      "teams": [
+        {
+          "teamNumber": 4469,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3070,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2471,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5450,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3674,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4513,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 48",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T10:31:00",
+      "matchNumber": 48,
+      "teams": [
+        {
+          "teamNumber": 1425,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4662,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1778,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6343,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4918,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 49",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T10:38:00",
+      "matchNumber": 49,
+      "teams": [
+        {
+          "teamNumber": 3238,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2910,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4173,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3693,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4495,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 50",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T10:45:00",
+      "matchNumber": 50,
+      "teams": [
+        {
+          "teamNumber": 3663,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 997,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2374,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4125,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3219,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 51",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T10:52:00",
+      "matchNumber": 51,
+      "teams": [
+        {
+          "teamNumber": 1294,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 753,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4131,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 955,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 52",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T10:59:00",
+      "matchNumber": 52,
+      "teams": [
+        {
+          "teamNumber": 5085,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2928,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2980,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3711,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4061,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 488,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 53",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T11:06:00",
+      "matchNumber": 53,
+      "teams": [
+        {
+          "teamNumber": 2930,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2990,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2521,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3393,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6445,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1595,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 54",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T11:13:00",
+      "matchNumber": 54,
+      "teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3674,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5975,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 492,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2147,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 55",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T11:20:00",
+      "matchNumber": 55,
+      "teams": [
+        {
+          "teamNumber": 6350,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4495,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1425,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5295,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 56",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T11:27:00",
+      "matchNumber": 56,
+      "teams": [
+        {
+          "teamNumber": 5803,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4488,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4513,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5198,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4911,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2374,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 57",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T11:34:00",
+      "matchNumber": 57,
+      "teams": [
+        {
+          "teamNumber": 3711,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1778,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5468,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2910,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4662,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 58",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T11:41:00",
+      "matchNumber": 58,
+      "teams": [
+        {
+          "teamNumber": 2811,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3663,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3393,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6445,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1540,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 59",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T11:48:00",
+      "matchNumber": 59,
+      "teams": [
+        {
+          "teamNumber": 4061,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3238,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6343,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 488,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3024,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 60",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T11:55:00",
+      "matchNumber": 60,
+      "teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2990,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2550,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2980,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 61",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T12:02:00",
+      "matchNumber": 61,
+      "teams": [
+        {
+          "teamNumber": 2928,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2521,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5975,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2471,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 753,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 62",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T12:09:00",
+      "matchNumber": 62,
+      "teams": [
+        {
+          "teamNumber": 1595,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 948,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 955,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3070,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5970,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 997,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 63",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T12:16:00",
+      "matchNumber": 63,
+      "teams": [
+        {
+          "teamNumber": 4125,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5085,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3693,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5450,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 64",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T12:23:00",
+      "matchNumber": 64,
+      "teams": [
+        {
+          "teamNumber": 3219,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 957,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4173,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5920,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4131,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4918,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 65",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T13:30:00",
+      "matchNumber": 65,
+      "teams": [
+        {
+          "teamNumber": 2907,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3393,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 488,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2147,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3674,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 66",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T13:37:00",
+      "matchNumber": 66,
+      "teams": [
+        {
+          "teamNumber": 753,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2811,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3238,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 67",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T13:44:00",
+      "matchNumber": 67,
+      "teams": [
+        {
+          "teamNumber": 5198,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3711,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1540,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 68",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T13:51:00",
+      "matchNumber": 68,
+      "teams": [
+        {
+          "teamNumber": 5295,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3024,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5085,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2521,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3663,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1778,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 69",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T13:58:00",
+      "matchNumber": 69,
+      "teams": [
+        {
+          "teamNumber": 3693,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4662,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1595,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4061,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5920,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 70",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T14:05:00",
+      "matchNumber": 70,
+      "teams": [
+        {
+          "teamNumber": 2910,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6445,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4125,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5975,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4131,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 71",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T14:12:00",
+      "matchNumber": 71,
+      "teams": [
+        {
+          "teamNumber": 2990,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5450,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3219,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4513,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 948,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5970,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 72",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T14:19:00",
+      "matchNumber": 72,
+      "teams": [
+        {
+          "teamNumber": 4911,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 957,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5468,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1425,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6343,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 955,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 73",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T14:26:00",
+      "matchNumber": 73,
+      "teams": [
+        {
+          "teamNumber": 2374,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3223,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2471,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4173,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4495,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 74",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T14:33:00",
+      "matchNumber": 74,
+      "teams": [
+        {
+          "teamNumber": 2980,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4918,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4488,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 492,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 997,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2928,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 75",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T14:40:00",
+      "matchNumber": 75,
+      "teams": [
+        {
+          "teamNumber": 3070,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2550,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 76",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T14:47:00",
+      "matchNumber": 76,
+      "teams": [
+        {
+          "teamNumber": 5970,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3674,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4131,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3711,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 77",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T14:54:00",
+      "matchNumber": 77,
+      "teams": [
+        {
+          "teamNumber": 1778,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2811,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1540,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1595,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3693,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4125,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 78",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T15:01:00",
+      "matchNumber": 78,
+      "teams": [
+        {
+          "teamNumber": 6343,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 948,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3223,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5295,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 79",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T15:08:00",
+      "matchNumber": 79,
+      "teams": [
+        {
+          "teamNumber": 997,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2910,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3393,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2471,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 957,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 80",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T15:15:00",
+      "matchNumber": 80,
+      "teams": [
+        {
+          "teamNumber": 955,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5975,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4918,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5198,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 81",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T15:22:00",
+      "matchNumber": 81,
+      "teams": [
+        {
+          "teamNumber": 2550,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3219,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4495,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4911,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 488,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4662,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 82",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T15:29:00",
+      "matchNumber": 82,
+      "teams": [
+        {
+          "teamNumber": 3663,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5920,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5085,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 753,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2990,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 83",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T15:36:00",
+      "matchNumber": 83,
+      "teams": [
+        {
+          "teamNumber": 3070,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2147,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4061,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4488,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2521,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 84",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T15:43:00",
+      "matchNumber": 84,
+      "teams": [
+        {
+          "teamNumber": 6445,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 492,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3238,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2374,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1425,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 85",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T15:50:00",
+      "matchNumber": 85,
+      "teams": [
+        {
+          "teamNumber": 4173,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5468,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3024,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4513,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2928,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 86",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T15:57:00",
+      "matchNumber": 86,
+      "teams": [
+        {
+          "teamNumber": 4495,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1595,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5450,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2980,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3711,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 87",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T16:04:00",
+      "matchNumber": 87,
+      "teams": [
+        {
+          "teamNumber": 1318,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 488,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4918,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1540,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2910,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 88",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T16:11:00",
+      "matchNumber": 88,
+      "teams": [
+        {
+          "teamNumber": 5295,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 997,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6343,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5920,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5975,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 89",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T16:18:00",
+      "matchNumber": 89,
+      "teams": [
+        {
+          "teamNumber": 5827,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2990,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2374,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3070,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3674,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4911,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 90",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T16:25:00",
+      "matchNumber": 90,
+      "teams": [
+        {
+          "teamNumber": 6350,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 955,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4662,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2471,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5085,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 91",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T16:32:00",
+      "matchNumber": 91,
+      "teams": [
+        {
+          "teamNumber": 3693,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5198,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4488,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4131,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5468,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3393,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 92",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T16:39:00",
+      "matchNumber": 92,
+      "teams": [
+        {
+          "teamNumber": 957,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3024,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1778,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3223,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5970,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 93",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T16:46:00",
+      "matchNumber": 93,
+      "teams": [
+        {
+          "teamNumber": 492,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3219,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6445,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4061,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 94",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T16:53:00",
+      "matchNumber": 94,
+      "teams": [
+        {
+          "teamNumber": 2930,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2550,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3663,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3238,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4513,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 95",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T17:00:00",
+      "matchNumber": 95,
+      "teams": [
+        {
+          "teamNumber": 5450,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2928,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2811,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4173,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2521,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 96",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T17:07:00",
+      "matchNumber": 96,
+      "teams": [
+        {
+          "teamNumber": 948,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4125,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2980,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 753,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2147,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1425,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 97",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T17:14:00",
+      "matchNumber": 97,
+      "teams": [
+        {
+          "teamNumber": 4918,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3693,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3711,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3024,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2990,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3070,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 98",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T17:21:00",
+      "matchNumber": 98,
+      "teams": [
+        {
+          "teamNumber": 2910,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1595,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5920,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2374,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 955,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 99",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T17:28:00",
+      "matchNumber": 99,
+      "teams": [
+        {
+          "teamNumber": 1778,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4513,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5975,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3393,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3238,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 100",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T17:35:00",
+      "matchNumber": 100,
+      "teams": [
+        {
+          "teamNumber": 2046,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3663,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2928,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5198,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 492,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5450,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 101",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T17:42:00",
+      "matchNumber": 101,
+      "teams": [
+        {
+          "teamNumber": 5970,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6343,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4495,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2521,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1540,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 102",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T17:49:00",
+      "matchNumber": 102,
+      "teams": [
+        {
+          "teamNumber": 4450,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4061,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2471,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 103",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T17:56:00",
+      "matchNumber": 103,
+      "teams": [
+        {
+          "teamNumber": 4131,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2811,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 948,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5085,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 488,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 104",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-07T18:03:00",
+      "matchNumber": 104,
+      "teams": [
+        {
+          "teamNumber": 1425,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3223,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4173,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4488,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 997,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 105",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T09:00:00",
+      "matchNumber": 105,
+      "teams": [
+        {
+          "teamNumber": 4662,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5468,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6445,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2980,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 106",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T09:07:00",
+      "matchNumber": 106,
+      "teams": [
+        {
+          "teamNumber": 4125,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 957,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5295,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2550,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3674,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 107",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T09:14:00",
+      "matchNumber": 107,
+      "teams": [
+        {
+          "teamNumber": 4911,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2147,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1540,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 753,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3219,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 108",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T09:21:00",
+      "matchNumber": 108,
+      "teams": [
+        {
+          "teamNumber": 488,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3693,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 492,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 948,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2521,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 109",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T09:28:00",
+      "matchNumber": 109,
+      "teams": [
+        {
+          "teamNumber": 2990,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4173,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4131,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6343,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 110",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T09:35:00",
+      "matchNumber": 110,
+      "teams": [
+        {
+          "teamNumber": 3393,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5970,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2980,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2374,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3238,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5468,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 111",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T09:42:00",
+      "matchNumber": 111,
+      "teams": [
+        {
+          "teamNumber": 5085,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5198,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2550,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3070,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4125,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 112",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T09:49:00",
+      "matchNumber": 112,
+      "teams": [
+        {
+          "teamNumber": 997,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4513,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 753,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4662,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 113",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T09:56:00",
+      "matchNumber": 113,
+      "teams": [
+        {
+          "teamNumber": 4488,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2910,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3223,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3219,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2811,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 114",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T10:03:00",
+      "matchNumber": 114,
+      "teams": [
+        {
+          "teamNumber": 2147,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5295,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6445,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3024,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 955,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 115",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T10:10:00",
+      "matchNumber": 115,
+      "teams": [
+        {
+          "teamNumber": 5920,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1425,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1778,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2928,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 116",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T10:17:00",
+      "matchNumber": 116,
+      "teams": [
+        {
+          "teamNumber": 957,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5450,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5975,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4495,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 117",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T10:24:00",
+      "matchNumber": 117,
+      "teams": [
+        {
+          "teamNumber": 2471,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1595,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3711,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4918,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4911,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3663,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 118",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T10:31:00",
+      "matchNumber": 118,
+      "teams": [
+        {
+          "teamNumber": 4061,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5468,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3674,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2910,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2990,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 119",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T10:38:00",
+      "matchNumber": 119,
+      "teams": [
+        {
+          "teamNumber": 753,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2980,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6343,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3070,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 120",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T10:45:00",
+      "matchNumber": 120,
+      "teams": [
+        {
+          "teamNumber": 1294,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5085,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1425,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1540,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3219,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3393,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 121",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T10:52:00",
+      "matchNumber": 121,
+      "teams": [
+        {
+          "teamNumber": 4495,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4513,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3024,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 955,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2811,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 122",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T10:59:00",
+      "matchNumber": 122,
+      "teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5450,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4918,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6445,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4131,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5295,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 123",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T11:06:00",
+      "matchNumber": 123,
+      "teams": [
+        {
+          "teamNumber": 5198,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1595,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4061,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 957,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 124",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T11:13:00",
+      "matchNumber": 124,
+      "teams": [
+        {
+          "teamNumber": 2930,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 488,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3674,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4125,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5920,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 125",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T11:20:00",
+      "matchNumber": 125,
+      "teams": [
+        {
+          "teamNumber": 3693,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3663,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2147,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4662,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2928,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2374,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 126",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T11:27:00",
+      "matchNumber": 126,
+      "teams": [
+        {
+          "teamNumber": 492,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2521,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4911,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4173,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1778,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 127",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T11:34:00",
+      "matchNumber": 127,
+      "teams": [
+        {
+          "teamNumber": 2550,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3711,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3238,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 997,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2471,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 948,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Qualification 128",
+      "field": "Primary",
+      "tournamentLevel": "Qualification",
+      "startTime": "2017-04-08T11:41:00",
+      "matchNumber": 128,
+      "teams": [
+        {
+          "teamNumber": 6350,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5975,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5970,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4488,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    }
+  ]
+}

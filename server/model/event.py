@@ -2,7 +2,9 @@ import json
 
 from sqlalchemy import text
 
+import server.model.dal as sm_dal
 import server.model.connection
+
 
 engine = server.model.connection.engine
 
@@ -73,6 +75,7 @@ class EventDal(object):
         if events.rowcount != 1:
             sql_ins = text("INSERT INTO events (name) VALUES (:evt);")
             conn.execute(sql_ins, evt=event)
+            sm_dal.rebuild_dicts()
 
         # Update status table with this event
         sql_sel = text("SELECT * FROM status;")
