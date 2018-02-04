@@ -1,60 +1,49 @@
 """Tests every method in server.config.py
 """
+import os.path
+import re
+
 import server.config
 
 
+def _check_path(pattern, path):
+    assert re.search(pattern, path)
+    assert os.path.isabs(path)
+
+
 def test_web_sites():
-    assert server.config.web_sites("admin.html") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                    r'\irsScouting2017\server\web\sites\admin.html'
-    assert server.config.web_sites("directions.html") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                         r'\irsScouting2017\server\web\sites\directions.html'
-    assert server.config.web_sites("selection.html") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                         r'\irsScouting2017\server\web\sites\selection.html'
+    _check_path(r"server\\web\\sites\\admin.html$",
+                server.config.web_sites("admin.html"))
 
 
 def test_web_scripts():
-    assert server.config.web_scripts("selectteam.js") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                         r'\irsScouting2017\server\web\scripts\selectteam.js'
-    assert server.config.web_scripts("showteam.js") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                       r'\irsScouting2017\server\web\scripts\showteam.js'
-    assert server.config.web_scripts("styles.css") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                      r'\irsScouting2017\server\web\scripts\styles.css'
-    assert server.config.web_scripts("tablets.txt") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                       r'\irsScouting2017\server\web\scripts\tablets.txt'
+    _check_path(r"server\\web\\scripts\\selectteam.js",
+                server.config.web_scripts("selectteam.js"))
 
 
 def test_web_data():
-    assert server.config.web_data("alliances.csv") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                      r'\irsScouting2017\server\web\data\alliances.csv'
-    assert server.config.web_data("climb_chart.html") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                         r'\irsScouting2017\server\web\data\climb_chart.html'
-    assert server.config.web_data("turing_2017_0421_1036") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                              r'\irsScouting2017\server\web\data\turing_2017_0421_1036'
+    _check_path(r"server\\web\\data\\alliances.csv",
+                server.config.web_data("alliances.csv"))
+
 
 def test_web_images():
-    assert server.config.web_images("Climbing.png") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                       r'\irsScouting2017\server\web\images\Climbing.png'
-    assert server.config.web_images("Gears.png") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                    r'\irsScouting2017\server\web\images\Gears.png'
+    _check_path(r"server\\web\\images\\Climbing.png",
+                server.config.web_images("Climbing.png"))
+
 
 def test_scouting():
-    assert server.config.scouting("alliance.py") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                    r'\irsScouting2017\server\scouting\alliance.py'
-    assert server.config.scouting("event.py") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                 r'\irsScouting2017\server\scouting\event.py'
-    assert server.config.scouting("observertasks.csv") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                          r'\irsScouting2017\server\scouting\observertasks.csv'
+    _check_path(r"server\\scouting\\alliance.py",
+                server.config.scouting("alliance.py"))
 
 
-def test_TestJson():
-    assert server.config.TestJson("pnw_events.json") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                        r'\irsScouting2017\server\TestJson\pnw_events.json'
+def test_testjson():
+    _check_path(r"server\\TestJson\\pnw_events.json",
+                server.config.TestJson("pnw_events.json"))
+
 
 def test_season():
-    assert server.config.season("2018", "gametasks.csv") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                          r'\irsScouting2017\server\season\s2018\gametasks.csv'
-    assert server.config.season("2017", "gametasks.csv") == r'C:\Users\IRS\OneDrive\Projects\scouting2017' \
-                                                            r'\irsScouting2017\server\season\s2017\gametasks.csv'
+    _check_path(r"server\\season\\s2018\\gametasks.csv",
+                server.config.season("2018", "gametasks.csv"))
 
-
-
+    _check_path(r"server\\season\\s2017\\gametasks.csv",
+                server.config.season("2017", "gametasks.csv"))
