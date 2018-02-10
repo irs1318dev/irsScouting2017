@@ -1,11 +1,13 @@
 package com.stuin.irs_scout.Scouter;
 
 import android.content.Context;
+import android.view.View;
 import com.google.gson.Gson;
+import com.stuin.cleanvisuals.Request;
+import com.stuin.irs_scout.*;
 import com.stuin.irs_scout.Data.InputData;
 import com.stuin.irs_scout.Data.Section;
 import com.stuin.irs_scout.Data.Task;
-import com.stuin.irs_scout.MainActivity;
 import com.stuin.irs_scout.Scouter.Inputs.*;
 import com.stuin.irs_scout.Scouter.Page;
 import com.stuin.irs_scout.Scouter.PageManager;
@@ -20,14 +22,46 @@ import java.util.Map;
  */
 class LabelMaker {
     private ArrayList<Section> sections = new ArrayList<>();
-    PageManager pageManager;
+    private PageManager pageManager;
     private Map<String, Page> pageList = new HashMap<>();
 
     LabelMaker(PageManager pageManager) {
         this.pageManager = pageManager;
     }
 
-    void pagesMake(List<String> layout) {
+    void load(View status) {
+        //Download layout from server
+        class Layout extends Request {
+            @Override
+            public void run(List<String> s) {
+                //Create list of pages
+                pagesMake(s);
+
+                class Tasks extends Request {
+                    @Override
+                    public void run(List<String> s) {
+                        //Create all buttons
+                        taskMake(s);
+
+                        //Get Match
+                        MatchMaker matchMaker;
+                        if(MainActivity.position.contains("Pit")) {
+                            //Set up pit scouter
+                            matchMaker = new PitMatchMaker(pageManager, status);
+                            TeamMenu teamMenu = (TeamMenu) pageManager.getChildAt(0);
+                            teamMenu.pitMaker = (PitMatchMaker) matchMaker;
+                        } else matchMaker = new MatchMaker(pageManager, status);
+
+                        pageManager.setUpdater(matchMaker);
+                    }
+                }
+                new Tasks().start("/gametasks");
+            }
+        }
+        new Layout().start("/gamelayout");
+    }
+
+    private void pagesMake(List<String> layout) {
         //Prepare variables
         String current = "";
         Gson gson = new Gson();
@@ -48,7 +82,7 @@ class LabelMaker {
         }
     }
 
-    void taskMake(List<String> strings) {
+    private void taskMake(List<String> strings) {
         //Prepare variables for generation
         Map<String, Task> tasks = new HashMap<>();
         Gson gson = new Gson();
@@ -62,11 +96,15 @@ class LabelMaker {
 
         //Check each section
         for(Section s : sections) {
-            //Set column and position
+            //Set column
             if(s.newpart.equals("true"))
                 pageList.get(s.phase).newCol();
+
+            //Set position
             if(s.position.isEmpty())
                 s.position = MainActivity.position;
+            else
+                MainActivity.alliance = true;
 
             //Create label for section
             Input label = new Label(context, new InputData(new Task(s.category), s.position));

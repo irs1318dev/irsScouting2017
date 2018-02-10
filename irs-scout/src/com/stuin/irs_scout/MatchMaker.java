@@ -41,7 +41,7 @@ public class MatchMaker {
 
                 //Write match at top
                 String title = "Match: " + match.match;
-                if(!MainActivity.position.contains("Fuel")) title += " Team: " + match.getTeam(MainActivity.position);
+                if(!MainActivity.alliance) title += " Team: " + match.getTeam(MainActivity.position);
                 status.setText(title);
                 data = new ArrayList<>();
 
@@ -60,7 +60,7 @@ public class MatchMaker {
                 }
 
                 //Format request for each team
-                if(!MainActivity.position.contains("Fuel")) new Set().start("/matchteamtasks?team=" + match.getTeam(MainActivity.position));
+                if(!MainActivity.alliance) new Set().start("/matchteamtasks?team=" + match.getTeam(MainActivity.position));
                 else {
                     new Set().start("/matchteamtasks?team=" + match.getTeam("1"));
                     nextTeams = new ArrayDeque<>();

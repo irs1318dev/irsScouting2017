@@ -35,6 +35,7 @@ public class Count extends GridLayout implements Input {
         }
 
         setColumnCount(2);
+        ((LayoutParams)getLayoutParams()).setGravity(Gravity.CENTER);
         column.addView(this);
     }
 
