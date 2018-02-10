@@ -2,6 +2,8 @@
 """
 import os.path
 
+current_season = "2017"
+
 
 def web_sites(file):
     path = (os.path.dirname(__file__) + '\\web\\sites\\' + file)

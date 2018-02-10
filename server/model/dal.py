@@ -1,6 +1,6 @@
 import sqlalchemy
 
-import server.model
+import server.model.connection
 
 
 def build_dicts(dim_table):

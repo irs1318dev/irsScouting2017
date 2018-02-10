@@ -2,6 +2,7 @@ import cherrypy
 import os.path
 import json
 
+import server.config as s_config
 import server.model.schedule
 import server.model.setup
 import server.viewerapi
@@ -21,27 +22,90 @@ class Scouting(object):
 
     @cherrypy.expose
     def index(self):
-        out = open("web/sites/admin.html").read()
+        """Returns Scouting System start page.
+
+        Start page displays current match and event, allows user to set
+        current match, displays a table showing tablet IPs, and includes
+        links to other scouting system pages.
+
+        Returns: (str) HTML text
+        """
+        out = open(s_config.web_sites("admin.html")).read()
         out = out.replace('{Match}', self.eventDal.get_current_match())
         out = out.replace('{Event}', self.eventDal.get_current_event())
         return out
 
     @cherrypy.expose
     def setup(self):
-        out = open("web/sites/setup.html").read()
+        """Returns Scouting System setup page.
+
+        Allows user to set event and contains links for server
+        directions, entering the schedule manually, setting up a new
+        database, and backing up data.
+
+        Returns: (str) HTML text
+        """
+        out = open(s_config.web_sites("setup.html")).read()
         out = out.replace('{Event}', self.eventDal.get_current_event())
         return out
 
     @cherrypy.expose
     def gamelayout(self):
+        """Returns pseudo-JSON string with season-specific tasks
+
+        Data formatted as JSON list of key-value objects.
+
+        JSON keys:
+            actor: Entity that completes task, such as robot, alliance,
+            or team.
+            category: Examples include Starting, Gear, Fuel, Climb, etc.
+            newpart: true or false. Not sure what this is.
+            observer: Where task is observed, such as match or pit.
+            phase: Part of competition in which task occurs, such as
+            auto, teleop, claim, or finish.
+            position: "", 1, 2, 3, or waiting.
+            tasks: Name of task, such as placeGear or pushTouchPad
+
+        Returns: (str) pseudo-JSON text. The individual JSON
+        dictionaries are separated by "\n" carriage return characters
+        instead of being separated by commas and included in a list.
+        """
         return server.scouting.sections.Observers().load()
 
     @cherrypy.expose
     def gametasks(self):
+        """Returns pseudo-JSON string with season specific tasks
+
+        JSON keys:
+            actor: Entity that completes task, such as robot, alliance,
+            or team.
+            auto: datatype or "na" if task does not apply to auto
+            claim: datatype or "na" if task does not apply to claim
+            enums: Used when tablet UI displays a drop-down list for
+                data entry. Contains list of options separated by '|',
+                or "" empty string if drop-down list not used.
+            finish: datatype or "na" if task does not apply to claim
+            miss: ???
+            success: ???
+            task: name of task, such as placeGear or shootLowBoiler
+            teleop: datatype or "na" if task does not apply to teleop
+
+        Returns: (str) pseudo-JSON text. The individual JSON
+        dictionaries are separated by "\n" carriage return characters
+        instead of being separated by commas and included in a list.
+        """
         return server.scouting.tasks.TaskDal.csvtasks()
 
     @cherrypy.expose
     def matches(self, event='na'):
+        """Returns JSON list of matches.
+
+        Args:
+            event: The FIRST API event code.
+
+        Returns: List contains 1 dictionary for each match. Each
+        dictionary contains two keys: "match" and "event".
+        """
         if event == 'na':
             event = server.model.event.EventDal.get_current_event()
 
@@ -49,6 +113,23 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchteams(self, match=-1):
+        """Returns pseudo-JSON containing teams assigned to a match.
+
+        Args:
+            match:
+            If set to -1, returns team from current match. Each
+            alliance will be a JSON string, with alliances separated by
+            carriage returns ("\n"). The JSON string keys are
+            "alliance" ("red" or "blue"), "match", "team1", "team2",
+            and "team3".
+
+            If set to "na", returns a Python dictionary. The "match"
+            key contains "na" and the "teams" key contains a list of
+            FRC team numbers as strings, as well as the value "na".
+
+        Returns: pseudo-JSON string or JSON string representing a
+        Python dictionary.
+        """
         if match == -1:
             match = self.eventDal.get_current_match()
         if match == 'na':
