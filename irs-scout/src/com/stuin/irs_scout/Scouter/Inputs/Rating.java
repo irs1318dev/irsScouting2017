@@ -19,6 +19,7 @@ import com.stuin.irs_scout.R;
  */
 public class Rating extends RatingBar implements Input {
     private InputData id;
+    private int value = 0;
 
     public Rating(Context context, InputData inputData) {
         super(context);
@@ -37,6 +38,7 @@ public class Rating extends RatingBar implements Input {
         setMax(3);
         setNumStars(3);
         setOnRatingBarChangeListener(actionListener);
+        setOnClickListener(clickListener);
         setOnLongClickListener(longClickListener);
     }
 
@@ -60,9 +62,18 @@ public class Rating extends RatingBar implements Input {
     private OnRatingBarChangeListener actionListener = new OnRatingBarChangeListener() {
         @Override
         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-            id.measure.successes = (int)(rating);
+            value = (int)(rating);
+            if(fromUser)
+                setProgress(0);
+        }
+    };
 
-            update(id.measure, fromUser);
+    private OnClickListener clickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            id.measure.successes = value;
+
+            update(id.measure, true);
         }
     };
 
@@ -70,7 +81,6 @@ public class Rating extends RatingBar implements Input {
         @Override
         public boolean onLongClick(View v) {
             id.measure.successes = 0;
-            setProgress(0);
 
             update(id.measure, true);
             return true;

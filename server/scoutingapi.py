@@ -59,12 +59,10 @@ class Scouting(object):
     def matchteamtasks(self, team='error', match=-1):
         if match == -1:
             match = self.eventDal.get_current_match()
-        return (server.model.match.MatchDal.match_team_tasks(match, team) +
-                '{end}')
+        return (server.model.match.MatchDal.match_team_tasks(match, team) + '{end}')
 
     @cherrypy.expose
-    def matchteamtask(self, match, team, task, phase, capability=0, attempt=0,
-                      success=0, cycle_time=0):
+    def matchteamtask(self, match, team, task, phase, capability=0, attempt=0,success=0, cycle_time=0):
         try:
             server.model.match.MatchDal.insert_match_task(team, task, match,
                                                           phase, capability,
@@ -76,13 +74,10 @@ class Scouting(object):
 
     @cherrypy.expose
     def tablet(self, status, ip=-1):
-        newtablet = server.scouting.tablet.TabletDAL(status.split(':')[0],
-                                                     status.split(':')[1], ip)
+        newtablet = server.scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1], ip)
 
-        if server.scouting.tablet.TabletList.settablet(self.alltablets,
-                                                       newtablet):
-            server.model.event.EventDal.set_next_match(
-                self.eventDal.get_current_match())
+        if server.scouting.tablet.TabletList.settablet(self.alltablets, newtablet):
+            server.model.event.EventDal.set_next_match(self.eventDal.get_current_match())
 
         return self.eventDal.get_current_match()
 

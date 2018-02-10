@@ -2,6 +2,7 @@ package com.stuin.irs_scout.Scouter.Inputs;
 
 import android.content.Context;
 import android.view.Gravity;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.irs_scout.Data.InputData;
@@ -11,10 +12,10 @@ import com.stuin.irs_scout.R;
 /**
  * Created by Stuart on 8/3/2017.
  */
-public class Label extends TextView implements Input {
+public class Camera extends Button implements Input {
     private InputData id;
 
-    public Label(Context context, InputData inputData) {
+    public Camera(Context context, InputData inputData) {
         super(context);
         id = inputData;
     }

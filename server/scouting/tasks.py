@@ -1,10 +1,5 @@
 import json
 
-import server.model.connection
-
-engine = server.model.connection.engine
-conn = engine.connect()
-
 
 class Task(object):
     def __init__(self, line):
@@ -21,17 +16,6 @@ class Task(object):
 
 
 class TaskDal(object):
-    @staticmethod
-    def sqltasks():
-        results = conn.execute("SELECT * FROM games")
-
-        out = ''
-        for line in results:
-            task = Task(line)
-            data = json.dumps(task, default=lambda o: o.__dict__, separators=(', ', ':'), sort_keys=True)
-            out += data + '\n'
-        return out
-
     @staticmethod
     def csvtasks():
         with open("season/gametasks.csv", "r") as text:
