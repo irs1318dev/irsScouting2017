@@ -3,13 +3,16 @@ package com.stuin.irs_scout.Scouter;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.stuin.cleanvisuals.Slide.*;
 import com.stuin.irs_scout.Data.InputData;
 import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
+import com.stuin.irs_scout.MainActivity;
 import com.stuin.irs_scout.Scouter.Inputs.Input;
+import com.stuin.irs_scout.Scouter.Inputs.Label;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +25,7 @@ public class Page extends LinearLayout {
     private LinearLayout column;
     private List<Input> inputs = new ArrayList<>();
 
-    public Page(Context context, String name) {
+    Page(Context context, String name) {
         //Create phase
         super(context);
         this.name = name;
@@ -49,11 +52,17 @@ public class Page extends LinearLayout {
         //Set data values
         for(Input i : inputs) {
             InputData id = i.getData();
-            //if(i.getClass() == Label.class && i.task.success.contains("Team")) i.setText(match.getTeam(i.position));
 
+            //Set title to team in alliance scout
+            if(MainActivity.alliance && i.getClass() == Label.class && id.task.success.contains("Team"))
+                ((Label) i).setText(match.getTeam(id.position));
+
+            //Send data to input
             String key = id.task.task + ':' + match.getTeam(id.position);
-            if(measures.get(key) != null) i.update(measures.get(key), false);
-            else i.update(new Measure(id.task, match, id.position, name), false);
+            if(measures.get(key) != null)
+                i.update(measures.get(key), false);
+            else //Make new measure
+                i.update(new Measure(id.task, match, id.position, name), false);
         }
     }
 
@@ -69,10 +78,10 @@ public class Page extends LinearLayout {
 
     private void divider() {
         //Add decoration line
-        TextView textView = new TextView(getContext());
-        textView.setHeight(600);
-        textView.setWidth(2);
-        textView.setBackgroundColor(Color.LTGRAY);
-        addView(textView);
+        View view = new TextView(getContext());
+        view.setMinimumHeight(600);
+        view.setMinimumWidth(2);
+        view.setBackgroundColor(Color.LTGRAY);
+        addView(view);
     }
 }
