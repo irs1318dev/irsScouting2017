@@ -113,19 +113,28 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchteams(self, match=-1):
-        """Returns pseudo-JSON containing teams assigned to a match.
+        """Gets string with teams assigned to match or competition.
 
         Args:
             match:
-            If set to -1, returns team from current match. Each
-            alliance will be a JSON string, with alliances separated by
-            carriage returns ("\n"). The JSON string keys are
-            "alliance" ("red" or "blue"), "match", "team1", "team2",
-            and "team3".
+                (str) Can be set to -1 (default), "na", or to a
+                match number, e.g., "001-q". Optional.
 
-            If set to "na", returns a Python dictionary. The "match"
-            key contains "na" and the "teams" key contains a list of
-            FRC team numbers as strings, as well as the value "na".
+                If set to -1, returns team from current match specified
+                in status table in database server. Eacha lliance will
+                be a JSON string, with alliances separated by carriage
+                returns ("\n"). The JSON string keys are "alliance"
+                ("red" or "blue"), "match", "team1", "team2", and
+                "team3".
+
+                If set to a match number, ignores current match
+                specified in status table and returns teams assigned
+                to match number. The format of resulting test string
+                is the same as if -1 is specified.
+
+                If set to "na", returns a Python dictionary. The "match"
+                key contains "na" and the "teams" key contains a list of
+                FRC team numbers as strings, as well as the value "na".
 
         Returns: pseudo-JSON string or JSON string representing a
         Python dictionary.
@@ -138,12 +147,47 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchteamtasks(self, team='error', match=-1):
+        """ Returns measures for a single team in a single match
+
+        Args:
+            team: (str) FRC team number
+            match: Competitiion match number, such as "001-q"
+
+        Returns: (str) Pseudo JSON code. Measures are separated by
+        carriage returns ("\n") and dach measure is a JSON object
+        literal with keys "match", "team", "task", "phase", "actor",
+        "measuretype", "capability", "attempts", "success", and
+        "cycle_times".
+
+        """
         if match == -1:
             match = self.eventDal.get_current_match()
-        return (server.model.match.MatchDal.match_team_tasks(match, team) + '{end}')
+        return (server.model.match.MatchDal.match_team_tasks(match, team) +
+                '{end}')
 
     @cherrypy.expose
-    def matchteamtask(self, match, team, task, phase, capability=0, attempt=0,success=0, cycle_time=0):
+    def matchteamtask(self, match, team, task, phase, capability=0, attempt=0,
+                      success=0, cycle_time=0):
+        """Writes a measure to the database.
+
+        Args:
+            match: (str) Match number, such as "007-q".
+            team: (str) FRC team number
+            task: (str) Task name (season specific) such as "placeGear"
+            phase: (str) Portion of competition to which task applies,
+                such as "claim", "auto", "teleop", etc,
+            capability: "true" if task just records that team or robot
+                has a capability to do something (may be used in pit
+                scouting).
+            attempt: (int) Number of attempts made to complete this
+                task, successful or not.
+            success: (int) Number of successful attempts made to
+                complete this task.
+            cycle_time: (int) Amount of time required to complete a
+                task, in seconds.
+
+        Returns: (str) "hi"
+        """
         try:
             server.model.match.MatchDal.insert_match_task(team, task, match,
                                                           phase, capability,
