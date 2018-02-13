@@ -115,3 +115,18 @@ def test_matchteams(scouting_app):
     assert pit_teams["match"] == "na"
     assert len(pit_teams["teams"]) == 68
     assert pit_teams["teams"][2] == "1287"
+
+    match_teams2 = convert_to_list(scouting_app.matchteams("099-q"))
+    assert match_teams2[0]["alliance"] == "red"
+    assert match_teams2[1]["alliance"] == "blue"
+    assert match_teams2[0]["match"] == "099-q"
+    assert match_teams2[1]["team3"] == "6384"
+
+
+def test_matchteamtasks(scouting_app):
+    team_tasks = convert_to_list(scouting_app.matchteamtasks("1318",
+                                                             "007-q"))
+    assert len(team_tasks) == 9
+    assert team_tasks[0]["match"] == "007-q"
+    assert team_tasks[8]["task"] == "pushTouchPad"
+    print("\n", team_tasks)
