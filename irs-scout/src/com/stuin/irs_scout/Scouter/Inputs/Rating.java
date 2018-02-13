@@ -19,7 +19,6 @@ import com.stuin.irs_scout.R;
  */
 public class Rating extends RatingBar implements Input {
     private InputData id;
-    private int value = 0;
 
     public Rating(Context context, InputData inputData) {
         super(context);
@@ -28,18 +27,17 @@ public class Rating extends RatingBar implements Input {
 
     @Override
     public void create(LinearLayout column) {
-        column.addView(part(id.task.success));
+        if(!id.task.success.isEmpty())
+            column.addView(part(id.task.success));
 
         LinearLayout layout = new LinearLayout(getContext());
         layout.addView(this);
         layout.setGravity(Gravity.CENTER);
         column.addView(layout);
 
-        setMax(3);
-        setNumStars(3);
+        setMax(4);
+        setNumStars(4);
         setOnRatingBarChangeListener(actionListener);
-        setOnClickListener(clickListener);
-        setOnLongClickListener(longClickListener);
     }
 
     @Override
@@ -53,7 +51,7 @@ public class Rating extends RatingBar implements Input {
 
     @Override
     public void update(Measure measure, boolean send) {
-        setProgress(measure.successes);
+        setProgress(measure.successes + 1);
 
         measure.attempts = 3;
         id.update(measure, send);
@@ -62,28 +60,11 @@ public class Rating extends RatingBar implements Input {
     private OnRatingBarChangeListener actionListener = new OnRatingBarChangeListener() {
         @Override
         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-            value = (int)(rating);
-            if(fromUser)
-                setProgress(0);
-        }
-    };
+            if(fromUser) {
+                id.measure.successes = (int) rating - 1;
 
-    private OnClickListener clickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            id.measure.successes = value;
-
-            update(id.measure, true);
-        }
-    };
-
-    private OnLongClickListener longClickListener = new OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            id.measure.successes = 0;
-
-            update(id.measure, true);
-            return true;
+                update(id.measure, true);
+            }
         }
     };
 

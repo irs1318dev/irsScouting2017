@@ -55,11 +55,14 @@ public class Switcher extends LinearLayout implements Input {
         @Override
         public void onClick(View v) {
             CompoundButton sw = (CompoundButton) getChildAt(0);
-            id.measure.successes = (sw.isChecked()) ? 1 : 0;
-
-            if(!id.task.miss.isEmpty()) {
+            if(id.measure.successes != ((sw.isChecked()) ? 1 : 0)) {
+                id.measure.successes = (sw.isChecked()) ? 1 : 0;
+                id.measure.attempts = id.measure.successes;
+            } else if(!id.task.miss.isEmpty()) {
                 sw = (CompoundButton) getChildAt(1);
-                id.measure.attempts = ((sw.isChecked()) ? 1 : 0) + id.measure.successes;
+                id.measure.attempts = ((sw.isChecked()) ? 1 : 0);
+                if(sw.isChecked())
+                    id.measure.successes = 0;
             }
 
             update(id.measure, true);
