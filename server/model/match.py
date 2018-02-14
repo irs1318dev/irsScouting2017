@@ -330,6 +330,8 @@ class MatchDal(object):
             return 0
         elif data_type == 'cycletime':
             return 0
+        elif data_type == 'rating':
+            return 0, attempt_count, success_count, 0, attempt_id
 
 
 # todo(Stacy) This could easily be replaced with Python dictionary

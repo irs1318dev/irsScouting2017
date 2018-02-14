@@ -168,7 +168,7 @@ class Scouting(object):
                 '{end}')
 
     @cherrypy.expose
-    def matchteamtask(self, match, team, task, phase, capability=0, attempt=0,
+    def matchteamtask(self, match, team, task, phase, capability='', attempt=0,
                       success=0, cycle_time=0):
         """Writes a measure to the database.
 
@@ -195,8 +195,8 @@ class Scouting(object):
                                                           phase, capability,
                                                           attempt, success,
                                                           cycle_time)
-        except KeyError:
-            return 'Error'
+        except KeyError as key:
+            return 'KeyError: ' + str(key)
         return 'hi'
 
     @cherrypy.expose
