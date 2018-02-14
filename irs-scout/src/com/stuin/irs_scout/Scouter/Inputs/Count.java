@@ -15,7 +15,7 @@ import com.stuin.irs_scout.R;
 /**
  * Created by Stuart on 8/3/2017.
  */
-public class Count extends GridLayout implements Input {
+public class Count extends LinearLayout implements Input {
     private InputData id;
     private int miss = -1;
     private String tens = "*10";
@@ -35,8 +35,10 @@ public class Count extends GridLayout implements Input {
             part(id.task.miss + ": ");
         }
 
-        setColumnCount(2);
-        //setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setOrientation(LinearLayout.HORIZONTAL);
+        setGravity(Gravity.CENTER);
+        //setColumnCount(2);
+        //((GridLayout.LayoutParams) getLayoutParams()).setGravity(Gravity.CENTER);
         column.addView(this);
     }
 
