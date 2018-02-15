@@ -18,7 +18,7 @@ import com.stuin.irs_scout.R;
 public class Count extends LinearLayout implements Input {
     private InputData id;
     private int miss = -1;
-    private String tens = "*10";
+    private String tens = "+10";
     private View repeatView;
 
     public Count(Context context, InputData inputData) {
@@ -54,7 +54,7 @@ public class Count extends LinearLayout implements Input {
         addView(button);
 
         //Create secondary button
-        if(name.contains("+"))
+        if(name.contains("*"))
             part(tens);
 
         return button;
