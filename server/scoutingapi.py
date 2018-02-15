@@ -235,10 +235,12 @@ class Scouting(object):
         return open("web/sites/reset.html").read()
 
     @cherrypy.expose
+    def addresslist(self):
+        return self.alltablets.get_address();
+
+    @cherrypy.expose
     def databaseset(self):
-        server.model.setup.create_tables()
-        server.model.setup.initialize_dimension_data()
-        server.model.setup.load_game_sheet()
+        server.model.setup.setup()
         return open("web/sites/reset.html").read()
 
 
