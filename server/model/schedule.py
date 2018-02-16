@@ -1,5 +1,6 @@
 import json
 import os
+import pandas
 
 from sqlalchemy import text
 
@@ -58,3 +59,9 @@ def process_sched(event, season, sched_json, level='qual'):
             # smu.upsert("events", "name", event)
             smu.upsert("teams", "name", team)
             smu.upsert("dates", "name", date)
+
+
+def manual_Entry(file):
+    data = pandas.read_csv(file)
+    match = list(data.match)
+
