@@ -35,8 +35,8 @@ public class Rating extends RatingBar implements Input {
         layout.setGravity(Gravity.CENTER);
         column.addView(layout);
 
-        setMax(4);
-        setNumStars(4);
+        setMax(3);
+        setNumStars(3);
         setOnRatingBarChangeListener(actionListener);
     }
 
@@ -51,7 +51,7 @@ public class Rating extends RatingBar implements Input {
 
     @Override
     public void update(Measure measure, boolean send) {
-        setProgress(measure.successes + 1);
+        setProgress(measure.successes);
 
         measure.attempts = 3;
         id.update(measure, send);
@@ -61,7 +61,7 @@ public class Rating extends RatingBar implements Input {
         @Override
         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
             if(fromUser) {
-                id.measure.successes = (int) rating - 1;
+                id.measure.successes = (int) rating;
 
                 update(id.measure, true);
             }
