@@ -64,16 +64,16 @@ class EventDal(object):
         return match_details
 
     @staticmethod
-    def set_current_event(event):
+    def set_current_event(event, season):
         event = event.lower()
         conn = engine.connect()
 
         # Ensure event exists in events table
-        sql_sel = text("SELECT * FROM events WHERE name = :evt;")
-        events = conn.execute(sql_sel, evt=event)
+        sql_sel = text("SELECT * FROM events WHERE name = :evt AND season = :season;")
+        events = conn.execute(sql_sel, evt=event, season=season)
         if events.rowcount != 1:
-            sql_ins = text("INSERT INTO events (name) VALUES (:evt);")
-            conn.execute(sql_ins, evt=event)
+            sql_ins = text("INSERT INTO events (name, season) VALUES (:evt, :season);")
+            conn.execute(sql_ins, evt=event, season=season)
             sm_dal.rebuild_dicts()
 
         # Update status table with this event
