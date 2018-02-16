@@ -25,7 +25,7 @@ class Scouting(object):
         """Returns Scouting System start page.
 
         Start page displays current match and event, allows user to set
-        current match, displays a table showing tablet IPs, and includes
+        current match, displays a table showing tablet pages, and includes
         links to other scouting system pages.
 
         Returns: (str) HTML text
@@ -33,6 +33,7 @@ class Scouting(object):
         out = open(s_config.web_sites("admin.html")).read()
         out = out.replace('{Match}', self.eventDal.get_current_match())
         out = out.replace('{Event}', self.eventDal.get_current_event())
+        out = out.replace('{Year}', self.eventDal.get_current_event())
         return out
 
     @cherrypy.expose
@@ -47,6 +48,7 @@ class Scouting(object):
         """
         out = open(s_config.web_sites("setup.html")).read()
         out = out.replace('{Event}', self.eventDal.get_current_event())
+        out = out.replace('{Year}', self.eventDal.get_current_event())
         return out
 
     @cherrypy.expose
@@ -166,7 +168,7 @@ class Scouting(object):
                 '{end}')
 
     @cherrypy.expose
-    def matchteamtask(self, match, team, task, phase, capability=0, attempt=0,
+    def matchteamtask(self, match, team, task, phase, capability='', attempt=0,
                       success=0, cycle_time=0):
         """Writes a measure to the database.
 
@@ -193,8 +195,8 @@ class Scouting(object):
                                                           phase, capability,
                                                           attempt, success,
                                                           cycle_time)
-        except KeyError:
-            return 'Error'
+        except KeyError as key:
+            return 'KeyError: ' + str(key)
         return 'hi'
 
     @cherrypy.expose
@@ -221,12 +223,12 @@ class Scouting(object):
         return open("web/sites/reset.html").read()
 
     @cherrypy.expose
-    def eventcurrent(self, event):
+    def eventcurrent(self, event, year):
         self.eventDal.set_current_event(event)
         return open("web/sites/reset.html").read()
 
     @cherrypy.expose
-    def eventfind(self, event, year='2017'):
+    def eventfind(self, event, year):
         self.eventDal.set_current_event(event)
         self.eventDal.set_current_match('001-q')
         server.model.schedule.insert_sched(event, year, 'qual')
@@ -238,26 +240,6 @@ class Scouting(object):
         server.model.setup.initialize_dimension_data()
         server.model.setup.load_game_sheet()
         return open("web/sites/reset.html").read()
-
-    @cherrypy.expose
-    def matchcreate(self, match, red1, red2, red3, blue1, blue2, blue3):
-        return "successfully set match"
-
-    @cherrypy.expose
-    def matchenter(self, match=-1):
-        out = open("web/sites/matchenter.html").read()
-        schedule = self.matchteams(match).split('\n')
-        redteams = json.loads(schedule[0])
-        blueteams = json.loads(schedule[1])
-
-        out.replace("{Red1}", redteams['team1'])
-        out.replace("{Red2}", redteams['team2'])
-        out.replace("{Red3}", redteams['team3'])
-        out.replace("{Blue1}", blueteams['team1'])
-        out.replace("{Blue2}", blueteams['team2'])
-        out.replace("{Blue3}", blueteams['team3'])
-
-        return out
 
 
 

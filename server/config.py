@@ -2,40 +2,40 @@
 """
 import os.path
 
-current_season = "2017"
+current_season = "2018"
 
 
 def web_sites(file):
-    path = (os.path.dirname(__file__) + '\\web\\sites\\' + file)
+    path = os.path.join(os.path.dirname(__file__), 'web', 'sites', file)
     return path
 
 
 def web_scripts(file):
-    path = (os.path.dirname(__file__) + '\\web\\scripts\\' + file)
+    path = os.path.join(os.path.dirname(__file__), 'web', 'scripts', file)
     return path
 
 
 def web_data(file):
-    path = (os.path.dirname(__file__) + '\\web\\data\\' + file)
+    path = os.path.join(os.path.dirname(__file__), 'web', 'data', file)
     return path
 
 
 def web_images(file):
-    path = (os.path.dirname(__file__) + '\\web\\images\\' + file)
+    path = os.path.join(os.path.dirname(__file__), 'web', 'images', file)
     return path
 
 
 def scouting(file):
-    path = (os.path.dirname(__file__) + '\\scouting\\' + file)
+    path = os.path.join(os.path.dirname(__file__), 'scouting', file)
     return path
 
 
 def TestJson(file):
-    path = (os.path.dirname(__file__) + '\\TestJson\\' + file)
+    path = os.path.join(os.path.dirname(__file__), 'TestJson', file)
     return path
 
 
 def season(year, file):
-    path = (os.path.dirname(__file__) + '\\season\\s' + year + '\\' + file)
+    path = os.path.join(os.path.dirname(__file__), 'season', 's' + year, file)
     return path
 

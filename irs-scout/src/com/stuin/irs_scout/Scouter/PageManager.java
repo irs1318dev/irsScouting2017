@@ -14,7 +14,6 @@ import java.util.List;
 
 public class PageManager extends FrameLayout {
     private Updater updater;
-    private LabelMaker labelMaker;
     private int current = -1;
     private Activity activity;
     private boolean moving;
@@ -25,39 +24,16 @@ public class PageManager extends FrameLayout {
 
     public void start(Activity activity) {
         //Start Layout
-        labelMaker = new LabelMaker(this);
         setVisibility(VISIBLE);
         this.activity = activity;
         activity.findViewById(R.id.Status).setVisibility(VISIBLE);
 
-        //Download layout
-        class Layout extends Request {
-            @Override
-            public void run(List<String> s) {
-                //Create list of pages
-                labelMaker.pagesMake(s);
+        //Create input from server
+        new LabelMaker(this).load(activity.findViewById(R.id.Status));
+    }
 
-                class Tasks extends Request {
-                    @Override
-                    public void run(List<String> s) {
-                        //Create all buttons
-                        labelMaker.taskMake(s);
-
-                        //Get Match
-                        MatchMaker matchMaker;
-                        if(MainActivity.position.contains("Pit")) {
-                            matchMaker = new PitMatchMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
-                            TeamMenu teamMenu = (TeamMenu) getChildAt(0);
-                            teamMenu.pitMaker = (PitMatchMaker) matchMaker;
-                        } else matchMaker = new MatchMaker(labelMaker.pageManager, activity.findViewById(R.id.Status));
-
-                        updater = new Updater(matchMaker, activity.findViewById(R.id.PageStatus));
-                    }
-                }
-                new Tasks().start("/gametasks");
-            }
-        }
-        new Layout().start("/gamelayout");
+    void setUpdater(MatchMaker matchMaker) {
+        updater = new Updater(matchMaker, activity.findViewById(R.id.PageStatus));
     }
 
     public void reset() {

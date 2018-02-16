@@ -1,8 +1,0 @@
-actor,observer,phase,category,position,newpart,tasks,end
-robot,match,auto,Starting,,FALSE,startPosition|autoLine,
-robot,match,auto,Cube,,FALSE,holdCube|placeSwitch|placeScale,
-robot,match,teleop,Cube,,FALSE,placeSwitch|placeScale,
-robot,match,teleop,Defense,,FALSE,defendRobot,
-robot,match,finish,Climb,,FALSE,parkPlatform|makeClimb,
-robot,match,finish,Failure,,TRUE,disabled|hasRobot,
-robot,match,waiting,Waiting for Server,,FALSE,,

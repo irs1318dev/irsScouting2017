@@ -36,8 +36,7 @@ class TaskDal(object):
     #todo(Stacy) Update code to use get_season function
     @staticmethod
     def csvtasks():
-        with open(s_config.season(s_config.current_season,
-                                  "gametasks.csv"), "r") as text:
+        with open(s_config.season(s_config.current_season, "gametasks.csv"), "r") as text:
             out = ''
             for line in text:
                 if 'actor,task' not in line:

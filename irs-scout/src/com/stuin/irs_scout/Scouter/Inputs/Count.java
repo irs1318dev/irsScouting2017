@@ -3,6 +3,7 @@ package com.stuin.irs_scout.Scouter.Inputs;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
@@ -14,7 +15,7 @@ import com.stuin.irs_scout.R;
 /**
  * Created by Stuart on 8/3/2017.
  */
-public class Count extends GridLayout implements Input {
+public class Count extends LinearLayout implements Input {
     private InputData id;
     private int miss = -1;
     private String tens = "*10";
@@ -34,7 +35,10 @@ public class Count extends GridLayout implements Input {
             part(id.task.miss + ": ");
         }
 
-        setColumnCount(2);
+        setOrientation(LinearLayout.HORIZONTAL);
+        setGravity(Gravity.CENTER);
+        //setColumnCount(2);
+        //((GridLayout.LayoutParams) getLayoutParams()).setGravity(Gravity.CENTER);
         column.addView(this);
     }
 
