@@ -9,16 +9,12 @@ def test_list_events():
     assert isinstance(events, list)
     assert len(events) == 11
 
+
 def test_get_current_event():
-    sm_event.EventDal.set_current_event("test_add_events", 1993)
-    # conn = sm_conn.engine.connect()
-    # sql = sqlalchemy.text("SELECT status.event, events.season "
-    #                       "FROM status INNER JOIN events ON status.event = events.name;")
-    # event = conn.execute(sql)
-    # for row in event:
-    #     print(row)
-    # conn.close()
-    # print(event)
+    event = sm_event.EventDal.set_current_event("test_add_events", 1993)
+    result = sm_event.EventDal.get_current_event()
+    assert event == result[0]
+
 
 def test_set_current_event():
     conn = sm_conn.engine.connect()

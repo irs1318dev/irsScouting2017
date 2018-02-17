@@ -5,6 +5,8 @@ from sqlalchemy import text
 import server.model.dal as sm_dal
 from server.model.connection import engine
 
+class EventError(Exception):
+    pass
 
 class EventDal(object):
 
@@ -79,12 +81,11 @@ class EventDal(object):
             sql_ins = text("INSERT INTO events (name, season) "
                            "VALUES (:evt, :season);")
             conn.execute(sql_ins, evt=event, season=season)
-            # sql_sel = text("SELECT id FROM events "
-            #                "WHERE name = :evt AND season = :season;")
+            sql_sel = text("SELECT id FROM events "
+                           "WHERE name = :evt AND season = :season;")
             event_id = conn.execute(sql_sel, evt=event,
                                     season=season).scalar()
             sm_dal.rebuild_dicts() # todo(stacy) might not need this.
-
         # Update status table with this event
         sql_sel = text("SELECT * FROM status;")
         results = conn.execute(sql_sel).fetchall()
@@ -99,6 +100,7 @@ class EventDal(object):
             conn.execute(sql_ins, evt_id=event_id, match=default_match)
         conn.close()
 
+        return event_id
 
     @staticmethod
     def get_current_status():
@@ -114,12 +116,17 @@ class EventDal(object):
     @staticmethod
     def get_current_event():
         conn = engine.connect()
-        event = conn.execute("SELECT event FROM status;").scalar()
-        if event is None:
-            event = conn.execute("SELECT name FROM events LIMIT 1")
-            EventDal.set_current_event(event)
+        event = ("SELECT status.event_id AS event_id, "
+                 "events.name AS event_name, events.season AS event_season "
+                 "FROM status INNER JOIN events ON status.event_id = events.id")
+        results = conn.execute(event)
+        if results is None:
+            raise EventError(" Event_id not specified in status table."
+                             " Fix: Call set_current_event() in event.py")
+        evt = results.fetchone()
         conn.close()
-        return event
+        return evt["event_id"], evt["event_name"], evt['event_season']
+
 
     @staticmethod
     def set_current_match(match):
@@ -180,3 +187,5 @@ class EventDal(object):
         for row in results:
             match_details = dict(row)
         return match_details
+
+EventDal.get_current_event()

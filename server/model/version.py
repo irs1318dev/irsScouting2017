@@ -57,3 +57,4 @@ def set_ver_2018_02():
     sql = sqlalchemy.text("UPDATE status SET ver = 2018.02")
     conn.execute(sql)
     conn.close()
+
