@@ -59,7 +59,7 @@ class Viewer:
     @cherrypy.expose
     def backup(self):
         script = self.export.run_backup(
-            server.model.event.EventDal.get_current_event())
+            server.model.event.EventDal.get_current_event()[1])
         return '<a href="/view/data?name=' + script + '">Download File</a>'
 
     @cherrypy.expose

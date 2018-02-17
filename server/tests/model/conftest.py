@@ -9,7 +9,7 @@ import server.tests.conf as st_conf
 
 @pytest.fixture(scope="module")
 def test_event():
-    sm_event.EventDal.set_current_event(st_conf.test_event)
+    sm_event.EventDal.set_current_event(st_conf.test_event, "2017")
     conn = sm_connection.engine.connect()
     sql_sel = sqlalchemy.text("SELECT * FROM status WHERE event = :evt;")
     results = conn.execute(sql_sel, evt=st_conf.test_event)

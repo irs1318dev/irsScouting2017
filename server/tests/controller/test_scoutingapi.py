@@ -12,7 +12,7 @@ current_match = "001-q"
 
 @pytest.fixture
 def event_match():
-    sm_event.EventDal.set_current_event("turing")
+    sm_event.EventDal.set_current_event("turing", "2017")
     sm_event.EventDal.set_current_match("001-q")
     return True
 

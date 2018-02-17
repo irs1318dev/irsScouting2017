@@ -43,7 +43,7 @@ class MatchDal(object):
                    "match = :match "
                    " AND event = :event ")
         conn = engine.connect()
-        results = conn.execute(sql, event=event.EventDal.get_current_event(),
+        results = conn.execute(sql, event=event.EventDal.get_current_event()[1],
                                match=match)
         conn.close()
 
@@ -78,7 +78,7 @@ class MatchDal(object):
                    "event = :event ORDER BY team;")
 
         conn = engine.connect()
-        results = conn.execute(sql, event=event.EventDal.get_current_event())
+        results = conn.execute(sql, event=event.EventDal.get_current_event()[1])
         conn.close()
 
         first = True
@@ -117,7 +117,7 @@ class MatchDal(object):
         match_id = sm_dal.match_ids[match]
         team_id = sm_dal.team_ids[team]
 
-        evt = event.EventDal.get_current_event()
+        evt = event.EventDal.get_current_event()[1]
         event_id = sm_dal.event_ids[evt]
 
         sql = text("SELECT * FROM measures WHERE "
@@ -243,8 +243,8 @@ class MatchDal(object):
             success_count: (int) Number of successes
             cycle_time: (int) Number of seconds
         """
-        event_name = event.EventDal.get_current_event()
-        event_id = sm_dal.event_ids[event_name]
+        event_name = event.EventDal.get_current_event()[1]
+        event_id = event.EventDal.get_current_event()[0]
 
         match_id = sm_dal.match_ids[match]
 

@@ -12,7 +12,7 @@ def get_rankings(name=None, tasks=None, num_matches=12):
     conn = engine.connect()
 
     # Get current event
-    evt = event.EventDal.get_current_event()
+    evt = event.EventDal.get_current_event()[1]
 
     # Retrieve sums of succcesses and attempts columns from measures table.
     # select_sum = text(
@@ -148,7 +148,7 @@ def get_Basic_Ranking(name):
 
 def get_Path(start):
     ts = datetime.datetime.now().strftime("%Y%b%d_%H%M%S")
-    excel = start + '_' + event.EventDal.get_current_event() + ts + '.xlsx'
+    excel = start + '_' + event.EventDal.get_current_event()[1] + ts + '.xlsx'
     return 'web/data/' + excel
 
 

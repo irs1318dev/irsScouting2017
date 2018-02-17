@@ -38,12 +38,12 @@ def insert_all_events(season, tournamentLevel, fileName = '-1'):
 #todo(stacy) process_all_events to server.model.schedule.py
 def process_all_events(season, event_json, tournamentLevel):
     eve = json.loads(event_json)['Events']
-    initial_event = e.EventDal.get_current_event()
+    initial_event = e.EventDal.get_current_event()[1]
     print('Initial event is ' + initial_event)
     for event in eve:
         loading_event = event['code']
         print('Setting current event to ' + loading_event)
-        e.EventDal.set_current_event(loading_event)
+        e.EventDal.set_current_event(loading_event, season)
         print("insert sched for " + loading_event)
         insert_sched(event['code'], season, tournamentLevel)
     for event in eve:
@@ -53,7 +53,7 @@ def process_all_events(season, event_json, tournamentLevel):
         insert_MatchResults(loading_event, season, tournamentLevel)
 
     print('Resetting current event to ' + initial_event)
-    e.EventDal.set_current_event(initial_event)
+    e.EventDal.set_current_event(initial_event, season)
 
 
 #todo(stacy) insert_MatchResults to server.model.schedule.py

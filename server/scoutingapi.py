@@ -32,8 +32,8 @@ class Scouting(object):
         """
         out = open(s_config.web_sites("admin.html")).read()
         out = out.replace('{Match}', self.eventDal.get_current_match())
-        out = out.replace('{Event}', self.eventDal.get_current_event())
-        out = out.replace('{Year}', self.eventDal.get_current_event())
+        out = out.replace('{Event}', self.eventDal.get_current_event()[1])
+        out = out.replace('{Year}', self.eventDal.get_current_event()[2])
         return out
 
     @cherrypy.expose
@@ -47,8 +47,8 @@ class Scouting(object):
         Returns: (str) HTML text
         """
         out = open(s_config.web_sites("setup.html")).read()
-        out = out.replace('{Event}', self.eventDal.get_current_event())
-        out = out.replace('{Year}', self.eventDal.get_current_event())
+        out = out.replace('{Event}', self.eventDal.get_current_event()[1])
+        out = out.replace('{Year}', self.eventDal.get_current_event()[2])
         return out
 
     @cherrypy.expose
@@ -109,7 +109,7 @@ class Scouting(object):
         dictionary contains two keys: "match" and "event".
         """
         if event == 'na':
-            event = server.model.event.EventDal.get_current_event()
+            event = server.model.event.EventDal.get_current_event()[1]
 
         return server.model.event.EventDal.list_matches(event)
 
@@ -224,12 +224,12 @@ class Scouting(object):
 
     @cherrypy.expose
     def eventcurrent(self, event, year):
-        self.eventDal.set_current_event(event)
+        self.eventDal.set_current_event(event, year)
         return open("web/sites/reset.html").read()
 
     @cherrypy.expose
     def eventfind(self, event, year):
-        self.eventDal.set_current_event(event)
+        self.eventDal.set_current_event(event, year)
         self.eventDal.set_current_match('001-q')
         server.model.schedule.insert_sched(event, year, 'qual')
         return open("web/sites/reset.html").read()

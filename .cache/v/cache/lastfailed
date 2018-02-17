@@ -1,13 +1,7 @@
 {
-  "server/tests/controller/test_scoutingapi.py::test_game_layout": true,
-  "server/tests/controller/test_scoutingapi.py::test_gametasks": true,
-  "server/tests/controller/test_scoutingapi.py::test_index": true,
   "server/tests/controller/test_scoutingapi.py::test_matches": true,
   "server/tests/controller/test_scoutingapi.py::test_matchteams": true,
-  "server/tests/controller/test_scoutingapi.py::test_matchteamtasks": true,
-  "server/tests/controller/test_scoutingapi.py::test_setup": true,
   "server/tests/controller/test_scoutingapi_write.py::test_match_team_tasks": true,
-  "server/tests/model/test_event.py::test_list_events": true,
   "server/tests/model/test_match.py::test_match_teams": true,
   "server/tests/model/test_match.py::test_pit_teams": true,
   "server/tests/model/test_match_write.py::test_alliance_task": true,
