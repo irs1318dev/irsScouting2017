@@ -27,7 +27,8 @@ public class Rating extends RatingBar implements Input {
 
     @Override
     public void create(LinearLayout column) {
-        column.addView(part(id.task.success));
+        if(!id.task.success.isEmpty())
+            column.addView(part(id.task.success));
 
         LinearLayout layout = new LinearLayout(getContext());
         layout.addView(this);
@@ -37,7 +38,6 @@ public class Rating extends RatingBar implements Input {
         setMax(3);
         setNumStars(3);
         setOnRatingBarChangeListener(actionListener);
-        setOnLongClickListener(longClickListener);
     }
 
     @Override
@@ -60,20 +60,11 @@ public class Rating extends RatingBar implements Input {
     private OnRatingBarChangeListener actionListener = new OnRatingBarChangeListener() {
         @Override
         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-            id.measure.successes = (int)(rating);
+            if(fromUser) {
+                id.measure.successes = (int) rating;
 
-            update(id.measure, fromUser);
-        }
-    };
-
-    private OnLongClickListener longClickListener = new OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            id.measure.successes = 0;
-            setProgress(0);
-
-            update(id.measure, true);
-            return true;
+                update(id.measure, true);
+            }
         }
     };
 

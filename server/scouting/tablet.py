@@ -1,8 +1,7 @@
 import socket
-import psutil
 
 
-class TabletDAL(object):
+class Tablet(object):
     def __init__(self, position, page, ip):
         self.position = position
         self.page = page
@@ -17,7 +16,7 @@ class TabletDAL(object):
 
 
 class TabletList(object):
-    alltablets = list({TabletDAL('TestSystem', 'Waiting', -1)})
+    alltablets = list({Tablet('TestSystem', 'Waiting', -1)})
 
     def settablet(self, newtablet):
         nextmatch = True
@@ -73,14 +72,8 @@ class TabletList(object):
             return False
         return True
 
-    def setaddress(self):
-        def get_ip_addresses(family):
-            for interface, snics in psutil.net_if_addrs().items():
-                for snic in snics:
-                    if snic.family == family:
-                        yield (interface, snic.address)
-
-        ipv4s = list(get_ip_addresses(socket.AF_INET))
+    def get_address(self):
+        ipv4s = [i[4][0] for i in socket.getaddrinfo(socket.gethostname(), None)]
         unlinked = list()
 
         for ip in ipv4s:
@@ -91,4 +84,4 @@ class TabletList(object):
             if not linked:
                 unlinked.append(ip)
 
-        return unlinked
+        return ipv4s

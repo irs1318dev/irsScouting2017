@@ -18,6 +18,7 @@ public class MainActivity extends Activity {
     private PageManager form;
 
     public static String position;
+    public static boolean alliance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

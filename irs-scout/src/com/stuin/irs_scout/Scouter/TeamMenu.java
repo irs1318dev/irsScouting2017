@@ -1,6 +1,8 @@
 package com.stuin.irs_scout.Scouter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.view.View;
 import android.widget.*;
 import com.stuin.irs_scout.Data.Match;
 import com.stuin.irs_scout.Data.Measure;
@@ -59,5 +61,14 @@ public class TeamMenu extends Page {
         radioButton.setText(team);
         radioButton.setTextSize(getResources().getDimension(R.dimen.text_norm));
         list.addView(radioButton);
+
+        if(getChildCount() % 5 == 0) {
+            //Add decoration line
+            View view = new TextView(getContext());
+            view.setMinimumHeight(2);
+            view.setMinimumWidth(300);
+            view.setBackgroundColor(Color.LTGRAY);
+            list.addView(view);
+        }
     }
 }

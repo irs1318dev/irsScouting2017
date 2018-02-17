@@ -36,6 +36,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import ForeignKey
 from sqlalchemy import UniqueConstraint
 
+import server.config as s_config
 import server.model
 import server.model.connection
 from server.model.upsert import upsert, upsert_rows
@@ -413,6 +414,7 @@ def initialize_dimension_data():
     upsert("measuretypes", "name", "enum")
     upsert("measuretypes", "name", "attempt")
     upsert("measuretypes", "name", "cycletime")
+    upsert("measuretypes", "name", "rating")
 
     upsert("phases", "name", "na")
     upsert("phases", "name", "claim")
@@ -438,7 +440,7 @@ def load_game_sheet(engine=server.model.connection.engine):
     server_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     os.chdir(os.path.join(server_path, "season"))
 
-    file = open("../season/s2017/gametasks.csv")
+    file = open(s_config.season(s_config.current_season, "gametasks.csv"))
     sheet = csv.reader(file)
 
     server.model.upsert.upsert_cols("task_options", {"task_name": "na",

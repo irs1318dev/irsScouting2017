@@ -1,5 +1,6 @@
 import json
 
+import server.config as s_config
 import server.model.connection
 
 engine = server.model.connection.engine
@@ -32,9 +33,10 @@ class TaskDal(object):
             out += data + '\n'
         return out
 
+    #todo(Stacy) Update code to use get_season function
     @staticmethod
     def csvtasks():
-        with open("season/gametasks.csv", "r") as text:
+        with open(s_config.season(s_config.current_season, "gametasks.csv"), "r") as text:
             out = ''
             for line in text:
                 if 'actor,task' not in line:

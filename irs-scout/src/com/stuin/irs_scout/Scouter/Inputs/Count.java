@@ -3,6 +3,7 @@ package com.stuin.irs_scout.Scouter.Inputs;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
@@ -14,10 +15,11 @@ import com.stuin.irs_scout.R;
 /**
  * Created by Stuart on 8/3/2017.
  */
-public class Count extends GridLayout implements Input {
+public class Count extends LinearLayout implements Input {
     private InputData id;
     private int miss = -1;
-    private String tens = "*10";
+    private String tens = "+10";
+    private int max = 40;
     private View repeatView;
 
     public Count(Context context, InputData inputData) {
@@ -34,7 +36,10 @@ public class Count extends GridLayout implements Input {
             part(id.task.miss + ": ");
         }
 
-        setColumnCount(2);
+        setOrientation(LinearLayout.HORIZONTAL);
+        setGravity(Gravity.CENTER);
+        //setColumnCount(2);
+        //((GridLayout.LayoutParams) getLayoutParams()).setGravity(Gravity.CENTER);
         column.addView(this);
     }
 
@@ -50,7 +55,7 @@ public class Count extends GridLayout implements Input {
         addView(button);
 
         //Create secondary button
-        if(name.contains("+"))
+        if(name.contains("*"))
             part(tens);
 
         return button;
@@ -73,13 +78,15 @@ public class Count extends GridLayout implements Input {
             if(((TextView) v).getText().equals(tens))
                 change = 10;
 
-            if(v == getChildAt(0) || v == getChildAt(miss - 1)) {
-                id.measure.successes += change;
-                id.measure.attempts += change;
-            } else
-                id.measure.attempts += change;
+            if(id.measure.attempts + change < max) {
+                if (v == getChildAt(0) || v == getChildAt(miss - 1)) {
+                    id.measure.successes += change;
+                    id.measure.attempts += change;
+                } else
+                    id.measure.attempts += change;
 
-            update(id.measure, true);
+                update(id.measure, true);
+            }
         }
     };
 
@@ -107,7 +114,7 @@ public class Count extends GridLayout implements Input {
 
             //Set repeater
             repeatView = v;
-            postDelayed(repeatTimer, 700);
+            postDelayed(repeatTimer, 600);
 
             update(id.measure, true);
             return true;
