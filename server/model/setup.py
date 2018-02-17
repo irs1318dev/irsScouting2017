@@ -97,10 +97,12 @@ class Event(Base):
     __tablename__ = "events"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
+    name = Column(String, nullable=False)
 
     state = Column(String)
     type = Column(String)
+
+#todo(samika) Add two-column constraint so can't have same event with same season.
 
 
 class Level(Base):
@@ -269,7 +271,7 @@ class Status(Base):
     __tablename__ = "status"
 
     id = Column(Integer, primary_key=True)
-    event = Column('event', String)
+    event_id = Column(Integer, ForeignKey('events.id'))
     match = Column('match', String)
 
 

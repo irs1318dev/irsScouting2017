@@ -10,14 +10,15 @@ def test_list_events():
     assert len(events) == 11
 
 def test_get_current_event():
-    conn = sm_conn.engine.connect()
-    sql = sqlalchemy.text("SELECT status.event, events.season "
-                          "FROM status INNER JOIN events ON status.event = events.name;")
-    event = conn.execute(sql)
-    for row in event:
-        print(row)
-    conn.close()
-    print(event)
+    sm_event.EventDal.set_current_event("test_add_events", 1993)
+    # conn = sm_conn.engine.connect()
+    # sql = sqlalchemy.text("SELECT status.event, events.season "
+    #                       "FROM status INNER JOIN events ON status.event = events.name;")
+    # event = conn.execute(sql)
+    # for row in event:
+    #     print(row)
+    # conn.close()
+    # print(event)
 
 def test_set_current_event():
     conn = sm_conn.engine.connect()
@@ -30,3 +31,8 @@ def test_set_current_event():
     #other =
     #assert event =
 
+# Add event_id to status table
+    # Add event_id to table definition in setup. DONE.
+    # Add version update function. DONE.
+    # Modify set_event function
+    # Modify get_event function

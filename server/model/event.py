@@ -66,26 +66,37 @@ class EventDal(object):
     @staticmethod
     def set_current_event(event, season):
         event = event.lower()
+        season = str(season)
         conn = engine.connect()
 
         # Ensure event exists in events table
-        sql_sel = text("SELECT * FROM events WHERE name = :evt AND season = :season;")
+        sql_sel = text("SELECT id FROM events "
+                       "WHERE name = :evt AND season = :season;")
         events = conn.execute(sql_sel, evt=event, season=season)
-        if events.rowcount != 1:
-            sql_ins = text("INSERT INTO events (name, season) VALUES (:evt, :season);")
+        if events.rowcount == 1:
+            event_id=events.fetchone()["id"]
+        if events.rowcount == 0:
+            sql_ins = text("INSERT INTO events (name, season) "
+                           "VALUES (:evt, :season);")
             conn.execute(sql_ins, evt=event, season=season)
-            sm_dal.rebuild_dicts()
+            # sql_sel = text("SELECT id FROM events "
+            #                "WHERE name = :evt AND season = :season;")
+            event_id = conn.execute(sql_sel, evt=event,
+                                    season=season).scalar()
+            sm_dal.rebuild_dicts() # todo(stacy) might not need this.
 
         # Update status table with this event
         sql_sel = text("SELECT * FROM status;")
         results = conn.execute(sql_sel).fetchall()
         if len(results) == 1:
-            sql_upd = text("UPDATE status SET event = :event WHERE id = :id;")
-            conn.execute(sql_upd, event=event, id=results[0]['id'])
+            sql_upd = text("UPDATE status SET event_id = :evt_id "
+                           "WHERE id = :id;")
+            conn.execute(sql_upd, evt_id=event_id, id=results[0]['id'])
         elif len(results) == 0:
             default_match = "001-q"
-            sql_ins = text("INSERT INTO status (event, match) VALUES (:event, :match);")
-            conn.execute(sql_ins, event=event, match=default_match)
+            sql_ins = text("INSERT INTO status (event_id, match) "
+                           "VALUES (:evt_id, :match);")
+            conn.execute(sql_ins, evt_id=event_id, match=default_match)
         conn.close()
 
 
