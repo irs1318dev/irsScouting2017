@@ -4,8 +4,8 @@ import server.model.version as sm_version
 import server.model.connection as sm_connection
 
 
-def test_get_version():
-    assert sm_version.get_version() == "2018.03"
+# def test_get_version():
+#     assert sm_version.get_version() == "2018.03"
 
 
 # def test_ver2018_02():
