@@ -1,6 +1,5 @@
 import cherrypy
 import os.path
-import json
 
 import server.config as s_config
 import server.model.schedule
@@ -243,7 +242,6 @@ class Scouting(object):
     def databaseset(self):
         server.model.setup.setup()
         return open("web/sites/reset.html").read()
-
 
 
 if __name__ == '__main__':
