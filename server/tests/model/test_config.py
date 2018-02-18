@@ -47,3 +47,9 @@ def test_season():
 
     _check_path(r"server\\season\\s2017\\gametasks.csv",
                 server.config.season("2017", "gametasks.csv"))
+
+
+def test_tests_model_test_data():
+    _check_path(r"server\\tests\\model\\test_data\\sched.json",
+                server.config.tests_model_test_data("sched.json"))
+
