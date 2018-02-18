@@ -2,21 +2,16 @@ import sys
 import os
 import re
 
-import pandas as pd 
-# This section is necessary for viewing plots in the notebook.
-import matplotlib
-import matplotlib.pyplot as plt
-import numpy as np
+# This section is necessary for viewing plots.
 import holoviews as hv
 hv.extension('bokeh','matplotlib')
-import seaborn as snsb
 from sqlalchemy import text
 
 import server.model.connection
 import server.model.event as event
 import server.model.dal as sm_dal
+import server.config as config
 
-matplotlib.style.use("ggplot")
 engine = server.model.connection.engine
 
 
@@ -52,7 +47,7 @@ def get_data(tasks, phase='teleop', teams=None):
 				successes = row['successes']
 				capability = row['capability']
 
-				team_data.append([team, task, match, attempts, successes, capability])
+				team_data.append([team, task, match, successes, attempts])
 
 		teams_tasks_data.append(team_data)
 
@@ -75,27 +70,86 @@ def get_teams():
 	return all_teams
 
 
-def average_tasks(team_data):
-	task = None
+def average_tasks(data):
 	fixed_data = list()
-	current_data = list()
-	sum = 1
+	for team_data in data:
+		task = None
+		current_data = list()
+		team_fixed = list()
+		sum = 1
 
-	for row in team_data:
-		if row[1] == task:
-			current_data[2] += row[3]
-			current_data[3] += row[4]
-			sum += 1
-		else:
-			if task is not None:
-				fixed_data.append([current_data[0], current_data[1], 'na', current_data[2] / sum, current_data[3] / sum])
+		for row in team_data:
+			if row[1] == task:
+				current_data[2] += row[3]
+				current_data[3] += row[4]
+				sum += 1
+			else:
+				if task is not None:
+					team_fixed.append([row[0], current_data[1], 'na', current_data[2] / sum, current_data[3] / sum])
 
-			current_data = [row[0], row[1], row[3], row[4]]
-			task = row[1]
-			sum = 1
+				current_data = [row[0], row[1], row[3], row[4]]
+				task = row[1]
+				sum = 1
 
-	fixed_data.append([current_data[0], current_data[1], 'na', current_data[2] / sum, current_data[3] / sum])
+		team_fixed.append([current_data[0], current_data[1], 'na', current_data[2] / sum, current_data[3] / sum])
+		fixed_data.append(team_fixed)
 	return fixed_data
+
+
+def sum_tasks(data):
+	fixed_data = list()
+	for team_data in data:
+		task = None
+		current_data = list()
+		team_fixed = list()
+
+		for row in team_data:
+			if row[1] == task:
+				current_data[2] += row[3]
+				current_data[3] += row[4]
+			else:
+				if task is not None:
+					team_fixed.append([row[0], current_data[1], 'na', current_data[2], current_data[3]])
+
+				current_data = [row[0], row[1], row[3], row[4]]
+				task = row[1]
+
+		team_fixed.append([current_data[0], current_data[1], 'na', current_data[2], current_data[3]])
+		fixed_data.append(team_fixed)
+	return fixed_data
+
+
+#Configure data for visual
+def flatten_success(data):
+	flat_list = list()
+	for sublist in data:
+		for item in sublist:
+			flat_list.append([item[0], item[1], item[3]])
+	return flat_list
+
+
+def flatten_attempt(data):
+	flat_list = list()
+	for sublist in data:
+		for item in sublist:
+			flat_list.append([item[0], item[1], item[4]])
+	return flat_list
+
+
+#Holoviews generation
+def hv_table(data, label='Successes'):
+	return hv.Table(data, "Team", ['Task', label])
+
+
+def hv_stack(data, label='Successes', width=400, height=400):
+	return hv.Bars(data, ["Team", "Task"], label).opts(plot=dict(tools=['hover'], stack_index=1, legend_position="top", width=width, height=height))
+
+
+def hv_bar(data, label='Successes', width=400, height=400):
+	return hv.Bars(data, ["Team", "Task"], label).opts(plot=dict(tools=['hover'], legend_position="top", xrotation=45, width=width, height=height))
+
+def hv_box(data, label='Successes', width=400, height=400):
+	return hv.BoxWhisker(data, ["Team", "Task"], label).opts(plot=dict(tools=['hover'], legend_position="top", xrotation=45, width=width, height=height))
 
 
 def save_view(view, name):
@@ -104,4 +158,13 @@ def save_view(view, name):
 	plot = renderer.get_plot(view).state
 
 	from bokeh.io import output_file, save, show
-	save(plot, name + '.html')
+	save(plot, config.web_data(name + '.html'), title=name)
+
+
+def test_output(data):
+	total = flatten_success(data)
+	avg = flatten_success(average_tasks(data))
+	avg_att = flatten_attempt(average_tasks(data))
+
+	plot = hv_table(total) + hv_stack(avg) + hv_bar(avg) + hv_box(total)
+	save_view(plot, 'test')
