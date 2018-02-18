@@ -31,20 +31,20 @@ def test_upsert(testdb_empty_tables):
     util.verify_testdb()
     conn = smc.engine.connect()
 
-    smu.upsert("events", "name", "upsert_test1")
-    smu.upsert("events", "name", "upsert_test2")
+    smu.upsert("actors", "name", "upsert_test1")
+    smu.upsert("actors", "name", "upsert_test2")
 
-    sql_count = sqlalchemy.text("SELECT COUNT(*) FROM events;")
+    sql_count = sqlalchemy.text("SELECT COUNT(*) FROM actors;")
     count = conn.execute(sql_count).scalar()
     assert count == 2
 
-    sql_sel = "SELECT * FROM events;"
-    teams = pandas.read_sql_query(sql_sel, conn)
-    assert teams.shape == (2, 4)
-    assert teams.name[0] == "upsert_test1"
+    sql_sel = "SELECT * FROM actors;"
+    actors = pandas.read_sql_query(sql_sel, conn)
+    assert actors.shape == (2, 2)
+    assert actors.name[0] == "upsert_test1"
 
     # Teardown
-    delete_all_rows("events", conn)
+    delete_all_rows("actors", conn)
     conn.close()
 
 
@@ -54,14 +54,14 @@ def test_upsert_rows(testdb_empty_tables):
     util.verify_testdb()
 
     conn = smc.engine.connect()
-    smu.upsert_rows("events", "name", 25, "{0:0>3}-q")
-    sql = "SELECT * FROM events;"
+    smu.upsert_rows("matches", "name", 25, "{0:0>3}-q")
+    sql = "SELECT * FROM matches;"
     matches = pandas.read_sql_query(sql, conn)
-    assert matches.shape == (24, 4)
+    assert matches.shape == (24, 2)
     assert matches.name[0] == "001-q"
 
     # Teardown
-    delete_all_rows("events", conn)
+    delete_all_rows("matches", conn)
     conn.close()
 
 
@@ -82,7 +82,7 @@ def test_upsert_cols(testdb_empty_tables):
     assert tasks.shape == (1, 4)
 
     # Teardown
-    delete_all_rows("events", conn)
+    delete_all_rows("task_options", conn)
     conn.close()
 
 

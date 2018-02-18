@@ -54,6 +54,9 @@ def set_ver_2018_02():
     conn.execute(sql)
     sql = sqlalchemy.text("ALTER TABLE events DROP CONSTRAINT events_name_key;")
     conn.execute(sql)
+    sql = sqlalchemy.text("ALTER TABLE events "
+                          "ADD CONSTRAINT events_unique UNIQUE (name, season);")
+    conn.execute(sql)
     sql = sqlalchemy.text("UPDATE status SET ver = 2018.02")
     conn.execute(sql)
     conn.close()
