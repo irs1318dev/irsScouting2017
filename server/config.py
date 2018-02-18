@@ -44,3 +44,6 @@ def season(year, file):
     path = os.path.join(os.path.dirname(__file__), 'season', 's' + year, file)
     return path
 
+def tests_model_test_data(file):
+    path = os.path.join(os.path.dirname(__file__), 'tests', 'model', 'test_data', file)
+    return path
