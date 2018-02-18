@@ -1,6 +1,7 @@
 import json
 import os
 import pandas
+import sqlalchemy
 
 from sqlalchemy import text
 
@@ -61,7 +62,38 @@ def process_sched(event, season, sched_json, level='qual'):
             smu.upsert("dates", "name", date)
 
 
+# Function only works if the csv has columns in the order of match, red1, red2, red3, blue1, blue2, blue3
 def manual_Entry(file):
     data = pandas.read_csv(file)
-    match = list(data.match)
+    match = data.iloc[:, 0]
+    match = list(match)
+    red1 = data.iloc[:, 1]
+    red1 = list(red1)
+    red2 = data.iloc[:, 2]
+    red2 = list(red2)
+    red3 = data.iloc[:, 3]
+    red3 = list(red3)
+    blue1 = data.iloc[:, 4]
+    blue1 = list(blue1)
+    blue2 = data.iloc[:, 5]
+    blue2 = list(blue2)
+    blue3 = data.iloc[:, 6]
+    blue3 = list(blue3)
+    red = [red1, red2, red3]
+    blue = [blue1, blue2, blue3]
+    conn = smc.engine.connect()
+    conn.open()
+    select = sqlalchemy.text("UPDATE status SET match =:match;")
+    conn.execute(select, match = match)
+    for row in red:
+        select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
+                                 "VALUES (na, :match, :row, na, na, na, na);")
+        conn.execute(select, match = match, row = row)
+    for row in blue:
+        select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
+                                 "VALUES (na, :match, :row, na, na, na, na);")
+        conn.execute(select, match = match, row = row)
+    conn.close()
+
+
 
