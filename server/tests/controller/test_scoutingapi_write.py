@@ -14,7 +14,7 @@ import server.scoutingapi as s_scout
 
 @pytest.fixture
 def scouting_app(test_event):
-    assert test_event["event"] == st_conf.test_event
+    assert test_event
     return s_scout.Scouting()
 
 
