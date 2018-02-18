@@ -61,3 +61,38 @@ def set_ver_2018_02():
     conn.execute(sql)
     conn.close()
 
+
+def set_ver_2018_03():
+    """Modifies schedules table to use event_id as foreign key.
+    """
+    if get_version() != "2018.02":
+        warnings.warn("You must update the scouting schema to 2018.02 before "
+                      "running this function.")
+        return
+    conn = smc.engine.connect()
+    trans = conn.begin()
+    try:
+        sql = sqlalchemy.text("ALTER TABLE schedules "
+                              "ADD COLUMN event_id integer;")
+        conn.execute(sql)
+        sql = sqlalchemy.text("SELECT DISTINCT event FROM schedules;")
+        sched_events = conn.execute(sql)
+        for event in sched_events:
+            sql = sqlalchemy.text("SELECT id FROM events WHERE name = :evt")
+            evt_id = conn.execute(sql, evt=event["event"]).scalar()
+            sql = sqlalchemy.text("UPDATE schedules SET event_id = :id "
+                                  "WHERE event = :evt;")
+            conn.execute(sql, id=evt_id, evt=event["event"])
+        sql = sqlalchemy.text("ALTER TABLE schedules DROP COLUMN event;")
+        conn.execute(sql)
+        sql = sqlalchemy.text("UPDATE status SET ver = 2018.03;")
+        conn.execute(sql)
+        trans.commit()
+    except:
+        trans.rollback()
+        print("\n======ERROR: SQL Transactions did not run=========")
+        raise
+    else:
+        print("\n==========SUCCESS!==========")
+    finally:
+        conn.close()

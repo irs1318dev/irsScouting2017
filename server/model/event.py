@@ -35,19 +35,31 @@ class EventDal(object):
         return json.dumps(matches)
 
     @staticmethod
-    def match_details(event, match, team):
+    def get_event_id(event, season):
+        conn = engine.connect()
+        sql = text("SELECT id FROM events "
+                   "WHERE name = :evt AND season = :season;")
+        event_id = conn.execute(sql, evt=event, season=season).scalar()
+        conn.close()
+        return event_id
+
+    @staticmethod
+    def match_details(event, season, match, team):
+        event_id = EventDal.get_event_id(event, season)
         match_details = {}
         sql = text("SELECT * FROM schedules WHERE "
                    "match = :match "
                    " AND team = :team "
-                   " AND event = :event ")
+                   " AND event_id = :evt_id ")
         conn = engine.connect()
-        results = conn.execute(sql, event=event, match=match, team=team)
+        results = conn.execute(sql, evt_id=event_id, match=match, team=team)
         conn.close()
         for row in results:
             match_details = dict(row)
         if match_details == {}:
-            match_details = {'alliance': 'na', 'level': 'na', 'event': event, 'station': 'na', 'team': team, 'date': 'na', 'match': match}
+            match_details = {'alliance': 'na', 'level': 'na', 'event': event,
+                             'station': 'na', 'team': team, 'date': 'na',
+                             'match': match}
         return match_details
 
     @staticmethod
@@ -175,14 +187,15 @@ class EventDal(object):
 
 
     @staticmethod
-    def match_alliance_details(event, match):
+    def match_alliance_details(event, season, match):
+        event_id = EventDal.get_event_id(event, season)
         match_details = {}
         sql = text("SELECT * FROM schedules WHERE "
                    "match = :match "
-                   " AND event = :event ")
+                   " AND event_id = :evt_id ")
 
         conn = engine.connect()
-        results = conn.execute(sql, event=event, match=match)
+        results = conn.execute(sql, evt_id=event_id, match=match)
         conn.close()
         for row in results:
             match_details = dict(row)

@@ -41,9 +41,10 @@ class MatchDal(object):
         match_teams = []
         sql = text("SELECT * FROM schedules WHERE "
                    "match = :match "
-                   " AND event = :event ")
+                   " AND event_id = :evt_id ")
         conn = engine.connect()
-        results = conn.execute(sql, event=event.EventDal.get_current_event()[1],
+        results = conn.execute(sql,
+                               evt_id=event.EventDal.get_current_event()[0],
                                match=match)
         conn.close()
 
@@ -75,10 +76,11 @@ class MatchDal(object):
         """
         pit_teams = ''
         sql = text("SELECT DISTINCT team FROM schedules WHERE "
-                   "event = :event ORDER BY team;")
+                   "event_id = :evt_id ORDER BY team;")
 
         conn = engine.connect()
-        results = conn.execute(sql, event=event.EventDal.get_current_event()[1])
+        results = conn.execute(sql,
+                               evt_id=event.EventDal.get_current_event()[0])
         conn.close()
 
         first = True
@@ -172,8 +174,7 @@ class MatchDal(object):
             cycle_time: (int) Number of seconds
         """
         # Get ID value for current event
-        event_name = event.EventDal.get_current_event()
-        event_id = sm_dal.event_ids[event_name]
+        curr_event = event.EventDal.get_current_event()
         # Get ID values for arguments
         team_id = sm_dal.team_ids[team]
         task_id = sm_dal.task_ids[task]
@@ -185,7 +186,8 @@ class MatchDal(object):
         measure = actor_measure[phase]
         measuretype_id = sm_dal.measuretype_ids[measure]
         # Get additional match details
-        match_details = event.EventDal.match_details(event_name, match, team)
+        match_details = event.EventDal.match_details(curr_event[1],
+                                                     curr_event[2], match, team)
         date_id = sm_dal.date_ids[match_details['date']]
         level_id = sm_dal.level_ids[match_details['level']]
         alliance_id = sm_dal.alliance_ids[match_details['alliance']]
@@ -215,9 +217,10 @@ class MatchDal(object):
             "SET capability=:capability, attempts=:attempts, "
             "successes=:successes, cycle_times=:cycle_times;")
         conn = engine.connect()
-        conn.execute(sql, date_id=date_id, event_id=event_id, level_id=level_id,
-                     match_id=match_id, alliance_id=alliance_id,
-                     team_id=team_id, station_id=station_id, actor_id=actor_id,
+        conn.execute(sql, date_id=date_id, event_id=curr_event[0],
+                     level_id=level_id, match_id=match_id,
+                     alliance_id=alliance_id, team_id=team_id,
+                     station_id=station_id, actor_id=actor_id,
                      task_id=task_id, measuretype_id=measuretype_id,
                      phase_id=phase_id, attempt_id=attempt_id,
                      reason_id=reason_id, capability=capability,
@@ -243,8 +246,10 @@ class MatchDal(object):
             success_count: (int) Number of successes
             cycle_time: (int) Number of seconds
         """
-        event_name = event.EventDal.get_current_event()[1]
-        event_id = event.EventDal.get_current_event()[0]
+        curr_event = event.EventDal.get_current_event()
+        event_name = curr_event[1]
+        event_id = curr_event[0]
+        event_season = curr_event[2]
 
         match_id = sm_dal.match_ids[match]
 
@@ -258,7 +263,9 @@ class MatchDal(object):
         alliance_id = sm_dal.alliance_ids[alliance]
         station_id = sm_dal.station_ids['na']
 
-        match_details = event.EventDal.match_alliance_details(event_name, match)
+        match_details = event.EventDal.match_alliance_details(event_name,
+                                                              event_season,
+                                                              match)
         date_id = sm_dal.date_ids[match_details['date']]
         level_id = sm_dal.level_ids[match_details['level']]
 

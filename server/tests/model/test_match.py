@@ -33,14 +33,15 @@ def test_build_dicts():
     # WARNING: GAME DEPENDENT
     # Task Options
     task_option_names, task_option_ids = sm_dal.build_dicts("task_options")
-    assert len(task_option_names) == 103
-    assert len(task_option_ids) == 103
+    assert len(task_option_names) > 100
+    assert len(task_option_ids) == len(task_option_names)
     assert "startingLocation-boiler" in task_option_names.values()
     assert isinstance(task_option_ids["robotTechFoul-"], int)
 
 
 # noinspection PyShadowingNames
 def test_match_teams():
+    sm_event.EventDal.set_current_event("turing", 2017)
     matches = re.split("\n", sm_match.MatchDal.match_teams("001-q"))
     # Verify JSON strings have correct format.
     for alliance in matches[0:2]:
@@ -57,14 +58,3 @@ def test_pit_teams():
     pit_teams = sm_match.MatchDal.pit_teams()
     ptn = r'{"match":"na", "teams":\["\d{1,4}"(,"\d{1,4}")*,"na"\]}'
     assert re.match(ptn, pit_teams)
-
-
-def test_globals():
-    print(globals())
-
-
-
-
-
-
-

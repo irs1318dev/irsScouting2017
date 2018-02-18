@@ -5,11 +5,11 @@ import server.model.connection as sm_connection
 
 
 def test_get_version():
-    assert sm_version.get_version() == "2018.02"
+    assert sm_version.get_version() == "2018.03"
 
 
-def test_ver2018_02():
-    sm_version.set_ver_2018_02()
+# def test_ver2018_02():
+#     sm_version.set_ver_2018_02()
 
 
 # def test_remove_constraint():

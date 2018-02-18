@@ -101,7 +101,7 @@ class Event(Base):
 
     state = Column(String)
     type = Column(String)
-    year = Column(String)
+    season = Column(String)
     __table_args__ = (UniqueConstraint('name', 'season', name="events_unique"),)
 
 #todo(samika) Add two-column constraint so can't have same event with same season.

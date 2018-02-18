@@ -5,15 +5,24 @@ import sqlalchemy
 
 def test_list_events():
     events = sm_event.EventDal.list_events()
-    print("\n", events)
+
     assert isinstance(events, list)
-    assert len(events) == 11
+    assert len(events) > 8
+    event_name_list = [dct["event"] for dct in events]
+    assert "orlak" in event_name_list
+    assert "orore" in event_name_list
+    assert "turing" in event_name_list
 
 
 def test_get_current_event():
     event = sm_event.EventDal.set_current_event("test_add_events", 1993)
     result = sm_event.EventDal.get_current_event()
     assert event == result[0]
+
+
+def test_get_event_id():
+    event_id = sm_event.EventDal.get_event_id("turing", "2017")
+    assert event_id == 18193
 
 
 def test_set_current_event():
