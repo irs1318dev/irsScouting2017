@@ -109,9 +109,10 @@ class Scouting(object):
         dictionary contains two keys: "match" and "event".
         """
         if event == 'na':
-            event = server.model.event.EventDal.get_current_event()[1]
+            event = server.model.event.EventDal.get_current_event()
 
-        return server.model.event.EventDal.list_matches(event)
+        return server.model.event.EventDal.list_matches(event[1],
+                                                        event[2])
 
     @cherrypy.expose
     def matchteams(self, match=-1):

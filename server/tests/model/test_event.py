@@ -1,6 +1,15 @@
+import json
+
 import server.model.event as sm_event
 import server.model.connection as sm_conn
 import sqlalchemy
+
+
+def test_list_matches():
+    matches = sm_event.EventDal.list_matches("turing", "2017")
+    matches_data = json.loads(matches)
+    assert isinstance(matches_data, list)
+
 
 
 # def test_list_events():

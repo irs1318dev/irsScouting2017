@@ -126,7 +126,7 @@ def test_matchteams(scouting_app):
 def test_matchteamtasks(scouting_app):
     team_tasks = convert_to_list(scouting_app.matchteamtasks("1318",
                                                              "007-q"))
-    assert len(team_tasks) == 9
+    assert len(team_tasks) == 10
     assert team_tasks[0]["match"] == "007-q"
     assert team_tasks[8]["task"] == "pushTouchPad"
     print("\n", team_tasks)

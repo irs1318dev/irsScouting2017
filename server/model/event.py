@@ -25,11 +25,15 @@ class EventDal(object):
 
     # todo(stacy) Shift conversion of Python dictionaries to JSON from DAL to controller (cherry.py methods)
     @staticmethod
-    def list_matches(event):
+    def list_matches(event, season):
+        event_id = EventDal.get_event_id(event, season)
         matches = []
-        sql = text("SELECT distinct(match), event FROM schedules where event = :event ORDER BY match ")
+        sql = text("SELECT distinct(schedules.match), events.name AS event "
+                   "FROM schedules INNER JOIN events "
+                   "ON schedules.event_id = events.id "
+                   "WHERE schedules.event_id = :evt_id ORDER BY match ")
         conn = engine.connect()
-        results = conn.execute(sql, event=event)
+        results = conn.execute(sql, evt_id=event_id)
         conn.close()
         for row in results:
             matches.append(dict(row))
