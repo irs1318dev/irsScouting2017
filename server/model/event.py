@@ -10,17 +10,18 @@ class EventError(Exception):
 
 class EventDal(object):
 
-    # todo(stacy) No usages found
-    @staticmethod
-    def list_events():
-        events = []
-        sql = text("SELECT distinct event FROM schedules ORDER BY event ")
-        conn = engine.connect()
-        results = conn.execute(sql)
-        conn.close()
-        for row in results:
-            events.append(dict(row))
-        return events
+    # # todo(stacy) No usages found
+    # @staticmethod
+    # def list_events():
+    #     events = []
+    #     sql = text("SELECT distinct event_id FROM schedules ORDER BY event_id ")
+    #     conn = engine.connect()
+    #     results = conn.execute(sql)
+    #     conn.close()
+    #     for row in results:
+    #         events.append(dict(row))
+    #     print(events)
+    #    return events
 
     # todo(stacy) Shift conversion of Python dictionaries to JSON from DAL to controller (cherry.py methods)
     @staticmethod
@@ -200,5 +201,3 @@ class EventDal(object):
         for row in results:
             match_details = dict(row)
         return match_details
-
-EventDal.get_current_event()
