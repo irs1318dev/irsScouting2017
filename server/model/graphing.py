@@ -168,3 +168,9 @@ def test_output(data):
 
 	plot = hv_table(total) + hv_stack(avg) + hv_bar(avg) + hv_box(total)
 	save_view(plot, 'test')
+
+
+def graph_match(match_list, match):
+    tasks = ['placeSwitch', 'placeScale']
+    red_data = get_data(tasks, match_list[:3])
+    blue_data = get_data(tasks, match_list[3:])

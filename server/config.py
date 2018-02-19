@@ -10,8 +10,8 @@ def web_sites(file):
     return path
 
 
-def web_scripts(file):
-    path = os.path.join(os.path.dirname(__file__), 'web', 'scripts', file)
+def web_base():
+    path = os.path.join(os.path.dirname(__file__), 'web')
     return path
 
 

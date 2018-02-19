@@ -1,11 +1,12 @@
 import cherrypy
 from cherrypy.lib.static import serve_file
 import os.path
+import server.config as s_config
 import server.scouting.export
-import server.scouting.output
 import server.model.event
 import server.scouting.alliance
 import server.model.match
+import server.model.graphing as graphing
 
 
 class Viewer:
@@ -16,7 +17,7 @@ class Viewer:
 
     @cherrypy.expose
     def index(self):
-        out = open('web/sites/view.html').read()
+        out = open(s_config.web_sites("view.html")).read()
 
         if self.alone:
             out = out.replace('{Back}', '')
@@ -27,17 +28,10 @@ class Viewer:
 
     @cherrypy.expose
     def data(self, name):
-        name = os.path.abspath('web/data/') + '/' + name
+        name = s_config.web_data("name")
         if os.path.exists(name):
             return serve_file(name, "application/x-download", "attachment")
         return 'No File Found'
-
-    @cherrypy.expose
-    def output(self):
-        excel = server.scouting.output.get_Path('Report')
-        server.scouting.output.get_report(excel)
-        return '<a href="/view/data?name=' + excel + '">Download File</a>'
-        # return open("web/resetView.html").read()
 
     @cherrypy.expose
     def selection(self, team='', index=-1, shift=-1, out=False):
@@ -51,7 +45,7 @@ class Viewer:
         if out:
             self.alliances.alliances.output()
 
-        out = open("web/sites/selection.html").read()
+        out = open(s_config.web_sites("selection.html")).read()
         out = out.replace("{Unset}", self.alliances.unset())
         out = self.alliances.selections(out)
         return out
@@ -65,7 +59,7 @@ class Viewer:
     @cherrypy.expose
     def restore(self, path):
         self.export.run_restore(path)
-        return open("web/sites/reset.html").read()
+        return open(s_config.web_sites("reset.html")).read()
 
     @cherrypy.expose
     def teamplan(self, team='1318'):
@@ -89,15 +83,18 @@ class Viewer:
     def matchplan(self, match):
         nextMatch = self.teamsList(match)
         setMatch = match
+        out = None
 
-        while True:
+        while out is None:
             nextMatchNumber = int(match.split('-')[0]) - 1
             if nextMatchNumber > 0:
                 match = "{0:0>3}-q".format(nextMatchNumber)
 
                 for team in nextMatch:
                     if team in self.teamsList(match):
-                        return setMatch + ' : ' + str(self.teamsList(setMatch)) + ' After ' + match
+                        out = setMatch + ' : ' + str(self.teamsList(setMatch)) + ' After ' + match
+        return out
+
 
     def teamsList(self, match):
         teams = list()
@@ -110,11 +107,11 @@ class Viewer:
 class Start:
     @cherrypy.expose
     def index(self):
-        return open("web/sites/resetView.html")
+        return open(s_config.web_sites("resetView.html"))
 
 if __name__ == '__main__':
     cherrypy.config.update({'server.socket_port': 1318})
-    conf = {"/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': os.path.abspath('web')}}
+    conf = {"/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': s_config.web_base()}}
 
     cherrypy.tree.mount(Viewer(), '/view', config=conf)
     cherrypy.quickstart(Start(), '/')

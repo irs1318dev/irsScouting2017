@@ -66,7 +66,7 @@ public class Count extends LinearLayout implements Input {
         //Set button text
         ((Button) getChildAt(0)).setText(id.task.success + ": " + measure.successes);
         if(miss != -1)
-            ((Button) getChildAt(miss)).setText(id.task.success + ": " + (measure.attempts - measure.successes));
+            ((Button) getChildAt(miss)).setText(id.task.miss + ": " + (measure.attempts - measure.successes));
 
         id.update(measure, send);
     }

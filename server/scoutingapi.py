@@ -1,5 +1,4 @@
 import cherrypy
-import os.path
 
 import server.config as s_config
 import server.model.schedule
@@ -196,12 +195,13 @@ class Scouting(object):
                                                           attempt, success,
                                                           cycle_time)
         except KeyError as key:
+            print("--- KeyError: " + str(key) + " ---")
             return 'KeyError: ' + str(key)
         return 'hi'
 
     @cherrypy.expose
     def tablet(self, status, ip=-1):
-        newtablet = server.scouting.tablet.TabletDAL(status.split(':')[0], status.split(':')[1], ip)
+        newtablet = server.scouting.tablet.Tablet(status.split(':')[0], status.split(':')[1], ip)
 
         if server.scouting.tablet.TabletList.settablet(self.alltablets, newtablet):
             server.model.event.EventDal.set_next_match(self.eventDal.get_current_match())
@@ -210,7 +210,7 @@ class Scouting(object):
 
     @cherrypy.expose
     def tablets(self):
-        out = open("web/scripts/tablets.txt").read()
+        out = open(s_config.web_sites("tablets.txt")).read()
         out = self.alltablets.inserttablets(out)
         out = out.replace('{Match=""}',
                           '{Match="' + self.eventDal.get_current_match() + '"}')
@@ -220,19 +220,19 @@ class Scouting(object):
     def matchcurrent(self, match):
         self.tablet('TestSystem:Reset')
         self.eventDal.set_current_match(match)
-        return open("web/sites/reset.html").read()
+        return open(s_config.web_sites("reset.html")).read()
 
     @cherrypy.expose
     def eventcurrent(self, event, year):
         self.eventDal.set_current_event(event, year)
-        return open("web/sites/reset.html").read()
+        return open(s_config.web_sites("reset.html")).read()
 
     @cherrypy.expose
     def eventfind(self, event, year):
         self.eventDal.set_current_event(event, year)
         self.eventDal.set_current_match('001-q')
         server.model.schedule.insert_sched(event, year, 'qual')
-        return open("web/sites/reset.html").read()
+        return open(s_config.web_sites("reset.html")).read()
 
     @cherrypy.expose
     def addresslist(self):
@@ -241,7 +241,7 @@ class Scouting(object):
     @cherrypy.expose
     def databaseset(self):
         server.model.setup.setup()
-        return open("web/sites/reset.html").read()
+        return open(s_config.web_sites("reset.html")).read()
 
 
 if __name__ == '__main__':
@@ -249,7 +249,7 @@ if __name__ == '__main__':
         {'server.socket_host': '0.0.0.0'})
 
     conf = {"/web": {'tools.staticdir.on': True,
-                     'tools.staticdir.dir': os.path.abspath('web')}}
+                     'tools.staticdir.dir': s_config.web_base()}}
 
     cherrypy.tree.mount(server.viewerapi.Viewer(False), '/view', config=conf)
     cherrypy.quickstart(Scouting(), '/', config=conf)
