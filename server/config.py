@@ -25,6 +25,11 @@ def web_images(file):
     return path
 
 
+def web_scripts(file):
+    path = os.path.join(os.path.dirname(__file__), 'web', 'scripts', file)
+    return path
+
+
 def scouting(file):
     path = os.path.join(os.path.dirname(__file__), 'scouting', file)
     return path
