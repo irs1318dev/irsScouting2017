@@ -93,7 +93,10 @@ class Viewer:
                 for team in nextMatch:
                     if team in self.teamsList(match):
                         out = setMatch + ' : ' + str(self.teamsList(setMatch)) + ' After ' + match
-        return out
+
+        graphing.graph_match(self.teamsList(setMatch), setMatch)
+        out += open(s_config.web_data('matchData.html')).read()
+        return out 
 
 
     def teamsList(self, match):

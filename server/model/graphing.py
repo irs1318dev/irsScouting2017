@@ -18,8 +18,7 @@ engine = server.model.connection.engine
 def get_data(tasks, phase='teleop', teams=None):
 	teams_tasks_data = list()
 	conn = engine.connect()
-	evt = event.EventDal.get_current_event()
-	event_id = sm_dal.event_ids[evt]
+	event_id = event.EventDal.get_current_event()[0]
 	phase_id = sm_dal.phase_ids[phase]
 
 	if(teams is None):
@@ -74,7 +73,7 @@ def average_tasks(data):
 	fixed_data = list()
 	for team_data in data:
 		task = None
-		current_data = list()
+		current_data = ['na','na',0,0]
 		team_fixed = list()
 		sum = 1
 
@@ -100,7 +99,7 @@ def sum_tasks(data):
 	fixed_data = list()
 	for team_data in data:
 		task = None
-		current_data = list()
+		current_data = list('na','na',0,0)
 		team_fixed = list()
 
 		for row in team_data:
@@ -141,15 +140,15 @@ def hv_table(data, label='Successes'):
 	return hv.Table(data, "Team", ['Task', label])
 
 
-def hv_stack(data, label='Successes', width=400, height=400):
-	return hv.Bars(data, ["Team", "Task"], label).opts(plot=dict(tools=['hover'], stack_index=1, legend_position="top", width=width, height=height))
+def hv_stack(data, label='', style=dict(), side='Successes', width=400, height=400):
+	return hv.Bars(data, ["Team", "Task"], side, label=label).opts(plot=dict(tools=['hover'], stack_index=1, legend_position="top", width=width, height=height), style=style)
 
 
-def hv_bar(data, label='Successes', width=400, height=400):
-	return hv.Bars(data, ["Team", "Task"], label).opts(plot=dict(tools=['hover'], legend_position="top", xrotation=45, width=width, height=height))
+def hv_bar(data, label='', style=dict(), side='Successes', width=400, height=400):
+	return hv.Bars(data, ["Team", "Task"], side, label=label).opts(plot=dict(tools=['hover'], legend_position="top", xrotation=45, width=width, height=height), style=style)
 
-def hv_box(data, label='Successes', width=400, height=400):
-	return hv.BoxWhisker(data, ["Team", "Task"], label).opts(plot=dict(tools=['hover'], legend_position="top", xrotation=45, width=width, height=height))
+def hv_box(data, label='', style=dict(), side='Successes', width=400, height=400):
+	return hv.BoxWhisker(data, ["Team", "Task"], side, label=label).opts(plot=dict(tools=['hover'], legend_position="top", xrotation=45, width=width, height=height), style=style)
 
 
 def save_view(view, name):
@@ -161,7 +160,10 @@ def save_view(view, name):
 	save(plot, config.web_data(name + '.html'), title=name)
 
 
-def test_output(data):
+def test_output(match_list, match):
+	tasks = ['placeSwitch', 'placeScale']
+	data = get_data(tasks, 'teleop', match_list)
+
 	total = flatten_success(data)
 	avg = flatten_success(average_tasks(data))
 	avg_att = flatten_attempt(average_tasks(data))
@@ -171,6 +173,23 @@ def test_output(data):
 
 
 def graph_match(match_list, match):
-    tasks = ['placeSwitch', 'placeScale']
-    red_data = get_data(tasks, match_list[:3])
-    blue_data = get_data(tasks, match_list[3:])
+    tasks = ['placeSwitch', 'placeScale', 'placeExchange']
+    red_data = get_data(tasks, 'teleop', match_list[:3])
+    blue_data = get_data(tasks, 'teleop', match_list[3:])
+    red_place_plot = hv_bar(flatten_success(average_tasks(red_data)), 'Red Cubes Placed', dict(color='red'))
+    blue_place_plot = hv_bar(flatten_success(average_tasks(blue_data)), 'Blue Cubes Placed', dict(color='blue'))
+
+    tasks = ['pickupPlatform', 'pickupCubeZone', 'pickupPortal', 'pickupExchange', 'pickupFloor']
+    red_data = get_data(tasks, 'teleop', match_list[:3])
+    blue_data = get_data(tasks, 'teleop', match_list[3:])
+    red_get_plot = hv_stack(flatten_success(average_tasks(red_data)), 'Red Pickup', dict(color='red'))
+    blue_get_plot = hv_stack(flatten_success(average_tasks(blue_data)), 'Blue Pickup', dict(color='blue'))
+
+    tasks = ['makeClimb', 'climberLocation']
+    climbs = hv_table(flatten_success(get_data(tasks, 'finish', match_list)), 'Climbs')
+
+    tasks = ['getFoul']
+    fouls = hv_box(flatten_success(get_data(tasks, 'finish', match_list)), "Fouls")
+
+    plot = hv.Layout(red_place_plot + red_get_plot + blue_place_plot + blue_get_plot + climbs + fouls).cols(4)
+    save_view(plot, 'matchData')
