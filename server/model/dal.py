@@ -29,7 +29,6 @@ def build_dicts(dim_table):
     for row in dim_res:
         name_to_id[row["name"]] = row["id"]
         id_to_name[row["id"]] = row["name"]
-[]
     dim_res.close()
     conn.close()
     return id_to_name, name_to_id

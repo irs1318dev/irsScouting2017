@@ -79,21 +79,38 @@ def manual_Entry(file):
     blue2 = list(blue2)
     blue3 = data.iloc[:, 6]
     blue3 = list(blue3)
-    red = [red1, red2, red3]
-    blue = [blue1, blue2, blue3]
+    value = 0
     conn = smc.engine.connect()
-    conn.open()
-    select = sqlalchemy.text("UPDATE status SET match =:match;")
-    conn.execute(select, match = match)
-    for row in red:
+    for elem in match:
+        r1 = int(red1[value])
+        r2 = int(red2[value])
+        r3 = int(red3[value])
+        elem = int(elem)
         select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
-                                 "VALUES (na, :match, :row, na, na, na, na);")
-        conn.execute(select, match = match, row = row)
-    for row in blue:
+                                 "VALUES ('na', :elem, :r1, 'na', 'na', 'red', 'na');")
+        conn.execute(select, elem=elem, r1=r1)
         select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
-                                 "VALUES (na, :match, :row, na, na, na, na);")
-        conn.execute(select, match = match, row = row)
+                                 "VALUES ('na', :elem, :r2, 'na', 'na', 'red', 'na');")
+        conn.execute(select, elem=elem, r2=r2)
+        select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
+                                 "VALUES ('na', :elem, :r3, 'na', 'na', 'red', 'na');")
+        conn.execute(select, elem=elem, r3=r3)
+        value = value + 1
+    value = 0
+    for elem in match:
+        b1 = int(blue1[value])
+        b2 = int(blue2[value])
+        b3 = int(blue3[value])
+        elem = int(elem)
+        select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
+                                 "VALUES ('na', :elem, :b1, 'na', 'na', 'blue', 'na');")
+        conn.execute(select, elem = elem, b1=b1)
+        select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
+                                 "VALUES ('na', :elem, :b2, 'na', 'na', 'blue', 'na');")
+        conn.execute(select, elem = elem, b2=b2)
+        select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
+                                 "VALUES ('na', :elem, :b3, 'na', 'na', 'blue', 'na');")
+        conn.execute(select, elem = elem, b3=b3)
+        value = value + 1
     conn.close()
-
-
 
