@@ -7,6 +7,7 @@ import server.scoutingapi as s_scout
 
 
 current_event = "turing"
+current_season = "2017"
 current_match = "001-q"
 
 
@@ -64,7 +65,8 @@ def check_keys(test_results, keys):
 def test_index(scouting_app):
     html = scouting_app.index()
     check_header("IRS Scouting Director", "tablets.js", html)
-    ptn = r'<h3 class = "title">Current Event: ' + current_event + r'</h3>'
+    ptn = (r'<h3 class = "title">Current Event: ' + current_event + " "
+           + current_season + r'</h3>')
     assert re.search(ptn, html) is not None
     ptn = r'<h3 class = "title">Current Match: ' + current_match + '</h3>'
     assert re.search(ptn, html) is not None
