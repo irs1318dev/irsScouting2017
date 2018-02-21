@@ -63,22 +63,16 @@ def process_sched(event, season, sched_json, level='qual'):
 
 
 # Function only works if the csv has columns in the order of match, red1, red2, red3, blue1, blue2, blue3
-def manual_Entry(file):
+def manual_Entry(file, event, season):
     data = pandas.read_csv(file)
-    match = data.iloc[:, 0]
-    match = list(match)
-    red1 = data.iloc[:, 1]
-    red1 = list(red1)
-    red2 = data.iloc[:, 2]
-    red2 = list(red2)
-    red3 = data.iloc[:, 3]
-    red3 = list(red3)
-    blue1 = data.iloc[:, 4]
-    blue1 = list(blue1)
-    blue2 = data.iloc[:, 5]
-    blue2 = list(blue2)
-    blue3 = data.iloc[:, 6]
-    blue3 = list(blue3)
+    match = list(data.iloc[:, 0])
+    red1 = list(data.iloc[:, 1])
+    red2 = list(data.iloc[:, 2])
+    red3 = list(data.iloc[:, 3])
+    blue1 = list(data.iloc[:, 4])
+    blue2 = list(data.iloc[:, 5])
+    blue3 = list(data.iloc[:, 6])
+    event_id = sm_event.EventDal.get_event_id(event, season)
     value = 0
     conn = smc.engine.connect()
     for elem in match:
@@ -86,15 +80,15 @@ def manual_Entry(file):
         r2 = int(red2[value])
         r3 = int(red3[value])
         elem = int(elem)
-        select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
-                                 "VALUES ('na', :elem, :r1, 'na', 'na', 'red', 'na');")
-        conn.execute(select, elem=elem, r1=r1)
-        select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
-                                 "VALUES ('na', :elem, :r2, 'na', 'na', 'red', 'na');")
-        conn.execute(select, elem=elem, r2=r2)
-        select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
-                                 "VALUES ('na', :elem, :r3, 'na', 'na', 'red', 'na');")
-        conn.execute(select, elem=elem, r3=r3)
+        select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
+                                 "VALUES (:elem, :r1, 'na', 'na', 'red', 'na', :event_id);")
+        conn.execute(select, elem=elem, r1=r1, event_id=event_id)
+        select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
+                                 "VALUES (:elem, :r2, 'na', 'na', 'red', 'na', :event_id);")
+        conn.execute(select, elem=elem, r2=r2, event_id=event_id)
+        select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
+                                 "VALUES (:elem, :r3, 'na', 'na', 'red', 'na', :event_id);")
+        conn.execute(select, elem=elem, r3=r3, event_id=event_id)
         value = value + 1
     value = 0
     for elem in match:
@@ -102,15 +96,15 @@ def manual_Entry(file):
         b2 = int(blue2[value])
         b3 = int(blue3[value])
         elem = int(elem)
-        select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
-                                 "VALUES ('na', :elem, :b1, 'na', 'na', 'blue', 'na');")
-        conn.execute(select, elem = elem, b1=b1)
-        select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
-                                 "VALUES ('na', :elem, :b2, 'na', 'na', 'blue', 'na');")
-        conn.execute(select, elem = elem, b2=b2)
-        select = sqlalchemy.text("INSERT INTO schedules (event, match, team, level, date, alliance, station) " +
-                                 "VALUES ('na', :elem, :b3, 'na', 'na', 'blue', 'na');")
-        conn.execute(select, elem = elem, b3=b3)
+        select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
+                                 "VALUES (:elem, :b1, 'na', 'na', 'red', 'na', :event_id);")
+        conn.execute(select, elem=elem, b1=b1, event_id=event_id)
+        select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
+                                 "VALUES (:elem, :b2, 'na', 'na', 'red', 'na', :event_id);")
+        conn.execute(select, elem=elem, b2=b2, event_id=event_id)
+        select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
+                                 "VALUES (:elem, :b3, 'na', 'na', 'red', 'na', :event_id);")
+        conn.execute(select, elem=elem, b3=b3, event_id=event_id)
         value = value + 1
     conn.close()
 

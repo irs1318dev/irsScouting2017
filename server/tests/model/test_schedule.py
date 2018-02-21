@@ -5,7 +5,7 @@ import server.model.connection as c
 
 
 def test_manual_Entry():
-    sc.manual_Entry(cfg.tests_model_test_data("manual_Entry_test.csv"))
+    sc.manual_Entry(cfg.tests_model_test_data("manual_Entry_test.csv"), 'test_manual_entry', '1642')
     select = a.text("SELECT team FROM schedules WHERE match = '999' AND team = '1742';")
     conn = c.engine.connect()
     b = conn.execute(select).scalar()
