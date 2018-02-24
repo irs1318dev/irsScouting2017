@@ -275,6 +275,7 @@ class Status(Base):
     id = Column(Integer, primary_key=True)
     event_id = Column(Integer, ForeignKey('events.id'))
     match = Column('match', String)
+    ver = Column(String)
 
 
 class TaskOptions(Base):
@@ -327,7 +328,7 @@ class Schedule(Base):
 
     id = Column(Integer, primary_key=True)
     date = Column('date', String)
-    event = Column('event', String)
+    event_id = Column(Integer)
     level = Column('level', String)
     match = Column('match', String)
     alliance = Column('alliance', String)
