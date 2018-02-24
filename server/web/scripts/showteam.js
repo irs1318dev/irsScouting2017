@@ -20,3 +20,8 @@ function processData(e) {
 		document.getElementById('matches').innerHTML = request.responseText;
 	}
 }
+
+function getMatch() {
+	var match = document.getElementById('match').value;
+	window.location = "/matchplan?match=" + match;
+}
