@@ -62,6 +62,12 @@ class Viewer:
         return open(s_config.web_sites("reset.html")).read()
 
     @cherrypy.expose
+    def eventplan(self):
+        graphing.graph_event()
+        out = open(s_config.web_data('eventData.html')).read()
+        return out 
+
+    @cherrypy.expose
     def teamplan(self, team='1318'):
         match = '001-q'
         matches = list()

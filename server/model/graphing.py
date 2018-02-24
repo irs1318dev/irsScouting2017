@@ -46,7 +46,7 @@ def get_data(tasks, phase='teleop', teams=None):
 				successes = row['successes']
 				capability = row['capability']
 
-				team_data.append([team, task, match, successes, attempts])
+				team_data.append([team, task, match, successes, attempts, capability])
 
 		teams_tasks_data.append(team_data)
 
@@ -84,13 +84,13 @@ def average_tasks(data):
 				sum += 1
 			else:
 				if task is not None:
-					team_fixed.append([row[0], current_data[1], 'na', current_data[2] / sum, current_data[3] / sum])
+					team_fixed.append([row[0], current_data[1], 'na', current_data[2] / sum, current_data[3] / sum, 'na'])
 
 				current_data = [row[0], row[1], row[3], row[4]]
 				task = row[1]
 				sum = 1
 
-		team_fixed.append([current_data[0], current_data[1], 'na', current_data[2] / sum, current_data[3] / sum])
+		team_fixed.append([current_data[0], current_data[1], 'na', current_data[2] / sum, current_data[3] / sum, 'na'])
 		fixed_data.append(team_fixed)
 	return fixed_data
 
@@ -108,12 +108,12 @@ def sum_tasks(data):
 				current_data[3] += row[4]
 			else:
 				if task is not None:
-					team_fixed.append([row[0], current_data[1], 'na', current_data[2], current_data[3]])
+					team_fixed.append([row[0], current_data[1], 'na', current_data[2], current_data[3], 'na'])
 
 				current_data = [row[0], row[1], row[3], row[4]]
 				task = row[1]
 
-		team_fixed.append([current_data[0], current_data[1], 'na', current_data[2], current_data[3]])
+		team_fixed.append([current_data[0], current_data[1], 'na', current_data[2], current_data[3], 'na'])
 		fixed_data.append(team_fixed)
 	return fixed_data
 
@@ -132,6 +132,14 @@ def flatten_attempt(data):
 	for sublist in data:
 		for item in sublist:
 			flat_list.append([item[0], item[1], item[4]])
+	return flat_list
+
+def flatten_capability(data):
+	flat_list = list()
+	for sublist in data:
+		for item in sublist:
+			if(item[5] != 'na')
+				flat_list.append([item[0], item[5], 1])
 	return flat_list
 
 
@@ -193,3 +201,17 @@ def graph_match(match_list, match):
 
     plot = hv.Layout(red_place_plot + red_get_plot + blue_place_plot + blue_get_plot + climbs + fouls).cols(4)
     save_view(plot, 'matchData')
+
+
+def graph_event():
+    tasks = ['placeSwitch', 'placeScale', 'placeExchange']
+    place_plot = hv_bar(flatten_success(average_tasks(get_data(tasks, 'teleop'))), 'Cubes Placed', width=1000)
+
+    tasks = ['climberLocation']
+    climbs = hv_stack(flatten_capability(get_data(tasks, 'finish')), 'Climbs', width=1000)
+
+    tasks = ['getFoul', 'disabled']
+    fouls = hv_box(flatten_success(get_data(tasks, 'finish')), 'Problems', width=1000)
+
+    plot = hv.Layout(place_plot + climbs + fouls).cols(1)
+    save_view(plot, 'eventData')
