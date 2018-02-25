@@ -43,12 +43,18 @@ def create_testdb():
                      (conf.test_pw, ))
 
     # Create test database
-    curr.execute("SELECT COUNT(*) FROM pg_database "
-                 "WHERE datname = %s", (conf.test_db, ))
+    # curr.execute("SELECT COUNT(*) FROM pg_database "
+    #              "WHERE datname = %s", (conf.test_db, ))
 
-    if not curr.fetchone()[0]:
-        curr.execute("CREATE DATABASE " + conf.test_db +
-                     " OWNER " + conf.test_user + ";")
+    # if not curr.fetchone()[0]:
+    # Terminate all existing connections and then drop database.
+    curr.execute("SELECT pg_terminate_backend(pg_stat_activity.pid) "
+                 "FROM pg_stat_activity "
+                 "WHERE pg_stat_activity.datname = '" + conf.test_db + "' "
+                 "AND pid <> pg_backend_pid();")
+    curr.execute("DROP DATABASE IF EXISTS " + conf.test_db + ";")
+    curr.execute("CREATE DATABASE " + conf.test_db +
+                 " OWNER " + conf.test_user + ";")
 
     curr.execute("GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public "
                  "TO " + conf.test_user)
@@ -65,6 +71,11 @@ def drop_testdb():
     conn = pool.getconn()
     conn.autocommit = True
     curr = conn.cursor()
+    # Kills all other connections to ensure database can be dropped.
+    curr.execute("SELECT pg_terminate_backend(pg_stat_activity.pid) "
+                 "FROM pg_stat_activity "
+                 "WHERE pg_stat_activity.datname = '" + conf.test_db + "' "
+                 "AND pid <> pg_backend_pid();")
     curr.execute("DROP DATABASE IF EXISTS " + conf.test_db + ";")
     curr.close()
     conn.close()

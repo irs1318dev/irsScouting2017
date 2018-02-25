@@ -3,7 +3,6 @@ import pytest
 import sqlalchemy
 
 import server.model.connection as smc
-import server.model.event as sme
 import server.model.upsert as smu
 import server.tests.conf as conf
 import server.tests.model.util as util

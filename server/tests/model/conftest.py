@@ -16,7 +16,7 @@ def test_event():
     assert results.rowcount == 1
     yield results.fetchone()
     results.close()
-    conn = sm_connection.engine.connect()
+    # conn = sm_connection.engine.connect()
     sql_del = sqlalchemy.text("DELETE FROM measures WHERE event_id = :evt_id;")
     conn.execute(sql_del, evt_id=event_id)
     sql_del = sqlalchemy.text("DELETE FROM events WHERE id = :evt_id;")

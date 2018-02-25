@@ -39,7 +39,7 @@ from sqlalchemy import UniqueConstraint
 import server.config as s_config
 import server.model
 import server.model.connection
-from server.model.upsert import upsert, upsert_rows
+from server.model.upsert import upsert, upsert_rows, upsert_cols
 
 Base = declarative_base()
 
@@ -436,7 +436,7 @@ def initialize_dimension_data():
     upsert("reasons", "name", "defended")
 
 
-def load_game_sheet(engine=server.model.connection.engine):
+def load_game_sheet(season):
     """Loads season-specific data into task_options table in database.
 
 
@@ -445,7 +445,7 @@ def load_game_sheet(engine=server.model.connection.engine):
     server_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     os.chdir(os.path.join(server_path, "season"))
 
-    file = open(s_config.season(s_config.current_season, "gametasks.csv"))
+    file = open(s_config.season(season, "gametasks.csv"))
     sheet = csv.reader(file)
 
     server.model.upsert.upsert_cols("task_options", {"task_name": "na",
@@ -465,13 +465,12 @@ def load_game_sheet(engine=server.model.connection.engine):
         conn.close()
         server.model.upsert.upsert("tasks", "name", task)
 
-        if not optionString.strip():
+        if optionString.strip():
             optionNames = optionString.split('|')
             for optionName in optionNames:
-                server.model.upsert.upsert_cols("task_options",
-                                                {'task_name': task,
-                                                 'type': 'capability',
-                                                 'option_name': optionName})
+                upsert_cols("task_options", {'task_name': task,
+                                             'type': 'capability',
+                                             'option_name': optionName.strip()})
 
     for row in sheet:
         if row[0] != "actor":
@@ -483,6 +482,6 @@ def setup():
     """
     create_tables()
     initialize_dimension_data()
-    load_game_sheet()
+    load_game_sheet("2017")
 
 # endregion

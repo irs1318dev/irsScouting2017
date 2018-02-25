@@ -37,8 +37,7 @@ def test_match_team_task(test_event):
     mt_tasks = re.split("\n", sm_match.MatchDal.match_team_tasks("001-q",
                                                                  "1983"))
     mt_tasks = [val for val in mt_tasks if val != '']
-    # assert len(mt_tasks) == 1
-    print(mt_tasks)
+
     ptn = (r'{"match": "001-q", "team": "1983", "task": "placeGear", '
            '"phase": "auto", "actor": "robot", "measuretype": "boolean", '
            '"capability": 0, "attempts": 1, "successes": 0, "cycle_times": 0}')
@@ -69,3 +68,4 @@ def test_alliance_task(test_event, schedule):
     assert row["alliance_id"] == alliance_id
     assert row["task_id"] == task_id
     results.close()
+    conn.close()
