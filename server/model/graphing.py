@@ -22,7 +22,7 @@ def get_data(tasks, phase='teleop', teams=None):
 	phase_id = sm_dal.phase_ids[phase]
 
 	if(teams is None):
-		teams = Graphing.get_teams()
+		teams = get_teams()
 
 	for team in teams:
 		team_id = sm_dal.team_ids[team]
@@ -138,7 +138,7 @@ def flatten_capability(data):
 	flat_list = list()
 	for sublist in data:
 		for item in sublist:
-			if(item[5] != 'na')
+			if(item[5] != 'na'):
 				flat_list.append([item[0], item[5], 1])
 	return flat_list
 
