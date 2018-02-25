@@ -1,3 +1,5 @@
+import re
+
 import sqlalchemy
 
 import server.model.connection
@@ -48,6 +50,8 @@ phase_names, phase_ids = build_dicts("phases")
 attempt_names, attempt_ids = build_dicts("attempts")
 reason_names, reason_ids = build_dicts("reasons")
 task_option_names, task_option_ids = build_dicts("task_options")
+task_option_options = {key: re.sub(r"^[^-]+-", "", val, count=1)
+                       for key, val in task_option_names.items()}
 
 
 def rebuild_dicts():
