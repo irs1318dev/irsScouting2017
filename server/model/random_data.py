@@ -64,6 +64,7 @@ def get_schedule(event, season):
 
 def add_poisson_measures(event, season, task, phase, mean_attempts, acc_min,
                          acc_max, print_output=True, sql_output=False):
+    assert int(season) < 2017
     schedule = get_schedule(event, season)
     for row in schedule:
         attempts = numpy.random.poisson(mean_attempts)
@@ -108,8 +109,7 @@ def add_start_positions(event, season):
 
 
 def test_add_measures():
-    add_poisson_measures("test_holoviews", "placeSwitch", "teleop", 7, 0.5, 1,
-                         sql_output=True)
+    pass
 
 
 def add_test_data():
@@ -117,6 +117,8 @@ def add_test_data():
     sm_dal.rebuild_dicts()
     create_event("test_holoviews", "1318", "turing", "2017")
     add_start_positions("test_holoviews", "1318")
+    add_poisson_measures("test_holoviews", "1318", "placeSwitch", "teleop", 7, 0.5, 1,
+                         sql_output=True)
 
 
 
