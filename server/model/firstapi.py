@@ -120,3 +120,10 @@ def match_scores(event, season, level="qual"):
     url = ("https://frc-api.firstinspires.org/v2.0/" + season + "/scores/" +
            event + "/" + level)
     return _send_http_request(url)
+
+
+def events(season):
+    url = ("https://frc-api.firstinspires.org/v2.0/" + season + "/events")
+    return _send_http_request(url)
+
+

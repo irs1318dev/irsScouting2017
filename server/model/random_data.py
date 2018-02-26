@@ -65,6 +65,7 @@ def get_schedule(event, season):
 def add_poisson_measures(event, season, task, phase, mean_attempts, acc_min,
                          acc_max, print_output=True, sql_output=False):
     assert int(season) < 2017
+    sm_event.EventDal.set_current_event(event, season)
     schedule = get_schedule(event, season)
     for row in schedule:
         attempts = numpy.random.poisson(mean_attempts)
@@ -93,6 +94,7 @@ def add_start_positions(event, season):
         season: four digit season as string
     """
     assert int(season) < 2017
+    sm_event.EventDal.set_current_event(event, season)
     start_positions = ["Exch", "Center", "NonEx"]
     random.shuffle(start_positions)
     schedule = get_schedule(event, season)
@@ -108,17 +110,93 @@ def add_start_positions(event, season):
         idx = idx + 1
 
 
+def add_enum_match_measures(event, season, task, phase, enums):
+    """Adds a measure of type enum, one per match.
+
+    Args:
+        event:
+        season:
+        task:
+        phase:
+        enums:
+
+    Returns:
+
+    """
+    assert int(season) < 2017
+    sm_event.EventDal.set_current_event(event, season)
+    schedule = get_schedule(event, season)
+
+    # Obtain set of matches with no duplicates.
+    matches = set([tm_mtch["match"] for tm_mtch in schedule])
+
+    for match in matches:
+        sm_match.MatchDal.insert_match_task("na", task, match, phase,
+                                            capability=random.choice(enums))
+
+
+def add_auto_cube_placements(event, season, scale_prob, success_prob):
+    assert int(season) < 2017
+    sm_event.EventDal.set_current_event(event, season)
+    schedule = get_schedule(event, season)
+    for tm_mtch in schedule:
+        if numpy.random.binomial(1, scale_prob, 1) == 1:
+            if numpy.random.binomial(1, success_prob, 1):
+                sm_match.MatchDal.insert_match_task(tm_mtch["team"],
+                                                    "placeScale",
+                                                    tm_mtch["match"], "auto",
+                                                    attempt_count=1,
+                                                    success_count=1)
+            else:
+                sm_match.MatchDal.insert_match_task(tm_mtch["team"],
+                                                    "placeScale",
+                                                    tm_mtch["match"], "auto",
+                                                    attempt_count=1,
+                                                    success_count=0)
+        else:
+            if numpy.random.binomial(1, success_prob, 1):
+                sm_match.MatchDal.insert_match_task(tm_mtch["team"],
+                                                    "placeSwitch",
+                                                    tm_mtch["match"], "auto",
+                                                    attempt_count=1,
+                                                    success_count=1)
+            else:
+                if numpy.random.binomial(1, success_prob, 1):
+                    sm_match.MatchDal.insert_match_task(tm_mtch["team"],
+                                                        "placeSwitch",
+                                                        tm_mtch["match"],
+                                                        "auto",
+                                                        attempt_count=1,
+                                                        success_count=0)
+
+
 def test_add_measures():
     pass
+
+
+def delete_test_data(event, season):
+    assert int(season) < 2017
+    event_id = sm_event.EventDal.get_event_id(event, season)
+    sql = sqlalchemy.text("DELETE FROM measures WHERE event_id=:evt_id;")
+    conn = sm_connection.engine.connect()
+    conn.execute(sql, evt_id=event_id)
+    conn.close()
+
 
 
 def add_test_data():
     sm_setup.load_game_sheet("2018")
     sm_dal.rebuild_dicts()
-    create_event("test_holoviews", "1318", "turing", "2017")
+    # create_event("test_holoviews", "1318", "turing", "2017")
     add_start_positions("test_holoviews", "1318")
-    add_poisson_measures("test_holoviews", "1318", "placeSwitch", "teleop", 7, 0.5, 1,
+    add_enum_match_measures("test_holoviews", "1318", "assignColors", "auto",
+                             ["RBR", "BRB", "RRR", "BBB"])
+    add_auto_cube_placements("test_holoviews", "1318", 0.2, 0.3)
+    add_poisson_measures("test_holoviews", "1318", "placeSwitch", "teleop", 7,
+                         0.5, 1,
                          sql_output=True)
+    add_poisson_measures("test_holoviews", "1318", "placeScale", "teleop", 4,
+                         0.1, 0.7, sql_output=True)
 
 
 

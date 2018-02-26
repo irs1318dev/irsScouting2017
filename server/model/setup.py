@@ -408,6 +408,7 @@ def initialize_dimension_data():
     upsert("actors", "name", "human_player")
     upsert("actors", "name", "alliance")
     upsert("actors", "name", "team")
+    upsert("actors", "name", "field")
 
     # tasks imported from game
     upsert("tasks", "name", 'na')
@@ -477,11 +478,11 @@ def load_game_sheet(season):
             _insert_into_db(row[0], row[1], row[2], row[3], row[4], row[5], row[8])
 
 
-def setup():
+def setup(season="2018"):
     """Creates tables and inserts initial dimension data.
     """
     create_tables()
     initialize_dimension_data()
-    load_game_sheet("2017")
+    load_game_sheet(season)
 
 # endregion

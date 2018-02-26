@@ -61,3 +61,7 @@ def test_tables(testdb_initialized_tables):
     test_table("attempts", (31, 2))
     test_table("reasons", (4, 2))
     test_table("task_options", (10, 4))
+
+
+def test_load_game_sheet():
+    sms.load_game_sheet("2018")

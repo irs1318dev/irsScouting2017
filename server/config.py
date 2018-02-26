@@ -20,6 +20,10 @@ def web_data(file):
     return path
 
 
+def web_firstapi(file):
+    return os.path.join(os.path.dirname(__file__), 'web', 'firstapi', file)
+
+
 def web_images(file):
     path = os.path.join(os.path.dirname(__file__), 'web', 'images', file)
     return path
