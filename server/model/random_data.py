@@ -180,6 +180,10 @@ def delete_test_data(event, season):
     sql = sqlalchemy.text("DELETE FROM measures WHERE event_id=:evt_id;")
     conn = sm_connection.engine.connect()
     conn.execute(sql, evt_id=event_id)
+    sql = sqlalchemy.text("DELETE FROM schedules WHERE event_id=:evt_id;")
+    conn.execute(sql, evt_id=event_id)
+    sql = sqlalchemy.text("DELETE FROM events WHERE id=:evt_id;")
+    conn.execute(sql, evt_id=event_id)
     conn.close()
 
 
@@ -187,7 +191,8 @@ def delete_test_data(event, season):
 def add_test_data():
     sm_setup.load_game_sheet("2018")
     sm_dal.rebuild_dicts()
-    # create_event("test_holoviews", "1318", "turing", "2017")
+    create_event("test_holoviews", "1318", "turing", "2017")
+    sm_dal.rebuild_dicts()
     add_start_positions("test_holoviews", "1318")
     add_enum_match_measures("test_holoviews", "1318", "assignColors", "auto",
                              ["RBR", "BRB", "RRR", "BBB"])
