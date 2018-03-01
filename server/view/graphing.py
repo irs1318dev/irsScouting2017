@@ -25,30 +25,31 @@ def get_data(tasks, phase='teleop', teams=None):
 		teams = get_teams()
 
 	for team in teams:
-		team_id = sm_dal.team_ids[team]
-		team_data = list()
+		if team != '':
+			team_id = sm_dal.team_ids[team]
+			team_data = list()
 
-		for task in tasks:
-			task_id = sm_dal.task_ids[task]
+			for task in tasks:
+				task_id = sm_dal.task_ids[task]
 
-			sql = text("SELECT * FROM measures WHERE "
-					   "event_id = :event_id "
-					   "AND task_id = :task_id "
-					   "AND team_id = :team_id "
-					   "AND phase_id = :phase_id;")
+				sql = text("SELECT * FROM measures WHERE "
+						   "event_id = :event_id "
+						   "AND task_id = :task_id "
+						   "AND team_id = :team_id "
+						   "AND phase_id = :phase_id LIMIT 1000;")
 
-			results = conn.execute(sql, event_id=event_id, task_id=task_id,
-								   team_id=team_id, phase_id=phase_id).fetchall()
+				results = conn.execute(sql, event_id=event_id, task_id=task_id,
+									   team_id=team_id, phase_id=phase_id).fetchall()
 
-			for row in results:
-				match = sm_dal.match_names[row['match_id']]
-				attempts = row['attempts']
-				successes = row['successes']
-				capability = row['capability']
+				for row in results:
+					match = sm_dal.match_names[row['match_id']]
+					attempts = row['attempts']
+					successes = row['successes']
+					capability = row['capability']
 
-				team_data.append([team, task, match, successes, attempts, capability])
+					team_data.append([team, task, match, successes, attempts, capability])
 
-		teams_tasks_data.append(team_data)
+			teams_tasks_data.append(team_data)
 
 	conn.close()
 	return teams_tasks_data
@@ -57,10 +58,10 @@ def get_data(tasks, phase='teleop', teams=None):
 def get_teams():
 	all_teams = list()
 	sql = text("SELECT DISTINCT team FROM schedules WHERE "
-			   "event = :event ORDER BY team;")
+			   "event_id = :event ORDER BY team;")
 
 	conn = engine.connect()
-	results = conn.execute(sql, event=event.EventDal.get_current_event())
+	results = conn.execute(sql, event=event.EventDal.get_current_event()[0])
 	conn.close()
 
 	for row in results:
@@ -116,6 +117,21 @@ def sum_tasks(data):
 		team_fixed.append([current_data[0], current_data[1], 'na', current_data[2], current_data[3], 'na'])
 		fixed_data.append(team_fixed)
 	return fixed_data
+
+def totals_team(data):
+	total_data = list()
+	for team_data in data:
+		for row in team_data:
+			found = False
+			for task in total_data:
+				if row[1] == task[1]:
+					found = True
+					task[3] += row[3]
+					task[4] += row[4]
+			if not found:
+				total_data.append(['Total', row[1], 'na', row[3], row[4], 'na'])
+	return data.append(total_data)
+
 
 
 #Configure data for visual
@@ -184,19 +200,19 @@ def graph_match(match_list, match):
     tasks = ['placeSwitch', 'placeScale', 'placeExchange']
     red_data = get_data(tasks, 'teleop', match_list[:3])
     blue_data = get_data(tasks, 'teleop', match_list[3:])
-    red_place_plot = hv_bar(flatten_success(average_tasks(red_data)), 'Red Cubes Placed', dict(color='red'))
-    blue_place_plot = hv_bar(flatten_success(average_tasks(blue_data)), 'Blue Cubes Placed', dict(color='blue'))
+    red_place_plot = hv_bar(flatten_success((average_tasks(red_data))), 'Red Cubes Placed')
+    blue_place_plot = hv_bar(flatten_success((average_tasks(blue_data))), 'Blue Cubes Placed')
 
     tasks = ['pickupPlatform', 'pickupCubeZone', 'pickupPortal', 'pickupExchange', 'pickupFloor']
     red_data = get_data(tasks, 'teleop', match_list[:3])
     blue_data = get_data(tasks, 'teleop', match_list[3:])
-    red_get_plot = hv_stack(flatten_success(average_tasks(red_data)), 'Red Pickup', dict(color='red'))
-    blue_get_plot = hv_stack(flatten_success(average_tasks(blue_data)), 'Blue Pickup', dict(color='blue'))
+    red_get_plot = hv_stack(flatten_success(average_tasks(red_data)), 'Red Pickup')
+    blue_get_plot = hv_stack(flatten_success(average_tasks(blue_data)), 'Blue Pickup')
 
     tasks = ['makeClimb', 'climberLocation']
     climbs = hv_table(flatten_success(get_data(tasks, 'finish', match_list)), 'Climbs')
 
-    tasks = ['getFoul']
+    tasks = ['getFoul', 'disabled']
     fouls = hv_box(flatten_success(get_data(tasks, 'finish', match_list)), "Fouls")
 
     plot = hv.Layout(red_place_plot + red_get_plot + blue_place_plot + blue_get_plot + climbs + fouls).cols(4)
@@ -205,7 +221,7 @@ def graph_match(match_list, match):
 
 def graph_event():
     tasks = ['placeSwitch', 'placeScale', 'placeExchange']
-    place_plot = hv_bar(flatten_success(average_tasks(get_data(tasks, 'teleop'))), 'Cubes Placed', width=1000)
+    place_plot = hv_stack(flatten_success(average_tasks(get_data(tasks, 'teleop'))), 'Cubes Placed', width=1000)
 
     tasks = ['climberLocation']
     climbs = hv_stack(flatten_capability(get_data(tasks, 'finish')), 'Climbs', width=1000)

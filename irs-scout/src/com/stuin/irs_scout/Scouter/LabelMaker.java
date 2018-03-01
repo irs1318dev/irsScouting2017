@@ -120,7 +120,7 @@ class LabelMaker {
     private boolean usePage(String observer, String position) {
         //Check if phase is to be used
         if(position.toLowerCase().contains(observer)) return true;
-        return observer.equals("match") && position.contains("Red") || position.contains("Blue");
+        return observer.equals("match") && (position.contains("Red") || position.contains("Blue"));
     }
 
     private Input makeLabel(Task task, Context context, String phase, String position) {

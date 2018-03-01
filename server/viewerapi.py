@@ -6,14 +6,14 @@ import server.scouting.export
 import server.model.event
 import server.scouting.alliance
 import server.model.match
-import server.model.graphing as graphing
+import server.view.graphing as graphing
+import server.scouting.export as export
 
 
 class Viewer:
     def __init__(self, alone=True):
         self.alone = alone
         self.alliances = server.scouting.alliance.AlliancePage()
-        self.export = server.scouting.export.ExportBackup
 
     @cherrypy.expose
     def index(self):
@@ -52,7 +52,13 @@ class Viewer:
 
     @cherrypy.expose
     def backup(self):
-        script = self.export.run_backup(
+        script = export.ExportBackup.run_backup(
+            server.model.event.EventDal.get_current_event()[1])
+        return '<a href="/view/data?name=' + script + '">Download File</a>'
+
+    @cherrypy.expose
+    def output(self):
+        script = export.ExportBackup.run_backup(
             server.model.event.EventDal.get_current_event()[1])
         return '<a href="/view/data?name=' + script + '">Download File</a>'
 
@@ -89,20 +95,25 @@ class Viewer:
     def matchplan(self, match):
         nextMatch = self.teamsList(match)
         setMatch = match
-        out = None
+        running = True
+        out = open(s_config.web_sites('graphing.html')).read()
+        out = out.replace('{Match}', match)
+        out = out.replace('{Schedule}', setMatch + ' : ' + str(self.teamsList(setMatch)) + " {After}")
 
-        while out is None:
+        while running:
             nextMatchNumber = int(match.split('-')[0]) - 1
             if nextMatchNumber > 0:
                 match = "{0:0>3}-q".format(nextMatchNumber)
 
                 for team in nextMatch:
                     if team in self.teamsList(match):
-                        out = setMatch + ' : ' + str(self.teamsList(setMatch)) + ' After ' + match
+                        running = False
+                        out =  out.replace('{After}', 'After ' + match)
+            else:
+                running = False
 
         graphing.graph_match(self.teamsList(setMatch), setMatch)
-        out += open(s_config.web_data('matchData.html')).read()
-        return out 
+        return out.replace('{Data}', open(s_config.web_data('matchData.html')).read()) 
 
 
     def teamsList(self, match):

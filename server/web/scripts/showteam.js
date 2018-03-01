@@ -23,5 +23,5 @@ function processData(e) {
 
 function getMatch() {
 	var match = document.getElementById('match').value;
-	window.location = "/matchplan?match=" + match;
+	window.location = "/view/matchplan?match=" + match;
 }
