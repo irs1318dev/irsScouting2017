@@ -138,10 +138,13 @@ class MatchDal(object):
             actor = sm_dal.actor_names[row['actor_id']]
             phase = sm_dal.phase_names[row['phase_id']]
             measuretype = sm_dal.measuretype_names[row['measuretype_id']]
-            capability = sm_dal.task_option_names[row['capability']]
+            capability = row['capability']
             attempts = row['attempts']
             successes = row['successes']
             cycle_times = row['cycle_times']
+
+            if capability > 0:
+                capability = sm_dal.task_option_names[capability]
 
             out += (json.dumps(OrderedDict([('match', match), ('team', team),
                                             ('task', task), ('phase', phase),
