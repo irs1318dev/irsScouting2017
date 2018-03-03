@@ -207,6 +207,19 @@ class EventDal(object):
         return match_details
 
     @staticmethod
+    def team_long_name(team):
+        sql = text("SELECT * FROM teams WHERE "
+                   "name = :team")
+
+        conn = engine.connect()
+        results = conn.execute(sql, team)
+        conn.close()
+
+        if len(results) == 1:
+            return results[0]['long_name']
+        return 'na'
+
+    @staticmethod
     def delete_event(event, season):
         event_id = EventDal.get_event_id(event, season)
         if EventDal.get_current_event()[0] == event_id:
