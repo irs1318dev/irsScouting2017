@@ -205,3 +205,16 @@ class EventDal(object):
         for row in results:
             match_details = dict(row)
         return match_details
+
+    @staticmethod
+    def team_long_name(team):
+        sql = text("SELECT * FROM teams WHERE "
+                   "name = :team")
+
+        conn = engine.connect()
+        results = conn.execute(sql, team)
+        conn.close()
+
+        if len(results) == 1:
+            return results[0]['long_name']
+        return 'na'
