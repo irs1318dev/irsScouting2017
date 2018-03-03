@@ -1,7 +1,3 @@
-import sys
-import os
-import re
-
 # This section is necessary for viewing plots.
 import holoviews as hv
 hv.extension('bokeh','matplotlib')
@@ -11,15 +7,19 @@ import server.model.connection
 import server.model.event as event
 import server.model.dal as sm_dal
 import server.config as config
+import server.view.dataframes as dataframes
 
 engine = server.model.connection.engine
-conn = engine.connect()
+count_df = 	None
 
-
+#Data collection
 def get_data(tasks, phase='teleop', teams=None):
 	teams_tasks_data = list()
+	conn = engine.connect()
 	event_id = event.EventDal.get_current_event()[0]
 	phase_id = sm_dal.phase_ids[phase]
+
+	count_df = dataframes.match_num_df()
 
 	if(teams is None):
 		teams = get_teams()
@@ -70,42 +70,31 @@ def get_teams():
 	return all_teams
 
 
-def get_match_count(team, match):
-	event_id = event.EventDal.get_current_event()[0]
-	count = 0
-
-	sql = text("SELECT * FROM schedules WHERE "
-	   "event_id = :event_id "
-	   "AND team = :team LIMIT 1000;")
-	results = conn.execute(sql, event_id=event_id, team=team).fetchall()
-
-	for row in results:
-		if row['match']
+def get_match_count(team):
+	return count_df.query("team=='" + team + "'")["matches"]
 
 
-
+#Process values
 def average_tasks(data):
 	fixed_data = list()
 	for team_data in data:
 		task = None
 		current_data = ['na','na',0,0]
 		team_fixed = list()
-		sum = 1
+		count = get_match_count(team_data[0][0])
 
 		for row in team_data:
 			if row[1] == task:
 				current_data[2] += row[3]
 				current_data[3] += row[4]
-				sum += 1
 			else:
 				if task is not None:
-					team_fixed.append([row[0], current_data[1], 'na', current_data[2] / sum, current_data[3] / sum, 'na'])
+					team_fixed.append([row[0], current_data[1], 'na', current_data[2] / count, current_data[3] / count, 'na'])
 
 				current_data = [row[0], row[1], row[3], row[4]]
 				task = row[1]
-				sum = 1
 
-		team_fixed.append([current_data[0], current_data[1], 'na', current_data[2] / sum, current_data[3] / sum, 'na'])
+		team_fixed.append([current_data[0], current_data[1], 'na', current_data[2] / count, current_data[3] / count, 'na'])
 		fixed_data.append(team_fixed)
 	return fixed_data
 
@@ -195,7 +184,8 @@ def save_view(view, name):
 	plot = renderer.get_plot(view).state
 
 	from bokeh.io import output_file, save, show
-	save(plot, config.web_data(name + '.html'), title=name)
+	output_file(config.web_data(name + '.html'), mode='inline')
+	save(plot, title=name)
 
 
 def test_output(match_list, match):
@@ -212,16 +202,14 @@ def test_output(match_list, match):
 
 def graph_match(match_list, match):
     tasks = ['placeSwitch', 'placeExchange', 'placeScale']
-    red_data = get_data(tasks, 'teleop', match_list[:3])
-    blue_data = get_data(tasks, 'teleop', match_list[3:])
-    red_place_plot = hv_bar(flatten_success((average_tasks(red_data))), 'Red Cubes Placed')
-    blue_place_plot = hv_bar(flatten_success((average_tasks(blue_data))), 'Blue Cubes Placed')
+    data = flatten_success(average_tasks(get_data(tasks, 'teleop', match_list)))
+    red_place_plot = hv_bar(data[:3], 'Red Cubes Placed')
+    blue_place_plot = hv_bar(data[3:], 'Blue Cubes Placed')
 
     tasks = ['pickupPlatform', 'pickupCubeZone', 'pickupPortal', 'pickupExchange', 'pickupFloor']
-    red_data = get_data(tasks, 'teleop', match_list[:3])
-    blue_data = get_data(tasks, 'teleop', match_list[3:])
-    red_get_plot = hv_stack(flatten_success(average_tasks(red_data)), 'Red Pickup')
-    blue_get_plot = hv_stack(flatten_success(average_tasks(blue_data)), 'Blue Pickup')
+    data = flatten_success(average_tasks(get_data(tasks, 'teleop', match_list)))
+    red_get_plot = hv_stack(data[:3], 'Red Pickup')
+    blue_get_plot = hv_stack(data[3:], 'Blue Pickup')
 
     tasks = ['makeClimb']
     climbs = hv_bar(flatten_success(get_data(tasks, 'finish', match_list)), 'Climbs')
