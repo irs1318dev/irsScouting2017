@@ -2,137 +2,32 @@ import datetime
 import os.path
 
 import pandas as pd
-import xlsxwriter
 
 import server.config as s_config
 import server.model.event as sm_event
-import server.view.dataframes as sv_dataframes
+import server.view.dataframes as svd
 
 
-def convert_to_excel(dataframe, event=None, season=None):
-    if event is None and season is None:
-        _, event, season = sm_event.EventDal.get_current_event()
-
-    file_name = (event + "_" + season + "_" +
+def convert_to_excel(dataframe):
+    event = sm_event.EventDal.get_current_event()
+    file_name = (event[1] + "_" + event[2] + "_" +
                  datetime.datetime.now().strftime("%Y%b%d_%H%M%S") +
                  ".xlsx")
     path_name = s_config.web_data(file_name)
     writer = pd.ExcelWriter(path_name, engine='xlsxwriter')
-    dataframe.to_excel(writer, "All", startrow=4, merge_cells=False)
+    dataframe.to_excel(writer, "All", merge_cells=False)
 
-    phase_row = 2
-    actor_row = 3
-    task_row = 4
-    stat_row = 5
-
-    label_row = 4
-    col_idx = 1
     return path_name
 
 
-def write_to_excel(num_matches=12, event=None, season=None):
-    if event is None and season is None:
-        _, event, season = sm_event.EventDal.get_current_event()
-
-    file_name = (event + "_" + season + "_" +
-                 datetime.datetime.now().strftime("%Y%b%d_%H%M%S") +
-                 ".xlsx")
-    path_name = s_config.web_data(file_name)
-    df_rnk = sv_dataframes.ranking_df(num_matches)
-    df_matches = sv_dataframes.match_num_df(num_matches)
-    wbook = xlsxwriter.Workbook(path_name)
-    wsheet1 = wbook.add_worksheet("Rankings")
-
-    phase_row = 2
-    actor_row = 3
-    task_row = 4
-    stat_row = 5
-
-    header_fmt = wbook.add_format({'bold': True})
-    percent_fmt = wbook.add_format({'num_format': "0%"})
-    num_fmt = wbook.add_format({'num_format': "0.0"})
-
-    wsheet1.write_string(stat_row, 0, "team", header_fmt)
-    teams = [int(team_num) for team_num in df_rnk.index.values]
-    wsheet1.write_column("A7", teams, header_fmt)
-
-    wsheet1.write_string(stat_row, 1, "matches", header_fmt)
-    wsheet1.write_column("B7", list(df_matches["matches"]))
-
-    headers = ["auto", "robot", "autoLine", "average"]
-    wsheet1.write_column("C3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["auto"]["robot"]["autoLine"]["avg_successes"]]
-    wsheet1.write_column("C7", data, percent_fmt)
-
-    headers = ["auto", "robot", "placeSwitch", "average"]
-    wsheet1.write_column("D3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["auto"]["robot"]["placeSwitch"]["avg_successes"]]
-    wsheet1.write_column("D7", data, num_fmt)
-
-    headers = ["auto", "robot", "placeScale", "average"]
-    wsheet1.write_column("E3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["auto"]["robot"]["placeScale"]["avg_successes"]]
-    wsheet1.write_column("E7", data, num_fmt)
-
-    headers = ["tele", "robot", "placeSwitch", "average"]
-    wsheet1.write_column("F3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["placeSwitch"]["avg_successes"]]
-    wsheet1.write_column("F7", data, num_fmt)
-
-    headers = ["tele", "robot", "placeSwitch", "max"]
-    wsheet1.write_column("G3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["placeSwitch"]["max_successes"]]
-    wsheet1.write_column("G7", data, num_fmt)
-
-    headers = ["tele", "robot", "placeScale", "average"]
-    wsheet1.write_column("H3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["placeScale"]["avg_successes"]]
-    wsheet1.write_column("H7", data, num_fmt)
-
-    headers = ["tele", "robot", "placeScale", "max"]
-    wsheet1.write_column("I3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["placeScale"]["max_successes"]]
-    wsheet1.write_column("I7", data, num_fmt)
-
-    headers = ["tele", "robot", "pickupFloor", "average"]
-    wsheet1.write_column("J3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["pickupFloor"]["avg_successes"]]
-    wsheet1.write_column("J7", data, num_fmt)
-
-    headers = ["tele", "robot", "pickupFloor", "max"]
-    wsheet1.write_column("K3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["pickupFloor"]["max_successes"]]
-    wsheet1.write_column("K7", data, num_fmt)
-
-    headers = ["tele", "robot", "pickupExchange", "average"]
-    wsheet1.write_column("L3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["pickupFloor"]["avg_successes"]]
-    wsheet1.write_column("L7", data, num_fmt)
-
-    headers = ["tele", "robot", "pickupExchange", "max"]
-    wsheet1.write_column("M3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["pickupFloor"]["max_successes"]]
-    wsheet1.write_column("M7", data, num_fmt)
+def get_Basic_Ranking(name):
+    return get_rankings(name, ['moveBaseline', 'placeGear', 'shootHighBoiler', 'shootLowBoiler'])
 
 
-    wbook.close()
-
-
-def _nan_to_zero(elmt):
-    return 0 if pd.isnull(elmt) else elmt
-
-
+def get_Path(start):
+    ts = datetime.datetime.now().strftime("%Y%b%d_%H%M%S")
+    excel = start + '_' + event.EventDal.get_current_event()[1] + ts + '.xlsx'
+    return 'web/data/' + excel
 
 
 def get_report(name):
