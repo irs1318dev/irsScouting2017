@@ -13,11 +13,11 @@ import server.model.dal as sm_dal
 import server.config as config
 
 engine = server.model.connection.engine
+conn = engine.connect()
 
 
 def get_data(tasks, phase='teleop', teams=None):
 	teams_tasks_data = list()
-	conn = engine.connect()
 	event_id = event.EventDal.get_current_event()[0]
 	phase_id = sm_dal.phase_ids[phase]
 
@@ -68,6 +68,20 @@ def get_teams():
 		all_teams.append(str(row).split('\'')[1])
 
 	return all_teams
+
+
+def get_match_count(team, match):
+	event_id = event.EventDal.get_current_event()[0]
+	count = 0
+
+	sql = text("SELECT * FROM schedules WHERE "
+	   "event_id = :event_id "
+	   "AND team = :team LIMIT 1000;")
+	results = conn.execute(sql, event_id=event_id, team=team).fetchall()
+
+	for row in results:
+		if row['match']
+
 
 
 def average_tasks(data):
@@ -197,7 +211,7 @@ def test_output(match_list, match):
 
 
 def graph_match(match_list, match):
-    tasks = ['placeSwitch', 'placeScale', 'placeExchange']
+    tasks = ['placeSwitch', 'placeExchange', 'placeScale']
     red_data = get_data(tasks, 'teleop', match_list[:3])
     blue_data = get_data(tasks, 'teleop', match_list[3:])
     red_place_plot = hv_bar(flatten_success((average_tasks(red_data))), 'Red Cubes Placed')
@@ -209,18 +223,18 @@ def graph_match(match_list, match):
     red_get_plot = hv_stack(flatten_success(average_tasks(red_data)), 'Red Pickup')
     blue_get_plot = hv_stack(flatten_success(average_tasks(blue_data)), 'Blue Pickup')
 
-    tasks = ['makeClimb', 'climberLocation']
-    climbs = hv_table(flatten_success(get_data(tasks, 'finish', match_list)), 'Climbs')
+    tasks = ['makeClimb']
+    climbs = hv_bar(flatten_success(get_data(tasks, 'finish', match_list)), 'Climbs')
 
     tasks = ['getFoul', 'disabled']
-    fouls = hv_box(flatten_success(get_data(tasks, 'finish', match_list)), "Fouls")
+    fouls = hv_bar(flatten_success(get_data(tasks, 'finish', match_list)), "Fouls")
 
-    plot = hv.Layout(red_place_plot + red_get_plot + blue_place_plot + blue_get_plot + climbs + fouls).cols(4)
+    plot = hv.Layout(red_place_plot + red_get_plot + blue_place_plot + blue_get_plot + climbs + fouls).cols(2)
     save_view(plot, 'matchData')
 
 
 def graph_event():
-    tasks = ['placeSwitch', 'placeScale', 'placeExchange']
+    tasks = ['placeSwitch', 'placeExchange', 'placeScale']
     place_plot = hv_stack(flatten_success(average_tasks(get_data(tasks, 'teleop'))), 'Cubes Placed', width=1000)
 
     tasks = ['climberLocation']
