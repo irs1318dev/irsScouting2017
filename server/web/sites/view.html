@@ -16,17 +16,33 @@
             <h3>Data</h3>
             <a href="/web/images/Six team.png">Six Team</a><br>
             <a href="/view/backup">Backup Data</a><br>
+            <a href="/view/output">Output Excel</a><br>
             <a href="/view/eventplan">Full event</a><br>
         </fieldset>
 		
 		<h3>Team Schedule</h3>
 		
 		<fieldset>
-            <input type="text" id="match" name="Match Number" value="001-q"/>
+            <input type="text" id="match" name="Match Number" value="{Match}"/>
             <input type="submit" value="Show Match" onclick="getMatch();"/><br>
 			<input type="text" id="team" name="Team Number" value="1318"/>
 			<input type="submit" value="Show Team" onclick="loadTeam();"/>
-			<h5 id="matches"></h5>
-		</fieldset>
+		</fieldset><br>
+
+        <fieldset>
+            <table>
+                <tr class="Red">
+                    <td class="Red"><input type="text" id="Red1"/></td>
+                    <td class="Red"><input type="text" id="Red2"/></td>
+                    <td class="Red"><input type="text" id="Red3"/></td>
+                </tr>
+                <tr class="Blue">
+                    <td class="Blue"><input type="text" id="Blue1"/></td>
+                    <td class="Blue"><input type="text" id="Blue2"/></td>
+                    <td class="Blue"><input type="text" id="Blue3"/></td>
+                </tr>
+            </table>
+            <input type="submit" value="Get custom match" onclick="customMatch();"/>
+        </fieldset>
     </body>
 </html>
