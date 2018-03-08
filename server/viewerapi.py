@@ -7,7 +7,7 @@ import server.model.event as event
 import server.scouting.alliance
 import server.model.match as match
 import server.view.graphing as graphing
-#import server.view.excel as excel
+import server.view.excel as excel
 import server.scouting.export as export
 
 
@@ -61,7 +61,7 @@ class Viewer:
     @cherrypy.expose
     def output(self):
         script = ''
-        #script = excel.write_to_excel()
+        script = excel.write_to_excel()
         return '<a href="/view/data?name=' + script + '">Download File</a>'
 
     @cherrypy.expose
