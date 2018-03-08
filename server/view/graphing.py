@@ -135,10 +135,24 @@ def graph_match(match_list):
 	red_place_plot = hv_bar(filter_teams(data, match_list[:3]), 'Red Cubes Placed')
 	blue_place_plot = hv_bar(filter_teams(data, match_list[3:]), 'Blue Cubes Placed')
 
-	tasks = ['pickupPlatform', 'pickupCubeZone', 'pickupPortal', 'pickupExchange', 'pickupFloor']
-	data = get_list(df_rnk, tasks)
-	red_get_plot = hv_stack(filter_teams(data, match_list[:3]), 'Red Pickup')
-	blue_get_plot = hv_stack(filter_teams(data, match_list[3:]), 'Blue Pickup')
+	tasks = ['pickupPlatform', 'pickupCubeZone', 'pickupPortal', 'pickupExchange']
+	team_sums = get_column(df_rnk, 'pickupFloor', 'teleop', 'sum_successes', task_rename='pickupTotal')
+	pickup_max = get_column(df_rnk, 'pickupFloor', 'teleop', 'sum_successes')
+	for location in tasks:
+		data = get_column(df_rnk, location, 'teleop', 'sum_successes')
+		for i in range(len(pickup_max)):
+			if data[i][2] > pickup_max[i][2]:
+				pickup_max[i] = data[i]
+			team_sums[i][2] += data[i][2]
+
+	for i in range(len(pickup_max)):
+		if team_sums[i][2] != 0:
+			pickup_max[i][2] = str(pickup_max[i][2] / team_sums[i][2] * 100) + '%'
+		else:
+			pickup_max[i][2] = '0%'
+
+	red_get_plot = hv_table(filter_teams(pickup_max, match_list[:3]), 'Red Pickup')
+	blue_get_plot = hv_table(filter_teams(pickup_max, match_list[3:]), 'Blue Pickup')
 
 	tasks = ['makeClimb', 'getFoul', 'disabled']
 	data = get_list(df_rnk, tasks, 'finish', 'sum_successes')
