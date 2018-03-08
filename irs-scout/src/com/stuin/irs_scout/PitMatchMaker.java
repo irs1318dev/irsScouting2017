@@ -5,8 +5,6 @@ import com.google.gson.Gson;
 import com.stuin.cleanvisuals.Request;
 import com.stuin.irs_scout.Data.Measure;
 import com.stuin.irs_scout.Data.PitMatch;
-import com.stuin.irs_scout.MainActivity;
-import com.stuin.irs_scout.MatchMaker;
 import com.stuin.irs_scout.Scouter.PageManager;
 
 import java.util.ArrayDeque;

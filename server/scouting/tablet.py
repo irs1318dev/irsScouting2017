@@ -73,15 +73,15 @@ class TabletList(object):
         return True
 
     def get_address(self):
-        ipv4s = [i[4][0] for i in socket.getaddrinfo(socket.gethostname(), None)]
+        ipv4s = [i[4][0] for i in socket.getaddrinfo(socket.gethostname(), None)][0::3]
         unlinked = list()
 
         for ip in ipv4s:
             linked = False
             for tablet in self.alltablets:
-                if ip is tablet.ip:
+                if str(ip) in str(tablet.ip):
                     linked = True
             if not linked:
                 unlinked.append(ip)
 
-        return ipv4s
+        return ipv4s, unlinked

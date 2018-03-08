@@ -3,10 +3,11 @@ from cherrypy.lib.static import serve_file
 import os.path
 import server.config as s_config
 import server.scouting.export
-import server.model.event
+import server.model.event as event
 import server.scouting.alliance
-import server.model.match
+import server.model.match as match
 import server.view.graphing as graphing
+#import server.view.excel as excel
 import server.scouting.export as export
 
 
@@ -23,6 +24,7 @@ class Viewer:
             out = out.replace('{Back}', '')
         else:
             out = out.replace('{Back}', '<h3><a href="/">Scouting Director</a></h3>')
+        out = out.replace('{Match}', event.EventDal.get_current_match())
 
         return out
 
@@ -58,8 +60,8 @@ class Viewer:
 
     @cherrypy.expose
     def output(self):
-        script = export.ExportBackup.run_backup(
-            server.model.event.EventDal.get_current_event()[1])
+        script = ''
+        #script = excel.write_to_excel()
         return '<a href="/view/data?name=' + script + '">Download File</a>'
 
     @cherrypy.expose
@@ -70,8 +72,7 @@ class Viewer:
     @cherrypy.expose
     def eventplan(self):
         graphing.graph_event()
-        out = open(s_config.web_data('eventData.html')).read()
-        return out 
+        return open(s_config.web_data('eventData.html')).read() 
 
     @cherrypy.expose
     def teamplan(self, team='1318'):
@@ -98,7 +99,7 @@ class Viewer:
         running = True
         out = open(s_config.web_sites('graphing.html')).read()
         out = out.replace('{Match}', match)
-        out = out.replace('{Schedule}', setMatch + ' : ' + str(self.teamsList(setMatch)) + " {After}")
+        out = out.replace('{Schedule}', setMatch + ' : ' + str(self.teamsList(setMatch)))
 
         while running:
             nextMatchNumber = int(match.split('-')[0]) - 1
@@ -108,11 +109,23 @@ class Viewer:
                 for team in nextMatch:
                     if team in self.teamsList(match):
                         running = False
-                        out =  out.replace('{After}', 'After ' + match)
+                        out =  out.replace('{After}', 'Final After: ' + match + ' Updated: ' + event.EventDal.get_current_match())
             else:
                 running = False
+                out =  out.replace('{After}', 'Updated: ' + event.EventDal.get_current_match())
 
-        graphing.graph_match(self.teamsList(setMatch), setMatch)
+        graphing.graph_match(self.teamsList(setMatch))
+        return out.replace('{Data}', open(s_config.web_data('matchData.html')).read()) 
+
+    @cherrypy.expose
+    def customplan(self, red1, red2, red3, blue1, blue2, blue3):
+        out = open(s_config.web_sites('graphing.html')).read()
+        teams = [red1, red2, red3, blue1, blue2, blue3]
+        out = out.replace('{Match}', 'Custom')
+        out = out.replace('{Schedule}', str(teams))
+        out = out.replace('{After}', 'Updated: ' + event.EventDal.get_current_match())
+
+        graphing.graph_match(teams)
         return out.replace('{Data}', open(s_config.web_data('matchData.html')).read()) 
 
 

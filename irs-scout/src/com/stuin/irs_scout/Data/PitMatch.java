@@ -8,6 +8,7 @@ public class PitMatch extends Match {
     public int position = 0;
 
     PitMatch() {
+        super();
         teams = new String[0];
     }
 
