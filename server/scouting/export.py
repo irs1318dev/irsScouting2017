@@ -2,6 +2,7 @@ import server.model.connection
 import os
 import datetime
 import subprocess
+import server.config
 
 engine = server.model.connection.engine
 conn = engine.connect()
@@ -47,7 +48,7 @@ class ExportBackup(object):
         name = event + datetime.datetime.now().strftime('_%Y_%m%d_%H%M')
         command = ['pg_dump', '-U', 'irs1318', 'scouting']
 
-        subprocess.call(command, stdout=open('web/data/' + name, 'w'))
+        subprocess.call(command, stdout=open(server.config.web_data(name), 'w'))
         return name
 
     @staticmethod

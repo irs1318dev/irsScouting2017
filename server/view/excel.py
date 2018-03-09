@@ -33,7 +33,6 @@ def convert_to_excel(dataframe, event=None, season=None):
 def write_to_excel(num_matches=12, event=None, season=None):
     if event is None and season is None:
         _, event, season = sm_event.EventDal.get_current_event()
-
     file_name = (event + "_" + season + "_" +
                  datetime.datetime.now().strftime("%Y%b%d_%H%M%S") +
                  ".xlsx")
@@ -41,11 +40,8 @@ def write_to_excel(num_matches=12, event=None, season=None):
     df_rnk = sv_dataframes.ranking_df(num_matches)
     df_matches = sv_dataframes.match_num_df(num_matches)
     wbook = xlsxwriter.Workbook(path_name)
-    wsheet1 = wbook.add_worksheet("Rankings")
 
-    phase_row = 2
-    actor_row = 3
-    task_row = 4
+    wsheet1 = wbook.add_worksheet("Rankings")
     stat_row = 5
 
     header_fmt = wbook.add_format({'bold': True})
@@ -59,71 +55,79 @@ def write_to_excel(num_matches=12, event=None, season=None):
     wsheet1.write_string(stat_row, 1, "matches", header_fmt)
     wsheet1.write_column("B7", list(df_matches["matches"]))
 
-    headers = ["auto", "robot", "autoLine", "average"]
-    wsheet1.write_column("C3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["auto"]["robot"]["autoLine"]["avg_successes"]]
-    wsheet1.write_column("C7", data, percent_fmt)
+    def _write_col(col_idx, phase, actor, task, stat, data_format,
+                  task_label=None, stat_label=None):
 
-    headers = ["auto", "robot", "placeSwitch", "average"]
-    wsheet1.write_column("D3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["auto"]["robot"]["placeSwitch"]["avg_successes"]]
-    wsheet1.write_column("D7", data, num_fmt)
+        cols = ["C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+                "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+                "AA", "AB", "AC", "AD", "AE", "AF"]
 
-    headers = ["auto", "robot", "placeScale", "average"]
-    wsheet1.write_column("E3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["auto"]["robot"]["placeScale"]["avg_successes"]]
-    wsheet1.write_column("E7", data, num_fmt)
+        headers = [phase, actor, task if task_label is None else task_label,
+                   stat if stat_label is None else stat_label]
+        try:
+            data = [_nan_to_zero(x) for x
+                    in df_rnk[phase][actor][task][stat]]
+        except KeyError:
+            print("ERROR: ", phase, actor, task, stat)
+            return col_idx
+        wsheet1.write_column(cols[col_idx] + "3", headers, header_fmt)
+        wsheet1.write_column(cols[col_idx] + "7", data, data_format)
 
-    headers = ["tele", "robot", "placeSwitch", "average"]
-    wsheet1.write_column("F3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["placeSwitch"]["avg_successes"]]
-    wsheet1.write_column("F7", data, num_fmt)
+        return col_idx + 1
 
-    headers = ["tele", "robot", "placeSwitch", "max"]
-    wsheet1.write_column("G3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["placeSwitch"]["max_successes"]]
-    wsheet1.write_column("G7", data, num_fmt)
 
-    headers = ["tele", "robot", "placeScale", "average"]
-    wsheet1.write_column("H3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["placeScale"]["avg_successes"]]
-    wsheet1.write_column("H7", data, num_fmt)
 
-    headers = ["tele", "robot", "placeScale", "max"]
-    wsheet1.write_column("I3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["placeScale"]["max_successes"]]
-    wsheet1.write_column("I7", data, num_fmt)
+    col_idx = 0
 
-    headers = ["tele", "robot", "pickupFloor", "average"]
-    wsheet1.write_column("J3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["pickupFloor"]["avg_successes"]]
-    wsheet1.write_column("J7", data, num_fmt)
+    col_idx = _write_col(col_idx, "auto", "robot", "autoLine",
+                         "avg_successes", percent_fmt, stat_label="average")
+    col_idx = _write_col(col_idx, "auto", "robot", "placeSwitch",
+                         "avg_successes", num_fmt, stat_label="average")
+    col_idx = _write_col(col_idx, "auto", "robot", "placeScale",
+                         "avg_successes", num_fmt, stat_label="average")
+    col_idx = _write_col(col_idx, "teleop", "robot", "placeSwitch",
+                         "avg_successes", num_fmt, stat_label="average")
+    col_idx = _write_col(col_idx, "teleop", "robot", "placeSwitch",
+                         "max_successes", num_fmt, stat_label="max")
 
-    headers = ["tele", "robot", "pickupFloor", "max"]
-    wsheet1.write_column("K3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["pickupFloor"]["max_successes"]]
-    wsheet1.write_column("K7", data, num_fmt)
+    col_idx = _write_col(col_idx, "teleop", "robot", "placeScale",
+                         "avg_successes", num_fmt, stat_label="average")
+    col_idx = _write_col(col_idx, "teleop", "robot", "placeScale",
+                         "max_successes", num_fmt, stat_label="max")
 
-    headers = ["tele", "robot", "pickupExchange", "average"]
-    wsheet1.write_column("L3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["pickupFloor"]["avg_successes"]]
-    wsheet1.write_column("L7", data, num_fmt)
 
-    headers = ["tele", "robot", "pickupExchange", "max"]
-    wsheet1.write_column("M3", headers, header_fmt)
-    data = [_nan_to_zero(x) for x in
-            df_rnk["teleop"]["robot"]["pickupFloor"]["max_successes"]]
-    wsheet1.write_column("M7", data, num_fmt)
+    col_idx = _write_col(col_idx, "teleop", "robot", "placeExchange",
+                         "avg_successes", num_fmt, stat_label="average")
+    col_idx = _write_col(col_idx, "teleop", "robot", "placeExchange",
+                         "max_successes", num_fmt, stat_label="max")
+
+    col_idx = _write_col(col_idx, "teleop", "robot", "pickupFloor",
+                         "avg_successes", num_fmt, stat_label="average")
+    col_idx = _write_col(col_idx, "teleop", "robot", "pickupFloor",
+                         "max_successes", num_fmt, stat_label="max")
+    col_idx = _write_col(col_idx, "teleop", "robot", "pickupExchange",
+                         "avg_successes", num_fmt, stat_label="average")
+    col_idx = _write_col(col_idx, "teleop", "robot", "pickupExchange",
+                         "max_successes", num_fmt, stat_label="max")
+    col_idx = _write_col(col_idx, "teleop", "robot", "pickupCubeZone",
+                         "avg_successes", num_fmt, stat_label="average")
+    col_idx = _write_col(col_idx, "teleop", "robot", "pickupCubeZone",
+                         "max_successes", num_fmt, stat_label="max")
+
+    col_idx = _write_col(col_idx, "finish", "robot", "parkPlatform",
+                         "avg_successes", percent_fmt, stat_label="average")
+
+    col_idx = _write_col(col_idx, "finish", "robot", "makeClimb",
+                         "avg_successes", percent_fmt, stat_label="average")
+
+    col_idx = _write_col(col_idx, "finish", "robot", "disabled",
+                        "avg_attempts", num_fmt, stat_label="temp_avg")
+
+    col_idx = _write_col(col_idx, "finish", "robot", "disabled",
+                        "avg_successes", num_fmt, stat_label="perm_avg")
+
+
+
 
 
     wbook.close()
@@ -131,6 +135,10 @@ def write_to_excel(num_matches=12, event=None, season=None):
 
 def _nan_to_zero(elmt):
     return 0 if pd.isnull(elmt) else elmt
+
+
+
+
 
 
 

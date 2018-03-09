@@ -1,8 +1,5 @@
-import sys
-import os
-import re
-
 # This section is necessary for viewing plots.
+import pandas as pd
 import holoviews as hv
 hv.extension('bokeh','matplotlib')
 from sqlalchemy import text
@@ -11,48 +8,13 @@ import server.model.connection
 import server.model.event as event
 import server.model.dal as sm_dal
 import server.config as config
+import server.view.dataframes as sv_dataframes
 
 engine = server.model.connection.engine
 
-
-def get_data(tasks, phase='teleop', teams=None):
-	teams_tasks_data = list()
-	conn = engine.connect()
-	event_id = event.EventDal.get_current_event()[0]
-	phase_id = sm_dal.phase_ids[phase]
-
-	if(teams is None):
-		teams = get_teams()
-
-	for team in teams:
-		if team != '':
-			team_id = sm_dal.team_ids[team]
-			team_data = list()
-
-			for task in tasks:
-				task_id = sm_dal.task_ids[task]
-
-				sql = text("SELECT * FROM measures WHERE "
-						   "event_id = :event_id "
-						   "AND task_id = :task_id "
-						   "AND team_id = :team_id "
-						   "AND phase_id = :phase_id LIMIT 1000;")
-
-				results = conn.execute(sql, event_id=event_id, task_id=task_id,
-									   team_id=team_id, phase_id=phase_id).fetchall()
-
-				for row in results:
-					match = sm_dal.match_names[row['match_id']]
-					attempts = row['attempts']
-					successes = row['successes']
-					capability = row['capability']
-
-					team_data.append([team, task, match, successes, attempts, capability])
-
-			teams_tasks_data.append(team_data)
-
-	conn.close()
-	return teams_tasks_data
+#Data collection
+def get_dataframe():
+	return sv_dataframes.ranking_df(12)
 
 
 def get_teams():
@@ -70,93 +32,73 @@ def get_teams():
 	return all_teams
 
 
-def average_tasks(data):
-	fixed_data = list()
-	for team_data in data:
-		task = None
-		current_data = ['na','na',0,0]
-		team_fixed = list()
-		sum = 1
-
-		for row in team_data:
-			if row[1] == task:
-				current_data[2] += row[3]
-				current_data[3] += row[4]
-				sum += 1
-			else:
-				if task is not None:
-					team_fixed.append([row[0], current_data[1], 'na', current_data[2] / sum, current_data[3] / sum, 'na'])
-
-				current_data = [row[0], row[1], row[3], row[4]]
-				task = row[1]
-				sum = 1
-
-		team_fixed.append([current_data[0], current_data[1], 'na', current_data[2] / sum, current_data[3] / sum, 'na'])
-		fixed_data.append(team_fixed)
-	return fixed_data
+def _nan_to_zero(elmt):
+    return 0 if pd.isnull(elmt) else elmt
 
 
-def sum_tasks(data):
-	fixed_data = list()
-	for team_data in data:
-		task = None
-		current_data = list('na','na',0,0)
-		team_fixed = list()
+#Data organizing
+def get_column(df_rnk, task, phase='teleop', stat='avg_successes', actor='robot', task_rename=None):
+	try:
+		data = [_nan_to_zero(x) for x in df_rnk[phase][actor][task][stat]]
+	except KeyError:
+		print("ERROR: ", phase, actor, task, stat)
+		return list()
 
-		for row in team_data:
-			if row[1] == task:
-				current_data[2] += row[3]
-				current_data[3] += row[4]
-			else:
-				if task is not None:
-					team_fixed.append([row[0], current_data[1], 'na', current_data[2], current_data[3], 'na'])
+	if task_rename is None:
+		task_rename = task
+	all_data = list()
+	i = 0
+	for team_num in df_rnk.index.values:
+		all_data.append([team_num, task_rename, data[i]])
+		i += 1
 
-				current_data = [row[0], row[1], row[3], row[4]]
-				task = row[1]
-
-		team_fixed.append([current_data[0], current_data[1], 'na', current_data[2], current_data[3], 'na'])
-		fixed_data.append(team_fixed)
-	return fixed_data
-
-def totals_team(data):
-	total_data = list()
-	for team_data in data:
-		for row in team_data:
-			found = False
-			for task in total_data:
-				if row[1] == task[1]:
-					found = True
-					task[3] += row[3]
-					task[4] += row[4]
-			if not found:
-				total_data.append(['Total', row[1], 'na', row[3], row[4], 'na'])
-	return data.append(total_data)
+	return all_data
 
 
+def combine_tasks(all_data_cols):
+	combined_data = list()
+	max_count = 0
+	for col in all_data_cols:
+		max_count = max(max_count, len(col))
 
-#Configure data for visual
-def flatten_success(data):
-	flat_list = list()
-	for sublist in data:
-		for item in sublist:
-			flat_list.append([item[0], item[1], item[3]])
-	return flat_list
+	if len(all_data_cols) > 0:
+		for i in range(max_count):
+			for col in all_data_cols:
+				if i < len(col):
+					combined_data.append(col[i])
+	return combined_data
 
 
-def flatten_attempt(data):
-	flat_list = list()
-	for sublist in data:
-		for item in sublist:
-			flat_list.append([item[0], item[1], item[4]])
-	return flat_list
+def get_list(df_rnk, tasks, phase='teleop', stat='avg_successes', actor='robot'):
+	all_data_cols = list()
+	for task in tasks:
+		all_data_cols.append(get_column(df_rnk, task, phase, stat, actor))
+	return combine_tasks(all_data_cols)
 
-def flatten_capability(data):
-	flat_list = list()
-	for sublist in data:
-		for item in sublist:
-			if(item[5] != 'na'):
-				flat_list.append([item[0], item[5], 1])
-	return flat_list
+
+def filter_teams(data, teams=None):
+	filtered_data = list()
+
+	if(teams is None):
+		teams = get_teams()
+
+	for team in teams:
+		for row in data:
+			if row[0] == team:
+				filtered_data.append(row)
+
+	return filtered_data
+
+
+def sorted_teams(col, hide_zeros=True):
+	if hide_zeros:
+		col = filter_teams(col, scoring_teams(col))
+	sorted_list = sorted(col, key=lambda x: x[2], reverse=True)
+	return [ x[0] for x in sorted_list ]
+
+
+def scoring_teams(col):
+	return  [ x[0] for x in col if x[2] > 0 ]
 
 
 #Holoviews generation
@@ -165,7 +107,7 @@ def hv_table(data, label='Successes'):
 
 
 def hv_stack(data, label='', style=dict(), side='Successes', width=400, height=400):
-	return hv.Bars(data, ["Team", "Task"], side, label=label).opts(plot=dict(tools=['hover'], stack_index=1, legend_position="top", width=width, height=height), style=style)
+	return hv.Bars(data, ["Team", "Task"], side, label=label).opts(plot=dict(tools=['hover'], stack_index=1, legend_position="top", xrotation=45, width=width, height=height), style=style)
 
 
 def hv_bar(data, label='', style=dict(), side='Successes', width=400, height=400):
@@ -181,53 +123,46 @@ def save_view(view, name):
 	plot = renderer.get_plot(view).state
 
 	from bokeh.io import output_file, save, show
-	save(plot, config.web_data(name + '.html'), title=name)
+	output_file(config.web_data(name + '.html'), mode='inline')
+	save(plot, title=name)
 
 
-def test_output(match_list, match):
-	tasks = ['placeSwitch', 'placeScale']
-	data = get_data(tasks, 'teleop', match_list)
+def graph_match(match_list):
+	df_rnk = get_dataframe()
 
-	total = flatten_success(data)
-	avg = flatten_success(average_tasks(data))
-	avg_att = flatten_attempt(average_tasks(data))
+	tasks = ['placeSwitch', 'placeExchange', 'placeScale']
+	data = get_list(df_rnk, tasks)
+	red_place_plot = hv_bar(filter_teams(data, match_list[:3]), 'Red Cubes Placed')
+	blue_place_plot = hv_bar(filter_teams(data, match_list[3:]), 'Blue Cubes Placed')
 
-	plot = hv_table(total) + hv_stack(avg) + hv_bar(avg) + hv_box(total)
-	save_view(plot, 'test')
+	tasks = ['pickupPlatform', 'pickupCubeZone', 'pickupPortal', 'pickupExchange', 'pickupFloor']
+	data = get_list(df_rnk, tasks)
+	red_get_plot = hv_stack(filter_teams(data, match_list[:3]), 'Red Pickup')
+	blue_get_plot = hv_stack(filter_teams(data, match_list[3:]), 'Blue Pickup')
 
+	tasks = ['makeClimb', 'getFoul', 'disabled']
+	data = get_list(df_rnk, tasks, 'finish', 'sum_successes')
+	red_extra = hv_table(filter_teams(data, match_list[:3]), 'Red Other')
+	blue_extra = hv_table(filter_teams(data, match_list[3:]), 'Blue Other')
 
-def graph_match(match_list, match):
-    tasks = ['placeSwitch', 'placeScale', 'placeExchange']
-    red_data = get_data(tasks, 'teleop', match_list[:3])
-    blue_data = get_data(tasks, 'teleop', match_list[3:])
-    red_place_plot = hv_bar(flatten_success((average_tasks(red_data))), 'Red Cubes Placed')
-    blue_place_plot = hv_bar(flatten_success((average_tasks(blue_data))), 'Blue Cubes Placed')
-
-    tasks = ['pickupPlatform', 'pickupCubeZone', 'pickupPortal', 'pickupExchange', 'pickupFloor']
-    red_data = get_data(tasks, 'teleop', match_list[:3])
-    blue_data = get_data(tasks, 'teleop', match_list[3:])
-    red_get_plot = hv_stack(flatten_success(average_tasks(red_data)), 'Red Pickup')
-    blue_get_plot = hv_stack(flatten_success(average_tasks(blue_data)), 'Blue Pickup')
-
-    tasks = ['makeClimb', 'climberLocation']
-    climbs = hv_table(flatten_success(get_data(tasks, 'finish', match_list)), 'Climbs')
-
-    tasks = ['getFoul', 'disabled']
-    fouls = hv_box(flatten_success(get_data(tasks, 'finish', match_list)), "Fouls")
-
-    plot = hv.Layout(red_place_plot + red_get_plot + blue_place_plot + blue_get_plot + climbs + fouls).cols(4)
-    save_view(plot, 'matchData')
+	plot = hv.Layout(red_place_plot + blue_place_plot + red_get_plot + blue_get_plot + red_extra + blue_extra).cols(2)
+	save_view(plot, 'matchData')
 
 
 def graph_event():
-    tasks = ['placeSwitch', 'placeScale', 'placeExchange']
-    place_plot = hv_stack(flatten_success(average_tasks(get_data(tasks, 'teleop'))), 'Cubes Placed', width=1000)
+	df_rnk = get_dataframe()
 
-    tasks = ['climberLocation']
-    climbs = hv_stack(flatten_capability(get_data(tasks, 'finish')), 'Climbs', width=1000)
+	tasks = ['placeSwitch', 'placeExchange', 'placeScale']
+	data = get_list(df_rnk, tasks)
+	place_plot = hv_stack(filter_teams(data), 'Cubes Placed', width=1000)
 
-    tasks = ['getFoul', 'disabled']
-    fouls = hv_box(flatten_success(get_data(tasks, 'finish')), 'Problems', width=1000)
+	success = get_column(df_rnk, 'makeClimb', 'finish', 'sum_successes')
+	attempt = get_column(df_rnk, 'makeClimb', 'finish', 'sum_attempts', task_rename='attemptClimb')
+	climbs = hv_bar(filter_teams(combine_tasks([success, attempt]), sorted_teams(success)), 'Climbs', width=1000)
 
-    plot = hv.Layout(place_plot + climbs + fouls).cols(1)
-    save_view(plot, 'eventData')
+	success = get_column(df_rnk, 'disabled', 'finish', 'sum_successes')
+	attempt = get_column(df_rnk, 'disabled', 'finish', 'sum_attempts', task_rename='temporary')
+	fouls = hv_bar(filter_teams(combine_tasks([success, attempt]), sorted_teams(success)), 'Problems', width=1000)
+
+	plot = hv.Layout(place_plot + climbs + fouls).cols(1)
+	save_view(plot, 'eventData')
