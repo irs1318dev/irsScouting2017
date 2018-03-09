@@ -236,7 +236,11 @@ class Scouting(object):
 
     @cherrypy.expose
     def addresslist(self):
-        return self.alltablets.get_address();
+        connected, unlinked = self.alltablets.get_address()
+        out = '<h3>Connected Ip Addresses:</h3>' + str(connected)
+        out += '<h3>Unlinked Ip Addresses:</h3>' + str(unlinked)
+        return out
+
 
     @cherrypy.expose
     def databaseset(self):
