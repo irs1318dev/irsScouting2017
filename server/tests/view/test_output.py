@@ -26,7 +26,7 @@ import server.view.excel as sv_xl
 #
 #
 # def test_excel2():
-#     sv_xl.write_to_excel(12, "test_holoviews", "1318")
+#     sv_xl.write_to_excel(12, "wamou", "2018")
 #
 #
 # def test_matches():

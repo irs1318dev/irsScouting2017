@@ -1,5 +1,6 @@
 import datetime
 import os.path
+import string
 
 import pandas as pd
 import xlsxwriter
@@ -55,12 +56,24 @@ def write_to_excel(num_matches=12, event=None, season=None):
     wsheet1.write_string(stat_row, 1, "matches", header_fmt)
     wsheet1.write_column("B7", list(df_matches["matches"]))
 
+    def _xl_colname(idx):
+        # Converts integer column index to Excel column address.
+        # i.e., idx=0 -> A, idx=25 -> Z, idx=26 -> AA, etc.
+        if idx < 0 or idx >= 702:
+            raise IndexError("Index value must be integer between 0 and 702.")
+        letters = list(string.ascii_uppercase)
+        idx_1, idx_2 = divmod(idx, 26)
+        if idx_1 ==0:
+            return letters[idx_2]
+        else:
+            return letters[idx_1 - 1] + letters[idx_2]
+
+    # col_def keys:
+    #   "phase", "actor", "task", "stat", "format", "task_label", "stat_label"
+
+
     def _write_col(col_idx, phase, actor, task, stat, data_format,
                   task_label=None, stat_label=None):
-
-        cols = ["C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
-                "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-                "AA", "AB", "AC", "AD", "AE", "AF"]
 
         headers = [phase, actor, task if task_label is None else task_label,
                    stat if stat_label is None else stat_label]
@@ -70,66 +83,89 @@ def write_to_excel(num_matches=12, event=None, season=None):
         except KeyError:
             print("ERROR: ", phase, actor, task, stat)
             return col_idx
-        wsheet1.write_column(cols[col_idx] + "3", headers, header_fmt)
-        wsheet1.write_column(cols[col_idx] + "7", data, data_format)
+        wsheet1.write_column(_xl_colname(col_idx) + "3", headers, header_fmt)
+        wsheet1.write_column(_xl_colname(col_idx) + "7", data, data_format)
 
         return col_idx + 1
 
+    def _write_col2(col_idx, col_def):
+        phase = col_def["phase"]
+        if phase is None:
+            # Add Blank Column
+            return col_idx + 1
 
+        actor = col_def["actor"]
+        task = col_def["task"]
+        stat = col_def["stat"]
 
-    col_idx = 0
+        task_label = (None if "task_label" not in col_def
+                      else col_def["task_label"])
+        stat_label = (None if "stat_label" not in col_def
+                      else col_def["stat_label"])
+        if "col_format" in col_def and col_def["col_format"] == "percent":
+            col_format = percent_fmt
+        else:
+            col_format = num_fmt
 
-    col_idx = _write_col(col_idx, "auto", "robot", "autoLine",
-                         "avg_successes", percent_fmt, stat_label="average")
-    col_idx = _write_col(col_idx, "auto", "robot", "placeSwitch",
-                         "avg_successes", num_fmt, stat_label="average")
-    col_idx = _write_col(col_idx, "auto", "robot", "placeScale",
-                         "avg_successes", num_fmt, stat_label="average")
-    col_idx = _write_col(col_idx, "teleop", "robot", "placeSwitch",
-                         "avg_successes", num_fmt, stat_label="average")
-    col_idx = _write_col(col_idx, "teleop", "robot", "placeSwitch",
-                         "max_successes", num_fmt, stat_label="max")
+        headers = [phase, actor, task if task_label is None else task_label,
+                   stat if stat_label is None else stat_label]
+        try:
+            data = [_nan_to_zero(x) for x
+                    in df_rnk[phase][actor][task][stat]]
+        except KeyError:
+            print("ERROR: ", phase, actor, task, stat)
+            return col_idx
+        wsheet1.write_column(_xl_colname(col_idx) + "3", headers, header_fmt)
+        wsheet1.write_column(_xl_colname(col_idx) + "7", data, col_format)
 
-    col_idx = _write_col(col_idx, "teleop", "robot", "placeScale",
-                         "avg_successes", num_fmt, stat_label="average")
-    col_idx = _write_col(col_idx, "teleop", "robot", "placeScale",
-                         "max_successes", num_fmt, stat_label="max")
+        return col_idx + 1
 
+    cols = [{"phase": "auto", "actor": "robot", "task": "autoLine",
+             "stat": "avg_successes", "stat_label": "average",
+             "col_format": "percent"},
+            {"phase": "auto", "actor": "robot", "task": "placeSwitch",
+             "stat": "avg_successes", "stat_label": "average"},
+            {"phase": "teleop", "actor": "robot", "task": "placeSwitch",
+             "stat": "avg_successes", "stat_label": "average"},
+            {"phase": "teleop", "actor": "robot", "task": "placeScale",
+             "stat": "avg_successes", "stat_label": "average"},
+            {"phase": "teleop", "actor": "robot", "task": "placeExchange",
+             "stat": "avg_successes", "stat_label": "average"},
+            {"phase": "teleop", "actor": "robot", "task": "placeOpponent",
+             "stat": "avg_successes", "stat_label": "average"},
+            {"phase": None},
+            {"phase": "teleop", "actor": "robot", "task": "placeSwitch",
+             "stat": "avg_successes", "stat_label": "average"},
+            {"phase": "finish", "actor": "robot", "task": "parkPlatform",
+             "stat": "avg_successes", "stat_label": "average",
+             "col_format": "percent"},
+            {"phase": "finish", "actor": "robot", "task": "makeClimb",
+             "stat": "avg_successes", "stat_label": "average",
+             "col_format": "percent"},
+            {"phase": "teleop", "actor": "robot", "task": "defendRobot",
+             "stat": "avg_attempts", "stat_label": "avg_attempts"},
+            {"phase": "teleop", "actor": "robot", "task": "defendRobot",
+             "stat": "avg_successes", "stat_label": "avg_successes"},
+            {"phase": None},
+            {"phase": "finish", "actor": "robot", "task": "disabled",
+             "stat": "avg_attempts", "stat_label": "temp_avg"},
+            {"phase": "finish", "actor": "robot", "task": "disabled",
+             "stat": "avg_successes", "stat_label": "perm_avg"},
+            {"phase": "finish", "actor": "team", "task": "getFoul",
+             "stat": "avg_attempts", "stat_label": "avg_attempt"},
+            {"phase": None},
+            {"phase": "teleop", "actor": "robot", "task": "pickupFloor",
+             "stat": "avg_successes", "stat_label": "average"},
+            {"phase": "teleop", "actor": "robot", "task": "pickupExchange",
+             "stat": "avg_successes", "stat_label": "average"},
+            {"phase": "teleop", "actor": "robot", "task": "pickupCubeZone",
+             "stat": "avg_successes", "stat_label": "average"}
+            ]
 
-    col_idx = _write_col(col_idx, "teleop", "robot", "placeExchange",
-                         "avg_successes", num_fmt, stat_label="average")
-    col_idx = _write_col(col_idx, "teleop", "robot", "placeExchange",
-                         "max_successes", num_fmt, stat_label="max")
+    col_idx = 2
 
-    col_idx = _write_col(col_idx, "teleop", "robot", "pickupFloor",
-                         "avg_successes", num_fmt, stat_label="average")
-    col_idx = _write_col(col_idx, "teleop", "robot", "pickupFloor",
-                         "max_successes", num_fmt, stat_label="max")
-    col_idx = _write_col(col_idx, "teleop", "robot", "pickupExchange",
-                         "avg_successes", num_fmt, stat_label="average")
-    col_idx = _write_col(col_idx, "teleop", "robot", "pickupExchange",
-                         "max_successes", num_fmt, stat_label="max")
-    col_idx = _write_col(col_idx, "teleop", "robot", "pickupCubeZone",
-                         "avg_successes", num_fmt, stat_label="average")
-    col_idx = _write_col(col_idx, "teleop", "robot", "pickupCubeZone",
-                         "max_successes", num_fmt, stat_label="max")
-
-    col_idx = _write_col(col_idx, "finish", "robot", "parkPlatform",
-                         "avg_successes", percent_fmt, stat_label="average")
-
-    col_idx = _write_col(col_idx, "finish", "robot", "makeClimb",
-                         "avg_successes", percent_fmt, stat_label="average")
-
-    col_idx = _write_col(col_idx, "finish", "robot", "disabled",
-                        "avg_attempts", num_fmt, stat_label="temp_avg")
-
-    col_idx = _write_col(col_idx, "finish", "robot", "disabled",
-                        "avg_successes", num_fmt, stat_label="perm_avg")
-
-
-
-
-
+    for col in cols:
+        col_idx = _write_col2(col_idx, col)
     wbook.close()
 
 
