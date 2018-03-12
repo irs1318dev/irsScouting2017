@@ -26,7 +26,7 @@ import server.view.excel as sv_xl
 #
 #
 # def test_excel2():
-#     sv_xl.write_to_excel(12, "wamou", "2018")
+#     sv_xl.write_to_excel(sv_xl.rnk_rpt2018a, 12, "wamou", "2018")
 #
 #
 # def test_matches():
