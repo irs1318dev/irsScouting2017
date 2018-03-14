@@ -4,10 +4,10 @@ import server.auth
 import server.model.firstapi
 
 
-def test_schedule():
-    sched = json.loads(server.model.firstapi.schedule("pncmp", "2017"))
-    assert sched["Schedule"][0]["teams"][0]["teamNumber"] == 2910
-    assert len(sched["Schedule"]) == 128
+# def test_schedule():
+#     sched = json.loads(server.model.firstapi.schedule("pncmp", "2017"))
+#     assert sched["Schedule"][0]["teams"][0]["teamNumber"] == 2910
+#     assert len(sched["Schedule"]) == 128
 #
 #
 # def test_match_results():
