@@ -205,3 +205,18 @@ class EventDal(object):
         for row in results:
             match_details = dict(row)
         return match_details
+
+    @staticmethod
+    def delete_event(event, season):
+        event_id = EventDal.get_event_id(event, season)
+        if EventDal.get_current_event()[0] == event_id:
+            print("Warning: You cannot delete the current event.")
+            return
+        sql = text("DELETE FROM measures WHERE event_id = :evt_id")
+        conn = engine.connect()
+        conn.execute(sql, evt_id=event_id)
+        sql = text("DELETE FROM schedules WHERE event_id = :evt_id")
+        conn.execute(sql, evt_id=event_id)
+        sql = text("DELETE FROM events WHERE id = :evt_id")
+        conn.execute(sql, evt_id=event_id)
+        conn.close()
