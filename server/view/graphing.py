@@ -101,20 +101,33 @@ def sorted_teams(col, hide_zeros=True):
 def scoring_teams(col):
 	return  [ x[0] for x in col if x[2] > 0 ]
 
+def split_alliances(data, match_list):
+	split_data = list()
+	data = filter_teams(data, match_list)
+
+	for row in data:
+		if row[0] in match_list[:3]:
+			row[0] = 'Red: ' + row[0]
+			split_data.append(row)
+		if row[0] in match_list[3:]:
+			row[0] = 'Blue: ' + row[0]
+			split_data.append(row)
+	return split_data
+
 
 #Holoviews generation
 def hv_table(data, label='Successes'):
 	return hv.Table(data, "Team", ['Task', label])
 
 
-def hv_stack(data, label='', style=dict(), side='Successes', width=400, height=400):
+def hv_stack(data, label='', style=dict(), side='Successes', width=800, height=400):
 	return hv.Bars(data, ["Team", "Task"], side, label=label).opts(plot=dict(tools=['hover'], stack_index=1, legend_position="top", xrotation=45, width=width, height=height), style=style)
 
 
-def hv_bar(data, label='', style=dict(), side='Successes', width=400, height=400):
+def hv_bar(data, label='', style=dict(), side='Successes', width=800, height=400):
 	return hv.Bars(data, ["Team", "Task"], side, label=label).opts(plot=dict(tools=['hover'], legend_position="top", xrotation=45, width=width, height=height), style=style)
 
-def hv_box(data, label='', style=dict(), side='Successes', width=400, height=400):
+def hv_box(data, label='', style=dict(), side='Successes', width=800, height=400):
 	return hv.BoxWhisker(data, ["Team", "Task"], side, label=label).opts(plot=dict(tools=['hover'], legend_position="top", xrotation=45, width=width, height=height), style=style)
 
 
@@ -133,34 +146,38 @@ def graph_match(match_list):
 
 	tasks = ['placeSwitch', 'placeExchange', 'placeScale']
 	data = get_list(df_rnk, tasks)
-	red_place_plot = hv_bar(filter_teams(data, match_list[:3]), 'Red Cubes Placed')
-	blue_place_plot = hv_bar(filter_teams(data, match_list[3:]), 'Blue Cubes Placed')
+	place_plot = hv_bar(split_alliances(data, match_list), 'Cubes Placed')
 
 	tasks = ['pickupPlatform', 'pickupCubeZone', 'pickupPortal', 'pickupExchange']
 	team_sums = get_column(df_rnk, 'pickupFloor', 'teleop', 'sum_successes', task_rename='pickupTotal')
 	pickup_max = get_column(df_rnk, 'pickupFloor', 'teleop', 'sum_successes')
+
 	for location in tasks:
 		data = get_column(df_rnk, location, 'teleop', 'sum_successes')
-		for i in range(len(pickup_max)):
+		for i in range(len(data)):
 			if data[i][2] > pickup_max[i][2]:
 				pickup_max[i] = data[i]
 			team_sums[i][2] += data[i][2]
 
 	for i in range(len(pickup_max)):
 		if team_sums[i][2] != 0:
-			pickup_max[i][2] = str(pickup_max[i][2] / team_sums[i][2] * 100) + '%'
+			pickup_max[i][2] = str(round(pickup_max[i][2] / team_sums[i][2] * 100)) + '%'
 		else:
 			pickup_max[i][2] = '0%'
 
-	red_get_plot = hv_table(filter_teams(pickup_max, match_list[:3]), 'Red Pickup')
-	blue_get_plot = hv_table(filter_teams(pickup_max, match_list[3:]), 'Blue Pickup')
+	get_plot = hv_table(split_alliances(pickup_max, match_list), 'Pickup')
 
-	tasks = ['makeClimb', 'getFoul', 'disabled']
-	data = get_list(df_rnk, tasks, 'finish', 'sum_successes')
-	red_extra = hv_table(filter_teams(data, match_list[:3]), 'Red Other')
-	blue_extra = hv_table(filter_teams(data, match_list[3:]), 'Blue Other')
+	tasks = ['autoLine', 'placeSwitch', 'placeScale']
+	data = get_list(df_rnk, tasks, 'auto')
+	auto = hv_bar(split_alliances(data, match_list), 'Auto')
 
-	plot = hv.Layout(red_place_plot + blue_place_plot + red_get_plot + blue_get_plot + red_extra + blue_extra).cols(2)
+	data = combine_tasks([
+		get_column(df_rnk, 'disabled', 'finish', 'sum_successes'), 
+		get_column(df_rnk, 'getFoul', 'finish', 'sum_successes'), 
+		get_column(df_rnk, 'crossNull', 'auto', 'sum_successes')])
+	fails = hv_stack(split_alliances(data, match_list), 'Total Problems')
+
+	plot = hv.Layout(place_plot + get_plot + auto + fails).cols(1)
 	save_view(plot, 'matchData')
 
 
