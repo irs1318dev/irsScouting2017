@@ -9,45 +9,41 @@
 
     <EditText
             style="@style/style_large"
-            android:inputType="phone"
-            android:id="@+id/AddressBar"
             android:text="@string/form_ip"
+            android:id="@+id/AddressBar"
+            android:inputType="phone"
             android:layout_below="@+id/Status" android:layout_centerHorizontal="true"/>
 
     <TextView
             style="@style/style_large"
             android:text="@string/form_status"
             android:id="@+id/Status"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_alignParentTop="true" android:layout_alignParentStart="true"/>
 
     <Button
             style="@style/style_large"
             android:text="@string/form_last"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
             android:id="@+id/Previous"
             android:onClick="lastPage"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_alignParentBottom="true" android:layout_alignParentStart="true"/>
 
     <Button
             style="@style/style_large"
             android:text="@string/form_next"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
             android:id="@+id/Next"
             android:onClick="nextPage"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_alignParentBottom="true" android:layout_alignParentEnd="true"/>
 
     <RadioButton
             style="@style/style_large"
-            android:id="@+id/PageStatus"
             android:text="@string/form_status"
-            android:layout_above="@+id/AddressBar"
-            android:layout_alignParentEnd="true"
+            android:id="@+id/PageStatus"
             android:button="@drawable/radiobutton"
             android:onClick="status"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_above="@+id/AddressBar" android:layout_alignParentEnd="true"/>
 
     <GridLayout
             style="@style/style_base"
@@ -105,5 +101,11 @@
             android:id="@+id/Form">
 
     </com.stuin.irs_scout.Scouter.PageManager>
+
+    <TextView
+            style="@style/style_large"
+            android:text=""
+            android:id="@+id/TeamName"
+            android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

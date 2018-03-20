@@ -1,0 +1,12 @@
+{
+  "tests/model/test_config.py::test_scouting": true,
+  "tests/model/test_config.py::test_season": true,
+  "tests/model/test_config.py::test_testjson": true,
+  "tests/model/test_config.py::test_tests_model_test_data": true,
+  "tests/model/test_config.py::test_web_data": true,
+  "tests/model/test_config.py::test_web_images": true,
+  "tests/model/test_config.py::test_web_scripts": true,
+  "tests/model/test_config.py::test_web_sites": true,
+  "tests/model/test_match.py::test_build_dicts": true,
+  "tests/model/test_setup.py::test_tables": true
+}
