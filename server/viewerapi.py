@@ -61,7 +61,7 @@ class Viewer:
     @cherrypy.expose
     def output(self):
         script = ''
-        script = excel.write_to_excel()
+        script = excel.write_to_excel(excel.rnk_rpt2018a)
         return '<a href="/view/data?name=' + script + '">Download File</a>'
 
     @cherrypy.expose

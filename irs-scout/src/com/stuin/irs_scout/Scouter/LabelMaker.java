@@ -47,6 +47,7 @@ class LabelMaker {
                         MatchMaker matchMaker;
                         if(MainActivity.position.contains("Pit")) {
                             //Set up pit scouter
+                            MainActivity.alliance = true;
                             matchMaker = new PitMatchMaker(pageManager, status);
                             TeamMenu teamMenu = (TeamMenu) pageManager.getChildAt(0);
                             teamMenu.pitMaker = (PitMatchMaker) matchMaker;

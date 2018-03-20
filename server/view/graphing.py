@@ -99,7 +99,9 @@ def sorted_teams(col, hide_zeros=True):
 
 
 def scoring_teams(col):
-	return  [ x[0] for x in col if x[2] > 0 ]
+	teams = [ x[0] for x in col if x[2] > 0 ]
+	return list(set(teams))
+
 
 def split_alliances(data, match_list):
 	split_data = list()
@@ -169,32 +171,55 @@ def graph_match(match_list):
 
 	tasks = ['autoLine', 'placeSwitch', 'placeScale']
 	data = get_list(df_rnk, tasks, 'auto')
-	auto = hv_bar(split_alliances(data, match_list), 'Auto')
+	auto_plot = hv_stack(split_alliances(data, match_list), 'Auto')
 
-	data = combine_tasks([
-		get_column(df_rnk, 'disabled', 'finish', 'sum_successes'), 
-		get_column(df_rnk, 'getFoul', 'finish', 'sum_successes'), 
-		get_column(df_rnk, 'crossNull', 'auto', 'sum_successes')])
-	fails = hv_stack(split_alliances(data, match_list), 'Total Problems')
+	tasks = ['placeIncorrect', 'crossNull']
+	data = get_list(df_rnk, tasks, 'auto', 'sum_successes')
+	drop_plot = hv_table(split_alliances(data, match_list), 'Auto Fails')
 
-	plot = hv.Layout(place_plot + get_plot + auto + fails).cols(1)
+	tasks = ['makeClimb', 'supportClimb', 'parkPlatform']
+	data = get_list(df_rnk, tasks, 'finish')
+	climb_plot = hv_stack(split_alliances(data, match_list), 'Climbing')
+
+	tasks = ['disabled', 'getFoul']
+	data = get_list(df_rnk, tasks, 'finish', 'sum_successes')
+	fail_plot = hv_table(split_alliances(data, match_list), 'Total Problems')
+
+	plot = hv.Layout(place_plot + get_plot + auto_plot + drop_plot + climb_plot + fail_plot).cols(2)
 	save_view(plot, 'matchData')
 
 
 def graph_event():
 	df_rnk = get_dataframe()
 
+	tasks = ['placeSwitch', 'placeScale']
+	data = get_list(df_rnk, tasks)
+	place_plot = hv_stack(filter_teams(data), 'Cubes Placed', width=1500)
+
+	data = get_column(df_rnk, 'placeExchange')
+	exchange_plot = hv_stack(filter_teams(data), 'Cubes Exchanged', width=1500)
+
+	plot = hv.Layout(place_plot + exchange_plot).cols(1)
+	save_view(plot, 'eventData')
+
+def graph_long_event():
+	df_rnk = get_dataframe()
+
 	tasks = ['placeSwitch', 'placeExchange', 'placeScale']
 	data = get_list(df_rnk, tasks)
-	place_plot = hv_stack(filter_teams(data), 'Cubes Placed', width=1000)
+	place_plot = hv_stack(filter_teams(data), 'Cubes Placed', width=1500)
 
 	success = get_column(df_rnk, 'makeClimb', 'finish', 'sum_successes')
 	attempt = get_column(df_rnk, 'makeClimb', 'finish', 'sum_attempts', task_rename='attemptClimb')
-	climbs = hv_bar(filter_teams(combine_tasks([success, attempt]), sorted_teams(success)), 'Climbs', width=1000)
+	climb_plot = hv_bar(filter_teams(combine_tasks([success, attempt]), sorted_teams(success)), 'Climbs', width=1500)
 
 	success = get_column(df_rnk, 'disabled', 'finish', 'sum_successes')
 	attempt = get_column(df_rnk, 'disabled', 'finish', 'sum_attempts', task_rename='temporary')
-	fouls = hv_bar(filter_teams(combine_tasks([success, attempt]), sorted_teams(success)), 'Problems', width=1000)
+	foul_plot = hv_bar(filter_teams(combine_tasks([success, attempt]), scoring_teams(attempt)), 'Problems', width=1500)
 
-	plot = hv.Layout(place_plot + climbs + fouls).cols(1)
+	tasks = ['autoLine', 'placeSwitch', 'placeScale']
+	data = get_list(df_rnk, tasks, 'auto')
+	auto_plot = hv_stack(filter_teams(data), 'Auto', width=1500)
+
+	plot = hv.Layout(place_plot + auto_plot + climb_plot + foul_plot).cols(1)
 	save_view(plot, 'eventData')

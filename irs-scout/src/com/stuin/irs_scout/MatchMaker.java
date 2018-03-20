@@ -9,6 +9,7 @@ import com.stuin.irs_scout.MainActivity;
 import com.stuin.cleanvisuals.Request;
 import com.stuin.irs_scout.Scouter.Page;
 import com.stuin.irs_scout.Scouter.PageManager;
+import org.w3c.dom.Text;
 
 import java.util.*;
 
@@ -17,6 +18,7 @@ import java.util.*;
  */
 public class MatchMaker {
     Match match = new Match();
+    public TextView nameView = null;
 
     private PageManager pageManager;
     protected static List<Measure> data;
@@ -87,6 +89,21 @@ public class MatchMaker {
             }
             p.setMeasures(pageData, match);
         }
+
+        setName();
+    }
+
+    private void setName() {
+        class Name extends Request {
+            @Override
+            public void run(List<String> s) {
+                if(nameView != null && s.size() > 0 && !s.get(0).equals("na")) {
+                    nameView.setText(s.get(0));
+                }
+            }
+        }
+        if(!MainActivity.alliance)
+            new Name().start("/teamname?team=" + match.getTeam(MainActivity.position));
     }
 
     static void update(Measure measure) {
