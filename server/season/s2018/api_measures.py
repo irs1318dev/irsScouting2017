@@ -8,6 +8,7 @@ import server.model.match as sm_match
 
 #todo(stacy.irwin) Change format for playoff match numbers
 
+
 def download_platform_color():
     _, event_name, event_season = sm_event.EventDal.get_current_event()
     raw_scores = sm_firstapi.match_scores(event_name, event_season)
@@ -23,7 +24,7 @@ def download_platform_color():
     switchRightNearColors = [mtch["switchRightNearColor"][0] for mtch in
                              scores["MatchScores"]]
 
-    "{0:0>3}-q"
+    # "{0:0>3}-q"
 
     colors = []
     for idx in range(len(scaleNearColors)):
@@ -34,6 +35,8 @@ def download_platform_color():
                                   "level": match_levels,
                                   "platform_colors": colors})
     for mtch in colors_df.itertuples():
-        sm_match.MatchDal.insert_alliance_task("na", "platformColors", "auto",
-                                               mtch[0], mtch[2])
+        sm_match.MatchDal.insert_alliance_task("na", "assignColors", "auto",
+                                               mtch.matches,
+                                               mtch.platform_colors)
+
 
