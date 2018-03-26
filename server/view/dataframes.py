@@ -112,3 +112,17 @@ def ranking_df(num_matches):
     rank_df = summ_df.stack()
     rank_stacked_df = rank_df.unstack([1, 2, 3, 4])
     return rank_stacked_df.sort_index(axis= 1, level= [0,1,2])
+
+
+def events_df():
+    conn = sm_connection.engine.connect()
+    sql = sqlalchemy.text(
+        "SELECT events.*, event_data.measure_count FROM events LEFT JOIN ("
+        "     SELECT COUNT(measures.task_id) AS measure_count, "
+        "     measures.event_id AS event_id"
+        "     FROM measures "
+        "     GROUP BY measures.event_id) AS event_data "
+        "ON events.id = event_data.event_id;")
+    df = pandas.read_sql(sql, conn)
+    conn.close()
+    return df
