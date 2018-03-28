@@ -22,6 +22,12 @@ def test_build_dicts():
     assert len(date_ids) == 1182
     assert isinstance(date_ids["2017-03-04T16:12:00"], int)
     assert len(date_names) == 1182
+    len_date_ids = len(date_ids)
+    len_date_names = len(date_names)
+    assert len_date_ids > 1000
+    assert isinstance(date_ids["2017-03-04T16:12:00"], int)
+    assert len_date_ids > 1000
+    assert len_date_ids == len_date_names
     assert "2017-03-04T17:36:00" in date_names.values()
 
     # Levels

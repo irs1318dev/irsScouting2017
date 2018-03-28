@@ -218,6 +218,8 @@ class EventDal(object):
         if len(results) == 1:
             return results[0]['long_name']
         return 'na'
+
+    @staticmethod
     def delete_event(event, season):
         event_id = EventDal.get_event_id(event, season)
         if EventDal.get_current_event()[0] == event_id:
