@@ -9,6 +9,7 @@ import server.model.event as sm_event
 import server.model.firstapi as api
 import server.model.connection as smc
 import server.model.upsert as smu
+import server.model.firstapi as smf
 
 
 def insert_sched(event, season, level='qual', fileName = '-1'):
@@ -24,6 +25,30 @@ def insert_sched(event, season, level='qual', fileName = '-1'):
         sched_json = open(fileName).read()
 
     process_sched(event, season, sched_json, level)
+
+
+def set_teams():
+
+    conn = smc.engine.connect()
+    sql = text("SELECT name FROM teams;")
+    teams = conn.execute(sql).fetchall()
+    teams = [tm[0] for tm in teams]
+    # sql = text("UPDATE teams SET long_name = :long_name WHERE name = :name;")
+    # names = json.loads(smf.get_team_names(teams[13][0]))
+    # conn.execute(sql, long_name=names["teams"][0]["nameShort"], name=teams[13][0])
+    x = 0
+    for name in teams:
+
+        try:
+            names = json.loads(smf.get_team_names(name))
+            sql = text("UPDATE teams SET long_name = :long_name WHERE name = :name;").bindparams(
+                long_name=names["teams"][0]["nameShort"], name=name)
+            conn.execute(sql)
+        except:
+            next(name)
+
+
+
 
 
 def process_sched(event, season, sched_json, level='qual'):
@@ -107,4 +132,4 @@ def manual_Entry(file, event, season):
         conn.execute(select, elem=elem, b3=b3, event_id=event_id)
         value = value + 1
     conn.close()
-
+set_teams()
