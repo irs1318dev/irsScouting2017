@@ -52,7 +52,7 @@ public class Choice extends RadioGroup implements Input {
         locked = true;
         for(int i = 0; i < choices.length; i++) {
             radioButton = (CompoundButton) getChildAt(i);
-            radioButton.setChecked(choices[i].toLowerCase().equals(measure.capability));
+            radioButton.setChecked(choices[i].equals(measure.capability));
         }
         locked = false;
     }
@@ -61,7 +61,7 @@ public class Choice extends RadioGroup implements Input {
         @Override
         public void onCheckedChanged(CompoundButton radioButton, boolean b) {
             if(b && !locked) {
-                id.measure.capability = radioButton.getText().toString().toLowerCase();
+                id.measure.capability = radioButton.getText().toString();
 
                 update(id.measure, true);
             }
