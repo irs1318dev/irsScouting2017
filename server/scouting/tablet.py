@@ -73,7 +73,8 @@ class TabletList(object):
         return True
 
     def get_address(self):
-        ipv4s = [i[4][0] for i in socket.getaddrinfo(socket.gethostname(), None)][0::3]
+        ipv4s = [i[4][0] for i in socket.getaddrinfo(socket.gethostname(), None)]
+        #ipv4s = ipv4s[int(len(ipv4s) / 2):]
         unlinked = list()
 
         for ip in ipv4s:

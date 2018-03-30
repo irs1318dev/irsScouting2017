@@ -21,3 +21,9 @@ import server.model.firstapi
 #         "pncmp", "2017"))
 #     assert len(scores["MatchScores"]) == 128
 #     assert scores["MatchScores"][0]["alliances"][0]["teleopPoints"] == 270
+
+def test_get_team_names():
+
+    sched = json.loads(server.model.firstapi.get_team_names('2811'))
+    assert sched["teams"][0]["nameShort"] == "StormBots"
+

@@ -19,6 +19,9 @@ def match():
 def test_build_dicts():
     # Dates
     date_names, date_ids = sm_dal.build_dicts("dates")
+    assert len(date_ids) == 1182
+    assert isinstance(date_ids["2017-03-04T16:12:00"], int)
+    assert len(date_names) == 1182
     len_date_ids = len(date_ids)
     len_date_names = len(date_names)
     assert len_date_ids > 1000
