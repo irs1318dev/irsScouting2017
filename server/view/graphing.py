@@ -138,9 +138,17 @@ def save_view(view, name):
 	# Convert to bokeh figure then save using bokeh
 	plot = renderer.get_plot(view).state
 
-	from bokeh.io import output_file, save, show
+	from bokeh.io import output_file, save
 	output_file(config.web_data(name + '.html'), mode='inline')
 	save(plot, title=name)
+
+def save_image(view, name):
+	renderer = hv.renderer('bokeh')
+	# Convert to bokeh figure then save using bokeh
+	plot = renderer.get_plot(view).state
+
+	from bokeh.io import export_png
+	export_png(plot, filename=config.web_data(name + '.png'))
 
 
 def graph_match(match_list):
@@ -222,4 +230,4 @@ def graph_long_event():
 	auto_plot = hv_stack(filter_teams(data), 'Auto', width=1500)
 
 	plot = hv.Layout(place_plot + auto_plot + climb_plot + foul_plot).cols(1)
-	save_view(plot, 'eventData')
+	save_view(plot, 'longEventData')
