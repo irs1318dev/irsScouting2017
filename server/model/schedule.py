@@ -28,7 +28,6 @@ def insert_sched(event, season, level='qual', fileName = '-1'):
 
 
 def set_teams():
-
     conn = smc.engine.connect()
     sql = text("SELECT name FROM teams;")
     teams = conn.execute(sql).fetchall()
@@ -44,10 +43,7 @@ def set_teams():
                 long_name=names["teams"][0]["nameShort"], name=name)
             conn.execute(sql)
         except:
-            next(name)
-
-
-
+            print("Error setting team")
 
 
 def process_sched(event, season, sched_json, level='qual'):
@@ -84,6 +80,7 @@ def process_sched(event, season, sched_json, level='qual'):
             # smu.upsert("events", "name", event)
             smu.upsert("teams", "name", team)
             smu.upsert("dates", "name", date)
+    set_teams()
 
 
 # Function only works if the csv has columns in the order of match, red1, red2, red3, blue1, blue2, blue3
@@ -131,4 +128,3 @@ def manual_Entry(file, event, season):
         conn.execute(select, elem=elem, b3=b3, event_id=event_id)
         value = value + 1
     conn.close()
-set_teams()

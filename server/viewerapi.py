@@ -77,7 +77,7 @@ class Viewer:
     @cherrypy.expose
     def eventplan(self):
         graphing.graph_long_event()
-        return open(s_config.web_data('eventData.html')).read() 
+        return open(s_config.web_data('longEventData.html')).read() 
 
     @cherrypy.expose
     def teamplan(self, team='1318'):
