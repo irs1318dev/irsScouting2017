@@ -36,7 +36,6 @@ def set_teams():
     # sql = text("UPDATE teams SET long_name = :long_name WHERE name = :name;")
     # names = json.loads(smf.get_team_names(teams[13][0]))
     # conn.execute(sql, long_name=names["teams"][0]["nameShort"], name=teams[13][0])
-    x = 0
     for name in teams:
 
         try:
