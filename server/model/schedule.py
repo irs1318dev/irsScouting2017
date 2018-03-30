@@ -80,7 +80,7 @@ def process_sched(event, season, sched_json, level='qual'):
             # smu.upsert("events", "name", event)
             smu.upsert("teams", "name", team)
             smu.upsert("dates", "name", date)
-    set_teams()
+    set_teams() 
 
 
 # Function only works if the csv has columns in the order of match, red1, red2, red3, blue1, blue2, blue3

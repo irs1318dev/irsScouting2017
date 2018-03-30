@@ -200,12 +200,12 @@ def graph_match(match_list):
 def graph_event():
 	df_rnk = get_dataframe()
 
-	tasks = ['placeSwitch', 'placeScale']
+	tasks = ['placeSwitch', 'placeScale', 'placeExchange']
 	data = get_list(df_rnk, tasks)
-	place_plot = hv_stack(filter_teams(data), 'Cubes Placed', width=1500)
+	place_plot = hv_stack(filter_teams(data), 'Average Cubes Placed', width=1500)
 
-	data = get_column(df_rnk, 'placeExchange')
-	exchange_plot = hv_stack(filter_teams(data), 'Cubes Exchanged', width=1500)
+	data = get_list(df_rnk, tasks, 'teleop', 'max_successes')
+	exchange_plot = hv_stack(filter_teams(data), 'Max Cubes Placed', width=1500)
 
 	plot = hv.Layout(place_plot + exchange_plot).cols(1)
 	save_view(plot, 'eventData')
