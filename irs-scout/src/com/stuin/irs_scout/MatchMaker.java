@@ -99,6 +99,7 @@ public class MatchMaker {
             public void run(List<String> s) {
                 if(nameView != null && s.size() > 0 && !s.get(0).equals("na")) {
                     nameView.setText(s.get(0));
+                    nameView.setVisibility(View.VISIBLE);
                 }
             }
         }

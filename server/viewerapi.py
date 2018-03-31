@@ -70,8 +70,13 @@ class Viewer:
         return open(s_config.web_sites("reset.html")).read()
 
     @cherrypy.expose
-    def eventplan(self):
+    def selectionplan(self):
         graphing.graph_event()
+        return open(s_config.web_data('eventData.html')).read() 
+
+    @cherrypy.expose
+    def eventplan(self):
+        graphing.graph_long_event()
         return open(s_config.web_data('eventData.html')).read() 
 
     @cherrypy.expose
@@ -126,7 +131,7 @@ class Viewer:
         out = out.replace('{After}', 'Updated: ' + event.EventDal.get_current_match())
 
         graphing.graph_match(teams)
-        return out.replace('{Data}', open(s_config.web_data('matchData.html')).read()) 
+        return out.replace('{Data}', open(s_config.web_data('matchData.png')).read()) 
 
 
     def teamsList(self, match):
