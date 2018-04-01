@@ -6,7 +6,7 @@ import server.scouting.export
 import server.model.event as event
 import server.scouting.alliance
 import server.model.match as match
-import server.view.graphing as graphing
+import server.season.s2018.viewer as graphing
 import server.view.excel as excel
 import server.scouting.export as export
 
@@ -71,13 +71,13 @@ class Viewer:
 
     @cherrypy.expose
     def selectionplan(self):
-        graphing.graph_event()
-        return open(s_config.web_data('eventData.html')).read() 
+        return graphing.graph_event()
+        #return open(s_config.web_data('eventData.html')).read() 
 
     @cherrypy.expose
     def eventplan(self):
-        graphing.graph_long_event()
-        return open(s_config.web_data('longEventData.html')).read() 
+        return graphing.graph_long_event()
+        #return open(s_config.web_data('longEventData.html')).read() 
 
     @cherrypy.expose
     def teamplan(self, team='1318'):
@@ -119,8 +119,7 @@ class Viewer:
                 running = False
                 out =  out.replace('{After}', 'Updated: ' + event.EventDal.get_current_match())
 
-        graphing.graph_match(self.teamsList(setMatch))
-        return out.replace('{Data}', open(s_config.web_data('matchData.html')).read()) 
+        return out.replace('{Data}', graphing.graph_match(self.teamsList(setMatch)))
 
     @cherrypy.expose
     def customplan(self, red1, red2, red3, blue1, blue2, blue3):
@@ -130,8 +129,7 @@ class Viewer:
         out = out.replace('{Schedule}', str(teams))
         out = out.replace('{After}', 'Updated: ' + event.EventDal.get_current_match())
 
-        graphing.graph_match(teams)
-        return out.replace('{Data}', open(s_config.web_data('matchData.png')).read()) 
+        return out.replace('{Data}', graphing.graph_match(teams)) 
 
 
     def teamsList(self, match):
@@ -149,7 +147,8 @@ class Start:
 
 if __name__ == '__main__':
     cherrypy.config.update({'server.socket_port': 1318})
-    conf = {"/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': s_config.web_base()}}
+    conf = {"/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': s_config.web_base()},
+    "/usr/lib/python3.6/site-packages/bokeh/server/static/": {'tools.staticdir.on': True, 'tools.staticdir.dir': s_config.web_scripts("")}}
 
     cherrypy.tree.mount(Viewer(), '/view', config=conf)
     cherrypy.quickstart(Start(), '/')

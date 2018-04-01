@@ -133,101 +133,23 @@ def hv_box(data, label='', style=dict(), side='Successes', width=800, height=400
 	return hv.BoxWhisker(data, ["Team", "Task"], side, label=label).opts(plot=dict(tools=['hover'], legend_position="top", xrotation=45, width=width, height=height), style=style)
 
 
+#Export plots through bokeh
 def save_view(view, name):
 	renderer = hv.renderer('bokeh')
 	# Convert to bokeh figure then save using bokeh
 	plot = renderer.get_plot(view).state
 
 	from bokeh.io import output_file, save
+
 	output_file(config.web_data(name + '.html'), mode='inline')
 	save(plot, title=name)
 
-def save_image(view, name):
+def get_html(view, name):
 	renderer = hv.renderer('bokeh')
 	# Convert to bokeh figure then save using bokeh
 	plot = renderer.get_plot(view).state
 
-	from bokeh.io import export_png
-	export_png(plot, filename=config.web_data(name + '.png'))
-
-
-def graph_match(match_list):
-	df_rnk = get_dataframe()
-
-	tasks = ['placeSwitch', 'placeExchange', 'placeScale']
-	data = get_list(df_rnk, tasks)
-	place_plot = hv_bar(split_alliances(data, match_list), 'Cubes Placed')
-
-	tasks = ['pickupPlatform', 'pickupCubeZone', 'pickupPortal', 'pickupExchange']
-	team_sums = get_column(df_rnk, 'pickupFloor', 'teleop', 'sum_successes', task_rename='pickupTotal')
-	pickup_max = get_column(df_rnk, 'pickupFloor', 'teleop', 'sum_successes')
-
-	for location in tasks:
-		data = get_column(df_rnk, location, 'teleop', 'sum_successes')
-		for i in range(len(data)):
-			if data[i][2] > pickup_max[i][2]:
-				pickup_max[i] = data[i]
-			team_sums[i][2] += data[i][2]
-
-	for i in range(len(pickup_max)):
-		if team_sums[i][2] != 0:
-			pickup_max[i][2] = str(round(pickup_max[i][2] / team_sums[i][2] * 100)) + '%'
-		else:
-			pickup_max[i][2] = '0%'
-
-	get_plot = hv_table(split_alliances(pickup_max, match_list), 'Pickup')
-
-	tasks = ['autoLine', 'placeSwitch', 'placeScale']
-	data = get_list(df_rnk, tasks, 'auto')
-	auto_plot = hv_stack(split_alliances(data, match_list), 'Auto')
-
-	tasks = ['placeIncorrect', 'crossNull']
-	data = get_list(df_rnk, tasks, 'auto', 'sum_successes')
-	drop_plot = hv_table(split_alliances(data, match_list), 'Auto Fails')
-
-	tasks = ['makeClimb', 'supportClimb', 'parkPlatform']
-	data = get_list(df_rnk, tasks, 'finish')
-	climb_plot = hv_stack(split_alliances(data, match_list), 'Climbing')
-
-	tasks = ['disabled', 'getFoul']
-	data = get_list(df_rnk, tasks, 'finish', 'sum_successes')
-	fail_plot = hv_table(split_alliances(data, match_list), 'Total Problems')
-
-	plot = hv.Layout(place_plot + get_plot + auto_plot + drop_plot + climb_plot + fail_plot).cols(2)
-	save_view(plot, 'matchData')
-
-
-def graph_event():
-	df_rnk = get_dataframe()
-
-	tasks = ['placeSwitch', 'placeScale', 'placeExchange']
-	data = get_list(df_rnk, tasks)
-	place_plot = hv_stack(filter_teams(data), 'Average Cubes Placed', width=1500)
-
-	data = get_list(df_rnk, tasks, 'teleop', 'max_successes')
-	exchange_plot = hv_stack(filter_teams(data), 'Max Cubes Placed', width=1500)
-
-	plot = hv.Layout(place_plot + exchange_plot).cols(1)
-	save_view(plot, 'eventData')
-
-def graph_long_event():
-	df_rnk = get_dataframe()
-
-	tasks = ['placeSwitch', 'placeExchange', 'placeScale']
-	data = get_list(df_rnk, tasks)
-	place_plot = hv_stack(filter_teams(data), 'Cubes Placed', width=1500)
-
-	success = get_column(df_rnk, 'makeClimb', 'finish', 'sum_successes')
-	attempt = get_column(df_rnk, 'makeClimb', 'finish', 'sum_attempts', task_rename='attemptClimb')
-	climb_plot = hv_bar(filter_teams(combine_tasks([success, attempt]), sorted_teams(success)), 'Climbs', width=1500)
-
-	success = get_column(df_rnk, 'disabled', 'finish', 'sum_successes')
-	attempt = get_column(df_rnk, 'disabled', 'finish', 'sum_attempts', task_rename='temporary')
-	foul_plot = hv_bar(filter_teams(combine_tasks([success, attempt]), scoring_teams(attempt)), 'Problems', width=1500)
-
-	tasks = ['autoLine', 'placeSwitch', 'placeScale']
-	data = get_list(df_rnk, tasks, 'auto')
-	auto_plot = hv_stack(filter_teams(data), 'Auto', width=1500)
-
-	plot = hv.Layout(place_plot + auto_plot + climb_plot + foul_plot).cols(1)
-	save_view(plot, 'longEventData')
+	from bokeh.embed import file_html
+	from bokeh.resources import INLINE
+	
+	return file_html(plot, INLINE, name)
