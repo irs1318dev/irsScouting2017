@@ -20,20 +20,38 @@ rnk_rpt2018a = [{"phase": "auto", "actor": "robot", "task": "autoLine",
                 {"phase": "teleop", "actor": "robot", "task": "placeSwitch",
                  "stat": "avg_successes", "stat_label": "average"},
 
+                {"phase": "teleop", "actor": "robot", "task": "placeSwitch",
+                 "stat": "max_successes", "stat_label": "max"},
+
                 {"phase": "teleop", "actor": "robot", "task": "placeScale",
                  "stat": "avg_successes", "stat_label": "average"},
+
+                {"phase": "teleop", "actor": "robot", "task": "placeScale",
+                 "stat": "max_successes", "stat_label": "max"},
 
                 {"phase": "teleop", "actor": "robot", "task": "placeExchange",
                  "stat": "avg_successes", "stat_label": "average"},
 
+                {"phase": "teleop", "actor": "robot", "task": "placeExchange",
+                 "stat": "max_successes", "stat_label": "max"},
+
                 {"phase": "teleop", "actor": "robot", "task": "placeOpponent",
                  "stat": "avg_successes", "stat_label": "average"},
+
+                {"phase": "teleop", "actor": "robot", "task": "placeOpponent",
+                 "stat": "max_successes", "stat_label": "max"},
 
                 {"col_type": "sum", "phase": "teleop", "actor": "robot",
                  "task": ["placeSwitch", "placeScale", "placeExchange",
                           "placeOpponent"],
                  "task_label": "placeAll",
                  "stat": "avg_successes", "stat_label": "average"},
+
+                {"col_type": "sum", "phase": "teleop", "actor": "robot",
+                 "task": ["placeSwitch", "placeScale", "placeExchange",
+                          "placeOpponent"],
+                 "task_label": "placeAll",
+                 "stat": "max_successes", "stat_label": "max"},
 
                 {"col_type": None},
 
