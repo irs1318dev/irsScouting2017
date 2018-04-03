@@ -99,6 +99,7 @@ def single_point(data, team, task):
 
 def examine_match(match_list):
 	df_rnk = graphing.get_dataframe()
+	match_count = graphing.get_column(df_rnk, 'autoLine', 'auto', 'matches')
 
 	tasks = ['autoLine', 'placeSwitch', 'placeScale']
 	auto_avg = graphing.get_list(df_rnk, tasks, 'auto')
@@ -115,7 +116,7 @@ def examine_match(match_list):
 
 	team_widgets = list()
 	for team in match_list:
-		widget = '<td style="padding: 5px;"><h3>Team ' + team + '</h3>'
+		widget = '<td style="padding: 5px;"><h3>Team ' + team + ' &nbsp;Played: ' + str(graphing.filter_teams(match_count, [team])[0][2]) + '</h3>'
 
 		widget += '<div> <div style="float: left;">'
 
