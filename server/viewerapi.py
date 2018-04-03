@@ -119,7 +119,7 @@ class Viewer:
                 running = False
                 out =  out.replace('{After}', 'Updated: ' + event.EventDal.get_current_match())
 
-        return out.replace('{Data}', graphing.graph_match(self.teamsList(setMatch)))
+        return out.replace('{Data}', graphing.examine_match(self.teamsList(setMatch)))
 
     @cherrypy.expose
     def customplan(self, red1, red2, red3, blue1, blue2, blue3):
