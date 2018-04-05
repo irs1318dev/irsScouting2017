@@ -54,10 +54,13 @@ def graph_match(match_list):
 def graph_event():
 	df_rnk = graphing.get_dataframe()
 
-	tasks = ['placeSwitch', 'placeScale', 'placeExchange']
-	data = graphing.get_list(df_rnk, tasks)
+	switch_sum = graphing.math_tasks(graphing.get_column(df_rnk, 'placeSwitch'), graphing.get_column(df_rnk, 'placeOpponent'), '+', 'placeSwitches')
+
+	tasks = ['placeScale', 'placeExchange']
+	data = graphing.combine_tasks([switch_sum, graphing.get_list(df_rnk, tasks)])
 	place_plot = graphing.hv_stack(graphing.filter_teams(data), 'Average Cubes Placed', width=1500)
 
+	tasks = ['placeSwitch'] + tasks
 	data = graphing.get_list(df_rnk, tasks, 'teleop', 'max_successes')
 	exchange_plot = graphing.hv_stack(graphing.filter_teams(data), 'Max Cubes Placed', width=1500)
 
@@ -69,16 +72,16 @@ def graph_event():
 def graph_long_event():
 	df_rnk = graphing.get_dataframe()
 
-	tasks = ['placeSwitch', 'placeExchange', 'placeScale']
-	data = graphing.get_list(df_rnk, tasks)
+	switch_sum = graphing.math_tasks(graphing.get_column(df_rnk, 'placeSwitch'), graphing.get_column(df_rnk, 'placeOpponent'), '+', 'placeSwitches')
+	data = graphing.combine_tasks([switch_sum, graphing.get_column(df_rnk, 'placeExchange'), graphing.get_column(df_rnk, 'placeScale')])
 	place_plot = graphing.hv_stack(graphing.filter_teams(data), 'Cubes Placed', width=1500)
 
 	success = graphing.get_column(df_rnk, 'makeClimb', 'finish', 'sum_successes')
-	attempt = graphing.get_column(df_rnk, 'makeClimb', 'finish', 'sum_attempts', task_rename='attemptClimb')
+	attempt = graphing.math_tasks(graphing.get_column(df_rnk, 'makeClimb', 'finish', 'sum_attempts'), success, '-', 'missClimb')
 	climb_plot = graphing.hv_bar(graphing.filter_teams(graphing.combine_tasks([success, attempt]), graphing.sorted_teams(success)), 'Climbs', width=1500)
 
 	success = graphing.get_column(df_rnk, 'disabled', 'finish', 'sum_successes')
-	attempt = graphing.get_column(df_rnk, 'disabled', 'finish', 'sum_attempts', task_rename='temporary')
+	attempt = graphing.math_tasks(graphing.get_column(df_rnk, 'disabled', 'finish', 'sum_attempts'), success, '-', 'temporary')
 	foul_plot = graphing.hv_bar(graphing.filter_teams(graphing.combine_tasks([success, attempt]), graphing.scoring_teams(attempt)), 'Problems', width=1500)
 
 	tasks = ['autoLine', 'placeSwitch', 'placeScale']
@@ -96,6 +99,7 @@ def single_point(data, team, task):
 		if row[1] == task:
 			return str(round(float(row[2]), 2))
 	return "0.0"
+
 
 def examine_match(match_list):
 	df_rnk = graphing.get_dataframe()

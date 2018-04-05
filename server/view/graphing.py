@@ -103,6 +103,25 @@ def scoring_teams(col):
 	return list(set(teams))
 
 
+def math_tasks(col1, col2, operator='+', name=None):
+	col1 = filter_teams(col1)
+	col2 = filter_teams(col2)
+
+	for i in range(len(col1)):
+		if operator == '+':
+			col1[i][2] += col2[i][2]
+		if operator == '-':
+			col1[i][2] -= col2[i][2]
+		if operator == '/':
+			col1[i][2] /= col2[i][2]
+		if operator == '>':
+			col1[i][2] = max(col1[i][2], col2[i][2])
+
+		if name is not None:
+			col1[i][1] = name
+	return col1
+
+
 def split_alliances(data, match_list):
 	split_data = list()
 	data = filter_teams(data, match_list)
