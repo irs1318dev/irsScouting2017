@@ -1,22 +1,13 @@
-<<<<<<< HEAD
-=======
 import pandas
 import sqlalchemy
 
 import server.model.connection as sm_connection
 import server.model.event as sm_event
->>>>>>> 3a5c55acd167d6b0f8d658b9541dcc8f8704ed86
 import server.season.s2018.api_measures as s2018api
 import server.model.dal as sm_dal
 import server.model.setup as sm_setup
 
 
-<<<<<<< HEAD
-def test_colors():
-    s2018api.download_platform_color()
-    # print(sm_dal.task_ids)
-    # sm_setup.load_game_sheet("2018")
-=======
 # def test_colors():
 #     event_id = sm_event.EventDal.set_current_event("wamou", "2018")
 #     s2018api.download_platform_color()
@@ -43,4 +34,3 @@ def test_colors():
 #     assert 'RRR' in unique_values
 #
 #     conn.close()
->>>>>>> 3a5c55acd167d6b0f8d658b9541dcc8f8704ed86

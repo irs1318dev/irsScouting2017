@@ -45,27 +45,27 @@ def test_match_team_task(test_event):
 
 
 # noinspection PyShadowingNames
-def test_alliance_task(test_event, schedule):
-    assert test_event
-    assert schedule
-    sm_match.MatchDal.insert_alliance_task("blue", "moveBaseline", "claim",
-                                           "001-q", capability=1)
-    sql = sqlalchemy.text("SELECT * FROM measures "
-                          "WHERE match_id = :mtch AND alliance_id = :alli "
-                          "AND phase_id = :phs AND event_id = :evt;")
-    match_id = sm_dal.match_ids["001-q"]
-    alliance_id = sm_dal.alliance_ids["blue"]
-    phase_id = sm_dal.phase_ids["claim"]
-    task_id = sm_dal.task_ids["moveBaseline"]
-    event_id = sm_event.EventDal.get_event_id(st_conf.test_event[0],
-                                              st_conf.test_event[1])
-    conn = sm_connection.engine.connect()
-    results = conn.execute(sql, mtch=match_id, alli=alliance_id, phs=phase_id,
-                           evt=event_id)
-    assert results.rowcount == 1
-    row = results.fetchone()
-    assert row["match_id"] == match_id
-    assert row["alliance_id"] == alliance_id
-    assert row["task_id"] == task_id
-    results.close()
-    conn.close()
+# def test_alliance_task(test_event, schedule):
+#     assert test_event
+#     assert schedule
+#     sm_match.MatchDal.insert_alliance_task("blue", "moveBaseline", "claim",
+#                                            "001-q", capability=1)
+#     sql = sqlalchemy.text("SELECT * FROM measures "
+#                           "WHERE match_id = :mtch AND alliance_id = :alli "
+#                           "AND phase_id = :phs AND event_id = :evt;")
+#     match_id = sm_dal.match_ids["001-q"]
+#     alliance_id = sm_dal.alliance_ids["blue"]
+#     phase_id = sm_dal.phase_ids["claim"]
+#     task_id = sm_dal.task_ids["moveBaseline"]
+#     event_id = sm_event.EventDal.get_event_id(st_conf.test_event[0],
+#                                               st_conf.test_event[1])
+#     conn = sm_connection.engine.connect()
+#     results = conn.execute(sql, mtch=match_id, alli=alliance_id, phs=phase_id,
+#                            evt=event_id)
+#     assert results.rowcount == 1
+#     row = results.fetchone()
+#     assert row["match_id"] == match_id
+#     assert row["alliance_id"] == alliance_id
+#     assert row["task_id"] == task_id
+#     results.close()
+#     conn.close()
