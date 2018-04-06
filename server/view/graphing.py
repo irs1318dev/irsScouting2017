@@ -13,10 +13,10 @@ import server.view.dataframes as sv_dataframes
 engine = server.model.connection.engine
 count_df = 	None
 
+
 #Data collection
 def get_dataframe():
 	return sv_dataframes.ranking_df(12)
-
 
 def get_teams():
 	all_teams = list()
@@ -32,12 +32,14 @@ def get_teams():
 
 	return all_teams
 
-
 def _nan_to_zero(elmt):
     return 0 if pd.isnull(elmt) else elmt
 
+def updated():
+	return " (as of match " + event.EventDal().get_current_match() + ")"
 
-#Data organizing
+
+#Specific task selection
 def get_column(df_rnk, task, phase='teleop', stat='avg_successes', actor='robot', task_rename=None):
 	try:
 		data = [_nan_to_zero(x) for x in df_rnk[phase][actor][task][stat]]
@@ -55,7 +57,6 @@ def get_column(df_rnk, task, phase='teleop', stat='avg_successes', actor='robot'
 
 	return all_data
 
-
 def combine_tasks(all_data_cols):
 	combined_data = list()
 	max_count = 0
@@ -69,7 +70,6 @@ def combine_tasks(all_data_cols):
 					combined_data.append(col[i])
 	return combined_data
 
-
 def get_list(df_rnk, tasks, phase='teleop', stat='avg_successes', actor='robot'):
 	all_data_cols = list()
 	for task in tasks:
@@ -77,6 +77,7 @@ def get_list(df_rnk, tasks, phase='teleop', stat='avg_successes', actor='robot')
 	return combine_tasks(all_data_cols)
 
 
+#Team listing configurations
 def filter_teams(data, teams=None):
 	filtered_data = list()
 
@@ -90,19 +91,41 @@ def filter_teams(data, teams=None):
 
 	return filtered_data
 
-
 def sorted_teams(col, hide_zeros=True):
 	if hide_zeros:
 		col = filter_teams(col, scoring_teams(col))
-	sorted_list = sorted(col, key=lambda x: x[2], reverse=True)
-	return [ x[0] for x in sorted_list ]
 
+	team_list = list()
+	final_data = list()
+	for row in col:
+		if row[0] in team_list:
+			final_data[team_list.index(row[0])][2] += row[2]
+		else:
+			final_data.append([row[0], row[1], row[2]])
+			team_list.append(row[0])
+
+	sorted_list = sorted(final_data, key=lambda x: x[2], reverse=True)
+	return [ x[0] for x in sorted_list ]
 
 def scoring_teams(col):
 	teams = [ x[0] for x in col if x[2] > 0 ]
 	return list(set(teams))
 
+def split_alliances(data, match_list):
+	split_data = list()
+	data = filter_teams(data, match_list)
 
+	for row in data:
+		if row[0] in match_list[:3]:
+			row[0] = 'Red: ' + row[0]
+			split_data.append(row)
+		if row[0] in match_list[3:]:
+			row[0] = 'Blue: ' + row[0]
+			split_data.append(row)
+	return split_data
+
+
+#Access to task values
 def math_tasks(col1, col2, operator='+', name=None):
 	col1 = filter_teams(col1)
 	col2 = filter_teams(col2)
@@ -121,29 +144,20 @@ def math_tasks(col1, col2, operator='+', name=None):
 			col1[i][1] = name
 	return col1
 
-
-def split_alliances(data, match_list):
-	split_data = list()
-	data = filter_teams(data, match_list)
-
+def value(data, team, task):
+	data = graphing.filter_teams(data, [team])
 	for row in data:
-		if row[0] in match_list[:3]:
-			row[0] = 'Red: ' + row[0]
-			split_data.append(row)
-		if row[0] in match_list[3:]:
-			row[0] = 'Blue: ' + row[0]
-			split_data.append(row)
-	return split_data
+		if row[1] == task:
+			return str(round(float(row[2]), 2))
+	return "0.0"
 
 
 #Holoviews generation
 def hv_table(data, label='Successes'):
 	return hv.Table(data, "Team", ['Task', label])
 
-
 def hv_stack(data, label='', style=dict(), side='Successes', width=800, height=400):
 	return hv.Bars(data, ["Team", "Task"], side, label=label).opts(plot=dict(tools=['hover'], stack_index=1, legend_position="top", xrotation=45, width=width, height=height), style=style)
-
 
 def hv_bar(data, label='', style=dict(), side='Successes', width=800, height=400):
 	return hv.Bars(data, ["Team", "Task"], side, label=label).opts(plot=dict(tools=['hover'], legend_position="top", xrotation=45, width=width, height=height), style=style)

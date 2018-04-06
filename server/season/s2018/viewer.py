@@ -51,7 +51,25 @@ def graph_match(match_list):
 	return graphing.get_html(plot, 'matchData')
 
 
-def graph_event():
+#Print outs
+def graph_printout():
+	df_rnk = graphing.get_dataframe()
+	updated = graphing.updated()
+
+	switch_sum = graphing.math_tasks(graphing.get_column(df_rnk, 'placeSwitch'), graphing.get_column(df_rnk, 'placeOpponent'), '+', 'placeSwitches')
+
+	tasks = ['placeOpponent', 'placeSwitch', 'placeExchange']
+	data = graphing.combine_tasks([graphing.get_list(df_rnk, tasks)])
+	place_plot = graphing.hv_stack(graphing.filter_teams(data, graphing.sorted_teams(data)), 'Average Cubes Placed' + updated, width=1500, height=1160)
+
+	data = graphing.get_column(df_rnk, 'placeScale')
+	exchange_plot = graphing.hv_stack(graphing.filter_teams(data, graphing.sorted_teams(data)), 'Average scale Cubes Placed' + updated, width=1500, height=1160)
+
+	return graphing.get_html(place_plot, 'eventData') + graphing.get_html(exchange_plot, 'eventData')
+
+
+#Alliance selection
+def graph_short_event():
 	df_rnk = graphing.get_dataframe()
 
 	switch_sum = graphing.math_tasks(graphing.get_column(df_rnk, 'placeSwitch'), graphing.get_column(df_rnk, 'placeOpponent'), '+', 'placeSwitches')
@@ -60,12 +78,11 @@ def graph_event():
 	data = graphing.combine_tasks([switch_sum, graphing.get_list(df_rnk, tasks)])
 	place_plot = graphing.hv_stack(graphing.filter_teams(data), 'Average Cubes Placed', width=1500)
 
-	tasks = ['placeSwitch'] + tasks
+	tasks = ['placeSwitch', 'placeOpponent'] + tasks
 	data = graphing.get_list(df_rnk, tasks, 'teleop', 'max_successes')
 	exchange_plot = graphing.hv_stack(graphing.filter_teams(data), 'Max Cubes Placed', width=1500)
 
 	plot = (place_plot + exchange_plot).cols(1)
-	graphing.save_view(plot, 'eventData')
 	return graphing.get_html(plot, 'eventData')
 
 
@@ -76,9 +93,9 @@ def graph_long_event():
 	data = graphing.combine_tasks([switch_sum, graphing.get_column(df_rnk, 'placeExchange'), graphing.get_column(df_rnk, 'placeScale')])
 	place_plot = graphing.hv_stack(graphing.filter_teams(data), 'Cubes Placed', width=1500)
 
-	success = graphing.get_column(df_rnk, 'makeClimb', 'finish', 'sum_successes')
-	attempt = graphing.math_tasks(graphing.get_column(df_rnk, 'makeClimb', 'finish', 'sum_attempts'), success, '-', 'missClimb')
-	climb_plot = graphing.hv_bar(graphing.filter_teams(graphing.combine_tasks([success, attempt]), graphing.sorted_teams(success)), 'Climbs', width=1500)
+	success = graphing.get_column(df_rnk, 'makeClimb', 'finish')
+	attempt = graphing.get_column(df_rnk, 'makeClimb', 'finish')
+	climb_plot = graphing.hv_stack(graphing.filter_teams(graphing.combine_tasks([success, attempt]), graphing.sorted_teams(success)), 'Climbs', width=1500)
 
 	success = graphing.get_column(df_rnk, 'disabled', 'finish', 'sum_successes')
 	attempt = graphing.math_tasks(graphing.get_column(df_rnk, 'disabled', 'finish', 'sum_attempts'), success, '-', 'temporary')
@@ -88,20 +105,16 @@ def graph_long_event():
 	data = graphing.get_list(df_rnk, tasks, 'auto')
 	auto_plot = graphing.hv_stack(graphing.filter_teams(data), 'Auto', width=1500)
 
-	plot = (place_plot + auto_plot + climb_plot + foul_plot).cols(1)
+	data = graphing.get_list(df_rnk, tasks, 'auto', 'avg_attempts')
+	auto_att = graphing.hv_stack(graphing.filter_teams(data), 'Auto Attempts', width=1500)
+
+	plot = (auto_plot + auto_att + climb_plot + foul_plot).cols(1)
 	graphing.save_view(plot, 'longEventData')
 	return graphing.get_html(plot, 'longEventData')
 
 
-def single_point(data, team, task):
-	data = graphing.filter_teams(data, [team])
-	for row in data:
-		if row[1] == task:
-			return str(round(float(row[2]), 2))
-	return "0.0"
-
-
 def examine_match(match_list):
+	#Collect relevant data
 	df_rnk = graphing.get_dataframe()
 	match_count = graphing.get_column(df_rnk, 'autoLine', 'auto', 'matches')
 
@@ -118,44 +131,47 @@ def examine_match(match_list):
 	pickup_max = pickup_locations(df_rnk)
 	disabled_sum = graphing.get_column(df_rnk, 'disabled', 'finish', 'sum_attempts')
 
+	#Display teams in match
 	team_widgets = list()
 	for team in match_list:
 		widget = '<td style="padding: 5px;"><h3>Team ' + team + ' &nbsp;Played: ' + str(graphing.filter_teams(match_count, [team])[0][2]) + '</h3>'
-
 		widget += '<div> <div style="float: left;">'
 
+		#Auto
 		widget += " --Auto Averages-- <br>"
-		widget += "Cross Auto Line: &nbsp;" + single_point(auto_avg, team, 'autoLine') + "&nbsp;&nbsp;&nbsp;<br>"
-		widget += "Place Switch: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + single_point(auto_avg, team, 'placeSwitch') + "&nbsp;&nbsp;<br>"
-		widget += "Place Scale: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + single_point(auto_avg, team, 'placeScale') + "&nbsp;&nbsp;<br>"
+		widget += "Cross Auto Line: &nbsp;" + graphing.value(auto_avg, team, 'autoLine') + "&nbsp;&nbsp;&nbsp;<br>"
+		widget += "Place Switch: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + graphing.value(auto_avg, team, 'placeSwitch') + "&nbsp;&nbsp;<br>"
+		widget += "Place Scale: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + graphing.value(auto_avg, team, 'placeScale') + "&nbsp;&nbsp;<br>"
 
+		#Ending
 		widget += "<br> --Final Sums-- <br>"
-		widget += "Parked: &nbsp;&nbsp;" + single_point(end_sum, team, 'parkPlatform') + "<br>"
-		widget += "Climbs: &nbsp;&nbsp;" + single_point(end_sum, team, 'makeClimb') + "<br>"
-		widget += "Support: &nbsp;" + single_point(end_sum, team, 'supportClimb') + "<br>"
+		widget += "Parked: &nbsp;&nbsp;" + graphing.value(end_sum, team, 'parkPlatform') + "<br>"
+		widget += "Climbs: &nbsp;&nbsp;" + graphing.value(end_sum, team, 'makeClimb') + "<br>"
+		widget += "Support: &nbsp;" + graphing.value(end_sum, team, 'supportClimb') + "<br>"
 
 		widget += '</div> <div style="float: left;">'
 
-		widget += " --Placement-- <br>"
-		widget += "Switch Max: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + single_point(place_max, team, 'placeSwitch')
-		widget += " &nbsp;Avg: &nbsp;" + single_point(place_avg, team, 'placeSwitch') + "&nbsp;&nbsp;<br>"
-		widget += "Scale Max: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + single_point(place_max, team, 'placeScale')
-		widget += " &nbsp;Avg: &nbsp;" + single_point(place_avg, team, 'placeScale') + "&nbsp;&nbsp;<br>"
-		widget += "Opponent Max: &nbsp;" + single_point(place_max, team, 'placeOpponent')
-		widget += " &nbsp;Avg: &nbsp;" + single_point(place_avg, team, 'placeOpponent') + "&nbsp;&nbsp;<br>"
-		widget += "Exchange Max: &nbsp;" + single_point(place_max, team, 'placeExchange')
-		widget += " &nbsp;Avg: &nbsp;" + single_point(place_avg, team, 'placeExchange') + "&nbsp;&nbsp;<br>"
+		#Placement
+		widget += "<br> --Placement-- <br>"
+		widget += "Switch Max: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + graphing.value(place_max, team, 'placeSwitch')
+		widget += " &nbsp;Avg: &nbsp;" + graphing.value(place_avg, team, 'placeSwitch') + "&nbsp;&nbsp;<br>"
+		widget += "Scale Max: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + graphing.value(place_max, team, 'placeScale')
+		widget += " &nbsp;Avg: &nbsp;" + graphing.value(place_avg, team, 'placeScale') + "&nbsp;&nbsp;<br>"
+		widget += "Opponent Max: &nbsp;" + graphing.value(place_max, team, 'placeOpponent')
+		widget += " &nbsp;Avg: &nbsp;" + graphing.value(place_avg, team, 'placeOpponent') + "&nbsp;&nbsp;<br>"
+		widget += "Exchange Max: &nbsp;" + graphing.value(place_max, team, 'placeExchange')
+		widget += " &nbsp;Avg: &nbsp;" + graphing.value(place_avg, team, 'placeExchange') + "&nbsp;&nbsp;<br>"
 		
+		#Other
 		pickup_team = graphing.filter_teams(pickup_max, [team])[0]
 		widget += "<br>" + pickup_team[1] + " for " + pickup_team[2] + "<br>"
-
-		widget += "<br>Disabled: " + single_point(disabled_sum, team, 'disabled')
+		widget += "<br>Disabled: " + graphing.value(disabled_sum, team, 'disabled')
 
 		widget += "</div> </div>"
-		
 		widget += "</td>"
 		team_widgets.append(widget)
 
+	#Place display into table
 	out = '<table> <tr class="Red">'
 	out += team_widgets[0] + team_widgets[1] + team_widgets[2]
 	out += '</tr><tr class="Blue">'

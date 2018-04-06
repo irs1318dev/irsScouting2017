@@ -12,6 +12,7 @@ CREATE DATABASE scouting
 
 
 -- Linux version
+DROP DATABASE scouting;
 CREATE DATABASE scouting
     WITH 
     OWNER = irs1318

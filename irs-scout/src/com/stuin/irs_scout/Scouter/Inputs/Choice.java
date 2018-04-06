@@ -46,13 +46,14 @@ public class Choice extends RadioGroup implements Input {
 
     @Override
     public void update(Measure measure, boolean send) {
-        CompoundButton radioButton;
         id.update(measure, send);
 
         locked = true;
         for(int i = 0; i < choices.length; i++) {
-            radioButton = (CompoundButton) getChildAt(i);
-            radioButton.setChecked(choices[i].equals(measure.capability));
+            boolean checked = measure.capability.equals(choices[i]);
+            RadioButton radioButton = (RadioButton) getChildAt(i);
+            radioButton.setChecked(checked);
+
         }
         locked = false;
     }
@@ -72,9 +73,7 @@ public class Choice extends RadioGroup implements Input {
         @Override
         public boolean onLongClick(View view) {
             id.measure.capability = "";
-
-            RadioButton radioButton = (RadioButton) view;
-            radioButton.setChecked(false);
+            clearCheck();
 
             update(id.measure, true);
             return true;

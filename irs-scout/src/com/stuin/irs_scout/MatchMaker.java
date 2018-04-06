@@ -98,10 +98,15 @@ public class MatchMaker {
             @Override
             public void run(List<String> s) {
                 if(nameView != null && s.size() > 0 && !s.get(0).equals("na")) {
-                    if(s.get(0).length() > 30)
-                        nameView.setText(s.get(0).substring(0,30));
-                    else
-                        nameView.setText(s.get(0));
+                    String name = s.get(0);
+                    while(name.length() > 33) {
+                        int i = name.length() - 1;
+                        while(i > 0 && name.charAt(i) != ' ')
+                            i--;
+                        name = name.substring(0, i) + "...";
+                    }
+
+                    nameView.setText(s.get(0));
                     nameView.setVisibility(View.VISIBLE);
                 }
             }
