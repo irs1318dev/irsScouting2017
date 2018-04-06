@@ -8,3 +8,4 @@ irs-scout/gen
 irs-scout/bin
 **/.ipynb_checkpoints
 **/.cache
+server/web/data

@@ -71,7 +71,7 @@ class Viewer:
 
     @cherrypy.expose
     def selectionplan(self):
-        return graphing.graph_event()
+        return graphing.graph_short_event()
         #return open(s_config.web_data('eventData.html')).read() 
 
     @cherrypy.expose

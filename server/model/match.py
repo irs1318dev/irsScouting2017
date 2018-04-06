@@ -144,7 +144,7 @@ class MatchDal(object):
             cycle_times = row['cycle_times']
 
             if capability > 0:
-                capability = sm_dal.task_option_names[capability]
+                capability = sm_dal.task_option_options[capability]
 
             out += (json.dumps(OrderedDict([('match', match), ('team', team),
                                             ('task', task), ('phase', phase),
