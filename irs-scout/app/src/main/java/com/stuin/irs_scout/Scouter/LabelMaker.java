@@ -29,7 +29,7 @@ class LabelMaker {
         this.pageManager = pageManager;
     }
 
-    void load(View status) {
+    void load(final View status) {
         //Download layout from server
         class Layout extends Request {
             @Override

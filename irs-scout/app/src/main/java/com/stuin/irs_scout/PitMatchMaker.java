@@ -54,7 +54,7 @@ public class PitMatchMaker extends MatchMaker {
                 }
 
                 for(String team : pitMatch.teams) {
-                    allData.add(new ArrayList<>());
+                    allData.add(new ArrayList<Measure>());
                     teams.add(team);
                     if(!team.equals("na")) nextTeams.add("/matchteamtasks?match=na&team=" + team);
                 }

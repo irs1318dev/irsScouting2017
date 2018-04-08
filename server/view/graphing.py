@@ -145,7 +145,7 @@ def math_tasks(col1, col2, operator='+', name=None):
 	return col1
 
 def value(data, team, task):
-	data = graphing.filter_teams(data, [team])
+	data = filter_teams(data, [team])
 	for row in data:
 		if row[1] == task:
 			return str(round(float(row[2]), 2))

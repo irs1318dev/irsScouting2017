@@ -52,7 +52,7 @@ def graph_match(match_list):
 
 
 #Print outs
-def graph_printout():
+def graph_prints():
 	df_rnk = graphing.get_dataframe()
 	updated = graphing.updated()
 
@@ -62,8 +62,8 @@ def graph_printout():
 	data = graphing.combine_tasks([graphing.get_list(df_rnk, tasks)])
 	place_plot = graphing.hv_stack(graphing.filter_teams(data, graphing.sorted_teams(data)), 'Average Cubes Placed' + updated, width=1500, height=1160)
 
-	data = graphing.get_column(df_rnk, 'placeScale')
-	exchange_plot = graphing.hv_stack(graphing.filter_teams(data, graphing.sorted_teams(data)), 'Average scale Cubes Placed' + updated, width=1500, height=1160)
+	data = graphing.get_column(df_rnk, 'makeClimb', 'finish')
+	exchange_plot = graphing.hv_stack(graphing.filter_teams(data, graphing.sorted_teams(data)), 'Average Successful Climbs' + updated, width=1500, height=1160)
 
 	return graphing.get_html(place_plot, 'eventData') + graphing.get_html(exchange_plot, 'eventData')
 
