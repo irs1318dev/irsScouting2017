@@ -1,13 +1,13 @@
 import server.view.graphing as graphing
 
 
-def pickup_locations(df_rnk):
+def pickup_locations():
 	tasks = ['pickupPlatform', 'pickupCubeZone', 'pickupPortal']
-	team_sums = graphing.get_column(df_rnk, 'pickupFloor', 'teleop', 'sum_successes', task_rename='pickupTotal')
-	pickup_max = graphing.get_column(df_rnk, 'pickupFloor', 'teleop', 'sum_successes')
+	team_sums = graphing.get_column('pickupFloor', 'teleop', 'sum_successes', task_rename='pickupTotal')
+	pickup_max = graphing.get_column('pickupFloor', 'teleop', 'sum_successes')
 
 	for location in tasks:
-		data = graphing.get_column(df_rnk, location, 'teleop', 'sum_successes')
+		data = graphing.get_column(location, 'teleop', 'sum_successes')
 		for i in range(len(data)):
 			if data[i][2] > pickup_max[i][2]:
 				pickup_max[i] = data[i]
@@ -22,29 +22,29 @@ def pickup_locations(df_rnk):
 
 
 def graph_match(match_list):
-	df_rnk = graphing.get_dataframe()
+	graphing.update_dataframe()
 
 	tasks = ['placeSwitch', 'placeExchange', 'placeScale']
-	data = graphing.get_list(df_rnk, tasks)
+	data = graphing.get_list(tasks)
 	place_plot = graphing.hv_bar(graphing.split_alliances(data, match_list), 'Cubes Placed')
 
-	data = pickup_locations(df_rnk)
+	data = pickup_locations()
 	get_plot = graphing.hv_table(graphing.split_alliances(data, match_list), 'Pickup')
 
 	tasks = ['autoLine', 'placeSwitch', 'placeScale']
-	data = graphing.get_list(df_rnk, tasks, 'auto')
+	data = graphing.get_list(tasks, 'auto')
 	auto_plot = graphing.hv_stack(graphing.split_alliances(data, match_list), 'Auto')
 
 	tasks = ['placeIncorrect', 'crossNull']
-	data = graphing.get_list(df_rnk, tasks, 'auto', 'sum_successes')
+	data = graphing.get_list(tasks, 'auto', 'sum_successes')
 	drop_plot = graphing.hv_table(graphing.split_alliances(data, match_list), 'Auto Fails')
 
 	tasks = ['makeClimb', 'supportClimb', 'parkPlatform']
-	data = graphing.get_list(df_rnk, tasks, 'finish')
+	data = graphing.get_list(tasks, 'finish')
 	climb_plot = graphing.hv_stack(graphing.split_alliances(data, match_list), 'Climbing')
 
 	tasks = ['disabled', 'getFoul']
-	data = graphing.get_list(df_rnk, tasks, 'finish', 'sum_successes')
+	data = graphing.get_list(tasks, 'finish', 'sum_successes')
 	fail_plot = graphing.hv_table(graphing.split_alliances(data, match_list), 'Total Problems')
 
 	plot = (place_plot + get_plot + auto_plot + drop_plot + climb_plot + fail_plot).cols(2)
@@ -53,33 +53,32 @@ def graph_match(match_list):
 
 #Print outs
 def graph_printout():
-	df_rnk = graphing.get_dataframe()
-	updated = graphing.updated()
+	graphing.update_dataframe()
 
-	switch_sum = graphing.math_tasks(graphing.get_column(df_rnk, 'placeSwitch'), graphing.get_column(df_rnk, 'placeOpponent'), '+', 'placeSwitches')
+	switch_sum = graphing.math_tasks(graphing.get_column('placeSwitch'), graphing.get_column('placeOpponent'), '+', 'placeSwitches')
 
 	tasks = ['placeOpponent', 'placeSwitch', 'placeExchange']
-	data = graphing.combine_tasks([graphing.get_list(df_rnk, tasks)])
-	place_plot = graphing.hv_stack(graphing.filter_teams(data, graphing.sorted_teams(data)), 'Average Cubes Placed' + updated, width=1500, height=1160)
+	data = graphing.combine_tasks([graphing.get_list(tasks)])
+	place_plot = graphing.hv_stack(graphing.filter_teams(data, graphing.sorted_teams(data)), 'Average Cubes Placed' + graphing.updated, width=1500, height=1160)
 
-	data = graphing.get_column(df_rnk, 'placeScale')
-	exchange_plot = graphing.hv_stack(graphing.filter_teams(data, graphing.sorted_teams(data)), 'Average scale Cubes Placed' + updated, width=1500, height=1160)
+	data = graphing.get_column('placeScale')
+	exchange_plot = graphing.hv_stack(graphing.filter_teams(data, graphing.sorted_teams(data)), 'Average scale Cubes Placed' + graphing.updated, width=1500, height=1160)
 
 	return graphing.get_html(place_plot, 'eventData') + graphing.get_html(exchange_plot, 'eventData')
 
 
 #Alliance selection
 def graph_short_event():
-	df_rnk = graphing.get_dataframe()
+	graphing.update_dataframe()
 
-	switch_sum = graphing.math_tasks(graphing.get_column(df_rnk, 'placeSwitch'), graphing.get_column(df_rnk, 'placeOpponent'), '+', 'placeSwitches')
+	switch_sum = graphing.math_tasks(graphing.get_column('placeSwitch'), graphing.get_column('placeOpponent'), '+', 'placeSwitches')
 
 	tasks = ['placeScale', 'placeExchange']
-	data = graphing.combine_tasks([switch_sum, graphing.get_list(df_rnk, tasks)])
+	data = graphing.combine_tasks([switch_sum, graphing.get_list(tasks)])
 	place_plot = graphing.hv_stack(graphing.filter_teams(data), 'Average Cubes Placed', width=1500)
 
 	tasks = ['placeSwitch', 'placeOpponent'] + tasks
-	data = graphing.get_list(df_rnk, tasks, 'teleop', 'max_successes')
+	data = graphing.get_list(tasks, 'teleop', 'max_successes')
 	exchange_plot = graphing.hv_stack(graphing.filter_teams(data), 'Max Cubes Placed', width=1500)
 
 	plot = (place_plot + exchange_plot).cols(1)
@@ -87,25 +86,25 @@ def graph_short_event():
 
 
 def graph_long_event():
-	df_rnk = graphing.get_dataframe()
+	graphing.update_dataframe()
 
-	switch_sum = graphing.math_tasks(graphing.get_column(df_rnk, 'placeSwitch'), graphing.get_column(df_rnk, 'placeOpponent'), '+', 'placeSwitches')
-	data = graphing.combine_tasks([switch_sum, graphing.get_column(df_rnk, 'placeExchange'), graphing.get_column(df_rnk, 'placeScale')])
+	switch_sum = graphing.math_tasks(graphing.get_column('placeSwitch'), graphing.get_column('placeOpponent'), '+', 'placeSwitches')
+	data = graphing.combine_tasks([switch_sum, graphing.get_column('placeExchange'), graphing.get_column('placeScale')])
 	place_plot = graphing.hv_stack(graphing.filter_teams(data), 'Cubes Placed', width=1500)
 
-	success = graphing.get_column(df_rnk, 'makeClimb', 'finish')
-	attempt = graphing.get_column(df_rnk, 'makeClimb', 'finish')
+	success = graphing.get_column('makeClimb', 'finish')
+	attempt = graphing.get_column('makeClimb', 'finish')
 	climb_plot = graphing.hv_stack(graphing.filter_teams(graphing.combine_tasks([success, attempt]), graphing.sorted_teams(success)), 'Climbs', width=1500)
 
-	success = graphing.get_column(df_rnk, 'disabled', 'finish', 'sum_successes')
-	attempt = graphing.math_tasks(graphing.get_column(df_rnk, 'disabled', 'finish', 'sum_attempts'), success, '-', 'temporary')
+	success = graphing.get_column('disabled', 'finish', 'sum_successes')
+	attempt = graphing.math_tasks(graphing.get_column('disabled', 'finish', 'sum_attempts'), success, '-', 'temporary')
 	foul_plot = graphing.hv_bar(graphing.filter_teams(graphing.combine_tasks([success, attempt]), graphing.scoring_teams(attempt)), 'Problems', width=1500)
 
 	tasks = ['autoLine', 'placeSwitch', 'placeScale']
-	data = graphing.get_list(df_rnk, tasks, 'auto')
+	data = graphing.get_list(tasks, 'auto')
 	auto_plot = graphing.hv_stack(graphing.filter_teams(data), 'Auto', width=1500)
 
-	data = graphing.get_list(df_rnk, tasks, 'auto', 'avg_attempts')
+	data = graphing.get_list(tasks, 'auto', 'avg_attempts')
 	auto_att = graphing.hv_stack(graphing.filter_teams(data), 'Auto Attempts', width=1500)
 
 	plot = (auto_plot + auto_att + climb_plot + foul_plot).cols(1)
@@ -115,21 +114,21 @@ def graph_long_event():
 
 def examine_match(match_list):
 	#Collect relevant data
-	df_rnk = graphing.get_dataframe()
-	match_count = graphing.get_column(df_rnk, 'autoLine', 'auto', 'matches')
+	graphing.update_dataframe()
+	match_count = graphing.get_column('autoLine', 'auto', 'matches')
 
 	tasks = ['autoLine', 'placeSwitch', 'placeScale']
-	auto_avg = graphing.get_list(df_rnk, tasks, 'auto')
+	auto_avg = graphing.get_list(tasks, 'auto')
 
 	tasks = ['placeSwitch', 'placeScale', 'placeOpponent', 'placeExchange']
-	place_avg = graphing.get_list(df_rnk, tasks, 'teleop')
-	place_max = graphing.get_list(df_rnk, tasks, 'teleop', 'max_successes')
+	place_avg = graphing.get_list(tasks, 'teleop')
+	place_max = graphing.get_list(tasks, 'teleop', 'max_successes')
 
 	tasks = ['parkPlatform', 'makeClimb', 'supportClimb']
-	end_sum = graphing.get_list(df_rnk, tasks, 'finish', 'sum_successes')
+	end_sum = graphing.get_list(tasks, 'finish', 'sum_successes')
 
-	pickup_max = pickup_locations(df_rnk)
-	disabled_sum = graphing.get_column(df_rnk, 'disabled', 'finish', 'sum_attempts')
+	pickup_max = pickup_locations()
+	disabled_sum = graphing.get_column('disabled', 'finish', 'sum_attempts')
 
 	#Display teams in match
 	team_widgets = list()

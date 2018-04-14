@@ -16,7 +16,7 @@ def web_base():
 
 
 def web_data(file):
-    path = os.path.join(os.path.dirname(__file__), 'web', 'data', file)
+    path = os.path.join(os.path.dirname(__file__), 'output', file)
     return path
 
 
