@@ -9,3 +9,9 @@ irs-scout/bin
 **/.ipynb_checkpoints
 **/.cache
 server/web/data
+
+irs-scout/build/
+
+irs-scout/app/build/
+
+irs-scout/\.gradle/
