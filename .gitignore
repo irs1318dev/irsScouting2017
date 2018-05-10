@@ -1,0 +1,14 @@
+**/auth.py
+*.pyc
+.idea
+*.iml
+**/.ipynb_checkpoints
+**/.cache
+server/web/data
+
+irs-scout/out
+irs-scout/gen
+irs-scout/bin
+irs-scout/app
+irs-scout/build
+irs-scout/\.gradle
