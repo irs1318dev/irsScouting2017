@@ -12,11 +12,16 @@ import server.view.dataframes as sv_dataframes
 
 engine = server.model.connection.engine
 count_df = 	None
+df_rnk = sv_dataframes.ranking_df(12)
+match = ""
+updated = ""
 
 
 #Data collection
-def get_dataframe():
-	return sv_dataframes.ranking_df(12)
+def update_dataframe():
+	df_rnk = sv_dataframes.ranking_df(12)
+	match = event.EventDal().get_current_match()
+	updated = " (as of match " + match + ")"
 
 def get_teams():
 	all_teams = list()
@@ -35,12 +40,9 @@ def get_teams():
 def _nan_to_zero(elmt):
     return 0 if pd.isnull(elmt) else elmt
 
-def updated():
-	return " (as of match " + event.EventDal().get_current_match() + ")"
-
 
 #Specific task selection
-def get_column(df_rnk, task, phase='teleop', stat='avg_successes', actor='robot', task_rename=None):
+def get_column(task, phase='teleop', stat='avg_successes', actor='robot', task_rename=None):
 	try:
 		data = [_nan_to_zero(x) for x in df_rnk[phase][actor][task][stat]]
 	except KeyError:
@@ -70,10 +72,10 @@ def combine_tasks(all_data_cols):
 					combined_data.append(col[i])
 	return combined_data
 
-def get_list(df_rnk, tasks, phase='teleop', stat='avg_successes', actor='robot'):
+def get_list(tasks, phase='teleop', stat='avg_successes', actor='robot'):
 	all_data_cols = list()
 	for task in tasks:
-		all_data_cols.append(get_column(df_rnk, task, phase, stat, actor))
+		all_data_cols.append(get_column(task, phase, stat, actor))
 	return combine_tasks(all_data_cols)
 
 

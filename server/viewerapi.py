@@ -4,7 +4,6 @@ import os.path
 import server.config as s_config
 import server.scouting.export
 import server.model.event as event
-import server.scouting.alliance
 import server.model.match as match
 import server.season.s2018.viewer as graphing
 import server.view.excel as excel
@@ -14,7 +13,6 @@ import server.scouting.export as export
 class Viewer:
     def __init__(self, alone=True):
         self.alone = alone
-        self.alliances = server.scouting.alliance.AlliancePage()
 
     @cherrypy.expose
     def index(self):
@@ -29,40 +27,14 @@ class Viewer:
         return out
 
     @cherrypy.expose
-    def data(self, name):
-        name = s_config.web_data("name")
-        if os.path.exists(name):
-            return serve_file(name, "application/x-download", "attachment")
-        return 'No File Found'
-
-    @cherrypy.expose
-    def selection(self, team='', index=-1, shift=-1, out=False):
-        self.alliances.start()
-        if team != '':
-            self.alliances.alliances.set(team)
-        if index != -1:
-            self.alliances.alliances.choose(index)
-        if shift != -1:
-            self.alliances.shift(shift)
-        if out:
-            self.alliances.alliances.output()
-
-        out = open(s_config.web_sites("selection.html")).read()
-        out = out.replace("{Unset}", self.alliances.unset())
-        out = self.alliances.selections(out)
-        return out
-
-    @cherrypy.expose
     def backup(self):
-        script = export.ExportBackup.run_backup(
-            server.model.event.EventDal.get_current_event()[1])
-        return '<a href="/view/data?name=' + script + '">Download File</a>'
+        export.ExportBackup.run_backup(server.model.event.EventDal.get_current_event()[1])
+        return 'Success. <a href="/view">Viewer</a>'
 
     @cherrypy.expose
     def output(self):
-        script = ''
-        script = excel.write_to_excel(excel.rnk_rpt2018a)
-        return '<a href="/view/data?name=' + script + '">Download File</a>'
+        excel.write_to_excel(excel.rnk_rpt2018a)
+        return 'Success. <a href="/view">Viewer</a>'
 
     @cherrypy.expose
     def restore(self, path):
