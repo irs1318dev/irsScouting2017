@@ -18,7 +18,7 @@ rnk_rpt2018a = [{"phase": "auto", "actor": "robot", "task": "autoLine",
                  "stat": "avg_successes", "stat_label": "average"},
 
                 {"phase": "teleop", "actor": "robot", "task": "placeSwitch",
-                 "stat": "avg_successes", "stat_label": "average"},
+             "stat": "avg_successes", "stat_label": "average"},
 
                 {"phase": "teleop", "actor": "robot", "task": "placeSwitch",
                  "stat": "max_successes", "stat_label": "max"},

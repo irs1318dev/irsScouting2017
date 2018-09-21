@@ -12,6 +12,7 @@ import server.model.upsert as smu
 import server.model.firstapi as smf
 
 
+
 def insert_sched(event, season, level='qual', fileName = '-1'):
     event = event.lower()
 
@@ -80,8 +81,7 @@ def process_sched(event, season, sched_json, level='qual'):
             # smu.upsert("events", "name", event)
             smu.upsert("teams", "name", team)
             smu.upsert("dates", "name", date)
-    set_teams() 
-
+    set_teams()
 
 # Function only works if the csv has columns in the order of match, red1, red2, red3, blue1, blue2, blue3
 def manual_Entry(file, event, season):
@@ -116,15 +116,15 @@ def manual_Entry(file, event, season):
         b1 = int(blue1[value])
         b2 = int(blue2[value])
         b3 = int(blue3[value])
-        elem = int(elem)
+        match = int(elem)
         select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
-                                 "VALUES (:elem, :b1, 'na', 'na', 'red', 'na', :event_id);")
-        conn.execute(select, elem=elem, b1=b1, event_id=event_id)
+                                 "VALUES (:elem, :b1, 'na', 'na', 'blue', 'na', :event_id);")
+        conn.execute(select, elem=match, b1=b1, event_id=event_id)
         select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
-                                 "VALUES (:elem, :b2, 'na', 'na', 'red', 'na', :event_id);")
-        conn.execute(select, elem=elem, b2=b2, event_id=event_id)
+                                 "VALUES (:elem, :b2, 'na', 'na', 'blue', 'na', :event_id);")
+        conn.execute(select, elem=match, b2=b2, event_id=event_id)
         select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
-                                 "VALUES (:elem, :b3, 'na', 'na', 'red', 'na', :event_id);")
-        conn.execute(select, elem=elem, b3=b3, event_id=event_id)
+                                 "VALUES (:elem, :b3, 'na', 'na', 'blue', 'na', :event_id);")
+        conn.execute(select, elem=match, b3=b3, event_id=event_id)
         value = value + 1
     conn.close()
