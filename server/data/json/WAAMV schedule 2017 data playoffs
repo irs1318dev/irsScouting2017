@@ -1,0 +1,667 @@
+{
+  "Schedule": [
+    {
+      "description": "Quarterfinal 1",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T13:45:00",
+      "matchNumber": 1,
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1258,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3588,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Quarterfinal 2",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T13:52:00",
+      "matchNumber": 2,
+      "Teams": [
+        {
+          "teamNumber": 5495,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 360,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1983,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Quarterfinal 3",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T13:59:00",
+      "matchNumber": 3,
+      "Teams": [
+        {
+          "teamNumber": 3786,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4681,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Quarterfinal 4",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T14:06:00",
+      "matchNumber": 4,
+      "Teams": [
+        {
+          "teamNumber": 4131,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4089,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1899,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Quarterfinal 5",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T14:13:00",
+      "matchNumber": 5,
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1258,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3588,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Quarterfinal 6",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T14:20:00",
+      "matchNumber": 6,
+      "Teams": [
+        {
+          "teamNumber": 5495,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 360,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1983,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Quarterfinal 7",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T14:27:00",
+      "matchNumber": 7,
+      "Teams": [
+        {
+          "teamNumber": 3786,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2046,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4681,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Quarterfinal 8",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T14:34:00",
+      "matchNumber": 8,
+      "Teams": [
+        {
+          "teamNumber": 4131,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4089,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1899,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Tiebreaker 1",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T14:47:00",
+      "matchNumber": 9,
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1258,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 3588,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Tiebreaker 4",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T15:08:00",
+      "matchNumber": 12,
+      "Teams": [
+        {
+          "teamNumber": 4131,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5827,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4089,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1899,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Semifinal 1",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T15:21:00",
+      "matchNumber": 13,
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5495,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Semifinal 2",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T15:28:00",
+      "matchNumber": 14,
+      "Teams": [
+        {
+          "teamNumber": 4681,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4089,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1899,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Semifinal 3",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T15:35:00",
+      "matchNumber": 15,
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5495,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Semifinal 4",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T15:42:00",
+      "matchNumber": 16,
+      "Teams": [
+        {
+          "teamNumber": 4681,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 2557,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4089,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1899,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Tiebreaker 1",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T15:55:00",
+      "matchNumber": 17,
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4450,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 1294,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5495,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Final 1",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T16:15:00",
+      "matchNumber": 19,
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4681,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    },
+    {
+      "description": "Final 2",
+      "field": "Primary",
+      "tournamentLevel": "Playoff",
+      "startTime": "2017-03-05T16:28:00",
+      "matchNumber": 20,
+      "Teams": [
+        {
+          "teamNumber": 3223,
+          "station": "Red1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4915,
+          "station": "Red2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5803,
+          "station": "Red3",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 5588,
+          "station": "Blue1",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4469,
+          "station": "Blue2",
+          "surrogate": false
+        },
+        {
+          "teamNumber": 4681,
+          "station": "Blue3",
+          "surrogate": false
+        }
+      ]
+    }
+  ]
+}

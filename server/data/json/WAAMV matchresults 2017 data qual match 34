@@ -1,0 +1,49 @@
+{
+  "Matches": [
+    {
+      "actualStartTime": "2017-03-05T12:21:26.3066667",
+      "description": "Qualification 34",
+      "tournamentLevel": "Qualification",
+      "matchNumber": 34,
+      "scoreRedFinal": 245,
+      "scoreRedFoul": 0,
+      "scoreRedAuto": 15,
+      "scoreBlueFinal": 230,
+      "scoreBlueFoul": 25,
+      "scoreBlueAuto": 75,
+      "postResultTime": "2017-03-05T12:24:23.6566667",
+      "Teams": [
+        {
+          "teamNumber": 5683,
+          "station": "Red1",
+          "dq": false
+        },
+        {
+          "teamNumber": 1318,
+          "station": "Red2",
+          "dq": false
+        },
+        {
+          "teamNumber": 6350,
+          "station": "Red3",
+          "dq": false
+        },
+        {
+          "teamNumber": 5937,
+          "station": "Blue1",
+          "dq": false
+        },
+        {
+          "teamNumber": 2907,
+          "station": "Blue2",
+          "dq": false
+        },
+        {
+          "teamNumber": 2930,
+          "station": "Blue3",
+          "dq": false
+        }
+      ]
+    }
+  ]
+}
