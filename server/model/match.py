@@ -119,13 +119,15 @@ class MatchDal(object):
         match_id = sm_dal.match_ids[match]
         team_id = sm_dal.team_ids[team]
 
-        evt = event.EventDal.get_current_event()[1]
-        event_id = sm_dal.event_ids[evt]
+        event_id = event.EventDal.get_current_event()[0]
 
-        sql = text("SELECT * FROM measures WHERE "
-                   "event_id = :event_id "
-                   "AND match_id = :match_id "
-                   "AND team_id = :team_id;")
+
+        sql = text("""
+                    SELECT * FROM measures WHERE
+                    event_id = :event_id
+                    AND match_id = :match_id
+                    AND team_id = :team_id;
+                    """)
 
         conn = engine.connect()
         results = conn.execute(sql, event_id=event_id, match_id=match_id,
