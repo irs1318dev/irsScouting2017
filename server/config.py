@@ -1,4 +1,5 @@
-"""This file contains functions used to calculate the absolute path of files within certain folders
+"""This file contains functions used to calculate the absolute path of
+files within certain folders
 """
 import os.path
 

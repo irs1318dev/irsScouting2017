@@ -126,7 +126,7 @@ def events(season):
     url = ("https://frc-api.firstinspires.org/v2.0/" + season + "/events")
     return _send_http_request(url)
 
-def get_team_names( teamNumber, season='2018'):
 
+def get_team_names(teamNumber, season='2018'):
         url = ("https://frc-api.firstinspires.org/v2.0/" + season + "/teams?teamNumber=" + teamNumber)
         return _send_http_request(url)
