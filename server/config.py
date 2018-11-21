@@ -1,4 +1,5 @@
-"""This file contains functions used to calculate the absolute path of files within certain folders
+"""This file contains functions used to calculate the absolute path of
+files within certain folders
 """
 import os.path
 
@@ -16,7 +17,7 @@ def web_base():
 
 
 def web_data(file):
-    path = os.path.join(os.path.dirname(__file__), 'output', file)
+    path = os.path.join(os.path.dirname(__file__), 'web', 'data', file)
     return path
 
 

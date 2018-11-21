@@ -1,6 +1,5 @@
 """Tests code in server.model.connection.py
 """
-import pytest
 import psycopg2
 import psycopg2.pool
 import psycopg2.extensions
@@ -22,11 +21,6 @@ def test_psycopg2_pool():
 
     conn2 = server.model.connection.pool.getconn()
     assert isinstance(conn2, psycopg2.extensions.connection)
-
-    # Requesting another connection causes error because maxconn = 2
-    # with pytest.raises(psycopg2.pool.PoolError):
-    #     conn3 = server.model.connection.pool.getconn()
-    #     del conn3
 
     # Can get another connection if put one away first
     server.model.connection.pool.putconn(conn1)
