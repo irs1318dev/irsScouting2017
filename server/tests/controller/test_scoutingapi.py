@@ -132,3 +132,8 @@ def test_matchteamtasks(scouting_app):
     assert team_tasks[0]["match"] == "007-q"
     assert team_tasks[8]["task"] == "pushTouchPad"
     print("\n", team_tasks)
+
+
+def test_tablets(scouting_app):
+    print("\n")
+    print(scouting_app.tablets())
