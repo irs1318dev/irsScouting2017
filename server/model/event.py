@@ -121,13 +121,11 @@ class EventDal(object):
 
     @staticmethod
     def get_current_status():
-        status = {}
-        sql = text("SELECT * FROM status")
+        sql = text("SELECT * FROM status;")
         conn = engine.connect()
         results = conn.execute(sql)
         conn.close()
-        for row in results:
-            status = dict(row)
+        status = dict(results.first())
         return json.dumps(status)
 
     @staticmethod
