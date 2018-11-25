@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 
         //Retrieve last ip
         Request.address = getPreferences(Context.MODE_PRIVATE).getString("Address", getResources().getString(R.string.form_ip));
-        TextView textView = findViewById(R.id.AddressBar);
+        TextView textView = (android.widget.TextView) findViewById(R.id.AddressBar);
         textView.setText(Request.address.split(":")[0]);
     }
 
@@ -39,8 +39,9 @@ public class MainActivity extends Activity {
         position = textView.getText().toString();
 
         //Get server address
-        textView = findViewById(R.id.AddressBar);
-        Request.address = textView.getText().toString() + ":8080";
+        textView = (android.widget.TextView) findViewById(R.id.AddressBar);
+        if(textView.getText().length() == 0) Request.address = "localhost:8080";
+        else Request.address = textView.getText().toString() + ":8080";
 
         //Check connection
         class Connected extends Request {

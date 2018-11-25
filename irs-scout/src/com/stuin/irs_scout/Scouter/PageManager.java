@@ -34,7 +34,7 @@ public class PageManager extends FrameLayout {
 
     void setUpdater(MatchMaker matchMaker) {
         updater = new Updater(matchMaker, activity.findViewById(R.id.PageStatus));
-        matchMaker.nameView = activity.findViewById(R.id.TeamName);
+        matchMaker.nameView = (android.widget.TextView) activity.findViewById(R.id.TeamName);
     }
 
     public void reset() {
