@@ -4,7 +4,6 @@
 *.iml
 **/.ipynb_checkpoints
 **/.cache
-server/web/data
 
 irs-scout/out
 irs-scout/gen
