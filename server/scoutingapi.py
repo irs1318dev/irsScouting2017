@@ -224,6 +224,7 @@ class Scouting(object):
 
     @cherrypy.expose
     def eventcurrent(self, event, year):
+        print("/n=====", event, year, "=====")
         self.eventDal.set_current_event(event, year)
         return open(s_config.web_sites("reset.html")).read()
 
