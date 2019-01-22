@@ -1,0 +1,13 @@
+actor,observer,phase,category,position,newpart,tasks,end
+robot,match,auto,Starting,,FALSE,pickSide|startLevelTwo|startItem,
+robot,match,auto,Movement,,FALSE,crossHabLine|crossCenterLine|collision,
+robot,match,auto,Placement,,TRUE,frontBay|closeBay|centerBay|farBay|dropped|placedInRocket,
+robot,match,auto,Pick-up,,TRUE,pickupHatch|pickupCargo,
+robot,match,teleop,Placement,,FALSE,csHatch|csCargo,
+robot,match,teleop,Placement,,TRUE,rocketHatch1|rocketHatch2|rocketHatch3|rocketCargo1|rocketCargo2|rocketCargo3,
+robot,match,teleop,Defense,,TRUE,duration|getFoul,
+robot,match,teleop,Drops,,TRUE,dropHatch|dropCargo,
+robot,match,teleop,Pick-Up,,TRUE,pickupLoadingHatch|groundHatchPickup|pickupLoadingCargo|groundCargoPickup,
+robot,match,finish,Climb,,FALSE,climbLevelOne|climbLevelTwo|climbLevelThree|supportClimb,
+robot,match,finish,Difficulties,,TRUE,disabled|temp|fellOver|stuckOnPlat,
+robot,match,waiting,Waiting for Server,,FALSE,,

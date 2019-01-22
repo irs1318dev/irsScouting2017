@@ -478,7 +478,7 @@ def load_game_sheet(season):
             _insert_into_db(row[0], row[1], row[2], row[3], row[4], row[5], row[8])
 
 
-def setup(season="2018"):
+def setup(season="2019"):
     """Creates tables and inserts initial dimension data.
     """
     create_tables()
