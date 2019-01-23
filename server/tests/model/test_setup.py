@@ -34,7 +34,7 @@ def testdb_initialized_tables():
 def test_tables(testdb_initialized_tables):
     assert testdb_initialized_tables
     util.verify_testdb()
-    sms.setup()
+    sms.setup("2018")
 
     conn = smc.engine.connect()
     sql = ("SELECT * FROM information_schema.tables "

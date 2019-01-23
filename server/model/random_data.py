@@ -28,7 +28,6 @@ def create_event(rnd_event, rnd_season, base_event, base_season):
             schedule to the fictitious event.
         base_season: (str) Four digit year for base event.
     """
-    assert int(rnd_season) < 2017
     rnd_event_id = sm_event.EventDal.set_current_event(rnd_event, rnd_season)
     base_event_id = sm_event.EventDal.get_event_id(base_event, base_season)
     conn = sm_connection.engine.connect()
