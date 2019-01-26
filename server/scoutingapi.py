@@ -249,7 +249,7 @@ class Scouting(object):
         return open(s_config.web_sites("reset.html")).read()
 
     @cherrypy.expose
-    def teamname(team):
+    def teamname(self, team):
         return self.eventDal.team_long_name()
 
 
@@ -262,3 +262,4 @@ if __name__ == '__main__':
 
     cherrypy.tree.mount(server.viewerapi.Viewer(False), '/view', config=conf)
     cherrypy.quickstart(Scouting(), '/', config=conf)
+

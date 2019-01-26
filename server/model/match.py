@@ -321,6 +321,9 @@ class MatchDal(object):
         Returns:
             A Python tuple: (capability, attempt_count, success_count,
             cycle_time, attempt_id)
+
+        Enums:
+            if statement added because sometimes the capability can be passed in as a blank string when resseting/removing it
         """
         attempt_id = sm_dal.attempt_ids['summary']
         if data_type == 'na':
@@ -332,8 +335,11 @@ class MatchDal(object):
         elif data_type == 'boolean':
             return 0, attempt_count, success_count, 0, attempt_id
         elif data_type == 'enum':
-            task_option = '{}-{}'.format(task_name, capability)
-            option_id = sm_dal.task_option_ids[task_option]
+            if capability == '':
+                option_id = 0
+            else:
+                task_option = '{}-{}'.format(task_name, capability)
+                option_id = sm_dal.task_option_ids[task_option]
             return option_id, 0, 0, 0, attempt_id
         elif data_type == 'attempt':
             return 0
@@ -374,7 +380,5 @@ class PitMatch(object):
     def __init__(self, teams):
         self.match = 'na'
         self.teams = teams
-
-
 
 
