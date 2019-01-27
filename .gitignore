@@ -4,6 +4,7 @@
 *.iml
 **/.ipynb_checkpoints
 **/.cache
+**/.pytest_cache
 
 irs-scout/out
 irs-scout/gen
