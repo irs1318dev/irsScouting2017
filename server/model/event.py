@@ -206,15 +206,14 @@ class EventDal(object):
 
     @staticmethod
     def team_long_name(team):
-        sql = text("SELECT * FROM teams WHERE "
-                   "name = :team")
+
+        sql = text('''SELECT * FROM teams WHERE name = :team;''')
 
         conn = engine.connect()
-        results = conn.execute(sql, team)
+        results = conn.execute(sql, team=team).fetchone()
         conn.close()
-
-        if len(results) == 1:
-            return results[0]['long_name']
+        if len(results) > 0 and results['long_name'] is not None:
+            return results['long_name']
         return 'na'
 
     @staticmethod

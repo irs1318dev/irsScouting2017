@@ -331,7 +331,15 @@ class MatchDal(object):
         elif data_type == 'count':
             return 0, attempt_count, success_count, 0, attempt_id
         elif data_type == 'percentage':
-            return capability, 0, 0, 0, attempt_id
+            if capability == '':
+                return 0, 0, 0, 0, attempt_id
+            if (int)(capability) < 0:
+                capability = '0'
+                return 0, 0, 0, capability, attempt_id
+            if (int)(capability) > 100:
+                capability = '100'
+                return 0, 0, 0, capability, attempt_id
+            return 0, 0, 0, capability, attempt_id
         elif data_type == 'boolean':
             return 0, attempt_count, success_count, 0, attempt_id
         elif data_type == 'enum':
