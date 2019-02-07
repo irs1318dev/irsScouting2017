@@ -207,7 +207,7 @@ class EventDal(object):
     @staticmethod
     def team_long_name(team):
 
-        sql = text('''SELECT * FROM teams WHERE name = :team;''')
+        sql = text('''SELECT * FROM teams WHERE name =  :team;''')
 
         conn = engine.connect()
         results = conn.execute(sql, team=team).fetchone()
