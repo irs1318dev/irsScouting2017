@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_large">50sp</dimen>
-    <dimen name="text_norm">20sp</dimen>
+    <dimen name="text_norm">18sp</dimen>
 
     <style name="style_base">
         <item name="android:layout_width">wrap_content</item>

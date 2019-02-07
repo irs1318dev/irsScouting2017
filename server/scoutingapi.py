@@ -250,7 +250,7 @@ class Scouting(object):
 
     @cherrypy.expose
     def teamname(self, team):
-        return self.eventDal.team_long_name()
+        return self.eventDal.team_long_name(team)
 
 
 if __name__ == '__main__':
