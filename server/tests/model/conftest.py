@@ -44,13 +44,7 @@ def test_event2():
     sm_event.EventDal.set_current_event(test_event_name, test_season)
     test_event = sm_event.EventDal.get_current_event()
     yield test_event
-    conn = sm_connection.engine.connect()
-    sql_del = sqlalchemy.text("DELETE FROM measures WHERE event_id = :evt_id;")
-    conn.execute(sql_del, evt_id=test_event[0])
-    sql_del = sqlalchemy.text("DELETE FROM events WHERE id = :evt_id;")
-    conn.execute(sql_del, evt_id=test_event[0])
-    sql_del = sqlalchemy.text("DELETE FROM schedules WHERE id = :evt_id;")
-    conn.execute(sql_del, evt_id=test_event[0])
-    conn.close()
     sm_event.EventDal.set_current_event(prior_event[1],
                                         prior_event[2])
+    sm_event.EventDal.delete_event(test_event[1], test_event[2])
+
