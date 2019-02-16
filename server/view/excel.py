@@ -99,8 +99,8 @@ rnk_rpt2018a = [{"phase": "auto", "actor": "robot", "task": "autoLine",
 def write_to_excel(report_def, num_matches=12, event=None, season=None):
     """Writes team ranking data to an Excel spreadsheet.
 
-    The Excel spreadsheet will be completed in the `irsScouting\server\
-    web\data` folder.
+    The Excel spreadsheet will be completed in the `irsScouting\\server\\
+    web\\data` folder.
 
     The `report_def` argument is a list of Python dictionaries. Each
     dictionary corresponds to one data column in the Excel spreadsheet.
