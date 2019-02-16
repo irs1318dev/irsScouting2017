@@ -28,7 +28,6 @@ dependencies:
   - krb5=1.16.1=hc04afaa_7
   - libpng=1.6.36=h2a8f88b_0
   - libpq=11.1=h3235a2c_0
-  - libtiff=4.0.10=h2929a5b_1001
   - markupsafe=1.1.0=py36he774522_0
   - matplotlib=3.0.2=py36hc8f65d3_0
   - mkl=2019.1=144

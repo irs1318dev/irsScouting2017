@@ -3,7 +3,7 @@ files within certain folders
 """
 import os.path
 
-current_season = "2019"
+current_season = "2018"
 
 
 def web_sites(file):
