@@ -48,6 +48,16 @@ class TabletList(object):
             self.alltablets[0].page = "Waiting"
 
         return nextmatch
+    def getIndex(self, index):
+        return self.alltablets[index]
+
+    def get(self, index):
+        if 0 <= index and index < len(self.alltablets):
+            return self.alltablets[index]
+        else:
+            return None
+    def length(self):
+        return len(self.alltablets)
 
     def gettablets(self):
         s = ""
