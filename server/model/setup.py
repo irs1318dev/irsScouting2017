@@ -35,9 +35,11 @@ from sqlalchemy import Column, Integer, String, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import ForeignKey
 from sqlalchemy import UniqueConstraint
+import sqlalchemy as a
 
 import server.config as s_config
 import server.model
+import server.model.connection as smc
 import server.model.connection
 from server.model.upsert import upsert, upsert_rows, upsert_cols
 
@@ -353,6 +355,17 @@ class MatchResult(Base):
 def create_tables():
     Base.metadata.create_all(server.model.connection.engine)
 
+def create_views():
+    conn = smc.pool.getconn()
+    sql1 = '''CREATE VIEW current AS SELECT status.event_id AS event_id," +
+                    status.match, schedules.date
+                    FROM status INNER JOIN schedules
+                        ON  status.event_id=schedules.event_id AND
+                        status.match=schedules.match
+                    WHERE date <> 'na' LIMIT 1'''
+    curr = conn.cursor()
+    curr.execute(sql1)
+    curr.close()
 
 def initialize_dimension_data():
     """Loads initial dimension data into database.
