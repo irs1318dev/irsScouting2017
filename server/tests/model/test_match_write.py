@@ -4,7 +4,6 @@ import re
 import sqlalchemy
 
 import server.model.connection as sm_connection
-import server.model.dal as sm_dal
 import server.model.event as sm_event
 import server.model.match as sm_match
 import server.model.schedule as sm_schedule
@@ -30,8 +29,8 @@ def schedule():
 
 
 # noinspection PyShadowingNames
-def test_match_team_task(test_event):
-    assert test_event
+def test_match_team_task(test_event2):
+    assert test_event2[1] == 'pytest'
     sm_match.MatchDal.insert_match_task("1983", "placeGear", "001-q",
                                         "auto", attempt_count=1)
     mt_tasks = re.split("\n", sm_match.MatchDal.match_team_tasks("001-q",

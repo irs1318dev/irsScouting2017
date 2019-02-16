@@ -1,5 +1,4 @@
-import random
-
+import server.model.event as sme
 import server.model.random_data
 
 # def test_stuff():
@@ -9,3 +8,6 @@ import server.model.random_data
 
 def test_add_event():
     server.model.random_data.create_event("waiss", "1318", "wayak", "2018")
+    sme.EventDal.set_current_event('turing', '2017')
+    sme.EventDal.delete_event('waiss', '1318')
+

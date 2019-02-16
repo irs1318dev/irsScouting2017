@@ -1,13 +1,9 @@
 import json
 import re
 
-import sqlalchemy
-
-import server.model.connection as sm_connection
 import server.model.dal as sm_dal
 import server.model.event as sm_event
 import server.model.match as sm_match
-import server.tests.conf as st_conf
 
 
 def match():
