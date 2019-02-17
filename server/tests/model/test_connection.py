@@ -12,7 +12,6 @@ import server.tests.conf as conf
 # Ensure PostgreSQL server running before starting this test
 
 def test_psycopg2_pool():
-    # Test assumes minconn = 1 and maxconn = 2
     conn1 = server.model.connection.pool.getconn()
     assert isinstance(conn1, psycopg2.extensions.connection)
     test_dsn = ("user=" + conf.user + " password=xxx"

@@ -112,7 +112,7 @@ import sqlalchemy
 # todo(stacy) Move connection settings to server.conf.py
 
 db_params = {"minconn": 1,
-             "maxconn": 9,
+             "maxconn": 5,
              "user": "irs1318",
              "password": "irs1318",
              "dbname": "scouting",

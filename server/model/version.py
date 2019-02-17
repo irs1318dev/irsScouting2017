@@ -102,46 +102,57 @@ def set_ver_2019_01():
     conn = smc.pool.getconn()
     sql1 = '''
         CREATE OR REPLACE VIEW vw_status_date AS 
-            SELECT status.event_id AS event_id, status.match, schedules.date
-                FROM status INNER JOIN schedules
-                ON  status.event_id=schedules.event_id AND
-                        status.match=schedules.match
-                WHERE date <> 'na' LIMIT 1;
+        SELECT status.event_id AS event_id, status.match, schedules.date
+        FROM status INNER JOIN schedules
+            ON  status.event_id=schedules.event_id AND
+                    status.match=schedules.match
+        WHERE date <> 'na' LIMIT 1;
     '''
     curr = conn.cursor()
     curr.execute(sql1)
     sql = '''
-        CREATE OR REPLACE VIEW vw_schedule AS SELECT * FROM (
-            SELECT row_number() OVER (PARTITION BY team ORDER BY sched.date DESC) AS last_match,
-            sched.*
-                FROM schedules AS sched, status_date AS c
-                WHERE sched.event_id = c.event_id AND sched.date <= c.date)
-                AS row_schedule
-                ORDER BY date DESC;
+        CREATE OR REPLACE VIEW vw_schedule AS
+        SELECT * FROM (
+            SELECT
+                row_number() OVER (
+                    PARTITION BY team ORDER BY sched.date DESC) AS last_match,
+                sched.*
+            FROM schedules AS sched, vw_status_date AS c
+            WHERE sched.event_id = c.event_id AND sched.date <= c.date)
+        AS row_schedule
+        ORDER BY date DESC;
     '''
     curr.execute(sql)
     sql = '''
-        CREATE OR REPLACE VIEW vw_measures AS SELECT dates.name AS date, events.name AS event, events.season AS season, levels.name AS level, matches.name AS match,
-        alliances.name AS alliance, teams.name AS team, stations.name AS station, actors.name AS actor, tasks.name AS task,
-        measuretypes.name AS measuretype, phases.name AS phase, attempts.name AS attempt,reasons.name AS reason, 
-        task_options.option_name AS capability, measures.successes, measures.attempts, measures.cycle_times, 
-        schedule_view.last_match AS last_match
-        FROM ((((((((((((((measures INNER JOIN dates ON measures.date_id=dates.id)
-        INNER JOIN events ON measures.event_id=events.id)
-        INNER JOIN levels ON measures.level_id=levels.id)
-        INNER JOIN matches ON measures.match_id=matches.id)
-        INNER JOIN alliances ON measures.alliance_id=alliances.id)
-        INNER JOIN teams ON measures.team_id=teams.id)
-        INNER JOIN stations ON measures.station_id=stations.id)
-        INNER JOIN actors ON measures.actor_id=actors.id)
-        INNER JOIN tasks ON measures.task_id=tasks.id)
-        INNER JOIN measuretypes ON measures.measuretype_id=measuretypes.id)
-        INNER JOIN phases ON measures.phase_id=phases.id)
-        INNER JOIN attempts ON measures.attempt_id=attempts.id)
-        INNER JOIN reasons ON measures.reason_id=reasons.id)
-        INNER JOIN task_options ON measures.capability=task_options.id)
-        INNER JOIN schedule_view ON teams.name=schedule_view.team AND matches.name=schedule_view.match
-        WHERE measures.event_id=schedule_view.event_id; 
+        CREATE OR REPLACE VIEW vw_measures AS
+        SELECT dates.name AS date, events.name AS event,
+                events.season AS season, levels.name AS level,
+                matches.name AS match, alliances.name AS alliance,
+                teams.name AS team, stations.name AS station,
+                actors.name AS actor, tasks.name AS task,
+                measuretypes.name AS measuretype, phases.name AS phase,
+                attempts.name AS attempt,reasons.name AS reason, 
+                task_options.option_name AS capability, measures.successes,
+                measures.attempts, measures.cycle_times, 
+                vw_schedule.last_match AS last_match
+        FROM ((((((((((((((measures
+            LEFT JOIN task_options ON measures.capability=task_options.id)
+            INNER JOIN dates ON measures.date_id=dates.id)
+            INNER JOIN events ON measures.event_id=events.id)
+            INNER JOIN levels ON measures.level_id=levels.id)
+            INNER JOIN matches ON measures.match_id=matches.id)
+            INNER JOIN alliances ON measures.alliance_id=alliances.id)
+            INNER JOIN teams ON measures.team_id=teams.id)
+            INNER JOIN stations ON measures.station_id=stations.id)
+            INNER JOIN actors ON measures.actor_id=actors.id)
+            INNER JOIN tasks ON measures.task_id=tasks.id)
+            INNER JOIN measuretypes ON measures.measuretype_id=measuretypes.id)
+            INNER JOIN phases ON measures.phase_id=phases.id)
+            INNER JOIN attempts ON measures.attempt_id=attempts.id)
+            INNER JOIN reasons ON measures.reason_id=reasons.id)
+            INNER JOIN vw_schedule ON teams.name=vw_schedule.team AND
+                       matches.name=vw_schedule.match
+            WHERE measures.event_id=vw_schedule.event_id; 
     '''
     curr.execute(sql)
     sql = '''UPDATE status SET ver = 2019.01;'''

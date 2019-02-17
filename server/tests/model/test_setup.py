@@ -26,9 +26,11 @@ def testdb_initialized_tables():
                             password=conf.test_pw)
     util.create_empty_tables()
     yield True
-    smc.engine.dispose()
-    smc.pool.closeall()
     util.drop_testdb()
+    smc.pool.closeall()
+    smc.reset_pool()
+    smc.engine.dispose()
+    smc.reset_engine(smc.create_conn_string())
 
 
 def test_tables(testdb_initialized_tables):

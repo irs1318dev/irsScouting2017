@@ -1,11 +1,5 @@
-import os
-import os.path
-import subprocess
-
-import pandas
 import psycopg2.pool
-import pytest
-import sqlalchemy
+import psycopg2
 
 import server.model.connection as smc
 import server.model.setup as sms
@@ -25,11 +19,14 @@ def create_testdb():
 
     Returns: (sqlalchemy.Engine) Engine for connecting to test database.
     """
-    pool = psycopg2.pool.SimpleConnectionPool(1, 1, dbname=conf.root_db,
-                                              host=conf.host,
-                                              user=conf.root_user,
-                                              password=conf.root_pw)
-    conn = pool.getconn()
+
+    # pool = psycopg2.pool.SimpleConnectionPool(1, 1, dbname=conf.root_db,
+    #                                           host=conf.host,
+    #                                           user=conf.root_user,
+    #                                           password=conf.root_pw)
+    # conn = pool.getconn()
+    conn = psycopg2.connect(dbname=conf.root_db, host=conf.host,
+                            user=conf.root_user, password=conf.root_pw)
     conn.autocommit = True
     curr = conn.cursor()
 
@@ -64,11 +61,13 @@ def create_testdb():
 
 
 def drop_testdb():
-    pool = psycopg2.pool.SimpleConnectionPool(1, 1, dbname=conf.root_db,
-                                              host=conf.host,
-                                              user=conf.root_user,
-                                              password=conf.root_pw)
-    conn = pool.getconn()
+    # pool = psycopg2.pool.SimpleConnectionPool(1, 1, dbname=conf.root_db,
+    #                                           host=conf.host,
+    #                                           user=conf.root_user,
+    #                                           password=conf.root_pw)
+    # conn = pool.getconn()
+    conn = psycopg2.connect(dbname=conf.root_db, host=conf.host,
+                            user=conf.root_user, password=conf.root_pw)
     conn.autocommit = True
     curr = conn.cursor()
     # Kills all other connections to ensure database can be dropped.
@@ -85,7 +84,7 @@ def verify_testdb():
     conn = smc.pool.getconn()
     assert conn.dsn == ("user=irs1318test password=xxx "
                         "dbname=scouting_test host=localhost")
-    conn.close()
+    smc.pool.putconn(conn)
 
 
 def create_empty_tables():
