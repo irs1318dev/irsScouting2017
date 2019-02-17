@@ -18,17 +18,7 @@ def test_psycopg2_pool():
     test_dsn = ("user=" + conf.user + " password=xxx"
                 " dbname=" + conf.db + " host=" + conf.host)
     assert conn1.dsn == test_dsn
-
-    conn2 = server.model.connection.pool.getconn()
-    assert isinstance(conn2, psycopg2.extensions.connection)
-
-    # Can get another connection if put one away first
     server.model.connection.pool.putconn(conn1)
-    conn3 = server.model.connection.pool.getconn()
-    assert isinstance(conn3, psycopg2.extensions.connection)
-
-    server.model.connection.pool.closeall()
-    assert server.model.connection.pool.closed
 
 
 def test_sqlalchemy_engine():

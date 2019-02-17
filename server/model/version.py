@@ -101,7 +101,7 @@ def set_ver_2018_03():
 def set_ver_2019_01():
     conn = smc.pool.getconn()
     sql1 = '''
-        CREATE OR REPLACE VIEW status_date AS 
+        CREATE OR REPLACE VIEW vw_status_date AS 
             SELECT status.event_id AS event_id, status.match, schedules.date
                 FROM status INNER JOIN schedules
                 ON  status.event_id=schedules.event_id AND
@@ -111,7 +111,7 @@ def set_ver_2019_01():
     curr = conn.cursor()
     curr.execute(sql1)
     sql = '''
-        CREATE OR REPLACE VIEW schedule_view AS SELECT * FROM (
+        CREATE OR REPLACE VIEW vw_schedule AS SELECT * FROM (
             SELECT row_number() OVER (PARTITION BY team ORDER BY sched.date DESC) AS last_match,
             sched.*
                 FROM schedules AS sched, status_date AS c
@@ -121,8 +121,8 @@ def set_ver_2019_01():
     '''
     curr.execute(sql)
     sql = '''
-        CREATE OR REPLACE VIEW graph AS SELECT dates.name AS date, events.name AS event, events.season AS season, levels.name AS level, matches.name AS match,
-        alliances.name AS allaince, teams.name AS team, stations.name AS station, actors.name AS actor, tasks.name AS task,
+        CREATE OR REPLACE VIEW vw_measures AS SELECT dates.name AS date, events.name AS event, events.season AS season, levels.name AS level, matches.name AS match,
+        alliances.name AS alliance, teams.name AS team, stations.name AS station, actors.name AS actor, tasks.name AS task,
         measuretypes.name AS measuretype, phases.name AS phase, attempts.name AS attempt,reasons.name AS reason, 
         task_options.option_name AS capability, measures.successes, measures.attempts, measures.cycle_times, 
         schedule_view.last_match AS last_match
