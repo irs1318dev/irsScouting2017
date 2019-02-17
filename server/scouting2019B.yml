@@ -42,6 +42,8 @@ dependencies:
   - krb5=1.16.1=hc04afaa_7
   - libpng=1.6.36=h2a8f88b_0
   - libpq=11.1=h3235a2c_0
+<<<<<<< HEAD:server/scouting2019A.yml
+=======
   - libsodium=1.0.16=h9d3ae62_0
   - libtiff=4.0.10=hb898794_2
   - m2w64-gcc-libgfortran=5.3.0=6
@@ -49,6 +51,7 @@ dependencies:
   - m2w64-gcc-libs-core=5.3.0=7
   - m2w64-gmp=6.1.0=2
   - m2w64-libwinpthread-git=5.0.0.4634.697f757=2
+>>>>>>> c407f4d18c4e9af614248525abd894b79872eeaf:server/scouting2019B.yml
   - markupsafe=1.1.0=py36he774522_0
   - matplotlib=3.0.2=py36hc8f65d3_0
   - mistune=0.8.4=py36he774522_0
