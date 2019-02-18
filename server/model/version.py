@@ -155,6 +155,14 @@ def set_ver_2019_01():
             WHERE measures.event_id=vw_schedule.event_id; 
     '''
     curr.execute(sql)
+
+    sql = '''
+    CREATE OR REPLACE VIEW vw_num_matches AS
+    SELECT team, MAX(last_match) AS matches
+            FROM vw_schedule
+            GROUP BY team ORDER BY team;
+    '''
+    curr.execute(sql)
     sql = '''UPDATE status SET ver = 2019.01;'''
     curr.execute(sql)
     conn.commit()
