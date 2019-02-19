@@ -19,12 +19,13 @@ def hatches_6t(match, num_matches=12):
     bteams = cdsb.column_names[1:]
 
     hatches = ['Total Hatches', 'csHatch', 'rocketHatch1',
-            'rocketHatch2', 'rocketHatch3']
-    plt_hatches = plt.figure(title='Six Team Hatches Placed: Match 020-q', x_range=hatches,
+               'rocketHatch2', 'rocketHatch3']
+    plt_hatches = plt.figure(title='Six Team Hatches Placed: Match ' + match, x_range=hatches,
                              plot_width=700, plot_height=300)
 
     plt_hatches.vbar_stack(rteams, x=btransform.dodge('task', -0.17, range=plt_hatches.x_range), width=0.3,
-                          color=bpalettes.Reds3, legend=[" " + x for x in rteams])
+                           source=cdsr,
+                           color=bpalettes.Reds3, legend=[" " + x for x in rteams])
     plt_hatches.vbar_stack(bteams, x=btransform.dodge('task', 0.17, range=plt_hatches.x_range), width=0.3,
                            source=cdsb,
                            color=bpalettes.Blues3, legend=[" " + x for x in bteams])
@@ -41,10 +42,10 @@ def _hatches_6t_cds(match, num_matches, alliance, conn):
                      INNER JOIN status ON schedules.event_id=status.event_id 
                      WHERE schedules.event_id=status.event_id AND schedules.match=%s
                      AND alliance=%s)
-        AND last_match <= 3
+        AND last_match <= %s
         GROUP BY team, task;
     '''
-    dfh = pd.read_sql(sql, conn, params=[match, alliance])
+    dfh = pd.read_sql(sql, conn, params=[match, alliance, num_matches])
     dfh = dfh.set_index(['task', 'team'])
     dfh = dfh.unstack()
     dfh.columns = dfh.columns.droplevel()
@@ -63,7 +64,7 @@ def cargo_6t(match, num_matches=12):
     cargo = ['Total Cargo', 'csCargo', 'rocketCargo1',
              'rocketCargo2', 'rocketCargo3']
 
-    plt_cargo = plt.figure(title='Six Team Cargo Placed: Match 020-q', x_range=cargo,
+    plt_cargo = plt.figure(title='Six Team Cargo Placed: Match ' + match, x_range=cargo,
                            plot_width=700, plot_height=300)
 
     plt_cargo.vbar_stack(rteams, x=btransform.dodge('task', -0.17, range=plt_cargo.x_range), width=0.3, source=cdsr,
@@ -83,10 +84,10 @@ def _cargo_6t_cds(match, num_matches, alliance, conn):
                      INNER JOIN status ON schedules.event_id=status.event_id 
                      WHERE schedules.event_id=status.event_id AND schedules.match=%s
                      AND alliance=%s)
-        AND last_match <= 3
+        AND last_match <= %s
         GROUP BY team, task;
     '''
-    dfc = pd.read_sql(sql, conn, params=[match, alliance])
+    dfc = pd.read_sql(sql, conn, params=[match, alliance, num_matches])
     dfc = dfc.set_index(['task', 'team'])
     dfc = dfc.unstack()
     dfc.columns = dfc.columns.droplevel()
@@ -98,6 +99,6 @@ def _cargo_6t_cds(match, num_matches, alliance, conn):
 def pages_6t(match, num_matches=12):
     bokeh.io.output_file('sixteam.html')
     row = blt.row(hatches_6t(match, num_matches), cargo_6t(match, num_matches))
-    title= 'Six Team Display: Match ' + match
+    title = 'Six Team Display: Match ' + match
     bokeh.io.save(row, title=title)
 
