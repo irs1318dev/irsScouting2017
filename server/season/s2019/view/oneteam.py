@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import bokeh.plotting
 import bokeh.models as bmodels
@@ -7,13 +9,15 @@ import bokeh.transform as btransform
 import bokeh.io
 
 import server.model.connection as smc
+import server.config
 
 
-def onet_g(team, num_matches):
+def onet_g(team, num_matches=12):
     conn = smc.pool.getconn()
 
     data = _onet_d(team, conn)
 
+    # Generate Hatches Data Source
     hatches = data.query('task == ["getHatch", "csHatch", "rocketHatch1",'
                          '"rocketHatch2", "rocketHatch3"]')
     hatches = hatches.drop(['attempts'], axis=1)
@@ -26,6 +30,7 @@ def onet_g(team, num_matches):
     htasks = cds_hatches.column_names[1:]
     matches = cds_hatches.data['match']
 
+    # Generate Cargo Data Source
     cargo = data.query('task == ["getCargo", "csCargo", "rocketCargo1",'
                        '"rocketCargo2", "rocketCargo3"]')
     cargo = cargo.drop(['attempts'], axis=1)
@@ -35,6 +40,8 @@ def onet_g(team, num_matches):
                'rocketCargo2', 'rocketCargo3']
     _addcol(pivot_hatch, bctasks)
     cds_cargo = bmodels.ColumnDataSource(pivot_cargo)
+
+
     ctasks = cds_cargo.column_names[1:]
 
     t1plot = plt.figure(x_range=matches, title="One Team Graph: " + team,
@@ -72,6 +79,7 @@ def _addcol(df, colnames):
 
 
 def pages_1t(team):
+    os.chdir(server.config.output_path('2019') + r'/oneteam')
     bokeh.io.output_file('oneteam.html')
     graph = onet_g(team)
     title = 'One Team Display: Match ' + team
