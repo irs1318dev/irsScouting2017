@@ -134,7 +134,7 @@ def set_ver_2019_01():
                 attempts.name AS attempt,reasons.name AS reason, 
                 task_options.option_name AS capability, measures.successes,
                 measures.attempts, measures.cycle_times, 
-                vw_schedule.last_match AS last_match
+                vw_schedule.last_match AS last_match, MAX(last_match) OVER (PARTITION BY team) AS num_matches
         FROM ((((((((((((((measures
             LEFT JOIN task_options ON measures.capability=task_options.id)
             INNER JOIN dates ON measures.date_id=dates.id)
