@@ -167,3 +167,4 @@ def set_ver_2019_01():
     curr.execute(sql)
     conn.commit()
     curr.close()
+    smc.pool.putconn(conn)
