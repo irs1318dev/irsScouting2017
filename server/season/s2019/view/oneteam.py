@@ -12,8 +12,61 @@ import server.model.connection as smc
 import server.config
 
 
-def onet_g(team, num_matches=12):
+def oneteam_df(team):
     conn = smc.pool.getconn()
+    sql = '''
+        SELECT match, task, successes, attempts, last_match
+            FROM vw_measures
+            WHERE team = %s;
+    '''
+    raw_data = pd.read_sql(sql, conn, params=[team])
+    smc.pool.putconn(conn)
+    return raw_data
+
+
+def addcol(df, colnames):
+    for colname in colnames:
+        if colname not in df:
+            df[colname] = 0
+    return df
+
+
+def get_cds_averages(measures, tasks, num_matches=12):
+    # Filter to most recent matches and add num_matches column
+    measures = measures[measures.last_match <= num_matches].copy(True)
+    measures['num_matches'] = measures.last_match.max()
+
+    # Eliminate unwanted tasks
+    measures = measures[measures.task.isin(tasks)]
+
+    # Calculate average successes
+    measures['successes_avg'] = measures.successes / measures.num_matches
+
+    # Convert tasks into columns and remove Nan
+    pivot_df = measures.pivot(index='match', columns='task', values='successes')
+    pivot_df.fillna(0, inplace=True)
+
+
+    # Check for missing columns
+    pivot_df = addcol(pivot_df, tasks)
+
+    cds = bmodels.ColumnDataSource(pivot_df)
+    return cds
+
+
+def oneteam_plot(team, num_matches=12):
+    measures = oneteam_df(team)
+    matches = measures.match.unique()
+    hatch_tasks = ['getHatch', 'csHatch', 'rocketHatch1', 'rocketHatch2',
+               'rocketHatch3']
+    cds_all = get_cds_averages(measures, hatch_tasks)
+
+    t1plot = plt.figure(x_range=matches, title="One Team Graph: " + team,
+                        plot_height=350, plot_width=700)
+
+
+def onet_g(team, num_matches=12):
+
 
     data = _onet_d(team, conn)
 
@@ -60,22 +113,10 @@ def onet_g(team, num_matches=12):
     return t1plot
 
 
-def _onet_d(team, conn):
-    sql = '''
-        SELECT match, task, successes, attempts FROM vw_measures 
-        WHERE team IN (SELECT team FROM schedules
-                     INNER JOIN status ON schedules.event_id=status.event_id 
-                     WHERE schedules.event_id=status.event_id AND schedules.team=%s)
-
-    '''
-    raw_data = pd.read_sql(sql, conn, params=[team])
-    return raw_data
 
 
-def _addcol(df, colnames):
-    for colname in colnames:
-        if colname not in df:
-            df[colname] = 0
+
+
 
 
 def pages_1t(team):
