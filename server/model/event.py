@@ -3,7 +3,7 @@ import json
 from sqlalchemy import text
 
 import server.model.dal as sm_dal
-from server.model.connection import engine
+from server.model.connection import engine, pool
 
 class EventError(Exception):
     pass
@@ -203,6 +203,27 @@ class EventDal(object):
         for row in results:
             match_details = dict(row)
         return match_details
+
+
+    @staticmethod
+    def last_match_teams():
+        event_id = EventDal.get_current_event()[0]
+        print(event_id)
+        match_cur = int(EventDal.get_current_match()[0:3])
+        match_prv = '{:03}-q'.format(match_cur-1)
+        print('\n', match_prv)
+        sql = '''SELECT team FROM schedules WHERE
+                   match = %s
+                   AND event_id = %s;'''
+
+        conn = pool.getconn()
+        curr = conn.cursor()
+        curr.execute(sql, (match_prv, event_id))
+        results = curr.fetchall()
+        curr.close()
+        pool.putconn(conn)
+        return [x[0] for x in results]
+
 
     @staticmethod
     def team_long_name(team):
