@@ -29,3 +29,10 @@ ORDER BY
 
 SELECT * FROM schedules INNER JOIN events ON schedules.event_id = events."id"
 WHERE events.name = 'wayak' AND events.season = '2018' ORDER BY "match" DESC;
+
+-- Getting match count
+SELECT team, COUNT(schedules.id)
+	FROM schedules
+	INNER JOIN status ON schedules.event_id = status.event_id
+	WHERE schedules.match < status.match
+	GROUP BY team
