@@ -11,8 +11,6 @@ import bokeh.io
 import server.model.connection as smc
 import server.config
 
-# data for hatches and cargo (successes)
-
 
 def oneteam_df(team):
     conn = smc.pool.getconn()
@@ -24,7 +22,6 @@ def oneteam_df(team):
     raw_data = pd.read_sql(sql, conn, params=[team])
     smc.pool.putconn(conn)
     return raw_data
-# data for climbs (enums)
 
 
 def oneteam_climb_df(team):
@@ -122,7 +119,6 @@ def oneteam_plot(team, num_matches=12):
 
     t1plot.add_layout(legend, 'right')
     return t1plot
-
 
 
 def pages_1t(teams):
