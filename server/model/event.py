@@ -206,17 +206,25 @@ class EventDal(object):
 
 
     @staticmethod
+    def get_previous_match():
+        match_cur = int(EventDal.get_current_match()[0:3])
+        if match_cur == 1:
+            return '001-q'
+        else:
+            return '{:03}-q'.format(match_cur-1)
+
+    @staticmethod
     def last_match_teams():
         event_id = EventDal.get_current_event()[0]
-        match_cur = int(EventDal.get_current_match()[0:3])
-        match_prv = '{:03}-q'.format(match_cur-1)
+        match_prev = EventDal.get_previous_match()
+
         sql = '''SELECT team FROM schedules WHERE
                    match = %s
                    AND event_id = %s;'''
 
         conn = pool.getconn()
         curr = conn.cursor()
-        curr.execute(sql, (match_prv, event_id))
+        curr.execute(sql, (match_prev, event_id))
         results = curr.fetchall()
         curr.close()
         pool.putconn(conn)

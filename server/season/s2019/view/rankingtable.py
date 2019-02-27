@@ -82,9 +82,12 @@ def ranking_df():
     df_all['climb1Points'] = df_all['climb1'] * 3
     df_all['climb2Points'] = df_all['climb2'] * 6
     df_all['climb3Points'] = df_all['climb3'] * 12
+    df_all['avgClimbPoints'] = (df_all['climb3Points'] + df_all['climb2Points'] +
+                                df_all['climb1Points']) / df_all['matches']
     df_all['habPoints'] = ((df_all['centerhab'] + df_all['sidehab']) * 3) + (df_all['level2hab'] * 6)
-    df_all['avgPoints'] = ((df_all['habPoints'] + df_all['climb1Points'] + df_all['climb2Points'] +
-                            df_all['climb3Points'] + df_all['totalHatch'] + df_all['totalCargo']) / df_all['matches'])
+    df_all['avgHabPoints'] = df_all['habPoints'] / df_all['matches']
+    df_all['avgPoints'] = (df_all['avgCargoPoints'] + df_all['avgHatchPoints'] +
+                           df_all['avgClimbPoints'] + df_all['avgHabPoints'])
     df_all['level1hab'] = (df_all['sidehab'] + df_all['centerhab'])
     df_all['dontMove'] = (df_all['matches'] - (df_all['level1hab'] + df_all['level2hab']))
     smc.pool.putconn(conn)
