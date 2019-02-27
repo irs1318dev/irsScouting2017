@@ -90,6 +90,7 @@ def ranking_df():
                            df_all['avgClimbPoints'] + df_all['avgHabPoints'])
     df_all['level1hab'] = (df_all['sidehab'] + df_all['centerhab'])
     df_all['dontMove'] = (df_all['matches'] - (df_all['level1hab'] + df_all['level2hab']))
+    smc.pool.putconn(conn)
     return df_all
 
 

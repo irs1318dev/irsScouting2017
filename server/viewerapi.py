@@ -67,6 +67,7 @@ class Viewer:
         for match in matches:
             out += '<a href="matchplan?match={M}">{M}</a> '
             out = out.replace('{M}', match)
+        print(out)
         return out
 
     @cherrypy.expose

@@ -7,10 +7,11 @@ import server.season.s2019.view.oneteam as oneteam
 import server.season.s2019.view.pointschart as pointschart
 
 
-def test_sixteam():
-    sme.EventDal.set_current_event('test_data', '2019')
-    sme.EventDal.set_current_match('030-q')
-    sixteam.pages_6t(sme.EventDal.team_match('1318'))
+# Test takes too long to run (generates 12 charts)
+# def test_sixteam():
+#     sme.EventDal.set_current_event('test_data', '2019')
+#     sme.EventDal.set_current_match('030-q')
+#     sixteam.pages_6t(sme.EventDal.team_match('1318'))
 
 
 def test_points_chart():
