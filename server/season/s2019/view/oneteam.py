@@ -1,48 +1,63 @@
+import os
+
 import pandas as pd
 import bokeh.plotting
 import bokeh.models as bmodels
 import bokeh.plotting as plt
 import bokeh.palettes as bpalettes
 import bokeh.transform as btransform
-import bokeh.layouts as blt
 import bokeh.io
 
 import server.model.connection as smc
-import server.model.version as smv
-import server.model.event as sme
+import server.config
 
 
-def onet_g(team):
+def onet_g(team, num_matches=12):
     conn = smc.pool.getconn()
-
-    sme.EventDal.set_current_event('test_data', 2019)
-    sme.EventDal.set_current_match('030-q')
 
     data = _onet_d(team, conn)
 
-    hatches = data.query('task == ["getHatch", "csHatch", "rocketHatch1", "rocketHatch2", "rocketHatch3"]')
+    # Generate Hatches Data Source
+    hatches = data.query('task == ["getHatch", "csHatch", "rocketHatch1",'
+                         '"rocketHatch2", "rocketHatch3"]')
     hatches = hatches.drop(['attempts'], axis=1)
-    pivot_hatch = hatches.pivot(index='match', columns='task', values='successes').fillna(0)
-    bhtasks = ['csHatch', 'getHatch', 'rocketHatch1', 'rocketHatch2', 'rocketHatch3']
+    pivot_hatch = hatches.pivot(
+        index='match', columns='task', values='successes').fillna(0)
+    bhtasks = ['csHatch', 'getHatch', 'rocketHatch1', 'rocketHatch2',
+               'rocketHatch3']
     _addcol(pivot_hatch, bhtasks)
     cds_hatches = bmodels.ColumnDataSource(pivot_hatch)
     htasks = cds_hatches.column_names[1:]
     matches = cds_hatches.data['match']
 
-    cargo = data.query('task == ["getCargo", "csCargo", "rocketCargo1", "rocketCargo2", "rocketCargo3"]')
+    # Generate Cargo Data Source
+    cargo = data.query('task == ["getCargo", "csCargo", "rocketCargo1",'
+                       '"rocketCargo2", "rocketCargo3"]')
     cargo = cargo.drop(['attempts'], axis=1)
-    pivot_cargo = cargo.pivot(index='match', columns='task', values='successes').fillna(0)
-    bctasks = ['csCargo', 'getCargo', 'rocketCargo1', 'rocketCargo2', 'rocketCargo3']
+    pivot_cargo = cargo.pivot(
+        index='match', columns='task', values='successes').fillna(0)
+    bctasks = ['csCargo', 'getCargo', 'rocketCargo1',
+               'rocketCargo2', 'rocketCargo3']
     _addcol(pivot_hatch, bctasks)
     cds_cargo = bmodels.ColumnDataSource(pivot_cargo)
+
+
     ctasks = cds_cargo.column_names[1:]
 
-    t1plot = plt.figure(x_range=matches, title="One Team Graph: " + team, plot_height=350, plot_width=700)
+    t1plot = plt.figure(x_range=matches, title="One Team Graph: " + team,
+                        plot_height=350, plot_width=700)
 
-    t1plot.vbar_stack(htasks, x=btransform.dodge('match', -.17, range=t1plot.x_range), width=0.3, source=cds_hatches,
-                      color=bpalettes.BuPu5, legend=[" " + x for x in htasks])
-    t1plot.vbar_stack(ctasks, x=btransform.dodge('match', .17, range=t1plot.x_range), width=0.3, source=cds_cargo,
-                      color=bpalettes.Oranges5, legend=[" " + x for x in ctasks])
+    t1plot.vbar_stack(htasks,
+                      x=btransform.dodge('match', -.17, range=t1plot.x_range),
+                      width=0.3, source=cds_hatches,
+                      color=bpalettes.BuPu5,
+                      legend=[" " + x for x in htasks])
+    t1plot.vbar_stack(ctasks,
+                      x=btransform.dodge('match', .17, range=t1plot.x_range),
+                      width=0.3, source=cds_cargo,
+                      color=bpalettes.Oranges5,
+                      legend=[" " + x for x in ctasks])
+    smc.pool.putconn(conn)
     return t1plot
 
 
@@ -65,6 +80,7 @@ def _addcol(df, colnames):
 
 
 def pages_1t(team):
+    os.chdir(server.config.output_path('2019') + r'\oneteam')
     bokeh.io.output_file('oneteam.html')
     graph = onet_g(team)
     title = 'One Team Display: Match ' + team
