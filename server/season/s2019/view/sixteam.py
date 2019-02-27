@@ -9,7 +9,7 @@ import bokeh.transform as btransform
 import bokeh.models.widgets as bmw
 import bokeh.io
 import bokeh.layouts as blt
-
+import os
 import server.model.connection as smc
 import server.config as sc
 import server.model.version as smv

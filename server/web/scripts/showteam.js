@@ -21,6 +21,13 @@ function processData(e) {
 	}
 }
 
+
+function update_graph() {
+    fetch('http://localhost:8080/view/updateAllGraphs').then(function(response) {
+    alert("Update Successful");
+    }).catch(error => console.error(error));
+}
+
 function getMatch() {
 	var match = document.getElementById('match').value;
 	window.location = "/view/matchplan?match=" + match;

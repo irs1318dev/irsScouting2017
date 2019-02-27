@@ -8,6 +8,7 @@ import server.model.match as match
 import server.season.s2018.viewer as graphing
 import server.view.excel as excel
 import server.scouting.export as export
+import server.season.s2019.view.updater as u
 
 
 class Viewer:
@@ -30,6 +31,11 @@ class Viewer:
     def backup(self):
         export.ExportBackup.run_backup(server.model.event.EventDal.get_current_event()[1])
         return 'Success. <a href="/view">Viewer</a>'
+
+
+    @cherrypy.expose
+    def updateAllGraphs(self):
+        u.update_graph()
 
     @cherrypy.expose
     def output(self):
