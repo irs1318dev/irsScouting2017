@@ -1,12 +1,17 @@
+import os
+import os.path
+
 import pandas as pd
 import bokeh.models as bmodels
 import bokeh.plotting as plt
 import bokeh.palettes as bpalettes
 import bokeh.transform as btransform
+import bokeh.models.widgets as bmw
 import bokeh.io
 import bokeh.layouts as blt
 
 import server.model.connection as smc
+import server.config as sc
 import server.model.version as smv
 import server.model.event as sme
 
@@ -96,9 +101,39 @@ def _cargo_6t_cds(match, num_matches, alliance, conn):
     return bmodels.ColumnDataSource(dfc)
 
 
-def pages_6t(match, num_matches=12):
-    bokeh.io.output_file('sixteam.html')
-    row = blt.row(hatches_6t(match, num_matches), cargo_6t(match, num_matches))
-    title = 'Six Team Display: Match ' + match
-    bokeh.io.save(row, title=title)
+def pages_6t(matches, num_matches=12):
+    os.chdir(os.path.join(sc.output_path('2019'), 'sixteam'))
+    for match in matches:
+        bokeh.io.output_file('6t' + match + '.html')
+        row = blt.row(hatches_6t(match, num_matches), cargo_6t(match, num_matches))
+        div = bmw.Div(text= '''
+            <H1>Match {} Six Team Chart</H1>
+        '''.format(match))
+        col = blt.Column(div, row)
+        title = 'Six Team Display: Match ' + match
+        bokeh.io.save(col, title=title)
 
+
+def next3(team):
+    current = sme.EventDal.get_current_match()
+    team_sched = sme.EventDal.team_match(team)
+    pages_6t([x for x in team_sched if x > current][:3])
+
+
+def index_page():
+    sixteam_folder = os.path.join(sc.output_path('2019'), 'sixteam')
+    file_names = os.listdir(sixteam_folder)
+    file_data = [(f_name, 'Match {}'.format(f_name[2:-5])) for f_name in file_names if f_name[-5:] == '.html']
+    links = ['<li><a href="sixteam/{}">{}</a></li>'.format(f_data[0], f_data[1]) for f_data in file_data]
+    html = '<html><head><title>IRS Scouting Data</title></head>'
+    html = html + '<body><h1>IRS Scouting Data</h1><ul>'
+
+    html = html + ''.join(links)
+    html = html + '''
+        </ul></body></html>
+    '''
+    os.chdir(sc.output_path('2019'))
+    index_file = open("index.html", "w")
+    index_file.write(html)
+    index_file.close()
+    return html
