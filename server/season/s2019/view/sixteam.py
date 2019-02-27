@@ -5,8 +5,9 @@ import bokeh.palettes as bpalettes
 import bokeh.transform as btransform
 import bokeh.io
 import bokeh.layouts as blt
-
+import os
 import server.model.connection as smc
+import server.config
 import server.model.version as smv
 import server.model.event as sme
 
@@ -97,7 +98,8 @@ def _cargo_6t_cds(match, num_matches, alliance, conn):
 
 
 def pages_6t(match, num_matches=12):
-    bokeh.io.output_file('sixteam.html')
+    os.chdir(server.config.output_path('2019') + r'/sixteam')
+    bokeh.io.output_file('6t{0}.html'.format(match))
     row = blt.row(hatches_6t(match, num_matches), cargo_6t(match, num_matches))
     title = 'Six Team Display: Match ' + match
     bokeh.io.save(row, title=title)
