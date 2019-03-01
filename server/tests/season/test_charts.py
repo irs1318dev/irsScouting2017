@@ -27,4 +27,4 @@ def test_next3():
 
 
 def test_index_page():
-    print(sixteam.index_page())
+    sixteam.index_page()
