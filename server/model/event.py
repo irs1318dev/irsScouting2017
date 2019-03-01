@@ -257,3 +257,17 @@ class EventDal(object):
         sql = text("DELETE FROM events WHERE id = :evt_id")
         conn.execute(sql, evt_id=event_id)
         conn.close()
+
+    @staticmethod
+    def team_match(team):
+        sql = '''
+              SELECT schedules.match FROM schedules
+              INNER JOIN status ON schedules.event_id = status.event_id WHERE team = %s
+              ORDER BY schedules.match;'''
+        conn = pool.getconn()
+        curr = conn.cursor()
+        curr.execute(sql, [team])
+        matches = [x[0] for x in curr.fetchall()]
+        pool.putconn(conn)
+        return matches
+

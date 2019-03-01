@@ -19,3 +19,10 @@ def test_last_match_teams():
     assert sme.EventDal.last_match_teams() == ['949', '6350', '2976',
                                                '4131', '3684', '2906']
 
+
+def test_team_match():
+    sme.EventDal.set_current_event('test_data', '2019')
+    sme.EventDal.set_current_match('029-q')
+    print(sme.EventDal.team_match('1318'))
+
+
