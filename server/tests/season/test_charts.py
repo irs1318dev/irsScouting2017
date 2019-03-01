@@ -28,3 +28,10 @@ def test_next3():
 
 def test_index_page():
     sixteam.index_page()
+
+
+def test_oneteam():
+    sme.EventDal.set_current_event('test_data', '2019')
+    sme.EventDal.set_current_match('030-q')
+    teams = sme.EventDal.last_match_teams()
+    oneteam.pages_1t(teams)
