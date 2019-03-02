@@ -12,6 +12,7 @@ import bokeh.layouts as blt
 import bokeh.models.widgets as bwd
 
 import server.model.connection as smc
+import server.model.event as sme
 import server.config
 import server.view.bokeh
 
@@ -134,18 +135,16 @@ def pages_1t(teams):
         # LocalResource needed to load JS and CSS files from local folder
         res = server.view.bokeh.LocalResource(
             os.path.join(server.config.output_path('2019'), 'static'))
-        div = blt.WidgetBox(bwd.Div(text='<h1>One Team Graphs</h1>'))
+        div = blt.WidgetBox(bwd.Div(
+            text='<h1>One Team Graphs</h1><a href="../index.html"><h4>Main Page</h4></a>' +
+                 '<h3> Last Updated at Match: {} </h3>'.format(
+                    sme.EventDal.get_previous_match())))
 
         col = blt.column(div, graph)
         bokeh.io.save(col, title=title, resources=res)
 
 
 def index_page1t():
-    html = '''
-        <html>
-        <body>
-        '''
-
     oneteam_folder = os.path.join(sc.output_path('2019'), 'oneteam')
     file_names = os.listdir(oneteam_folder)
     file_data = [(f_name, 'Team {}'.format(f_name[2:-5]))
@@ -153,6 +152,10 @@ def index_page1t():
     links = ['<li><a href="oneteam/{}">{}</a></li>'.format(f_data[0],
              f_data[1]) for f_data in file_data]
     html = '<html><head><title>IRS Scouting Data One Team Graphs</title></head>'
+    html = html + '<body><h1> IRS Scouting Data One Team Graphs</h1>'
+    html = html + '<h3> Last Updated at Match: {} </h3>'.format(
+        sme.EventDal.get_previous_match())
+    html = html + '<a href=index.html><h4>Main Page</h4></a> <br/><br/>'
     html = html + ''.join(links)
     html = html + '''
             </ul></body></html>
