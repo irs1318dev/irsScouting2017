@@ -38,10 +38,11 @@ def pages_pointschart():
     match = sme.EventDal.get_current_match()
     os.chdir(sc.output_path('2019'))
     chart = point_chart()
-    div = blt.WidgetBox(bmw.Div(text='<h1>Points Chart</h1>' +
+    div1 = blt.WidgetBox(bmw.Div(text='<a href="index.html">Home Page</a>'))
+    div2 = blt.WidgetBox(bmw.Div(text='<h1>Points Chart</h1>' +
                                      'updated at match:' + match))
     bokeh.io.output_file('pointschart.html')
-    col = blt.column([div, chart])
+    col = blt.column([div1, div2, chart])
     title = 'Ranking Table: Match ' + match
     # LocalResource needed to load JS and CSS files from local folder
     res = server.view.bokeh.LocalResource(

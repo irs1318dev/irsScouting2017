@@ -125,16 +125,17 @@ def next3(team):
 
 def index_page():
     sixteam_folder = os.path.join(sc.output_path('2019'), 'sixteam')
+    last_match = sme.EventDal.get_previous_match()
     file_names = os.listdir(sixteam_folder)
     file_data = [(f_name, 'Match {}'.format(f_name[2:-5])) for f_name in file_names if f_name[-5:] == '.html']
     links = ['<li><a href="sixteam/{}">{}</a></li>'.format(f_data[0], f_data[1]) for f_data in file_data]
     html = '<html><head><title>IRS Scouting Data</title></head>'
-    html = html + '<body><h1>IRS Scouting Data</h1><ul>'
+    html = html + '<body><h1>IRS Scouting Data</h1><h2>Updated at match: ' +\
+                   sme.EventDal.get_previous_match() + '</h2><ul>'
 
     html = html + ''.join(links)
-    html = html + '''
-        </ul></body></html>
-    '''
+    html = html + '</ul><h3>Ranking Table</h3><a href="rankingtable.html">Ranking Table</a>'
+    html = html + '<h3>Points Chart</h3><a href="pointschart.html">Points Chart</a></body></html>'
     os.chdir(sc.output_path('2019'))
     index_file = open("index.html", "w")
     index_file.write(html)
