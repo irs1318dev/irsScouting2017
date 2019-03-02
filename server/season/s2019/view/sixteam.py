@@ -39,7 +39,6 @@ def hatches_6t(match, num_matches=12):
 
 
 def _hatches_6t_cds(match, num_matches, alliance, conn):
-
     sql = '''
         SELECT team, task, SUM(successes) AS hatches_placed FROM vw_measures 
         WHERE task IN ('rocketHatch1', 'rocketHatch2', 'rocketHatch3', 'csHatch')
@@ -106,7 +105,7 @@ def pages_6t(matches, num_matches=12):
     for match in matches:
         bokeh.io.output_file('6t' + match + '.html')
         row = blt.row(hatches_6t(match, num_matches), cargo_6t(match, num_matches))
-        div = bmw.Div(text= '''
+        div = bmw.Div(text='''
             <H1>Match {} Six Team Chart</H1>
         '''.format(match))
         col = blt.Column(div, row)
@@ -129,11 +128,18 @@ def index_page():
     file_names = os.listdir(sixteam_folder)
     file_data = [(f_name, 'Match {}'.format(f_name[2:-5])) for f_name in file_names if f_name[-5:] == '.html']
     links = ['<li><a href="sixteam/{}">{}</a></li>'.format(f_data[0], f_data[1]) for f_data in file_data]
-    html = '<html><head><title>IRS Scouting Data</title></head>'
-    html = html + '<body><h1>IRS Scouting Data</h1><h2>Updated at match: ' +\
+
+    html = '<html><head><link rel="stylesheet" href="list-nav.css"><title>IRS Scouting Data</title></head>'
+    html = html + '''<ul id="list-nav">
+	<li><a href="./index.html">Six Team</a></li>
+	<li><a href="./pointschart.html">Points Chart</a></li>
+	<li><a href="./rankingtable.html">Ranking Table</a></li>
+	<li><a href="./oneteam_index.html">One Team</a></li>
+</ul><body><br><br><h1>IRS Scouting Data</h1>h2>Updated at match: ''' +\
                    sme.EventDal.get_previous_match() + '</h2><ul>'
 
     html = html + ''.join(links)
+    html = html + '</ul><h3>One team charts</h3><a href="oneteam_index.html">Oneteam charts</a>'
     html = html + '</ul><h3>Ranking Table</h3><a href="rankingtable.html">Ranking Table</a>'
     html = html + '<h3>Points Chart</h3><a href="pointschart.html">Points Chart</a></body></html>'
     os.chdir(sc.output_path('2019'))
