@@ -9,11 +9,11 @@ import bokeh.transform as btransform
 import bokeh.models.widgets as bmw
 import bokeh.io
 import bokeh.layouts as blt
-import os
+
 import server.model.connection as smc
 import server.config as sc
-import server.model.version as smv
 import server.model.event as sme
+import server.view.bokeh
 
 
 def hatches_6t(match, num_matches=12):
@@ -111,7 +111,10 @@ def pages_6t(matches, num_matches=12):
         '''.format(match))
         col = blt.Column(div, row)
         title = 'Six Team Display: Match ' + match
-        bokeh.io.save(col, title=title)
+        # LocalResource needed to load JS and CSS files from local folder
+        res = server.view.bokeh.LocalResource(
+            os.path.join(sc.output_path('2019'), 'static'))
+        bokeh.io.save(col, title=title, resources=res)
 
 
 def next3(team):

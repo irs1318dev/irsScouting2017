@@ -1,6 +1,7 @@
 import pandas as pd
 import os
-import psycopg2
+import os.path
+
 import bokeh.models as bmodels
 import bokeh.models.widgets as bmw
 import bokeh.layouts as blt
@@ -9,6 +10,7 @@ import bokeh.io
 import server.model.connection as smc
 import server.model.event as sme
 import server.config as sc
+import server.view.bokeh
 
 
 def ranking_df():
@@ -144,7 +146,10 @@ def pages_rankingtable():
     bokeh.io.output_file('rankingtable.html')
     col = blt.column([div, tabs])
     title = 'Ranking Table: Match ' + match
-    bokeh.io.save(col, title=title)
+    # LocalResource needed to load JS and CSS files from local folder
+    res = server.view.bokeh.LocalResource(
+        os.path.join(sc.output_path('2019'), 'static'))
+    bokeh.io.save(col, title=title, resources=res)
 
 
 def addcol(df, colnames):

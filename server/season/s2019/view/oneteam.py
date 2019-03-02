@@ -10,6 +10,7 @@ import bokeh.io
 
 import server.model.connection as smc
 import server.config
+import server.view.bokeh
 
 
 def oneteam_df(team):
@@ -96,7 +97,7 @@ def oneteam_plot(team, num_matches=12):
 
     # Cargo
     cargo_tasks = ['getCargo', 'csCargo', 'rocketCargo1',
-                             'rocketCargo2', 'rocketCargo3']
+                   'rocketCargo2', 'rocketCargo3']
     ccds_all = get_cds_averages(measures, cargo_tasks)
     cargo_r = t1plot.vbar_stack(cargo_tasks,
                       x=btransform.dodge('match', .14, range=t1plot.x_range),
@@ -128,5 +129,8 @@ def pages_1t(teams):
         bokeh.io.output_file('1t{0}.html'.format(team))
         graph = oneteam_plot(team)
         title = 'One Team Display: Match ' + team
-        bokeh.io.save(graph, title=title)
+        # LocalResource needed to load JS and CSS files from local folder
+        res = server.view.bokeh.LocalResource(
+            os.path.join(server.config.output_path('2019'), 'static'))
+        bokeh.io.save(graph, title=title, resources=res)
 
