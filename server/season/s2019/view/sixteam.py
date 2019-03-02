@@ -139,6 +139,7 @@ def index_page():
                    sme.EventDal.get_previous_match() + '</h2><ul>'
 
     html = html + ''.join(links)
+    html = html + '</ul><h3>One team charts</h3><a href="oneteam_index.html">Oneteam charts</a>'
     html = html + '</ul><h3>Ranking Table</h3><a href="rankingtable.html">Ranking Table</a>'
     html = html + '<h3>Points Chart</h3><a href="pointschart.html">Points Chart</a></body></html>'
     os.chdir(sc.output_path('2019'))
