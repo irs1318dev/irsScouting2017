@@ -7,6 +7,9 @@ import bokeh.plotting as plt
 import bokeh.palettes as bpalettes
 import bokeh.transform as btransform
 import bokeh.io
+import server.config as sc
+# import bokeh.layouts as blt
+# import bokeh.models.widgets as bwd
 
 import server.model.connection as smc
 import server.config
@@ -83,7 +86,7 @@ def oneteam_plot(team, num_matches=12):
 
     t1plot = plt.figure(x_range=matches, title="One Team Graph: " + team,
                         plot_height=350, plot_width=800,
-                        toolbar_location='left',  tools="hover",
+                        toolbar_location='left', tools="hover",
                         tooltips="$name: @$name")
 
     # Hatch panels
@@ -91,26 +94,26 @@ def oneteam_plot(team, num_matches=12):
                    'rocketHatch3']
     hcds_all = get_cds_averages(measures, hatch_tasks)
     hatch_r = t1plot.vbar_stack(hatch_tasks,
-                      x=btransform.dodge('match', -.14, range=t1plot.x_range),
-                      width=0.25, source=hcds_all,
-                      color=bpalettes.BuPu5)
+                                x=btransform.dodge('match', -.14, range=t1plot.x_range),
+                                width=0.25, source=hcds_all,
+                                color=bpalettes.BuPu5)
 
     # Cargo
     cargo_tasks = ['getCargo', 'csCargo', 'rocketCargo1',
                    'rocketCargo2', 'rocketCargo3']
     ccds_all = get_cds_averages(measures, cargo_tasks)
     cargo_r = t1plot.vbar_stack(cargo_tasks,
-                      x=btransform.dodge('match', .14, range=t1plot.x_range),
-                      width=0.25, source=ccds_all,
-                      color=bpalettes.Oranges5)
+                                x=btransform.dodge('match', .14, range=t1plot.x_range),
+                                width=0.25, source=ccds_all,
+                                color=bpalettes.Oranges5)
 
     # Climb
     climb_tasks = ['climb1', 'climb2', 'climb3']
     cl_cds = shape_climb_data(team)
     climb_r = t1plot.vbar_stack(climb_tasks,
-                      x=btransform.dodge('match', .41, range=t1plot.x_range),
-                      width=0.25, source=cl_cds,
-                      color=bpalettes.Viridis3)
+                                x=btransform.dodge('match', .41, range=t1plot.x_range),
+                                width=0.25, source=cl_cds,
+                                color=bpalettes.Viridis3)
 
     hatch_items = [(x, [hatch_r[hatch_tasks.index(x)]]) for x in hatch_tasks]
     cargo_items = [(x, [cargo_r[cargo_tasks.index(x)]]) for x in cargo_tasks]
@@ -123,14 +126,38 @@ def oneteam_plot(team, num_matches=12):
 
 
 def pages_1t(teams):
-    os.chdir(server.config.output_path('2019') + r'/oneteam')
-
     for team in teams:
+        os.chdir(server.config.output_path('2019') + r'/oneteam')
         bokeh.io.output_file('1t{0}.html'.format(team))
-        graph = oneteam_plot(team)
         title = 'One Team Display: Match ' + team
+        graph = oneteam_plot(team)
         # LocalResource needed to load JS and CSS files from local folder
         res = server.view.bokeh.LocalResource(
             os.path.join(server.config.output_path('2019'), 'static'))
         bokeh.io.save(graph, title=title, resources=res)
+
+
+def index_page1t():
+    html = '''
+        <html>
+        <body>
+        '''
+
+    oneteam_folder = os.path.join(sc.output_path('2019'), 'oneteam')
+    file_names = os.listdir(oneteam_folder)
+    file_data = [(f_name, 'Team {}'.format(f_name[2:-5]))
+                 for f_name in file_names if f_name[-5:] == '.html']
+    links = ['<li><a href="oneteam/{}">{}</a></li>'.format(f_data[0],
+             f_data[1]) for f_data in file_data]
+    html = '<html><head><title>IRS Scouting Data One Team Graphs</title></head>'
+    html = html + ''.join(links)
+    html = html + '''
+            </ul></body></html>
+    '''
+    os.chdir(sc.output_path('2019'))
+    index_file = open("oneteam_index.html", "w")
+    index_file.write(html)
+    index_file.close()
+    return html
+
 
