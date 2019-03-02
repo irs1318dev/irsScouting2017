@@ -8,8 +8,8 @@ import bokeh.palettes as bpalettes
 import bokeh.transform as btransform
 import bokeh.io
 import server.config as sc
-# import bokeh.layouts as blt
-# import bokeh.models.widgets as bwd
+import bokeh.layouts as blt
+import bokeh.models.widgets as bwd
 
 import server.model.connection as smc
 import server.config
@@ -134,7 +134,10 @@ def pages_1t(teams):
         # LocalResource needed to load JS and CSS files from local folder
         res = server.view.bokeh.LocalResource(
             os.path.join(server.config.output_path('2019'), 'static'))
-        bokeh.io.save(graph, title=title, resources=res)
+        div = blt.WidgetBox(bwd.Div(text='<h1>One Team Graphs</h1>'))
+
+        col = blt.column(div, graph)
+        bokeh.io.save(col, title=title, resources=res)
 
 
 def index_page1t():
