@@ -72,7 +72,7 @@ def ranking_df():
     df_fun2 = df_fun2.groupby('team').sum()
     df_all = pd.concat([df_all, df_fun2], axis=1, sort=False)
     df_all = df_all.fillna(0)
-    # df_all['team'] = df_all.index
+    df_all['team'] = df_all.index
     df_all['totalCargo'] = (df_all['getCargo'] + df_all['rocketCargo1'] + df_all['rocketCargo'] +
                             df_all['rocketCargo2'] + df_all['rocketCargo3'] + df_all['csCargo'])
     df_all['totalHatch'] = (df_all['getHatch'] + df_all['rocketHatch1'] + df_all['rocketHatch1'] +
@@ -140,11 +140,12 @@ def pages_rankingtable():
     tab1 = bmw.Panel(child=generalTable, title='General Table')
     tab2 = bmw.Panel(child=autoTable, title='Auto Table')
     tabs = bmw.Tabs(tabs=[tab1, tab2])
-    div = blt.WidgetBox(bmw.Div(text='<h1>Ranking Table</h1>' +
-                                     'updated at match:' + match))
+    div1 = blt.WidgetBox(bmw.Div(text='<a href="index.html">Home Page</a>'))
+    div2 = blt.WidgetBox(bmw.Div(text='<h1>Ranking Table</h1>' +
+                                      'updated at match:' + match))
     os.chdir(sc.output_path('2019'))
     bokeh.io.output_file('rankingtable.html')
-    col = blt.column([div, tabs])
+    col = blt.column([div1, div2, tabs])
     title = 'Ranking Table: Match ' + match
     # LocalResource needed to load JS and CSS files from local folder
     res = server.view.bokeh.LocalResource(
