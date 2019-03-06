@@ -15,15 +15,15 @@ import server.season.s2019.view.pointschart as pointschart
 
 
 def test_points_chart():
-    sme.EventDal.set_current_event('test_data', '2019')
-    sme.EventDal.set_current_match('030-q')
+    # sme.EventDal.set_current_event('test_data', '2019')
+    # sme.EventDal.set_current_match('030-q')
     pointschart.pages_pointschart()
 
 
 def test_next3():
-    sme.EventDal.set_current_event('test_data', '2019')
-    sme.EventDal.set_current_match('030-q')
-    print(sixteam.next3('1318'))
+    # sme.EventDal.set_current_event('test_data', '2019')
+    # sme.EventDal.set_current_match('030-q')
+    print(sixteam.pages_6t(['069-q']))
 
 
 def test_index_page():
@@ -31,7 +31,7 @@ def test_index_page():
 
 
 def test_oneteam():
-    sme.EventDal.set_current_event('test_data', '2019')
-    sme.EventDal.set_current_match('030-q')
+    # sme.EventDal.set_current_event('test_data', '2019')
+    # sme.EventDal.set_current_match('030-q')
     teams = sme.EventDal.last_match_teams()
     oneteam.pages_1t(teams)

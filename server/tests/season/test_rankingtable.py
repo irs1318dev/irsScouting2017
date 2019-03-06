@@ -5,6 +5,4 @@ import server.model.event as sme
 
 
 def test_rankingtable():
-    sme.EventDal.set_current_event('test_data', '2019')
-    sme.EventDal.set_current_match('020-q')
     rt.pages_rankingtable()

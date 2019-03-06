@@ -34,7 +34,7 @@ def ranking_df():
                 'rocketHatch1', 'rocketHatch2', 'rocketHatch3', 'rocketCargo1',
                 'rocketCargo2', 'rocketCargo3', 'pickupLoadingHatch', 'groundHatchPickup',
                 'pickupLoadingCargo', 'groundCargoPickup', 'climb', 'supportClimb',
-                'disabled', 'temp', 'fellOver', 'stuckOnPlat']
+                'disabled', 'temp', 'fellOver', 'stuckOnPlat', 'duration']
     addcol(df_temp, taskList)
     sql = '''
         SELECT team, matches FROM vw_num_matches 
@@ -72,7 +72,7 @@ def ranking_df():
     df_fun2 = df_fun2.groupby('team').sum()
     df_all = pd.concat([df_all, df_fun2], axis=1, sort=False)
     df_all = df_all.fillna(0)
-    df_all['team'] = df_all.index
+    # df_all['team'] = df_all.index
     df_all['totalCargo'] = (df_all['getCargo'] + df_all['rocketCargo1'] + df_all['rocketCargo'] +
                             df_all['rocketCargo2'] + df_all['rocketCargo3'] + df_all['csCargo'])
     df_all['totalHatch'] = (df_all['getHatch'] + df_all['rocketHatch1'] + df_all['rocketHatch1'] +
@@ -92,6 +92,8 @@ def ranking_df():
                            df_all['avgClimbPoints'] + df_all['avgHabPoints'])
     df_all['level1hab'] = (df_all['sidehab'] + df_all['centerhab'])
     df_all['dontMove'] = (df_all['matches'] - (df_all['level1hab'] + df_all['level2hab']))
+    df_all['Defense'] = df_all['duration'] / df_all['matches']
+
     smc.pool.putconn(conn)
     return df_all
 
@@ -109,6 +111,7 @@ def ranking_general(df_all):
         bmw.TableColumn(field='climb1', title='Total Lvl1 Climbs', formatter=fixed2),
         bmw.TableColumn(field='climb2', title='Total Lvl2 Climbs', formatter=fixed2),
         bmw.TableColumn(field='climb3', title='Total Lvl3 Climbs', formatter=fixed2),
+        bmw.TableColumn(field='Defense', title='Avg Defense', formatter=fixed2),
     ]
     data_table = bmw.DataTable(source=Rank_cds, columns=cols, width=900, height=380)
     return data_table
