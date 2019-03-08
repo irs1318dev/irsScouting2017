@@ -72,7 +72,7 @@ def ranking_df():
     df_fun2 = df_fun2.groupby('team').sum()
     df_all = pd.concat([df_all, df_fun2], axis=1, sort=False)
     df_all = df_all.fillna(0)
-    # df_all['team'] = df_all.index
+    df_all['team'] = df_all.index
     df_all['totalCargo'] = (df_all['getCargo'] + df_all['rocketCargo1'] + df_all['rocketCargo'] +
                             df_all['rocketCargo2'] + df_all['rocketCargo3'] + df_all['csCargo'])
     df_all['totalHatch'] = (df_all['getHatch'] + df_all['rocketHatch1'] + df_all['rocketHatch1'] +
@@ -99,39 +99,45 @@ def ranking_df():
 
 
 def ranking_general(df_all):
-    Rank_cds = bmodels.ColumnDataSource(df_all)
-    fixed2 = bmw.NumberFormatter(format='0.00')
-    cols = [
-        bmw.TableColumn(field='team', title='Team'),
-        bmw.TableColumn(field='avgCargo', title='Average Cargo', formatter=fixed2),
-        bmw.TableColumn(field='avgHatch', title='Average Hatches', formatter=fixed2),
-        bmw.TableColumn(field='avgHatchPoints', title='Hatch Points', formatter=fixed2),
-        bmw.TableColumn(field='avgCargoPoints', title='Cargo Points', formatter=fixed2),
-        bmw.TableColumn(field='avgPoints', title='Average Points', formatter=fixed2),
-        bmw.TableColumn(field='climb1', title='Total Lvl1 Climbs', formatter=fixed2),
-        bmw.TableColumn(field='climb2', title='Total Lvl2 Climbs', formatter=fixed2),
-        bmw.TableColumn(field='climb3', title='Total Lvl3 Climbs', formatter=fixed2),
-        bmw.TableColumn(field='Defense', title='Avg Defense', formatter=fixed2),
-    ]
-    data_table = bmw.DataTable(source=Rank_cds, columns=cols, width=900, height=380)
+    try:
+        Rank_cds = bmodels.ColumnDataSource(df_all)
+        fixed2 = bmw.NumberFormatter(format='0.00')
+        cols = [
+            bmw.TableColumn(field='team', title='Team'),
+            bmw.TableColumn(field='avgCargo', title='Average Cargo', formatter=fixed2),
+            bmw.TableColumn(field='avgHatch', title='Average Hatches', formatter=fixed2),
+            bmw.TableColumn(field='avgHatchPoints', title='Hatch Points', formatter=fixed2),
+            bmw.TableColumn(field='avgCargoPoints', title='Cargo Points', formatter=fixed2),
+            bmw.TableColumn(field='avgPoints', title='Average Points', formatter=fixed2),
+            bmw.TableColumn(field='climb1', title='Total Lvl1 Climbs', formatter=fixed2),
+            bmw.TableColumn(field='climb2', title='Total Lvl2 Climbs', formatter=fixed2),
+            bmw.TableColumn(field='climb3', title='Total Lvl3 Climbs', formatter=fixed2),
+            bmw.TableColumn(field='Defense', title='Avg Defense', formatter=fixed2),
+        ]
+        data_table = bmw.DataTable(source=Rank_cds, columns=cols, width=900, height=380)
+    except:
+        return bmw.Div(text="Error with general ranking table")
     return data_table
 
 
 def ranking_auto(df_all):
-    Rank_cds = bmodels.ColumnDataSource(df_all)
-    fixed2 = bmw.NumberFormatter(format='0.00')
-    cols = [
-        bmw.TableColumn(field='team', title='Team'),
-        bmw.TableColumn(field='level2hab', title='Move lvl2', formatter=fixed2),
-        bmw.TableColumn(field='level1hab', title='Move lvl1', formatter=fixed2),
-        bmw.TableColumn(field='dontMove', title='Don\'t Move', formatter=fixed2),
-        bmw.TableColumn(field='rocketHatch', title='Rocket Hatch', formatter=fixed2),
-        bmw.TableColumn(field='frontBay', title='CS Front Hatch', formatter=fixed2),
-        bmw.TableColumn(field='closeHatch', title='CS Close Hatch', formatter=fixed2),
-        bmw.TableColumn(field='centerHatch', title='CS Center Hatch', formatter=fixed2),
-        bmw.TableColumn(field='farHatch', title='CS Far Hatch', formatter=fixed2),
-    ]
-    data_table = bmw.DataTable(source=Rank_cds, columns=cols, width=900, height=380)
+    try:
+        Rank_cds = bmodels.ColumnDataSource(df_all)
+        fixed2 = bmw.NumberFormatter(format='0.00')
+        cols = [
+            bmw.TableColumn(field='team', title='Team'),
+            bmw.TableColumn(field='level2hab', title='Move lvl2', formatter=fixed2),
+            bmw.TableColumn(field='level1hab', title='Move lvl1', formatter=fixed2),
+            bmw.TableColumn(field='dontMove', title='Don\'t Move', formatter=fixed2),
+            bmw.TableColumn(field='rocketHatch', title='Rocket Hatch', formatter=fixed2),
+            bmw.TableColumn(field='frontBay', title='CS Front Hatch', formatter=fixed2),
+            bmw.TableColumn(field='closeHatch', title='CS Close Hatch', formatter=fixed2),
+            bmw.TableColumn(field='centerHatch', title='CS Center Hatch', formatter=fixed2),
+            bmw.TableColumn(field='farHatch', title='CS Far Hatch', formatter=fixed2),
+        ]
+        data_table = bmw.DataTable(source=Rank_cds, columns=cols, width=900, height=380)
+    except:
+        return bmw.Div(text="Error with auto ranking table")
     return data_table
 
 
