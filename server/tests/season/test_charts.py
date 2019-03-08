@@ -15,8 +15,8 @@ import server.season.s2019.view.pointschart as pointschart
 
 
 def test_points_chart():
-    # sme.EventDal.set_current_event('test_data', '2019')
-    # sme.EventDal.set_current_match('030-q')
+    sme.EventDal.set_current_event('wamou', '2019')
+    sme.EventDal.set_current_match('065-q')
     pointschart.pages_pointschart()
 
 
