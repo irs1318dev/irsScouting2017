@@ -3,24 +3,24 @@ import server.scouting.tablet as tablet
 
 
 def test_constructor():
-"""tests the gettablets with the initial setup
-"""
+    """tests the gettablets with the initial setup
+    """
     tablets = tablet.TabletList()
     result = tablets.gettablets()
     assert result == 'TestSystem:Waiting    <br>   '
 
 
 def test_insertTablets():
-"""testing function inserttablets from tablet.py
-"""
+    """testing function inserttablets from tablet.py
+    """
     tablets = tablet.TabletList()
     result = tablets.inserttablets("{TestSystem}")
     assert result == "Waiting"
 
 
 def test_settablet():
-"""testing that duplicate tablets aren;t added to the tablet list
-"""
+    """testing that duplicate tablets aren;t added to the tablet list
+    """
     tablets = tablet.TabletList()
     newTablet = tablet.Tablet("testOne", "Auto", 1)
     result = tablets.settablet(newTablet)
@@ -35,8 +35,8 @@ def test_settablet():
 
 
 def test_settable_assignNewPage():
-"""testing that the booleans are correct for page
-"""
+    """testing that the booleans are correct for page
+    """
     tablets = tablet.TabletList()
     newTablet = tablet.Tablet("testOne", "Auto", 1)
     result = tablets.settablet(newTablet)
@@ -50,8 +50,8 @@ def test_settable_assignNewPage():
 
 
 def test_settablet_nextmatch():
-"""testing that if all tablets are set to waiting, the next match can start
-"""
+    """testing that if all tablets are set to waiting, the next match can start
+    """
     tablets = tablet.TabletList()
     newTablet = tablet.Tablet("testOne","Waiting",1)
     tablets.settablet(newTablet)
@@ -61,8 +61,8 @@ def test_settablet_nextmatch():
 
 
 def test_findnext():
-"""testing method findnext in tablet.py
-"""
+    """testing method findnext in tablet.py
+    """
     tablets = tablet.TabletList()
     newTablet = tablet.Tablet("testTwo", "Waiting","2")
     result = tablets.findnext(newTablet)

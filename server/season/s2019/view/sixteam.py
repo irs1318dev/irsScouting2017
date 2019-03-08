@@ -16,46 +16,15 @@ import server.model.event as sme
 import server.view.bokeh
 
 
-def cds_new_6t(alliance, match, meas, sched, tasks, num_m, num_matches=12):
-    teams = sched.query('match=="{}" & alliance=="{}"'.format(match, alliance))['team']
-    dfm_6t = meas[meas.team.isin(teams)]
-    dfm_nm = dfm_6t.query('last_match <= {}'.format(num_matches)).copy(deep=True)
-    dfm_nm['num_matches'] = dfm_nm.last_match.max()
-    df_task = dfm_nm[dfm_nm.task.isin(tasks)][
-        ['team', 'task', 'successes', "num_matches"]]
-    for team in teams:
-        for task in tasks:
-            if df_task.query('team=="{}" & task=="{}"'.format(team, task)).shape[0] == 0:
-                n = num_m.query('team=="{}"'.format(team)).iat[0, 1]
-                new_row = pd.DataFrame({'team': [team], 'task': [task], 'successes': [0], 'num_matches': [n]})
-                # df_task.iloc[df_task.shape[0]+1, :] = [team, tasks[0], 0, n]
-                df_task = df_task.append(new_row)
-                print(df_task)
-        # if team not in df_task.team:
-        #     n = num_m.query('team=="{}"'.format(team)).iat[0, 1]
-        #     df_task = df_task.append([team, tasks[0], 0, n])
-    # for task in tasks:
-    #     if task not in df_task.task:
-    #         for team in teams:
-    #             n = num_m.query('team=="{}"'.format(team)).iat[0, 1]
-    #             # df_task.iloc[-1, :] = [team, task, 0, n]
-    #             df_task = df_task.append([team, task, 0, n])
-    #             print()
-    #             # print("Adding Task:===", team, task, 0, n)
-    df_sum = df_task.groupby(['task', 'team']).agg({'successes': 'sum', 'num_matches': 'max'})
-    df_sum['avg_successes'] = df_sum.successes / df_sum.num_matches
-    df_unstack = df_sum.unstack().loc[:, 'avg_successes']
-    df_f = df_unstack.fillna(0)
-    df_f.loc['Total', :] = list(df_f.sum())
-    return bmodels.ColumnDataSource(df_f)
-
-
 def get_df_6t():
     conn = smc.pool.getconn()
     sql = '''
-            SELECT * FROM vw_measures;
-
-        '''
+        SELECT vw_measures.*
+            FROM vw_measures
+            INNER JOIN vw_status_date
+                ON vw_measures.date <= vw_status_date.date
+            ORDER BY vw_measures.date DESC;
+        '''  #TODO replace <= with <?
     dfm = pd.read_sql(sql, conn)
     sql2 = '''
         SELECT schedules.* FROM schedules
@@ -71,41 +40,52 @@ def get_df_6t():
     return dfm, df_sched, df_num_matches
 
 
-
-# def plot_6t(match):
-#
-#     h_tasks = ['csHatch', 'rocketHatch1',
-#                'rocketHatch2', 'rocketHatch3']
-#     c_tasks = ['csCargo', 'rocketCargo1',
-#                 'rocketCargo2', 'rocketCargo3']
-#     meas, sched = get_df_6t()
-#     cds_rh = cds_new_6t("red", match, meas, sched, h_tasks)
-#     return cds_rh
+def cds_new_6t(alliance, match, meas, sched, tasks, num_m, num_matches=12):
+    teams = sched.query('match=="{}" & alliance=="{}"'.format(match, alliance))['team']
+    dfm_6t = meas[meas.team.isin(teams)]
+    dfm_nm = dfm_6t.query('last_match <= {}'.format(num_matches)).copy(deep=True)
+    dfm_nm['num_matches'] = dfm_nm.last_match.max()
+    df_task = dfm_nm[dfm_nm.task.isin(tasks)][
+        ['team', 'task', 'successes', "num_matches"]]
+    for team in teams:
+        for task in tasks:
+            if df_task.query('team=="{}" & task=="{}"'.format(team, task)).shape[0] == 0:
+                n = num_m.query('team=="{}"'.format(team)).iat[0, 1]  #TODO Line does not work if no matches
+                df_task = df_task.append([{'team': team, 'task': task,
+                                           'successes': 0, 'num_matches': n}],
+                                         ignore_index=True)
+    df_sum = df_task.groupby(['task', 'team']).agg({'successes': 'sum', 'num_matches': 'max'})
+    df_sum['avg_successes'] = df_sum.successes / df_sum.num_matches
+    df_unstack = df_sum.unstack().loc[:, 'avg_successes']
+    df_f = df_unstack.fillna(0)
+    df_f.loc['Total', :] = list(df_f.sum())
+    return bmodels.ColumnDataSource(df_f)
 
 
 def hatches_6t(match, num_matches=12):
-    # conn = smc.pool.getconn()
-    hatches = ['csHatch', 'rocketHatch1',
-               'rocketHatch2', 'rocketHatch3']
-    meas, sched, num_m = get_df_6t()
-    cdsr = cds_new_6t("red", match, meas, sched, hatches, num_m, num_matches)
-    cdsb = cds_new_6t("blue", match, meas, sched, hatches, num_m, num_matches)
-    rteams = cdsr.column_names[1:]
-    bteams = cdsb.column_names[1:]
+    try:
+        hatches = ['csHatch', 'rocketHatch1',
+                   'rocketHatch2', 'rocketHatch3']
+        meas, sched, num_m = get_df_6t()
+        cdsr = cds_new_6t("red", match, meas, sched, hatches, num_m, num_matches)
+        cdsb = cds_new_6t("blue", match, meas, sched, hatches, num_m, num_matches)
+        rteams = cdsr.column_names[1:]
+        bteams = cdsb.column_names[1:]
 
-    hatch_cols = ['Total', 'csHatch', 'rocketHatch1',
-               'rocketHatch2', 'rocketHatch3']
+        hatch_cols = ['Total', 'csHatch', 'rocketHatch1',
+                   'rocketHatch2', 'rocketHatch3']
 
-    plt_hatches = plt.figure(title='Six Team Hatches Placed: Match ' + match, x_range=hatch_cols,
-                             plot_width=700, plot_height=300)
+        plt_hatches = plt.figure(title='Six Team Hatches Placed: Match ' + match, x_range=hatch_cols,
+                                 plot_width=700, plot_height=300)
 
-    plt_hatches.vbar_stack(rteams, x=btransform.dodge('task', -0.17, range=plt_hatches.x_range), width=0.3,
-                           source=cdsr,
-                           color=bpalettes.Reds3, legend=[" " + x for x in rteams])
-    plt_hatches.vbar_stack(bteams, x=btransform.dodge('task', 0.17, range=plt_hatches.x_range), width=0.3,
-                           source=cdsb,
-                           color=bpalettes.Blues3, legend=[" " + x for x in bteams])
-    # smc.pool.putconn(conn)
+        plt_hatches.vbar_stack(rteams, x=btransform.dodge('task', -0.17, range=plt_hatches.x_range), width=0.3,
+                               source=cdsr,
+                               color=bpalettes.Reds3, legend=[" " + x for x in rteams])
+        plt_hatches.vbar_stack(bteams, x=btransform.dodge('task', 0.17, range=plt_hatches.x_range), width=0.3,
+                               source=cdsb,
+                               color=bpalettes.Blues3, legend=[" " + x for x in bteams])
+    except:
+        return bmw.Div(text="Hatch Chart Error")
     return plt_hatches
 
 
@@ -130,29 +110,27 @@ def _hatches_6t_cds(match, num_matches, alliance, conn):
 
 
 def cargo_6t(match, num_matches=12):
-    # conn = smc.pool.getconn()
-    # cdsr = _cargo_6t_cds(match, num_matches, 'red', conn)
-    # cdsb = _cargo_6t_cds(match, num_matches, 'blue', conn)
-    meas, sched, num_m = get_df_6t()
-    cargo = ['csCargo', 'rocketCargo1',
-             'rocketCargo2', 'rocketCargo3']
-    cdsr = cds_new_6t("red", match, meas, sched, cargo, num_m, num_matches)
-    cdsb = cds_new_6t("blue", match, meas, sched, cargo, num_m, num_matches)
-    rteams = cdsr.column_names[1:]
-    bteams = cdsb.column_names[1:]
+    try:
+        meas, sched, num_m = get_df_6t()
+        cargo = ['csCargo', 'rocketCargo1',
+                 'rocketCargo2', 'rocketCargo3']
+        cdsr = cds_new_6t("red", match, meas, sched, cargo, num_m, num_matches)
+        cdsb = cds_new_6t("blue", match, meas, sched, cargo, num_m, num_matches)
+        rteams = cdsr.column_names[1:]
+        bteams = cdsb.column_names[1:]
 
-    cargo_cols = ['Total', 'csCargo', 'rocketCargo1',
-             'rocketCargo2', 'rocketCargo3']
+        cargo_cols = ['Total', 'csCargo', 'rocketCargo1',
+                 'rocketCargo2', 'rocketCargo3']
 
-    plt_cargo = plt.figure(title='Six Team Cargo Placed: Match ' + match, x_range=cargo_cols,
-                           plot_width=700, plot_height=300)
+        plt_cargo = plt.figure(title='Six Team Cargo Placed: Match ' + match, x_range=cargo_cols,
+                               plot_width=700, plot_height=300)
 
-    plt_cargo.vbar_stack(rteams, x=btransform.dodge('task', -0.17, range=plt_cargo.x_range), width=0.3, source=cdsr,
-                         color=bpalettes.Reds3, legend=[" " + x for x in rteams])
-    plt_cargo.vbar_stack(bteams, x=btransform.dodge('task', 0.17, range=plt_cargo.x_range), width=0.3, source=cdsb,
-                         color=bpalettes.Blues3, legend=[" " + x for x in bteams])
-    # smc.pool.putconn(conn)
-
+        plt_cargo.vbar_stack(rteams, x=btransform.dodge('task', -0.17, range=plt_cargo.x_range), width=0.3, source=cdsr,
+                             color=bpalettes.Reds3, legend=[" " + x for x in rteams])
+        plt_cargo.vbar_stack(bteams, x=btransform.dodge('task', 0.17, range=plt_cargo.x_range), width=0.3, source=cdsb,
+                             color=bpalettes.Blues3, legend=[" " + x for x in bteams])
+    except:
+        return bmw.Div(text="Error with Sixteam chart")
     return plt_cargo
 
 
