@@ -127,21 +127,24 @@ def oneteam_plot(team, num_matches=12):
 
 
 def pages_1t(teams):
-    for team in teams:
-        os.chdir(server.config.output_path('2019') + r'/oneteam')
-        bokeh.io.output_file('1t{0}.html'.format(team))
-        title = 'One Team Display: Match ' + team
-        graph = oneteam_plot(team)
-        # LocalResource needed to load JS and CSS files from local folder
-        res = server.view.bokeh.LocalResource(
-            os.path.join(server.config.output_path('2019'), 'static'))
-        div = blt.WidgetBox(bwd.Div(
-            text='<h1>One Team Graphs</h1><a href="../index.html"><h4>Main Page</h4></a>' +
-                 '<h3> Last Updated at Match: {} </h3>'.format(
-                    sme.EventDal.get_previous_match())))
+    try:
+        for team in teams:
+            os.chdir(server.config.output_path('2019') + r'/oneteam')
+            bokeh.io.output_file('1t{0}.html'.format(team))
+            title = 'One Team Display: Match ' + team
+            graph = oneteam_plot(team)
+            # LocalResource needed to load JS and CSS files from local folder
+            res = server.view.bokeh.LocalResource(
+                os.path.join(server.config.output_path('2019'), 'static'))
+            div = blt.WidgetBox(bwd.Div(
+                text='<h1>One Team Graphs</h1><a href="../index.html"><h4>Main Page</h4></a>' +
+                     '<h3> Last Updated at Match: {} </h3>'.format(
+                        sme.EventDal.get_previous_match())))
+            col = blt.column(div, graph)
+            bokeh.io.save(col, title=title, resources=res)
+    except:
+        print("Wasn't able to make this chart")
 
-        col = blt.column(div, graph)
-        bokeh.io.save(col, title=title, resources=res)
 
 
 def index_page1t():
@@ -151,8 +154,13 @@ def index_page1t():
                  for f_name in file_names if f_name[-5:] == '.html']
     links = ['<li><a href="oneteam/{}">{}</a></li>'.format(f_data[0],
              f_data[1]) for f_data in file_data]
-    html = '<html><head><title>IRS Scouting Data One Team Graphs</title></head>'
-    html = html + '<body><h1> IRS Scouting Data One Team Graphs</h1>'
+    html = '<html><head><link rel="stylesheet" href="list-nav.css"><title>IRS Scouting Data One Team Graphs</title></head>'
+    html = html + '''<ul id="list-nav">
+	<li><a href="./index.html">Six Team</a></li>
+	<li><a href="./pointschart.html">Points Chart</a></li>
+	<li><a href="./rankingtable.html">Ranking Table</a></li>
+	<li><a href="./oneteam_index.html">One Team</a></li><br><br>
+</ul><body><h1> IRS Scouting Data One Team Graphs</h1>'''
     html = html + '<h3> Last Updated at Match: {} </h3>'.format(
         sme.EventDal.get_previous_match())
     html = html + '<a href=index.html><h4>Main Page</h4></a> <br/><br/>'

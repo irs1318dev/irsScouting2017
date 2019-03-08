@@ -15,23 +15,26 @@ import server.view.bokeh
 
 
 def point_chart():
-    df_temp = rt.ranking_df()
-    df_new = df_temp.filter(['avgHatchPoints', 'avgCargoPoints', 'avgClimbPoints', 'avgHabPoints'], axis=1)
-    points_cds = bmodels.ColumnDataSource(df_new)
-    task = points_cds.column_names[1:]
-    print(task)  # DEBUG
-    tooltips = [
-        ("", "team: @index"),
-        ("", "$name: @$name")
-    ]
-    p = plt.figure(title='Points Chart', x_range=points_cds.data['team'],
-                   plot_width=1100, plot_height=350, tooltips=tooltips, toolbar_location="above")
-    hr = p.vbar_stack(task, x='team', width=0.4,
-                      source=points_cds, color=bpalettes.RdBu4)
-    legend = bokeh.models.Legend(items=[(x, [hr[task.index(x)]]) for x in task], location=(0, 0))
-    p.add_layout(legend, 'right')
-    p.xaxis.major_label_orientation = 3.14 / 4
-    return p
+    try:
+        df_temp = rt.ranking_df()
+        df_new = df_temp.filter(['avgHatchPoints', 'avgCargoPoints', 'avgClimbPoints', 'avgHabPoints'], axis=1)
+        points_cds = bmodels.ColumnDataSource(df_new)
+        task = points_cds.column_names[1:]
+        print(task)  # DEBUG
+        tooltips = [
+            ("", "team: @index"),
+            ("", "$name: @$name")
+        ]
+        p = plt.figure(title='Points Chart', x_range=points_cds.data['team'],
+                       plot_width=1100, plot_height=350, tooltips=tooltips, toolbar_location="above")
+        hr = p.vbar_stack(task, x='team', width=0.4,
+                          source=points_cds, color=bpalettes.RdBu4)
+        legend = bokeh.models.Legend(items=[(x, [hr[task.index(x)]]) for x in task], location=(0, 0))
+        p.add_layout(legend, 'right')
+        p.xaxis.major_label_orientation = 3.14 / 4
+        return p
+    except:
+        print("The points chart has fallen and cannot get up!")
 
 
 def pages_pointschart():
