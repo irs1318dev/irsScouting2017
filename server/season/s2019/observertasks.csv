@@ -9,5 +9,5 @@ robot,match,teleop,Placement,,TRUE,rocketHatch1|rocketHatch2|rocketHatch3|rocket
 robot,match,teleop,Defense,,TRUE,duration,
 robot,match,teleop,Pick-Up,,TRUE,pickupLoadingHatch|groundHatchPickup|pickupLoadingCargo|groundCargoPickup,
 robot,match,finish,Climb,,FALSE,climb|supportClimb,
-robot,match,finish,Difficulties,,TRUE,disabled|temp|fellOver|stuckOnPlat,
+robot,match,finish,Difficulties,,TRUE,noShow|disabled|temp|fellOver|stuckOnPlat,
 robot,match,waiting,Waiting for Server,,FALSE,,
