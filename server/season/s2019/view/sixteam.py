@@ -89,26 +89,6 @@ def hatches_6t(match, num_matches=12):
     return plt_hatches
 
 
-def _hatches_6t_cds(match, num_matches, alliance, conn):
-    sql = '''
-        SELECT team, task, SUM(successes) AS hatches_placed FROM vw_measures 
-        WHERE task IN ('rocketHatch1', 'rocketHatch2', 'rocketHatch3', 'csHatch')
-        AND team IN (SELECT team FROM schedules
-                     INNER JOIN status ON schedules.event_id=status.event_id 
-                     WHERE schedules.event_id=status.event_id AND schedules.match=%s
-                     AND alliance=%s)
-        AND last_match <= %s
-        GROUP BY team, task;
-    '''
-    dfh = pd.read_sql(sql, conn, params=[match, alliance, num_matches])
-    dfh = dfh.set_index(['task', 'team'])
-    dfh = dfh.unstack()
-    dfh.columns = dfh.columns.droplevel()
-    dfh = dfh.fillna(0)
-    dfh.loc['Total Hatches', :] = list(dfh.sum())
-    return bmodels.ColumnDataSource(dfh)
-
-
 def cargo_6t(match, num_matches=12):
     try:
         meas, sched, num_m = get_df_6t()
@@ -132,26 +112,6 @@ def cargo_6t(match, num_matches=12):
     except:
         return bmw.Div(text="Error with Sixteam chart")
     return plt_cargo
-
-
-def _cargo_6t_cds(match, num_matches, alliance, conn):
-    sql = '''
-        SELECT team, task, SUM(successes) AS cargo_placed FROM vw_measures 
-        WHERE task IN ('rocketCargo1', 'rocketCargo2', 'rocketCargo3', 'csCargo')
-        AND team IN (SELECT team FROM schedules
-                     INNER JOIN status ON schedules.event_id=status.event_id 
-                     WHERE schedules.event_id=status.event_id AND schedules.match=%s
-                     AND alliance=%s)
-        AND last_match <= %s
-        GROUP BY team, task;
-    '''
-    dfc = pd.read_sql(sql, conn, params=[match, alliance, num_matches])
-    dfc = dfc.set_index(['task', 'team'])
-    dfc = dfc.unstack()
-    dfc.columns = dfc.columns.droplevel()
-    dfc = dfc.fillna(0)
-    dfc.loc['Total Cargo', :] = list(dfc.sum())
-    return bmodels.ColumnDataSource(dfc)
 
 
 def pages_6t(matches, num_matches=12):
