@@ -5,7 +5,15 @@ import os.path
 
 current_season = "2019"
 
+# Database Parameters
+DB_HOST = "localhost"
+DB_PORT = "5432"
+DB_NAME = "scouting"
+DB_MINCONN = 1
+DB_MAXCONN = 5
 
+
+# File Locations
 def web_sites(file):
     path = os.path.join(os.path.dirname(__file__), 'web', 'sites', file)
     return path

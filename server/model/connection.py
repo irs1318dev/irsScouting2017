@@ -108,23 +108,15 @@ References
 import psycopg2.pool
 import sqlalchemy
 
-# todo(stacy) Move password and username to auth.py.
-# todo(stacy) Move connection settings to server.conf.py
-
-db_params = {"minconn": 1,
-             "maxconn": 5,
-             "user": "irs1318",
-             "password": "irs1318",
-             "dbname": "scouting",
-             "host": "localhost",
-             "port": "5432"}
+import server.auth
+import server.config
 
 
-def create_conn_string(user=db_params["user"],
-                       password=db_params["password"],
-                       dbname=db_params["dbname"],
-                       host=db_params["host"],
-                       port=db_params["port"]):
+def create_conn_string(user=server.auth.DB_USER,
+                       password=server.auth.DB_PASSWORD,
+                       dbname=server.config.DB_NAME,
+                       host=server.config.DB_HOST,
+                       port=server.config.DB_PORT):
     """Creates a sqlalchemy connection string.
 
     Args:
@@ -167,9 +159,9 @@ def reset_engine(conn_string):
 
 
 # Create psycopg2 connection pool
-def set_pool(minconn=db_params["minconn"], maxconn=db_params["maxconn"],
-             dbname=db_params["dbname"], host=db_params["host"],
-             user=db_params["user"], password=db_params["password"]):
+def set_pool(minconn=server.config.DB_MINCONN, maxconn=server.config.DB_MAXCONN,
+             dbname=server.config.DB_NAME, host=server.config.DB_HOST,
+             user=server.auth.DB_USER, password=server.auth.DB_PASSWORD):
     """Internal function for creating a connection pool.
 
     Args: Same as connection.reset_pool
@@ -183,9 +175,9 @@ def set_pool(minconn=db_params["minconn"], maxconn=db_params["maxconn"],
 pool = set_pool()
 
 
-def reset_pool(minconn=db_params["minconn"], maxconn=db_params["maxconn"],
-             dbname=db_params["dbname"], host=db_params["host"],
-             user=db_params["user"], password=db_params["password"]):
+def reset_pool(minconn=server.config.DB_MINCONN, maxconn=server.config.DB_MAXCONN,
+               dbname=server.config.DB_NAME, host=server.config.DB_HOST,
+               user=server.auth.DB_USER, password=server.auth.DB_PASSWORD):
     global pool
     pool = psycopg2.pool.SimpleConnectionPool(minconn, maxconn,
                                               dbname=dbname,

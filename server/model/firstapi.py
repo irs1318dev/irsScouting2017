@@ -52,7 +52,7 @@ import server.auth
 
 
 def _send_http_request(url):
-    raw_token = server.auth.username + b":" + server.auth.key
+    raw_token = server.auth.FIRSTAPI_USER + b":" + server.auth.FIRSTAPI_KEY
     token = b"Basic " + base64.b64encode(raw_token)
     hdrs = {"Accept": "application/json", 'Authorization': token}
     req = urllib.request.Request(url, headers=hdrs)
