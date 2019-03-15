@@ -24,8 +24,8 @@ def test_next3():
     # sme.EventDal.set_current_event('test_data', '2019')
     # sme.EventDal.set_current_match('030-q')
     sme.EventDal.set_current_event('wamou', '2019')
-    sme.EventDal.set_current_match('002-q')
-    print(sixteam.next3('1318'))
+    sme.EventDal.set_current_match('040-q')
+    sixteam.next3('1318')
 
 
 def test_index_page():

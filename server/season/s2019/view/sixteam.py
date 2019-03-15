@@ -50,7 +50,7 @@ def cds_new_6t(alliance, match, meas, sched, tasks, num_m, num_matches=12):
     for team in teams:
         for task in tasks:
             if df_task.query('team=="{}" & task=="{}"'.format(team, task)).shape[0] == 0:
-                n = num_m.query('team=="{}"'.format(team)).iat[0, 1]  #TODO Line does not work if no matches
+                n = num_m.query('team=="{}"'.format(team)).iat[0, 1]  # TODO Line does not work if no matches
                 df_task = df_task.append([{'team': team, 'task': task,
                                            'successes': 0, 'num_matches': n}],
                                          ignore_index=True)
@@ -58,60 +58,48 @@ def cds_new_6t(alliance, match, meas, sched, tasks, num_m, num_matches=12):
     df_sum['avg_successes'] = df_sum.successes / df_sum.num_matches
     df_unstack = df_sum.unstack().loc[:, 'avg_successes']
     df_f = df_unstack.fillna(0)
-    df_f.loc['Total', :] = list(df_f.sum())
+    # df_f.loc['Total', :] = list(df_f.sum())
+    df_f.loc['totalHatches', :] = (df_f.loc['csHatch'] + df_f.loc['rocketHatch1'] +
+                                   df_f.loc['rocketHatch2'] + df_f.loc['rocketHatch3'] +
+                                   df_f.loc['getHatch'])
+    df_f.loc['totalCargo', :] = (df_f.loc['csCargo'] + df_f.loc['rocketCargo1'] +
+                                 df_f.loc['rocketCargo2'] + df_f.loc['rocketCargo3'] +
+                                 df_f.loc['getCargo'])
+    # df_f = add_points_col(alliance, match, df_f)
     return bmodels.ColumnDataSource(df_f)
 
 
-def hatches_6t(match, num_matches=12):
+def total_6t(match, num_matches=12):
     try:
-        hatches = ['csHatch', 'rocketHatch1',
-                   'rocketHatch2', 'rocketHatch3']
+        tasks = ['csHatch', 'rocketHatch1',
+                 'rocketHatch2', 'rocketHatch3',
+                 'getHatch', 'getCargo',
+                 'csCargo', 'rocketCargo1',
+                 'rocketCargo2', 'rocketCargo3']
         meas, sched, num_m = get_df_6t()
-        cdsr = cds_new_6t("red", match, meas, sched, hatches, num_m, num_matches)
-        cdsb = cds_new_6t("blue", match, meas, sched, hatches, num_m, num_matches)
+        cdsr = cds_new_6t("red", match, meas, sched, tasks, num_m, num_matches)
+        cdsb = cds_new_6t("blue", match, meas, sched, tasks, num_m, num_matches)
         rteams = cdsr.column_names[1:]
         bteams = cdsb.column_names[1:]
 
-        hatch_cols = ['Total', 'csHatch', 'rocketHatch1',
-                   'rocketHatch2', 'rocketHatch3']
+        hatch_cols = ['totalHatches', 'totalCargo',
+                      'csHatch', 'rocketHatch1',
+                      'rocketHatch2', 'rocketHatch3',
+                      'csCargo', 'rocketCargo1',
+                      'rocketCargo2', 'rocketCargo3']
 
-        plt_hatches = plt.figure(title='Six Team Hatches Placed: Match ' + match, x_range=hatch_cols,
-                                 plot_width=700, plot_height=300)
+        plt_all = plt.figure(title='Six Team: Match ' + match, x_range=hatch_cols,
+                             plot_width=800, plot_height=350)
 
-        plt_hatches.vbar_stack(rteams, x=btransform.dodge('task', -0.17, range=plt_hatches.x_range), width=0.3,
-                               source=cdsr,
-                               color=bpalettes.Reds3, legend=[" " + x for x in rteams])
-        plt_hatches.vbar_stack(bteams, x=btransform.dodge('task', 0.17, range=plt_hatches.x_range), width=0.3,
-                               source=cdsb,
-                               color=bpalettes.Blues3, legend=[" " + x for x in bteams])
+        plt_all.vbar_stack(rteams, x=btransform.dodge('task', -0.17, range=plt_all.x_range), width=0.3,
+                           source=cdsr,
+                           color=bpalettes.Reds3, legend=[" " + x for x in rteams])
+        plt_all.vbar_stack(bteams, x=btransform.dodge('task', 0.17, range=plt_all.x_range), width=0.3,
+                           source=cdsb,
+                           color=bpalettes.Blues3, legend=[" " + x for x in bteams])
     except:
-        return bmw.Div(text="Hatch Chart Error")
-    return plt_hatches
-
-
-def cargo_6t(match, num_matches=12):
-    try:
-        meas, sched, num_m = get_df_6t()
-        cargo = ['csCargo', 'rocketCargo1',
-                 'rocketCargo2', 'rocketCargo3']
-        cdsr = cds_new_6t("red", match, meas, sched, cargo, num_m, num_matches)
-        cdsb = cds_new_6t("blue", match, meas, sched, cargo, num_m, num_matches)
-        rteams = cdsr.column_names[1:]
-        bteams = cdsb.column_names[1:]
-
-        cargo_cols = ['Total', 'csCargo', 'rocketCargo1',
-                 'rocketCargo2', 'rocketCargo3']
-
-        plt_cargo = plt.figure(title='Six Team Cargo Placed: Match ' + match, x_range=cargo_cols,
-                               plot_width=700, plot_height=300)
-
-        plt_cargo.vbar_stack(rteams, x=btransform.dodge('task', -0.17, range=plt_cargo.x_range), width=0.3, source=cdsr,
-                             color=bpalettes.Reds3, legend=[" " + x for x in rteams])
-        plt_cargo.vbar_stack(bteams, x=btransform.dodge('task', 0.17, range=plt_cargo.x_range), width=0.3, source=cdsb,
-                             color=bpalettes.Blues3, legend=[" " + x for x in bteams])
-    except:
-        return bmw.Div(text="Error with Sixteam chart")
-    return plt_cargo
+        return bmw.Div(text="Chart construction Error")
+    return plt_all
 
 
 def pages_6t(matches, num_matches=12):
@@ -122,9 +110,9 @@ def pages_6t(matches, num_matches=12):
             <H1>Match {} Six Team Chart</H1>
         '''.format(match))
         div_all = bmw.Div(text='<h3>All Matches</h3>')
-        row_all = blt.row(hatches_6t(match, num_matches), cargo_6t(match, num_matches))
+        row_all = blt.row(total_6t(match, num_matches))
         div_l3 = bmw.Div(text='<h3>Last 3 Matches</h3>')
-        row_l3 = blt.row(hatches_6t(match, 3), cargo_6t(match, 3))
+        row_l3 = blt.row(total_6t(match, 3))
 
         col = blt.Column(div_top, div_all, row_all, div_l3, row_l3)
         title = 'Six Team Display: Match ' + match
