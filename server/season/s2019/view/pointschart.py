@@ -20,7 +20,6 @@ def point_chart():
         df_new = df_temp.filter(['avgHatchPoints', 'avgCargoPoints', 'avgClimbPoints', 'avgHabPoints'], axis=1)
         points_cds = bmodels.ColumnDataSource(df_new)
         task = points_cds.column_names[1:]
-        print(task)  # DEBUG
         tooltips = [
             ("", "team: @index"),
             ("", "$name: @$name")
@@ -33,13 +32,16 @@ def point_chart():
         p.add_layout(legend, 'right')
         p.xaxis.major_label_orientation = 3.14 / 4
         return p
-    except:
-        print("The points chart has fallen and cannot get up!")
+    except Exception as err:
+        raise err
+        return(bmw.Div(text=str(err)))
+        # print(err)
+        # print("The points chart has fallen and cannot get up!")
 
 
 def pages_pointschart():
     match = sme.EventDal.get_current_match()
-    os.chdir(sc.output_path('2019'))
+    os.chdir(sc.output_path())
     chart = point_chart()
     div1 = blt.WidgetBox(bmw.Div(text='<a href="index.html">Home Page</a>'))
     div2 = blt.WidgetBox(bmw.Div(text='<h1>Points Chart</h1>' +
@@ -49,5 +51,5 @@ def pages_pointschart():
     title = 'Ranking Table: Match ' + match
     # LocalResource needed to load JS and CSS files from local folder
     res = server.view.bokeh.LocalResource(
-        os.path.join(sc.output_path('2019'), 'static'))
+        os.path.join(sc.output_path(), 'static'))
     bokeh.io.save(col, title=title, resources=res)

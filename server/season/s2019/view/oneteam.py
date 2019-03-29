@@ -129,13 +129,13 @@ def oneteam_plot(team, num_matches=12):
 def pages_1t(teams):
     try:
         for team in teams:
-            os.chdir(server.config.output_path('2019') + r'/oneteam')
+            os.chdir(server.config.output_path() + r'/oneteam')
             bokeh.io.output_file('1t{0}.html'.format(team))
             title = 'One Team Display: Match ' + team
             graph = oneteam_plot(team)
             # LocalResource needed to load JS and CSS files from local folder
             res = server.view.bokeh.LocalResource(
-                os.path.join(server.config.output_path('2019'), 'static'))
+                os.path.join(server.config.output_path(), 'static'))
             div = blt.WidgetBox(bwd.Div(
                 text='<h1>One Team Graphs</h1><a href="../index.html"><h4>Main Page</h4></a>' +
                      '<h3> Last Updated at Match: {} </h3>'.format(
@@ -148,7 +148,7 @@ def pages_1t(teams):
 
 
 def index_page1t():
-    oneteam_folder = os.path.join(sc.output_path('2019'), 'oneteam')
+    oneteam_folder = os.path.join(sc.output_path(), 'oneteam')
     file_names = os.listdir(oneteam_folder)
     file_data = [(f_name, 'Team {}'.format(f_name[2:-5]))
                  for f_name in file_names if f_name[-5:] == '.html']
@@ -168,7 +168,7 @@ def index_page1t():
     html = html + '''
             </ul></body></html>
     '''
-    os.chdir(sc.output_path('2019'))
+    os.chdir(sc.output_path())
     index_file = open("oneteam_index.html", "w")
     index_file.write(html)
     index_file.close()

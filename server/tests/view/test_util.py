@@ -5,7 +5,7 @@ import server.view.util as svu
 
 
 def test_path():
-    print(server.config.output_path(2019))
+    print(server.config.output_path())
 
 
 def test_output():

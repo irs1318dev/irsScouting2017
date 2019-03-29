@@ -152,13 +152,13 @@ def pages_rankingtable():
     div1 = blt.WidgetBox(bmw.Div(text='<a href="index.html">Home Page</a>'))
     div2 = blt.WidgetBox(bmw.Div(text='<h1>Ranking Table</h1>' +
                                       'updated at match:' + match))
-    os.chdir(sc.output_path('2019'))
+    os.chdir(sc.output_path())
     bokeh.io.output_file('rankingtable.html')
     col = blt.column([div1, div2, tabs])
     title = 'Ranking Table: Match ' + match
     # LocalResource needed to load JS and CSS files from local folder
     res = server.view.bokeh.LocalResource(
-        os.path.join(sc.output_path('2019'), 'static'))
+        os.path.join(sc.output_path(), 'static'))
     bokeh.io.save(col, title=title, resources=res)
 
 

@@ -16,7 +16,7 @@ def to_points(column, points):
 
 
 def upload_data():
-    os.chdir(server.config.output_path(2019))
+    os.chdir(server.config.output_path())
     subprocess.run('git status', shell=True)
     subprocess.run('git add --all', shell=True)
     subprocess.run('git commit -m "Updating Data"', shell=True)

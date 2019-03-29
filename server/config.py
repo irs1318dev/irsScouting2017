@@ -55,7 +55,6 @@ def tests_model_test_data(file):
     return path
 
 
-def output_path(season):
-    season_str = str(season)
+def output_path():
     return os.path.abspath(os.path.join(
-        os.path.dirname(__file__), r"..\..\scouting" + season_str))
+        os.path.dirname(__file__), r"..\..\scouting"))

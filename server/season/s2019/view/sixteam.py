@@ -103,7 +103,7 @@ def total_6t(match, num_matches=12):
 
 
 def pages_6t(matches, num_matches=12):
-    os.chdir(os.path.join(sc.output_path('2019'), 'sixteam'))
+    os.chdir(os.path.join(sc.output_path(), 'sixteam'))
     for match in matches:
         bokeh.io.output_file('6t' + match + '.html')
         div_top = bmw.Div(text='''
@@ -118,7 +118,7 @@ def pages_6t(matches, num_matches=12):
         title = 'Six Team Display: Match ' + match
         # LocalResource needed to load JS and CSS files from local folder
         res = server.view.bokeh.LocalResource(
-            os.path.join(sc.output_path('2019'), 'static'))
+            os.path.join(sc.output_path(), 'static'))
         bokeh.io.save(col, title=title, resources=res)
 
 
@@ -129,7 +129,7 @@ def next3(team):
 
 
 def index_page():
-    sixteam_folder = os.path.join(sc.output_path('2019'), 'sixteam')
+    sixteam_folder = os.path.join(sc.output_path(), 'sixteam')
     last_match = sme.EventDal.get_previous_match()
     file_names = os.listdir(sixteam_folder)
     file_data = [(f_name, 'Match {}'.format(f_name[2:-5])) for f_name in file_names if f_name[-5:] == '.html']
@@ -148,7 +148,7 @@ def index_page():
     html = html + '</ul><h3>One team charts</h3><a href="oneteam_index.html">Oneteam charts</a>'
     html = html + '</ul><h3>Ranking Table</h3><a href="rankingtable.html">Ranking Table</a>'
     html = html + '<h3>Points Chart</h3><a href="pointschart.html">Points Chart</a></body></html>'
-    os.chdir(sc.output_path('2019'))
+    os.chdir(sc.output_path())
     index_file = open("index.html", "w")
     index_file.write(html)
     index_file.close()
