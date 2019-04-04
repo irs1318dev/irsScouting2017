@@ -72,7 +72,7 @@ def ranking_df():
     df_fun2 = df_fun2.groupby('team').sum()
     df_all = pd.concat([df_all, df_fun2], axis=1, sort=False)
     df_all = df_all.fillna(0)
-    df_all['team'] = df_all.index
+    #df_all['team'] = df_all.index
     df_all['totalCargo'] = (df_all['getCargo'] + df_all['rocketCargo1'] +
                             df_all['rocketCargo2'] + df_all['rocketCargo3'] + df_all['csCargo'])
     df_all['totalHatch'] = (df_all['getHatch'] + df_all['rocketHatch1'] +
