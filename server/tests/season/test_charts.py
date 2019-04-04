@@ -16,7 +16,7 @@ import server.season.s2019.view.updater as updater
 
 
 def test_points_chart():
-    sme.EventDal.set_current_event('wayak', '2019')
+    sme.EventDal.set_current_event('waahs', '2019')
     sme.EventDal.set_current_match('060-q')
     pointschart.pages_pointschart()
 
@@ -41,6 +41,6 @@ def test_oneteam():
 
 
 def test_updater():
-    sme.EventDal.set_current_event('wayak', '2019')
+    sme.EventDal.set_current_event('waahs', '2019')
     sme.EventDal.set_current_match('060-q')
     updater.update_graph()
