@@ -19,14 +19,15 @@ def point_chart():
         df_temp = rt.ranking_df()
         df_new = df_temp.filter(['avgHatchPoints', 'avgCargoPoints', 'avgClimbPoints', 'avgHabPoints'], axis=1)
         points_cds = bmodels.ColumnDataSource(df_new)
+        tm_col_name = points_cds.column_names[0]
         task = points_cds.column_names[1:]
         tooltips = [
             ("", "team: @index"),
             ("", "$name: @$name")
         ]
-        p = plt.figure(title='Points Chart', x_range=points_cds.data['team'],
+        p = plt.figure(title='Points Chart', x_range=points_cds.data[tm_col_name],
                        plot_width=1100, plot_height=350, tooltips=tooltips, toolbar_location="above")
-        hr = p.vbar_stack(task, x='team', width=0.4,
+        hr = p.vbar_stack(task, x=tm_col_name, width=0.4,
                           source=points_cds, color=bpalettes.RdBu4)
         legend = bokeh.models.Legend(items=[(x, [hr[task.index(x)]]) for x in task], location=(0, 0))
         p.add_layout(legend, 'right')
