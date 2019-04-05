@@ -29,6 +29,7 @@ def update_one_team(teams):
 
 def update_six_team():
     s.next3('1318')
+    s.next3('2976')
 
 
 def update_points():
