@@ -201,3 +201,4 @@ def add_test_data():
                          sql_output=True)
     add_poisson_measures("test_holoviews", "1318", "placeScale", "teleop", 4,
                          0.1, 0.7, sql_output=True)
+

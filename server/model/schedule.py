@@ -84,6 +84,9 @@ def process_sched(event, season, sched_json, level='qual'):
 
 
 # Function only works if the csv has columns in the order of match, red1, red2, red3, blue1, blue2, blue3
+# CSV example: 001-q,7824,234,2340,6587,5675,8792
+# First line of csv file must be a header
+# When calling the function, the file must be the full path with double backslashes. All parameters are strings in quotes
 def manual_Entry(file, event, season):
     data = pandas.read_csv(file)
     match = list(data.iloc[:, 0])
@@ -100,7 +103,6 @@ def manual_Entry(file, event, season):
         r1 = int(red1[value])
         r2 = int(red2[value])
         r3 = int(red3[value])
-        elem = int(elem)
         select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
                                  "VALUES (:elem, :r1, 'na', 'na', 'red', 'na', :event_id);")
         conn.execute(select, elem=elem, r1=r1, event_id=event_id)
@@ -116,15 +118,14 @@ def manual_Entry(file, event, season):
         b1 = int(blue1[value])
         b2 = int(blue2[value])
         b3 = int(blue3[value])
-        elem = int(elem)
         select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
-                                 "VALUES (:elem, :b1, 'na', 'na', 'red', 'na', :event_id);")
+                                 "VALUES (:elem, :b1, 'na', 'na', 'blue', 'na', :event_id);")
         conn.execute(select, elem=elem, b1=b1, event_id=event_id)
         select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
-                                 "VALUES (:elem, :b2, 'na', 'na', 'red', 'na', :event_id);")
+                                 "VALUES (:elem, :b2, 'na', 'na', 'blue', 'na', :event_id);")
         conn.execute(select, elem=elem, b2=b2, event_id=event_id)
         select = sqlalchemy.text("INSERT INTO schedules (match, team, level, date, alliance, station, event_id) " +
-                                 "VALUES (:elem, :b3, 'na', 'na', 'red', 'na', :event_id);")
+                                 "VALUES (:elem, :b3, 'na', 'na', 'blue', 'na', :event_id);")
         conn.execute(select, elem=elem, b3=b3, event_id=event_id)
         value = value + 1
     conn.close()
