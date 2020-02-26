@@ -26,9 +26,11 @@ provide data that desribes the facts listed in the *measures* table.
 Per star schema terminology, these tables are dimension tables.
 
 Further reading: https://en.wikipedia.org/wiki/Star_schema
+
+# todo(stacy.irwin) Add season dimension table
 """
 
-#todo(stacy.irwin) Add season dimension table
+
 import csv
 import os
 from sqlalchemy import Column, Integer, String, text
@@ -106,7 +108,8 @@ class Event(Base):
     season = Column(String)
     __table_args__ = (UniqueConstraint('name', 'season', name="events_unique"),)
 
-#todo(samika) Add two-column constraint so can't have same event with same season.
+
+# todo(samika) Add two-column constraint so can't have same event with same season.
 
 
 class Level(Base):
